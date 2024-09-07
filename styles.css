@@ -62,11 +62,15 @@ button {
     color: #77cdff;
     background: #fff;
     cursor: pointer;
-    border-radius: 50px
+    border-radius: 50px;
 }
 
 button:hover {
     background: #dcdcdc;
+}
+
+.buttons {
+    word-spacing: 1rem;
 }
 
 .column-right {
