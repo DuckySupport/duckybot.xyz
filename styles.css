@@ -1,46 +1,92 @@
-body {
-    font-family: Arial, sans-serif;
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-header {
-    background-color: #333;
-    color: white;
-    padding: 1em 0;
-    text-align: center;
+nav {
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0rem calc((100vw - 1300px) / 2);
 }
 
-nav ul {
-    list-style-type: none;
-    padding: 0;
+.logo {
+    color: #fff;
+    font-size: 3rem;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0 2rem;
 }
 
-nav ul li {
-    display: inline;
-    margin: 0 10px;
-}
-
-nav ul li a {
-    color: white;
+nav a {
     text-decoration: none;
+    color: #fff;
+    padding: 0 1.5rem;
+    font-size: 20px;
+    font-weight: bold;
 }
 
-main {
-    padding: 20px;
+.hero {
+    background-image: url("DuckyBackground.svg");
 }
 
-section {
-    margin-bottom: 20px;
+.hero-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 95vh;
+    padding: 3rem calc((100vw - 1300px) / 2);
 }
 
-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 1em 0;
-    position: fixed;
+.column-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    align-items: flex-start;
+    color: #fff;
+    padding: 0rem 0rem;
+}
+
+.column-left p {
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    line-height: 1.5;
+}
+
+button {
+    padding: 1rem 3rem;
+    font-size: 1rem;
+    border: none;
+    color: #77cdff;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 50px
+}
+
+button:hover {
+    background: #dcdcdc;
+}
+
+.column-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0rem 2rem;
+}
+
+.hero-image {
     width: 100%;
-    bottom: 0;
+    height: 100%;
+}
+
+body {
+    background-image: url("DuckyBackground.svg");
+}
+
+@media screen and (max-width: 768px) {
+    .hero-container {
+        grid-template-columns: 1fr;
+    }
 }
