@@ -89,6 +89,32 @@ body {
     background-image: url("DuckyBackground.svg");
 }
 
+.notfound {
+    display: block;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    color: #fff;
+    text-shadow: 2px 2px 5px #777;
+}
+
+.notfound a {
+    color: #fff;
+}
+
+.maintext {
+    font-size: 55px;
+}
+
+.subtext {
+    font-size: 35px;
+}
+
 @media screen and (max-width: 768px) {
     .hero-container {
         grid-template-columns: 1fr;
