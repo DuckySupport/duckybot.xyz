@@ -1,0 +1,29 @@
+* {
+    font-family: 'Montserrat';
+    font-weight: bold;
+}
+
+body {
+    margin: 0 auto;
+    display: grid;
+    place-items: center;
+}
+
+.guilds {
+    display: grid;
+    place-items: center;
+    width: 1000px;
+    height: 1000px;
+}
+
+.card {
+    background-color: rgb(49, 190, 255);
+    width: 15rem;
+    height: 15rem;
+    border-radius: 10px;
+    display: grid;
+    color: white;
+    text-shadow: 1px 1px 5px black;
+    align-items: center;
+    justify-content: center;
+}
