@@ -20,6 +20,7 @@
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
         const redirectAfter = params.get('redirect')
+        document.body.innerHTML = document.body.innerHTML + redirectAfter
         const loggedin = getCookie('discord')
         if (loggedin) {
             fetch('https://discord.com/api/users/@me', {
@@ -29,7 +30,7 @@
             })
             .then(result => result.json())
             .then(response => {
-                document.body.innerHTML = "Welcome, @" + response.username
+                document.body.innerHTML = document.body.innerHTML + "Welcome, @" + response.username
                 console.log(`You're logged in as @${response.username}.`)
             })
             .catch(console.error)
@@ -49,7 +50,7 @@
             } else {
                 window.location.href = "https://discord.com/oauth2/authorize?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flogin&scope=identify"
             }
-            document.body.innerHTML = "You aren't logged in.<br><br>Redirecting you to Discord..."
+            document.body.innerHTML = document.body.innerHTML + "You aren't logged in.<br><br>Redirecting you to Discord..."
             return
         }
 
@@ -63,7 +64,7 @@
             console.log(response)
             document.cookie = `discord=${accessToken}; path=/`
             console.log("Cookie saved.")
-            document.body.innerHTML = "Welcome, @" + response.username
+            document.body.innerHTML = document.body.innerHTML + "Welcome, @" + response.username
             if (redirectAfter) {
                 window.location.href = "https://duckybot.xyz/" + redirectAfter
             }
