@@ -20,7 +20,9 @@
             document.body.innerHTML = "You're logged in."
             return
         } else {
-            document.body.innerHTML = "You're not logged in."
+            document.body.innerHTML = "You're not logged in.<br><br>Redirecting you to the login page...<br>You'll automatically be redirected back here."
+            window.location.href = "https://duckybot.xyz/login?redirect=link"
+            return
         }
     }
 </script>
