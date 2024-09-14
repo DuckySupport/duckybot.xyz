@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="welcome">
-        <p>UPDATED Give us a moment...</p>
+        <p>UPDATED AGAIN Give us a moment...</p>
     </div>
 </body>
 <script>
@@ -67,8 +67,8 @@
             document.cookie = `discord=${accessToken}; path=/`
             console.log("Cookie saved.")
             document.body.innerHTML = document.body.innerHTML + "Welcome, @" + response.username
-            if (redirectAfter) {
-                window.location.href = "https://duckybot.xyz/" + redirectAfter
+            if (state) {
+                window.location.href = "https://duckybot.xyz/" + state
             }
         })
         .catch(console.error)
