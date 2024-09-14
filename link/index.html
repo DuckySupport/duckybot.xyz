@@ -25,13 +25,18 @@
             .then(result => result.json())
             .then(response => {
                 const id = response.id
-                const data = fetch('https://glowworm-learning-leech.ngrok-free.app/get', {
+                fetch('https://glowworm-learning-leech.ngrok-free.app/get', {
                     headers: {
-                        "authorization": "9W7A890Z3gMD07JYzmR8Y5AIxGtU3N76CUr1c76F1rdO96d0Y9MlMnQLr95D109pi584N7yr6X6K2Q05aU30J99w2P2e06u86Z75",
+                        authorization: "9W7A890Z3gMD07JYzmR8Y5AIxGtU3N76CUr1c76F1rdO96d0Y9MlMnQLr95D109pi584N7yr6X6K2Q05aU30J99w2P2e06u86Z75",
+                        "Content-Type": "application/json"
                     },
                 })
-                console.log(data)
-                document.body.innerHTML = "Check the console!"
+                .then(result => result.json())
+                .then(response => {
+                    console.log(response)
+                    document.body.innerHTML = "Check the console!"
+                })
+                .catch(console.error)
             })
             .catch(console.error)
 
