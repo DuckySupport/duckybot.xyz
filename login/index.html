@@ -14,12 +14,12 @@
 <script>
     window.onload = () => {
         const params = new URLSearchParams(window.location.search)
-        let redirectAfter = params.get('redirect')
         function getCookie(name) {
             let value = `; ${document.cookie}`;
             let parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
+        const redirectAfter = params.get('redirect')
         const loggedin = getCookie('discord')
         if (loggedin) {
             fetch('https://discord.com/api/users/@me', {
@@ -42,8 +42,6 @@
         }
         const fragment = new URLSearchParams(window.location.hash.slice(1))
         const [accessToken, tokenType, state] = [fragment.get('access_token'), fragment.get('token_type'), fragment.get('state')]
-        
-        redirectAfter = redirectAfter || state
         
         if (!accessToken) {
             if (redirectAfter) {
