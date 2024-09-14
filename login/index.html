@@ -12,15 +12,27 @@
     </div>
 </body>
 <script>
+    function encodeBase64(str) {
+        return btoa(unescape(encodeURIComponent(str)));
+    }
+
+    function decodeBase64(str) {
+        return decodeURIComponent(escape(atob(str)));
+    }
+
     window.onload = () => {
-        const params = new URLSearchParams(window.location.search)
-        const redirectAfter = params.get('redirect')
+        const params = new URLSearchParams(window.location.search);
+        const state = params.get('state');
+        const redirectAfter = params.get('redirect');
+
         function getCookie(name) {
             let value = `; ${document.cookie}`;
             let parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
-        const loggedin = getCookie('discord')
+
+        const loggedin = getCookie('discord');
+        
         if (loggedin) {
             fetch('https://discord.com/api/users/@me', {
                 headers: {
@@ -29,25 +41,30 @@
             })
             .then(result => result.json())
             .then(response => {
-                document.body.innerHTML = "Welcome, @" + response.username
-                console.log(`You're logged in as @${response.username}.`)
+                document.body.innerHTML = "Welcome, @" + response.username;
+                console.log(`You're logged in as @${response.username}.`);
             })
-            .catch(console.error)
+            .catch(console.error);
 
-            if (redirectAfter) {
-                console.log("Redirecting to /" + redirectAfter + "...")
-                window.location.href = "/" + redirectAfter
-                console.log("Attempted to redirect to /" + redirectAfter)
+            if (state) {
+                const decodedRedirect = decodeBase64(state);
+                window.location.href = `https://duckybot.xyz/${decodedRedirect}`;
+                console.log("Redirecting to https://duckybot.xyz/" + decodedRedirect + "...");
+            } else if (redirectAfter) {
+                window.location.href = `https://duckybot.xyz/${redirectAfter}`;
+                console.log("Redirecting to https://duckybot.xyz/" + redirectAfter + "...");
             }
-            return
+            return;
         }
-        const fragment = new URLSearchParams(window.location.hash.slice(1))
-        const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')]
+
+        const fragment = new URLSearchParams(window.location.hash.slice(1));
+        const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')];
 
         if (!accessToken) {
-            window.location.href = "https://discord.com/oauth2/authorize?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flogin&scope=identify"
-            document.body.innerHTML = "You aren't logged in.<br><br>Redirecting you to Discord..."
-            return
+            const encodedRedirect = redirectAfter ? encodeBase64(redirectAfter) : '';
+            window.location.href = `https://discord.com/oauth2/authorize?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flogin&scope=identify&state=${encodedRedirect}`;
+            document.body.innerHTML = "You aren't logged in.<br><br>Redirecting you to Discord...";
+            return;
         }
 
         fetch('https://discord.com/api/users/@me', {
@@ -57,16 +74,18 @@
         })
         .then(result => result.json())
         .then(response => {
-            console.log(response)
-            document.cookie = `discord=${accessToken}; path=/`
-            console.log("Cookie saved.")
-            document.body.innerHTML = "Welcome, @" + response.username
+            console.log(response);
+            document.cookie = `discord=${accessToken}; path=/`;
+            console.log("Cookie saved.");
+            document.body.innerHTML = "Welcome, @" + response.username;
         })
-        .catch(console.error)
-        if (redirectAfter) {
-            window.location.href = "/" + redirectAfter
-            console.log("Attempted to redirect to " + "/" + redirectAfter)
+        .catch(console.error);
+
+        if (state) {
+            const decodedRedirect = decodeBase64(state);
+            window.location.href = `https://duckybot.xyz/${decodedRedirect}`;
+            console.log("Redirecting to https://duckybot.xyz/" + decodedRedirect + "...");
         }
-    }
+    };
 </script>
 </html>
