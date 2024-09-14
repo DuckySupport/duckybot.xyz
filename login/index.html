@@ -14,7 +14,7 @@
 <script>
     window.onload = () => {
         const params = new URLSearchParams(window.location.search)
-        const redirectAfter = params.get('redirect')
+        let redirectAfter = params.get('redirect')
         function getCookie(name) {
             let value = `; ${document.cookie}`;
             let parts = value.split(`; ${name}=`);
@@ -41,13 +41,14 @@
             return
         }
         const fragment = new URLSearchParams(window.location.hash.slice(1))
-        const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')]
+        const [accessToken, tokenType, state] = [fragment.get('access_token'), fragment.get('token_type'), fragment.get('state')]
 
+        redirectAfter = state
+        
         if (!accessToken) {
             if (redirectAfter) {
-                window.location.href = "https://discord.com/oauth2/authorize?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz/%2F" + redirectAfter + "&scope=identify"
-            }
-            else {
+                window.location.href = "https://discord.com/oauth2/authorize?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2F&scope=identify&state=" + redirectAfter
+            } else {
                 window.location.href = "https://discord.com/oauth2/authorize?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flogin&scope=identify"
             }
             document.body.innerHTML = "You aren't logged in.<br><br>Redirecting you to Discord..."
