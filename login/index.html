@@ -42,10 +42,8 @@
         }
         const fragment = new URLSearchParams(window.location.hash.slice(1))
         const [accessToken, tokenType, state] = [fragment.get('access_token'), fragment.get('token_type'), fragment.get('state')]
-
-        if (state) {
-            redirectAfter = state
-        }
+        
+        redirectAfter = redirectAfter || state
         
         if (!accessToken) {
             if (redirectAfter) {
@@ -68,6 +66,9 @@
             document.cookie = `discord=${accessToken}; path=/`
             console.log("Cookie saved.")
             document.body.innerHTML = "Welcome, @" + response.username
+            if (redirectAfter) {
+                window.location.href = "https://duckybot.xyz/" + redirectAfter
+            }
         })
         .catch(console.error)
     }
