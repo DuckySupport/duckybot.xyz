@@ -33,6 +33,11 @@
                 console.log(`You're logged in as @${response.username}.`)
             })
             .catch(console.error)
+
+            if (redirectAfter) {
+                window.location.href = `https://duckybot.xyz/${redirectAfter}`;
+                console.log("Redirecting to https://duckybot.xyz/" + redirectAfter + "...");
+            }
             return
         }
         const fragment = new URLSearchParams(window.location.hash.slice(1))
@@ -62,10 +67,6 @@
             document.body.innerHTML = "Welcome, @" + response.username
         })
         .catch(console.error)
-        if (redirectAfter) {
-            window.location.href = "/" + redirectAfter
-            console.log("Attempted to redirect to " + "/" + redirectAfter)
-        }
     }
 </script>
 </html>
