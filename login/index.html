@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login with Discord</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="welcome">
+        <p>Give us a moment...</p>
+    </div>
+</body>
+<script>
+    window.onload = () => {
+        const params = new URLSearchParams(window.location.search)
+        const redirectAfter = params.get('redirect')
+        function getCookie(name) {
+            let value = `; ${document.cookie}`;
+            let parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+        const loggedin = getCookie('discord')
+        if (loggedin) {
+            fetch('https://discord.com/api/users/@me', {
+                headers: {
+                    authorization: `Bearer ${loggedin}`,
+                },
+            })
+            .then(result => result.json())
+            .then(response => {
+                document.body.innerHTML = "Welcome, @" + response.username
+                console.log(`You're logged in as @${response.username}.`)
+            })
+            .catch(console.error)
+
+            if (redirectAfter) {
+                console.log("Redirecting to /" + redirectAfter + "...")
+                window.location.href = "/" + redirectAfter
+                console.log("Attempted to redirect to /" + redirectAfter)
+            }
+            return
+        }
+        const fragment = new URLSearchParams(window.location.hash.slice(1))
+        const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')]
+
+        if (!accessToken) {
+            window.location.href = "https://discord.com/oauth2/authorize?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flogin&scope=identify"
+            document.body.innerHTML = "You aren't logged in.<br><br>Redirecting you to Discord..."
+            return
+        }
+
+        fetch('https://discord.com/api/users/@me', {
+            headers: {
+                authorization: `${tokenType} ${accessToken}`,
+            },
+        })
+        .then(result => result.json())
+        .then(response => {
+            console.log(response)
+            document.cookie = `discord=${accessToken}; path=/`
+            console.log("Cookie saved.")
+            document.body.innerHTML = "Welcome, @" + response.username
+        })
+        .catch(console.error)
+        if (redirectAfter) {
+            window.location.href = "/" + redirectAfter
+            console.log("Attempted to redirect to " + "/" + redirectAfter)
+        }
+    }
+</script>
+</html>
