@@ -17,7 +17,27 @@
         }
         const loggedin = getCookie('discord')
         if (loggedin) {
-            document.body.innerHTML = "You're logged in."
+            fetch('https://discord.com/api/users/@me', {
+                headers: {
+                    authorization: `Bearer ${loggedin}`,
+                },
+            })
+            .then(result => result.json())
+            .then(response => {
+                const id = response.id
+                fetch('https://glowworm-learning-leech.ngrok-free.app/get', {
+                    headers: {
+                        authorization: "9W7A890Z3gMD07JYzmR8Y5AIxGtU3N76CUr1c76F1rdO96d0Y9MlMnQLr95D109pi584N7yr6X6K2Q05aU30J99w2P2e06u86Z75",
+                    },
+                })
+                .then(result => result.json())
+                .then(response => {
+                    document.body.innerHTML = "RESPONSE: " + response
+                })
+                .catch(console.error)
+            })
+            .catch(console.error)
+
             return
         } else {
             document.body.innerHTML = "You're not logged in.<br><br>Redirecting you to the login page...<br>You'll automatically be redirected back here."
