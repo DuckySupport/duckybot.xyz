@@ -43,7 +43,9 @@
         const fragment = new URLSearchParams(window.location.hash.slice(1))
         const [accessToken, tokenType, state] = [fragment.get('access_token'), fragment.get('token_type'), fragment.get('state')]
 
-        redirectAfter = redirectAfter || state
+        if (state) {
+            redirectAfter = state
+        }
         
         if (!accessToken) {
             if (redirectAfter) {
