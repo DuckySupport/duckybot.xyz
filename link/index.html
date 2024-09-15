@@ -43,7 +43,19 @@
                         if (response.error) {
                             document.body.innerHTML = "Failed to exchange code: " + response.error_description
                         } else if (response.access_token) {
-                            document.body.innerHTML = "Exchanged: " + response.access_token
+                            document.body.innerHTML = "Fetching user info...."
+                            fetch("https://apis.roblox.com/oauth/v1/userinfo", {
+                                method: "GET",
+                                headers: {
+                                    "Authorization": "Bearer " + response.access_token,
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                            .then(result => result.json())
+                            .then(response => {
+                                console.log(response)
+                                document.body.innerHTML = "ID: " + response.id
+                            })
                         } else {
                             document.body.innerHTML = "An unknown error occured. Please try again later."
                         }
