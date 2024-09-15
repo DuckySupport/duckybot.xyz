@@ -35,11 +35,8 @@
                 .then(result => result.json())
                 .then(response => {
                     const links = response.links
-                    console.log(links)
                     links.forEach(link => {
-                        console.log("Link:")
-                        console.log(link)
-                        if (link.discord == id) {
+                        if (link && link.discord && link.discord == id) {
                             document.body.innerHTML = "You're linked with " + link.roblox + "."
                             return
                         }
