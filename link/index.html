@@ -28,16 +28,19 @@
                 fetch('https://glowworm-learning-leech.ngrok-free.app/getlink', {
                     method: "GET",
                     headers: {
-                        "ngrok-skip-browser-warning": "69420"
-                    },
-                    body: JSON.stringify({
-                        id: id
-                    })
+                        "ngrok-skip-browser-warning": "69420",
+                        "discord-id": id
+                    }
                 })
                 .then(result => result.json())
                 .then(response => {
-                    console.log(response)
-                    document.body.innerHTML = response || "No response from API"
+                    const link = response.link
+
+                    if (link) {
+                        document.body.innerHTML = "You're currently linked with " + link.robloxUser.name + "."
+                    } else {
+                        document.body.innerHTML = "You're not linked with a Roblox user."
+                    }
                 })
                 .catch(console.error)
             })
