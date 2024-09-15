@@ -53,13 +53,35 @@
                             })
                             .then(result => result.json())
                             .then(response => {
-                                console.log(response)
-                                document.body.innerHTML = "ID: " + response.id
+                                console.log("Fetched user info: " + response.sub)
+                                document.body.innerHTML = "Linking..."
+                                fetch("https://glowworm-learning-leech.ngrok-free.app/link", {
+                                    method: "POST",
+                                    headers: {
+                                        "ngrok-skip-browser-warning": "69420",
+                                        "Authorization": "9W7A890Z3gMD07JYzmR8Y5AIxGtU3N76CUr1c76F1rdO96d0Y9MlMnQLr95D109pi584N7yr6X6K2Q05aU30J99w2P2e06u86Z75"
+                                    },
+                                    body: JSON.stringify({
+                                        discord: id,
+                                        roblox: response.sub
+                                    })
+                                })
+                                .then(result => result.json())
+                                .then(response => {
+                                    console.log(response.code + " | " + response.message)
+                                    if (response.code === 200) {
+                                        document.body.innerHTML = "You've been successfully linked with " + response.username + ". You may now return back to Discord."
+                                    } else {
+                                        document.body.innerHTML = "An error occured while attempting to link your Roblox user with Ducky: " + response.message
+                                    }
+                                })
                             })
+                            .catch(console.error)
                         } else {
                             document.body.innerHTML = "An unknown error occured. Please try again later."
                         }
                     })
+                    .catch(console.error)
                 } else {
                     const id = response.id
                     fetch('https://glowworm-learning-leech.ngrok-free.app/getlink', {
