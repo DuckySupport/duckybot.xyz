@@ -39,6 +39,9 @@
                         if (link && link.discord && link.discord == id) {
                             document.body.innerHTML = "You're linked with " + link.roblox + "."
                             return
+                        } else {
+                            console.log("Link does not meet conditions:")
+                            console.log(link)
                         }
                     })
                     document.body.innerHTML = "You aren't linked."
