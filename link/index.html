@@ -28,8 +28,26 @@
                 const authcode = params.get("code")
 
                 if (authcode) {
-                    console.log("Code: " + authcode)
-                    document.body.innerHTML = "Code: " + authcode
+                    const request_body = "grant_type=authorization_code&code=" + authcode + "&client_id=8552523254541415001&client_secret=RBX-IG6s_w4dUUeozQyCmz2IuZOMjhSv3uwGRR_mazvohPAWlDLTigHSy25YpiSgeQCI"
+                    console.log("Exchanging code...")
+                    document.body.innerHTML = "Exchanging code..."
+                    fetch("https://apis.roblox.com/oauth/v1/token", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: request_body
+                    })
+                    .then(result => result.json())
+                    .then(response => {
+                        if (response.error) {
+                            document.body.innerHTML = "Failed to exchange code: " + response.error_description
+                        } else if (response.access_token) {
+                            document.body.innerHTML = "Exchanged: " + response.access_token
+                        } else {
+                            document.body.innerHTML = "An unknown error occured. Please try again later."
+                        }
+                    })
                 } else {
                     const id = response.id
                     fetch('https://glowworm-learning-leech.ngrok-free.app/getlink', {
