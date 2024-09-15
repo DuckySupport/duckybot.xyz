@@ -37,6 +37,7 @@
                     const links = response.links
                     links.forEach(link => {
                         if (link && link.discord && link.discord == id) {
+                            console.log("Linked with " + link.roblox)
                             document.body.innerHTML = "You're linked with " + link.roblox + "."
                             return
                         } else {
