@@ -24,25 +24,34 @@
             })
             .then(result => result.json())
             .then(response => {
-                const id = response.id
-                fetch('https://glowworm-learning-leech.ngrok-free.app/getlink', {
-                    method: "GET",
-                    headers: {
-                        "ngrok-skip-browser-warning": "69420",
-                        "discord-id": id
-                    }
-                })
-                .then(result => result.json())
-                .then(response => {
-                    const link = response.link
+                const params = new URLSearchParams(window.location.search)
+                const authcode = params.get("code")
 
-                    if (link) {
-                        document.body.innerHTML = "You're currently linked with " + link.robloxUser.name + "."
-                    } else {
-                        document.body.innerHTML = "You're not linked with a Roblox user."
-                    }
-                })
-                .catch(console.error)
+                if (authcode) {
+                    console.log("Code: " + authcode)
+                    document.body.innerHTML = "Code: " + authcode
+                } else {
+                    const id = response.id
+                    fetch('https://glowworm-learning-leech.ngrok-free.app/getlink', {
+                        method: "GET",
+                        headers: {
+                            "ngrok-skip-browser-warning": "69420",
+                            "discord-id": id
+                        }
+                    })
+                    .then(result => result.json())
+                    .then(response => {
+                        const link = response.link
+
+                        if (link) {
+                            document.body.innerHTML = "You're currently linked with " + link.robloxUser.name + "."
+                        } else {
+                            document.body.innerHTML = "You're not linked with a Roblox user.<br><br>Redirecting you to Roblox..."
+                            window.location.href = "https://authorize.roblox.com/?client_id=8552523254541415001&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid"
+                        }
+                    })
+                    .catch(console.error)
+                }
             })
             .catch(console.error)
 
