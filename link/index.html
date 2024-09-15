@@ -35,17 +35,28 @@
                 .then(result => result.json())
                 .then(response => {
                     const links = response.links
+                    let roblox = null
                     links.forEach(link => {
                         if (link && link.discord && link.discord == id) {
-                            console.log("Linked with " + link.roblox)
-                            document.body.innerHTML = "You're linked with " + link.roblox + "."
-                            return
-                        } else {
-                            console.log("Link does not meet conditions:")
-                            console.log(link)
+                            fetch("https://users.roblox.com/v1/users/" + link.roblox)
+                            .then(result => result.json())
+                            .then(response => {
+                                roblox = {
+                                    username: response.name,
+                                    displayName: response.displayName,
+                                    description: response.description,
+                                    id: response.id,
+                                    profileURL: "https://roblox.com/users/" + response.id + "/profile"
+                                }
+                            })
                         }
                     })
-                    document.body.innerHTML = "You aren't linked."
+
+                    if (roblox) {
+                        document.body.innerHTML = "Hey, " + roblox.username
+                    } else {
+                        document.body.innerHTML = "You aren't linked with a Roblox account."
+                    }
                 })
                 .catch(console.error)
             })
