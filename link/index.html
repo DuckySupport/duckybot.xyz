@@ -25,42 +25,19 @@
             .then(result => result.json())
             .then(response => {
                 const id = response.id
-                fetch('https://glowworm-learning-leech.ngrok-free.app/get', {
+                fetch('https://glowworm-learning-leech.ngrok-free.app/getlink', {
                     method: "GET",
                     headers: {
-                        "authorization": "9W7A890Z3gMD07JYzmR8Y5AIxGtU3N76CUr1c76F1rdO96d0Y9MlMnQLr95D109pi584N7yr6X6K2Q05aU30J99w2P2e06u86Z75",
                         "ngrok-skip-browser-warning": "69420"
                     },
+                    body: JSON.stringify({
+                        id: id
+                    })
                 })
                 .then(result => result.json())
                 .then(response => {
-                    const links = response.links
-                    let roblox = null
-                    links.forEach(link => {
-                        if (link && link.discord && link.discord == id) {
-                            fetch("https://users.roblox.com/v1/users/" + link.roblox)
-                            .then(result => result.json())
-                            .then(response => {
-                                console.log("help me")
-                                console.log(response)
-                                roblox = {
-                                    username: response.name,
-                                    displayName: response.displayName,
-                                    description: response.description,
-                                    id: response.id,
-                                    profileURL: "https://roblox.com/users/" + response.id + "/profile"
-                                }
-                                console.log("set roblox variable???")
-                                console.log(roblox)
-                            })
-                        }
-                    })
-
-                    if (roblox) {
-                        document.body.innerHTML = "Hey, " + roblox.username
-                    } else {
-                        document.body.innerHTML = "You aren't linked with a Roblox account."
-                    }
+                    console.log(response)
+                    document.body.innerHTML = response || "No response from API"
                 })
                 .catch(console.error)
             })
