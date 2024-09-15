@@ -69,10 +69,10 @@
                                 })
                                 .then(result => result.json())
                                 .then(response => {
-                                    if (data.code === 200) {
-                                        document.body.innerHTML = "You've been successfully linked with " + data.username + ". You may now return back to Discord."
+                                    if (response.code === 200) {
+                                        document.body.innerHTML = "You've been successfully linked with " + response.username + ". You may now return back to Discord."
                                     } else {
-                                        document.body.innerHTML = "An error occured while attempting to link your Roblox user with Ducky: " + data.message
+                                        document.body.innerHTML = "An error occured while attempting to link your Roblox user with Ducky: " + response.message
                                     }
                                 })
                                 .catch(console.error)
