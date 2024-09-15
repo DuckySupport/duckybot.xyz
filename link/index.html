@@ -27,6 +27,8 @@
                 const params = new URLSearchParams(window.location.search)
                 const authcode = params.get("code")
 
+                const DiscordID = response.id
+
                 if (authcode) {
                     const request_body = "grant_type=authorization_code&code=" + authcode + "&client_id=8552523254541415001&client_secret=RBX-IG6s_w4dUUeozQyCmz2IuZOMjhSv3uwGRR_mazvohPAWlDLTigHSy25YpiSgeQCI"
                     console.log("Exchanging code...")
@@ -62,7 +64,7 @@
                                         "Authorization": "9W7A890Z3gMD07JYzmR8Y5AIxGtU3N76CUr1c76F1rdO96d0Y9MlMnQLr95D109pi584N7yr6X6K2Q05aU30J99w2P2e06u86Z75"
                                     },
                                     body: JSON.stringify({
-                                        discord: id,
+                                        discord: DiscordID,
                                         roblox: response.sub
                                     })
                                 })
