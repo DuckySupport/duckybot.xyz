@@ -34,8 +34,14 @@
                 })
                 .then(result => result.json())
                 .then(response => {
-                    console.log(response)
-                    document.body.innerHTML = "Check the console!"
+                    const links = response.links
+                    links.forEach(link => {
+                        if (link.discord == id) {
+                            document.body.innerHTML = "You're linked with " + link.roblox + "."
+                            return
+                        }
+                    })
+                    document.body.innerHTML = "You aren't linked."
                 })
                 .catch(console.error)
             })
