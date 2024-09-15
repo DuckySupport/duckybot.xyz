@@ -41,6 +41,8 @@
                             fetch("https://users.roblox.com/v1/users/" + link.roblox)
                             .then(result => result.json())
                             .then(response => {
+                                console.log("help me")
+                                console.log(response)
                                 roblox = {
                                     username: response.name,
                                     displayName: response.displayName,
@@ -48,6 +50,8 @@
                                     id: response.id,
                                     profileURL: "https://roblox.com/users/" + response.id + "/profile"
                                 }
+                                console.log("set roblox variable???")
+                                console.log(roblox)
                             })
                         }
                     })
