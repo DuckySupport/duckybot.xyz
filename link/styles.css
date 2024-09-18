@@ -1,0 +1,82 @@
+@font-face {
+    font-family: "EastmanGrotesque";
+    src: url("EastmanGrotesque.otf");
+}
+
+@font-face {
+    font-family: "EastmanGrotesqueBold";
+    src: url("EastmanGrotesqueBold.otf");
+}
+
+@font-face {
+    font-family: "EastmanGrotesqueBoldItalic";
+    src: url("EastmanGrotesqueBoldItalic.otf");
+}
+
+@font-face {
+    font-family: "EastmanGrotesqueBlack";
+    src: url("EastmanGrotesqueBlack.otf");
+}
+
+* {
+    font-family: "EastmanGrotesque";
+}
+
+body {
+    background-color: rgb(15, 15, 15);
+    display: grid;
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.card {
+    background-color: rgb(35, 35, 35);
+    width: 50%;
+    height: 70%;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: #66ff66;
+    text-align: center;
+    color: #fff;
+    background-image: url("Success.svg");
+    background-repeat: no-repeat;
+    background-size: 200px 200px;
+    background-position: center 25px;
+}
+
+h1 {
+    padding-top: 35%;
+    font-size: 45px;
+    font-family: "EastmanGrotesqueBold";
+    margin: 15px;
+}
+
+p {
+    font-size: 20px;
+    font-family: "EastmanGrotesque";
+    margin: 2px;
+}
+
+bold {
+    font-family: "EastmanGrotesqueBold";
+}
+
+bolditalic {
+    font-family: "EastmanGrotesqueBoldItalic";
+}
+
+black {
+    font-family: "EastmanGrotesqueBlack";
+}
+
+small {
+    font-size: 15px;
+    opacity: 50%;
+}
