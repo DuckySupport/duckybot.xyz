@@ -42,13 +42,26 @@ body {
     height: 70%;
     border-radius: 10px;
     border-style: solid;
-    border-color: #66ff66;
     text-align: center;
     color: #fff;
-    background-image: url("Success.svg");
     background-repeat: no-repeat;
     background-size: 200px 200px;
     background-position: center 25px;
+}
+
+.loading {
+    background-image: url("Loading.gif");
+    border-color: rgb(75,75,75);
+}
+
+.success {
+    background-image: url("Success.svg");
+    border-color: #66ff66;
+}
+
+.fail {
+    background-image: url("Fail.svg");
+    border-color: #ff6666;
 }
 
 h1 {
