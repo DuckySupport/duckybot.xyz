@@ -25,23 +25,23 @@
 
         function loadingStatus(lstat) {
             card.className = "card loading";
-            title.textContent = "Loading...";
-            text.textContent = lstat;
-            subtext.textContent = "This may take a moment.";
+            title.innerHTML = "Loading...";
+            text.innerHTML = lstat;
+            subtext.innerHTML = "This may take a moment.";
         }
 
         function success(successTitle, successString) {
             card.className = "card success";
-            title.textContent = successTitle;
-            text.textContent = successString;
-            subtext.textContent = "You may now return back to Discord.";
+            title.innerHTML = successTitle;
+            text.innerHTML = successString;
+            subtext.innerHTML = "You may now return back to Discord.";
         }
         
         function fail(errorTitle, errorString) {
             card.className = "card fail";
-            title.textContent = errorTitle;
-            text.textContent = errorString;
-            subtext.textContent = "For more assistance, contact Ducky Support.";
+            title.innerHTML = errorTitle;
+            text.innerHTML = errorString;
+            subtext.innerHTML = "For more assistance, contact Ducky Support.";
         }
 
         function getCookie(name) {
