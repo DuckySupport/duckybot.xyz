@@ -1,25 +1,7 @@
-@font-face {
-    font-family: "EastmanGrotesque";
-    src: url("EastmanGrotesque.otf");
-}
-
-@font-face {
-    font-family: "EastmanGrotesqueBold";
-    src: url("EastmanGrotesqueBold.otf");
-}
-
-@font-face {
-    font-family: "EastmanGrotesqueBoldItalic";
-    src: url("EastmanGrotesqueBoldItalic.otf");
-}
-
-@font-face {
-    font-family: "EastmanGrotesqueBlack";
-    src: url("EastmanGrotesqueBlack.otf");
-}
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap");
 
 * {
-    font-family: "EastmanGrotesque";
+    font-family: "Inter";
 }
 
 body {
@@ -67,29 +49,35 @@ body {
 h1 {
     padding-top: 35%;
     font-size: 45px;
-    font-family: "EastmanGrotesqueBold";
-    margin: 15px;
+    font-family: "Inter";
+    margin: 5px;
+}
+
+.divider {
+    width: 75%;
+    height: 2px;
+    background: white;
+    margin: 10px auto;
 }
 
 p {
-    font-size: 20px;
-    font-family: "EastmanGrotesque";
+    font-size: 18px;
+    font-family: "Inter";
     margin: 2px;
 }
 
 bold {
-    font-family: "EastmanGrotesqueBold";
-}
-
-bolditalic {
-    font-family: "EastmanGrotesqueBoldItalic";
+    font-family: "Inter";
+    font-weight: bold;
 }
 
 black {
-    font-family: "EastmanGrotesqueBlack";
+    font-family: "Inter";
+    font-weight: bolder;
 }
 
 small {
-    font-size: 15px;
+    font-size: 14px;
     opacity: 50%;
+    font-weight: normal;
 }
