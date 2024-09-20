@@ -3,16 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login with Discord</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Link Roblox</title>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-    <div class="welcome">
-        <p>UPDATED AGAIN Give us a moment...</p>
+    <div class="container" id="cont">
+        <div class="card loading" id="card">
+            <h1 id="title">Loading...</h1>
+            <div class="divider" id="divider"></div>
+            <p id="text">We're checking if you're logged in.</p>
+            <p><small id="subtext">This may take a moment.</small></p>
+        </div>
     </div>
 </body>
 <script>
     window.onload = () => {
+        const card = document.getElementById("card")
+        const title = document.getElementById("title")
+        const text = document.getElementById("text")
+        const subtext = document.getElementById("subtext")
+
+        function loadingStatus(lstat) {
+            card.className = "card loading";
+            title.innerHTML = "Loading...";
+            text.innerHTML = lstat;
+            subtext.innerHTML = "This may take a moment.";
+        }
+
+        function success(successTitle, successString, successSubtext) {
+            card.className = "card success";
+            title.innerHTML = successTitle;
+            text.innerHTML = successString;
+            subtext.innerHTML = successSubtext || "";
+        }
+
+        function fail(errorTitle, errorString) {
+            card.className = "card fail";
+            title.innerHTML = errorTitle;
+            text.innerHTML = errorString;
+            subtext.innerHTML = "For more assistance, contact Ducky Support.";
+        }
+
+        function setSub(subtext) {
+            subtext.innerHTML = subtext
+        }
+
         const params = new URLSearchParams(window.location.search)
         function getCookie(name) {
             let value = `; ${document.cookie}`;
@@ -29,14 +64,14 @@
             })
             .then(result => result.json())
             .then(response => {
-                document.body.innerHTML = "You're logged in as @" + response.username + "."
-                console.log(`You're logged in as @${response.username}.`)
+                success("Logged In", `You're already logged in as <bold>${response.global_name || response.username}</bold>.`)
             })
             .catch(console.error)
 
             if (redirectAfter) {
-                window.location.href = `https://duckybot.xyz/${redirectAfter}`;
+                setSub(`Redirecting you to https://duckybot.xyz/${redirectAfter}...`)
                 console.log("Redirecting to https://duckybot.xyz/" + redirectAfter + "...");
+                window.location.href = `https://duckybot.xyz/${redirectAfter}`;
             }
             return
         }
@@ -50,8 +85,9 @@
             if (redirectAfter) {
                 oauthurl = oauthurl + "&state=" + redirectAfter
             }
+            loadingStatus("Redirecting you to Discord...")
+            console.log("Redirecting to " + oauthurl + "...");
             window.location.href = oauthurl
-            document.body.innerHTML = "You aren't logged in.<br><br>Redirecting you to Discord..."
             return
         }
 
@@ -62,11 +98,13 @@
         })
         .then(result => result.json())
         .then(response => {
-            console.log(response)
             document.cookie = `discord=${accessToken}; path=/`
             console.log("Cookie saved.")
-            document.body.innerHTML = "You've been logged in as @" + response.username + "."
+            console.log("Logged in as @" + response.username)
+            success("Logged In", `You've been successfully logged in as <bold>${response.global_name || response.username}</bold>.`)
             if (state) {
+                console.log("Redirecting to https://duckybot.xyz/" + state)
+                setSub("Redirecting you to https://duckybot.xyz/" + state + "...")
                 window.location.href = "https://duckybot.xyz/" + state
             }
         })
