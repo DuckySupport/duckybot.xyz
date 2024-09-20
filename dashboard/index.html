@@ -73,19 +73,17 @@
                 document.getElementById("profilePicture").src = "https://cdn.discordapp.com/avatars/" + discord.id + "/" + discord.avatar + ".png"
                 document.getElementById("profilePictureNav").src = "https://cdn.discordapp.com/avatars/" + discord.id + "/" + discord.avatar + ".png"
 
-                const servers = [
-                    {
-                        name: "Testing Server",
-                        icon: "Success.svg"
-                    }
-                ]
-
-                servers.forEach(server => {
-                    const newdiv = document.createElement("div")
-                    newdiv.className = "server"
-                    newdiv.innerHTML = `<img src="${server.icon}" alt="${server.name}"></img><p>${server.name}</p>`
-                    servergrid.appendChild(newdiv)
+                fetch("https://glowworm-learning-leech.ngrok-free.app/servers/" + discord.id)
+                .then(result => result.json())
+                .then(servers => {
+                    servers.forEach(server => {
+                        const newdiv = document.createElement("div")
+                        newdiv.className = "server"
+                        newdiv.innerHTML = `<img src="${server.icon}" alt="${server.name}"></img><p>${server.name}</p>`
+                        servergrid.appendChild(newdiv)
+                    })
                 })
+                .catch(console.error)
             })
             .catch(console.error)
         } else {
