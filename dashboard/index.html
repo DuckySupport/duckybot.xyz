@@ -1,36 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ducky Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="../Ducky.svg">
     <link rel="stylesheet" href="./styles.css">
-    <link href='//fonts.googleapis.com/css?family=Montserrat:thin,extra-light,light,100,200,300,400,500,600,700,800' 
-rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <meta content="../Ducky.svg" property="og:image" />
 </head>
+
 <body>
-    <h1>Ducky • Dashboard</h1>
-    <div class="guilds">
-        <div class="card">
-            <p>
-                Test
-            </p>
+    <header>
+        <a href="https://duckybot.xyz"><img class="logo" src="DuckyFull.svg" alt="Ducky Logo"></a>
+        <nav>
+            <ul>
+                <li><a href="https://duckybot.xyz/">Home</a></li>
+                <li><a href="https://duckybot.xyz/status">Status</a></li>
+                <li><a href="https://duckybot.xyz/support">Support</a></li>
+                <li><a href="https://duckybot.xyz/invite">Invite</a></li>
+            </ul>
+        </nav>
+        <img class="pfp" alt="Profile" id="profilePictureNav">
+    </header>
+    <section class="dashboard">
+        <div class="welcome">
+            <img alt="Profile Image" id="profilePicture">
+            <span>
+                <h2>Hiya, <span class="username" id="username">Troptop</span></h2>
+                <hr style="height:5pt; visibility:hidden;" /><span style="padding-top: 5px; color: #888888;">Welcome to
+                    your dashboard.</span>
+            </span><br>
         </div>
-        <div class="card">
-            <p>
-                Test
-            </p>
+        <div class="servers">
+            <div style="width: 100%; display: table;">
+                <div style="display: table-row">
+                    <div style="width: 600px; display: table-cell;">
+                        <h2>Servers</h2>
+                    </div>
+                    <div style="display: table-cell;"> <i style="float: right; font-size: 10px; color: #888888;">Only
+                            servers in which you have the <b>Manage Server</b> permission will appear here.</i> </div>
+                </div>
+            </div>
+            <div style="padding-top: 1px; padding-bottom: 20px; ">
+                <hr class="hr">
+            </div>
+            <div class="server-grid">
+            </div>
         </div>
-        <div class="card">
-            <p>
-                Test
-            </p>
-        </div>
-        <div class="card">
-            <p>
-                Test
-            </p>
-        </div>
-    </div>
+    </section>
 </body>
+<script>
+    window.onload = () => {
+        function getCookie(name) {
+            let value = `; ${document.cookie}`;
+            let parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+        const loggedin = getCookie('discord')
+        if (loggedin) {
+            fetch('https://discord.com/api/users/@me', {
+                headers: {
+                    authorization: `Bearer ${loggedin}`,
+                },
+            })
+            .then(result => result.json())
+            .then(discord => {
+                const servergrid = document.getElementsByClassName("server-grid")[0];
+        
+                document.getElementById("username").textContent = discord.global_name || discord.username
+                document.getElementById("profilePicture").src = "https://cdn.discordapp.com/avatars/" + discord.id + "/" + discord.avatar + ".png"
+                document.getElementById("profilePictureNav").src = "https://cdn.discordapp.com/avatars/" + discord.id + "/" + discord.avatar + ".png"
+
+                const servers = [
+                    {
+                        name: "Testing Server",
+                        icon: "Success.svg"
+                    }
+                ]
+
+                servers.forEach(server => {
+                    const newdiv = document.createElement("div")
+                    newdiv.className = "server"
+                    newdiv.innerHTML = `<img src="${server.icon}" alt="${server.name}"></img><p>${server.name}</p>`
+                    servergrid.appendChild(newdiv)
+                })
+            })
+            .catch(console.error)
+        } else {
+            document.body.innerHTML = "Redirecting you to the login page..."
+            window.location.href = "httpS://duckybot.xyz/login?redirect=dashboard"
+        }
+    }
+</script>
 </html>
