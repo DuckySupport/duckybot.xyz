@@ -73,7 +73,12 @@
                 document.getElementById("profilePicture").src = "https://cdn.discordapp.com/avatars/" + discord.id + "/" + discord.avatar + ".png"
                 document.getElementById("profilePictureNav").src = "https://cdn.discordapp.com/avatars/" + discord.id + "/" + discord.avatar + ".png"
 
-                fetch("https://glowworm-learning-leech.ngrok-free.app/servers/" + discord.id)
+                fetch("https://glowworm-learning-leech.ngrok-free.app/servers/" + discord.id, {
+                    method: "GET",
+                    headers: {
+                        "ngrok-skip-browser-warning": "69420"
+                    }
+                })
                 .then(result => result.json())
                 .then(servers => {
                     servers.forEach(server => {
