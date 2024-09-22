@@ -13,13 +13,13 @@
 
 <body>
     <header>
-        <a href="https://duckybot.xyz"><img class="logo" src="DuckyFull.svg" alt="Ducky Logo"></a>
+        <a href="http://127.0.0.1:5500"><img class="logo" src="DuckyFull.svg" alt="Ducky Logo"></a>
         <nav>
             <ul>
-                <li><a href="https://duckybot.xyz/">Home</a></li>
-                <li><a href="https://duckybot.xyz/status">Status</a></li>
-                <li><a href="https://duckybot.xyz/support">Support</a></li>
-                <li><a href="https://duckybot.xyz/invite">Invite</a></li>
+                <li><a href="http://127.0.0.1:5500/">Home</a></li>
+                <li><a href="http://127.0.0.1:5500/status">Status</a></li>
+                <li><a href="http://127.0.0.1:5500/support">Support</a></li>
+                <li><a href="http://127.0.0.1:5500/invite">Invite</a></li>
             </ul>
         </nav>
         <img class="pfp" alt="Profile" id="profilePictureNav">
@@ -28,7 +28,7 @@
         <div class="welcome">
             <img alt="Profile Image" id="profilePicture">
             <span>
-                <h2>Hiya, <span class="username" id="username">Troptop</span></h2>
+                <h2>Hiya, <span class="username" id="username">username</span></h2>
                 <hr style="height:5pt; visibility:hidden;" /><span style="padding-top: 5px; color: #888888;">Welcome to
                     your dashboard.</span>
             </span><br>
@@ -67,8 +67,116 @@
             })
             .then(result => result.json())
             .then(discord => {
+                function navigate() {
+                    const old = "" + document.body.innerHTML
+                    const guildID = window.location.hash.slice(1);
+                    if (guildID) {
+                        fetch("config.html")
+                        .then(response => response.text())
+                        .then(html => {
+                            const parsedDocument = new DOMParser().parseFromString(html, "text/html");
+
+                            document.head.innerHTML = parsedDocument.head.innerHTML;
+                            document.body.innerHTML = parsedDocument.body.innerHTML;
+
+                            setTimeout(() => {
+                                const serverIcon = document.getElementById("serverIcon");
+                                const serverName = document.getElementById("serverName");
+                                const tabSelector = document.getElementById("tabSelector");
+                                const mainContent = document.getElementsByClassName("main")[0];
+                                const components = document.getElementsByClassName("components")[0];
+                                const title = document.getElementById("title");
+                                const titleIcon = document.getElementById("titleIcon");
+                                const description = document.getElementById("description");
+
+                                fetch("https://glowworm-learning-leech.ngrok-free.app/servers/" + discord.id, {
+                                    method: "GET",
+                                    headers: {
+                                        "ngrok-skip-browser-warning": "69420"
+                                    }
+                                })
+                                .then(result => result.json())
+                                .then(servers => {
+                                    let found = false;
+                                    servers.forEach(server => {
+                                        if (server.id === guildID) {
+                                            found = true;
+                                            if (server.manager) {
+                                                serverIcon.src = server.icon + "?size=4096";
+                                                serverName.textContent = server.name;
+
+                                                let currentTab = "basic";
+
+                                                /* a function to generate/load the tab based on the tab's value */
+
+                                                function loadTab() {
+                                                    for (let i = 0; i < tabSelector.children.length; i++) {
+                                                        const tabButton = tabSelector.children[i];
+                                                        tabButton.style.color = "#888888";
+                                                        tabButton.getElementsByTagName("img")[0].style.opacity = 0.5;
+
+                                                        if (currentTab === tabButton.id) {tabButton.style.color = "#ffffff"; tabButton.getElementsByTagName("img")[0].style.opacity = 1;}
+                                                    }
+                                                    for (let i = 0; i < components.children.length; i++) {
+                                                        components.children[i].remove();
+                                                    }
+                                                    
+                                                    if (currentTab === "basic") {
+                                                        titleIcon.src = "./icons/Gear.svg";
+                                                        title.textContent = "Basic Configuration";
+                                                        description.innerHTML = "You can configure Ducky's basic configuration here. This includes the prefix, and more."
+                                                        const newp = document.createElement("p");
+                                                        newp.textContent = "This tab is in development."
+                                                        components.appendChild(newp);
+                                                    } else if (currentTab === "moderation") {
+                                                        titleIcon.src = "./icons/Hammer.svg";
+                                                        title.textContent = "Discord Moderation";
+                                                        description.innerHTML = "Ducky's <b>Discord Moderation</b> module allows you to moderate your server with ease.";
+                                                        const newp = document.createElement("p");
+                                                        newp.textContent = "This tab is in development as well."
+                                                        components.appendChild(newp);
+                                                    } else {
+                                                        titleIcon.src = "";
+                                                        title.textContent = "Unknown Tab";
+                                                        description.innerHTML = "";
+                                                        const newp = document.createElement("p");
+                                                        newp.textContent = "Tab content could not be found."
+                                                        components.appendChild(newp);
+                                                    }
+                                                }
+
+                                                loadTab(); /* initial tab loading */
+
+                                                /* here, we're adding a click event listener to every tab button so we can change the currentTab */
+
+                                                for (let i = 0; i < tabSelector.children.length; i++) {
+                                                    const tabButton = tabSelector.children[i];
+
+                                                    tabButton.addEventListener("click", function () {
+                                                        currentTab = tabButton.id;
+                                                        loadTab();
+                                                    })
+                                                }
+                                            } else {
+                                                document.body.innerHTML = "You aren't permitted to manage this server's configuration."
+                                            }
+                                        }
+                                    })
+                                    if (found === false) {
+                                        document.body.innerHTML = "Guild " + guildID + " not found."
+                                    }
+                                })
+                                .catch(console.error)
+                            }, 100)
+                        })
+                        .catch(console.error)
+                    }
+                }
+
+                window.addEventListener("hashchange", navigate)
+                navigate()
                 const servergrid = document.getElementsByClassName("server-grid")[0];
-        
+
                 document.getElementById("username").textContent = discord.global_name || discord.username
                 document.getElementById("profilePicture").src = "https://cdn.discordapp.com/avatars/" + discord.id + "/" + discord.avatar + ".png"
                 document.getElementById("profilePictureNav").src = "https://cdn.discordapp.com/avatars/" + discord.id + "/" + discord.avatar + ".png"
@@ -81,11 +189,27 @@
                 })
                 .then(result => result.json())
                 .then(servers => {
+                    servers.sort((a,b) => {
+                        if (a.members > b.members) {
+                            return -1
+                        } else if (b.members > a.members) {
+                            return 1
+                        } else {
+                            return 0
+                        }
+                    })
+
                     servers.forEach(server => {
-                        const newdiv = document.createElement("div")
-                        newdiv.className = "server"
-                        newdiv.innerHTML = `<img src="${server.icon}" alt="${server.name}"></img><p>${server.name}</p>`
-                        servergrid.appendChild(newdiv)
+                        if (server.manager === true) {
+                            const newdiv = document.createElement("div")
+                            newdiv.className = "server"
+                            newdiv.innerHTML = `<img src="${server.icon}" alt="${server.name}"></img><p>${server.name}</p>`
+                            servergrid.appendChild(newdiv)
+
+                            newdiv.addEventListener("click", function () {
+                                window.location.href = "http://127.0.0.1:5500/dashboard#" + server.id
+                            })
+                        }
                     })
                 })
                 .catch(console.error)
@@ -93,7 +217,7 @@
             .catch(console.error)
         } else {
             document.body.innerHTML = "Redirecting you to the login page..."
-            window.location.href = "httpS://duckybot.xyz/login?redirect=dashboard"
+            window.location.href = "http://127.0.0.1:5500/login?redirect=dashboard"
         }
     }
 </script>

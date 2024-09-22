@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ducky Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="../Ducky.svg">
+    <link rel="stylesheet" href="./config.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <meta content="../Ducky.svg" property="og:image" />
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="http://127.0.0.1:5500"><img class="logo" src="DuckyFull.svg" alt="Ducky Logo"></a>
+            <nav>
+                <ul>
+                    <li><a href="http://127.0.0.1:5500/">Home</a></li>
+                    <li><a href="http://127.0.0.1:5500/status">Status</a></li>
+                    <li><a href="http://127.0.0.1:5500/support">Support</a></li>
+                    <li><a href="http://127.0.0.1:5500/invite">Invite</a></li>
+                </ul>
+            </nav>
+            <img class="pfp" alt="Profile" id="profilePictureNav">
+        </header>
+
+        <div class="content">
+            <div class="sidebar">
+                <img src="./icons/Loading.gif"
+                    alt="Server icon" id="serverIcon">
+                <h1 id="serverName">Loading...</h1>
+                <div class="divider"></div>
+                <ul class="pages" id="tabSelector">
+                    <li id="basic"><img src="./icons/Gear.svg" alt="moderation hammer">Basic Configuration</li>
+                    <li id="moderation"><img src="./icons/Hammer.svg" alt="moderation hammer">Discord Moderation</li>
+                </ul>
+            </div>
+
+            <div class="main">
+                <div class="title">
+                    <img src="./icons/Loading.gif" alt="gear icon" id="titleIcon">
+                    <h1 id="title">Loading...</h1>
+                    <hr>
+                    <p id="description">This may take a moment.</p>
+                </div>
+                <div class="components">
+                    <div class="component">
+                        <p>Prefix:</p><input type="text" placeholder="What prefix should Ducky respond to?" value="d!"
+                            required minlength="1" maxlength="2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <img src="./icons/Gear.svg" alt="gear icon" class="largeicon">
+</body>
+<script>
+    window.onload = () => {
+        var currentTab = "basic"
+
+        const tabSelector = document.getElementById("tabSelector");
+
+        for (let i = 0; i < tabSelector.children.length; i++) {
+            let tab = tabSelector.children[i]
+            tab.onclick = function () {
+                currentTab = tab.id
+
+                if (currentTab === "basic") {
+
+                }
+            }
+        }
+    }
+</script>
+
+</html>
