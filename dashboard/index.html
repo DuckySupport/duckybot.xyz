@@ -194,16 +194,15 @@
                                                         setTitle("./icons/Hammer.svg", "Discord Moderation", "Ducky's <b>Discord Moderation</b> module allows you to moderate your server with ease.")
 
                                                         const modRoleComponent = createComponent("Moderator Role", "modRoleComponent");
-                                                        const modRoleSelect = document.createElement("select");
+                                                        const modRoleSelect = document.createElement("div");
+                                                        modRoleSelect.className = "select"
                                                         
                                                         server.roles.forEach(role => {
-                                                            const newOption = document.createElement("option");
-                                                            newOption.value = role.id;
+                                                            const newOption = document.createElement("div");
+                                                            newOption.className = "option"
+                                                            newOption.id = role.id;
                                                             newOption.innerHTML = "@" + role.name;
                                                             newOption.style.color = "#" + role.color.toString(16).padStart(6, "0");
-                                                            newOption.style.fontFamily = "Inter";
-                                                            newOption.style.borderRadius = "10px";
-                                                            newOption.style.borderWidth = "0px";
                                                             
                                                             if (role.color === 0) {
                                                                 newOption.style.color = "#99AAB5";
