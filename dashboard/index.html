@@ -13,13 +13,13 @@
 
 <body>
     <header>
-        <a href="https://duckybot.xyz"><img class="logo" src="DuckyFull.svg" alt="Ducky Logo"></a>
+        <a href="http://127.0.0.1:5500"><img class="logo" src="DuckyFull.svg" alt="Ducky Logo"></a>
         <nav>
             <ul>
-                <li><a href="https://duckybot.xyz/">Home</a></li>
-                <li><a href="https://duckybot.xyz/status">Status</a></li>
-                <li><a href="https://duckybot.xyz/support">Support</a></li>
-                <li><a href="https://duckybot.xyz/invite">Invite</a></li>
+                <li><a href="http://127.0.0.1:5500/">Home</a></li>
+                <li><a href="http://127.0.0.1:5500/status">Status</a></li>
+                <li><a href="http://127.0.0.1:5500/support">Support</a></li>
+                <li><a href="http://127.0.0.1:5500/invite">Invite</a></li>
             </ul>
         </nav>
         <img class="pfp" alt="Profile" id="profilePictureNav">
@@ -88,6 +88,7 @@
                                 const title = document.getElementById("title");
                                 const titleIcon = document.getElementById("titleIcon");
                                 const description = document.getElementById("description");
+                                const bigIcon = document.getElementsByClassName("largeicon")[0];
 
                                 fetch("https://glowworm-learning-leech.ngrok-free.app/servers/" + discord.id, {
                                     method: "GET",
@@ -109,6 +110,41 @@
 
                                                 /* a function to generate/load the tab based on the tab's value */
 
+                                                async function setKey(key, val) {
+                                                    try {
+                                                        let response = await fetch("https://glowworm-learning-leech.ngrok-free.app/setkey/" + server.id + "/" + key, {method: "GET", headers: {"Configuration": val, "ngrok-skip-browser-warning": "69420"}});
+                                                        let data = await response.json();
+
+                                                        if (data.code !== 200) {
+                                                            throw new Error("Network response was not 200 OK :" + response.statusText)
+                                                        }
+
+                                                        return data;
+                                                    } catch (error) {
+                                                        console.error(error)
+                                                    }
+                                                }
+
+                                                function setTitle(i, t, d) {
+                                                    title.textContent = t;
+                                                    titleIcon.src = i;
+                                                    bigIcon.src = i;
+                                                    description.innerHTML = d || "";
+                                                }
+
+                                                function createComponent(name, id) {
+                                                    const newComponent = document.createElement("div");
+                                                    newComponent.className = "component";
+                                                    newComponent.id = id
+                                                    
+                                                    const newComponentLabel = document.createElement("p");
+                                                    newComponentLabel.innerHTML = name;
+
+                                                    newComponent.appendChild(newComponentLabel);
+                                                    components.appendChild(newComponent);
+
+                                                    return newComponent;
+                                                }
                                                 function loadTab() {
                                                     for (let i = 0; i < tabSelector.children.length; i++) {
                                                         const tabButton = tabSelector.children[i];
@@ -117,24 +153,103 @@
 
                                                         if (currentTab === tabButton.id) {tabButton.style.color = "#ffffff"; tabButton.getElementsByTagName("img")[0].style.opacity = 1;}
                                                     }
-                                                    for (let i = 0; i < components.children.length; i++) {
-                                                        components.children[i].remove();
+
+                                                    while (components.children.length > 0) {
+                                                        components.children[0].remove()
                                                     }
                                                     
                                                     if (currentTab === "basic") {
-                                                        titleIcon.src = "./icons/Gear.svg";
-                                                        title.textContent = "Basic Configuration";
-                                                        description.innerHTML = "You can configure Ducky's basic configuration here. This includes the prefix, and more."
-                                                        const newp = document.createElement("p");
-                                                        newp.textContent = "This tab is in development."
-                                                        components.appendChild(newp);
+                                                        setTitle("./icons/Gear.svg", "Basic Configuration", "You can configure Ducky's basic configuration here. This includes the prefix, and more.")
+
+                                                        const prefixComponent = createComponent("Prefix", "prefixComponent");
+
+                                                        const prefixInput = document.createElement("input");
+                                                        prefixInput.type = "text";
+                                                        prefixInput.value = (server.config && server.config.prefix) || "d!";
+                                                        prefixInput.placeholder = "What prefix should Ducky respond to?";
+                                                        prefixInput.required = true;
+                                                        prefixInput.minLength = 1;
+                                                        prefixInput.maxLength = 2;
+                                                        prefixComponent.appendChild(prefixInput);
+
+                                                        prefixInput.addEventListener("blur", () => {
+                                                            if (prefixInput.value.length >= 1 && prefixInput.value.length <= 2 && prefixInput.value !== server.config.prefix) {
+                                                                prefixInput.style.backgroundImage = 'url("./icons/Loading.gif")';
+                                                                setKey("prefix", prefixInput.value)
+                                                                .then(data => {
+                                                                    if (data.code === 200) {
+                                                                        server.config.prefix = prefixInput.value;
+                                                                        prefixInput.style.backgroundImage = 'url("./icons/Success.svg")';
+                                                                    } else {
+                                                                        prefixInput.style.backgroundImage = 'url("./icons/Fail.svg")';
+                                                                    }
+
+                                                                    setTimeout(() => {
+                                                                        prefixInput.style.backgroundImage = "";
+                                                                    }, 3000)
+                                                                })
+                                                            }
+                                                        })
                                                     } else if (currentTab === "moderation") {
-                                                        titleIcon.src = "./icons/Hammer.svg";
-                                                        title.textContent = "Discord Moderation";
-                                                        description.innerHTML = "Ducky's <b>Discord Moderation</b> module allows you to moderate your server with ease.";
-                                                        const newp = document.createElement("p");
-                                                        newp.textContent = "This tab is in development as well."
-                                                        components.appendChild(newp);
+                                                        setTitle("./icons/Hammer.svg", "Discord Moderation", "Ducky's <b>Discord Moderation</b> module allows you to moderate your server with ease.")
+
+                                                        const modRoleComponent = createComponent("Moderator Role", "modRoleComponent");
+                                                        const modRoleSelect = document.createElement("select");
+                                                        
+                                                        server.roles.forEach(role => {
+                                                            const newOption = document.createElement("option");
+                                                            newOption.value = role.id;
+                                                            newOption.innerHTML = "@" + role.name;
+                                                            newOption.style.color = "#" + role.color.toString(16).padStart(6, "0");
+                                                            newOption.style.fontFamily = "Inter";
+                                                            newOption.style.borderRadius = "10px";
+                                                            newOption.style.borderWidth = "0px";
+                                                            
+                                                            if (role.color === 0) {
+                                                                newOption.style.color = "#99AAB5";
+                                                            }
+
+                                                            if (server.config.modrole === role.id) {
+                                                                newOption.selected = true;
+                                                                if (role.color === 0) {
+                                                                    modRoleSelect.style.color = "#99AAB5";
+                                                                } else {
+                                                                    modRoleSelect.style.color = "#" + role.color.toString(16).padStart(6, "0");
+                                                                }
+                                                            }
+
+                                                            modRoleSelect.appendChild(newOption)
+                                                        })
+
+                                                        modRoleComponent.appendChild(modRoleSelect)
+
+                                                        modRoleSelect.addEventListener("change", () => {
+                                                            server.roles.forEach(role => {
+                                                                if (role.id === modRoleSelect.value) {
+                                                                    if (role.color === 0) {
+                                                                        modRoleSelect.style.color = "#99AAB5";
+                                                                    } else {
+                                                                        modRoleSelect.style.color = "#" + role.color.toString(16).padStart(6, "0");
+                                                                    }
+                                                                }
+                                                            })
+                                                            if (modRoleSelect.value && modRoleSelect.value !== server.config.modrole) {
+                                                                modRoleSelect.style.backgroundImage = 'url("./icons/Loading.gif")';
+                                                                setKey("modrole", modRoleSelect.value)
+                                                                .then(data => {
+                                                                    if (data.code === 200) {
+                                                                        server.config.modrole = modRoleSelect.value;
+                                                                        modRoleSelect.style.backgroundImage = 'url("./icons/Success.svg")';
+                                                                    } else {
+                                                                        modRoleSelect.style.backgroundImage = 'url("./icons/Fail.svg")';
+                                                                    }
+
+                                                                    setTimeout(() => {
+                                                                        modRoleSelect.style.backgroundImage = "";
+                                                                    }, 3000)
+                                                                })
+                                                            }
+                                                        })
                                                     } else {
                                                         titleIcon.src = "";
                                                         title.textContent = "Unknown Tab";
@@ -207,7 +322,7 @@
                             servergrid.appendChild(newdiv)
 
                             newdiv.addEventListener("click", function () {
-                                window.location.href = "https://duckybot.xyz/dashboard#" + server.id
+                                window.location.href = "http://127.0.0.1:5500/dashboard#" + server.id
                             })
                         }
                     })
@@ -217,7 +332,7 @@
             .catch(console.error)
         } else {
             document.body.innerHTML = "Redirecting you to the login page..."
-            window.location.href = "https://duckybot.xyz/login?redirect=dashboard"
+            window.location.href = "http://127.0.0.1:5500/login?redirect=dashboard"
         }
     }
 </script>

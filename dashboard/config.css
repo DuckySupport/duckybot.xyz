@@ -183,10 +183,13 @@ nav ul li a {
     align-items: center;
     text-align: left;
     padding: 15px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .component p {
     font-size: 20px;
+    word-wrap: normal;
 }
 
 .component input {
@@ -200,12 +203,33 @@ nav ul li a {
     margin-left: 10px;
     font-family: "Inter";
     color: #dfdfdf;
-    transition: ease-in-out 0.5s;
+    background-repeat: no-repeat;
+    background-size: 25px 25px;
+    background-position: calc(100% - 5px) center;
+    flex: 1;
 }
 
 .component input:focus {
     outline: none;
     color: #fff;
+}
+
+.component select {
+    background-color: #111111;
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    height: 35px;
+    text-align: left;
+    padding: 8px;
+    margin-left: 10px;
+    font-family: "Inter";
+    color: #dfdfdf;
+    background-repeat: no-repeat;
+    background-size: 25px 25px;
+    background-position: calc(100% - 5px) center;
+    flex: 1;
+    appearance: none;
 }
 
 .largeicon {
