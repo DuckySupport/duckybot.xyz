@@ -1,0 +1,93 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+nav {
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0rem calc((100vw - 1300px) / 2);
+    background-color: #333;
+}
+
+.logo {
+    color: #fff;
+    font-size: 3rem;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0 2rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: #fff;
+    padding: 0 1.5rem;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+body {
+    background-image: url("DuckyBackground.svg");
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.privacy-policy {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    padding: 2rem;
+}
+
+.privacy-container {
+    text-align: left;
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+}
+
+.privacy-container h1, .privacy-container h2 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.privacy-container p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+.privacy-container ul {
+    margin: 1rem 0;
+    padding-left: 20px;
+}
+
+.privacy-container li {
+    margin-bottom: 0.5rem;
+}
+
+.hero {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .tos-container {
+        width: 90%;
+        padding: 1.5rem;
+    }
+
+    .nav-items a {
+        font-size: 18px;
+    }
+}
