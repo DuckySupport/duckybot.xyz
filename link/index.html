@@ -22,11 +22,6 @@
         const title = document.getElementById("title")
         const text = document.getElementById("text")
         const subtext = document.getElementById("subtext")
-        const dotenv = require('dotenv')
-        dotenv.config()
-
-        const APIKEY = process.env.APIKEY
-        const CLIENTSECRET = process.env.CLIENTSECRET
 
         function loadingStatus(lstat) {
             card.className = "card loading";
@@ -69,7 +64,7 @@
                 const DiscordID = response.id
 
                 if (authcode) {
-                    const request_body = "grant_type=authorization_code&code=" + authcode + "&client_id=9159621270656797210&client_secret=" + CLIENTSECRET
+                    const request_body = "grant_type=authorization_code&code=" + authcode + "&client_id=9159621270656797210&client_secret=RBX-xug5J-Bsi0K0ZloZo9fZJ2bKLjqc0Nzi6GAOqXN4oj_O5mZJ0tFyTzC--DB4Mdp"
                     console.log("Exchanging code...")
                     loadingStatus("Exchanging authorization code...")
                     fetch("https://apis.roblox.com/oauth/v1/token", {
@@ -104,7 +99,7 @@
                                     method: "GET",
                                     headers: {
                                         "ngrok-skip-browser-warning": "69420",
-                                        "Authorization": APIKEY,
+                                        "Authorization": "9W7A890Z3gMD07JYzmR8Y5AIxGtU3N76CUr1c76F1rdO96d0Y9MlMnQLr95D109pi584N7yr6X6K2Q05aU30J99w2P2e06u86Z75",
                                         "discord-id": DiscordID,
                                         "roblox-id": userinfo.sub
                                     }
