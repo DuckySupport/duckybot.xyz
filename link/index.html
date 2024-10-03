@@ -49,6 +49,7 @@
             let parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
+
         const loggedin = getCookie('discord')
         if (loggedin) {
             fetch('https://discord.com/api/users/@me', {
@@ -60,68 +61,31 @@
             .then(response => {
                 const params = new URLSearchParams(window.location.search)
                 const authcode = params.get("code")
-
                 const DiscordID = response.id
 
                 if (authcode) {
-                    const request_body = "grant_type=authorization_code&code=" + authcode + "&client_id=8552523254541415001&client_secret=RBX-IG6s_w4dUUeozQyCmz2IuZOMjhSv3uwGRR_mazvohPAWlDLTigHSy25YpiSgeQCI"
-                    console.log("Exchanging code...")
-                    loadingStatus("Exchanging authorization code...")
-                    fetch("https://apis.roblox.com/oauth/v1/token", {
+                    console.log("Exchanging code and linking account...")
+                    loadingStatus("Exchanging authorization code and linking...")
+
+                    fetch("https://glowworm-learning-leech.ngrok-free.app/link", {
                         method: "POST",
                         headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
+                            "Content-Type": "application/json",
+                            "ngrok-skip-browser-warning": "69420",
                         },
-                        body: request_body
+                        body: JSON.stringify({ auth_code: authcode, discord_id: DiscordID })
                     })
                     .then(result => result.json())
                     .then(response => {
-                        if (response.error) {
-                            console.log(response.error_description)
-                            fail("Code Exchange Failed", response.error_description)
-                        } else if (response.access_token) {
-                            console.log("Fetching user info...")
-                            loadingStatus("Fetching user info...")
-                            fetch("https://apis.roblox.com/oauth/v1/userinfo", {
-                                method: "GET",
-                                headers: {
-                                    "Authorization": "Bearer " + response.access_token,
-                                    "Content-Type": "application/json"
-                                }
-                            })
-                            .then(result => result.json())
-                            .then(userinfo => {
-                                console.log("Fetched user info: " + userinfo.sub)
-                                console.log("Saving link data...")
-                                loadingStatus("Saving link data to our API...")
-                                
-                                fetch("https://glowworm-learning-leech.ngrok-free.app/link", {
-                                    method: "GET",
-                                    headers: {
-                                        "ngrok-skip-browser-warning": "69420",
-                                        "Authorization": "9W7A890Z3gMD07JYzmR8Y5AIxGtU3N76CUr1c76F1rdO96d0Y9MlMnQLr95D109pi584N7yr6X6K2Q05aU30J99w2P2e06u86Z75",
-                                        "discord-id": DiscordID,
-                                        "roblox-id": userinfo.sub
-                                    }
-                                })
-                                .then(result => result.json())
-                                .then(response => {
-                                    if (response.code === 200) {
-                                        success("Successfully Linked", "You've been successfully linked with <bold>" + response.username + "</bold>.")
-                                    } else {
-                                        fail("Ducky API Error", response.message)
-                                    }
-                                })
-                                .catch(console.error)
-                            })
-                            .catch(console.error)
+                        if (response.code === 200) {
+                            success("Successfully Linked", `You've been successfully linked with <b>${response.username}</b>.`)
                         } else {
-                            console.log("An unknown error occured. Please try again later.")
-                            fail("Unknown Error", "An unknown error occured. Please try again later.")
+                            fail("API Error", response.message)
                         }
                     })
                     .catch(console.error)
                 } else {
+                    // No auth code, checking if already linked
                     const id = response.id
                     fetch('https://glowworm-learning-leech.ngrok-free.app/getlink', {
                         method: "GET",
@@ -135,11 +99,10 @@
                         const link = response.link
 
                         if (link) {
-                            console.log("Already linked.")
-                            success("Already Linked", "You're already linked with <bold>" + link.robloxUser.name + "</bold>.")
+                            success("Already Linked", `You're already linked with <b>${link.robloxUser.name}</b>.`)
                         } else {
-                            console.log("Redirecting you to Roblox...")
-                            loadingStatus("Redirecting you to Roblox...")
+                            console.log("Redirecting to Roblox for authentication...")
+                            loadingStatus("Redirecting to Roblox...")
                             window.location.href = "https://authorize.roblox.com/?client_id=8552523254541415001&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid"
                         }
                     })
@@ -151,7 +114,7 @@
             return
         } else {
             console.log("Not logged in | Redirecting to Discord...")
-            loadingStatus("Redirectiong you to Discord...")
+            loadingStatus("Redirecting to Discord...")
             window.location.href = "https://duckybot.xyz/login?redirect=link"
             return
         }
