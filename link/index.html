@@ -85,7 +85,6 @@
                     })
                     .catch(console.error)
                 } else {
-                    // No auth code, checking if already linked
                     const id = response.id
                     fetch('https://glowworm-learning-leech.ngrok-free.app/getlink', {
                         method: "GET",
