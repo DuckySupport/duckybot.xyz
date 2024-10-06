@@ -77,32 +77,42 @@
                 })
                 .catch(console.error)
             } else {
-                fetch('https://glowworm-learning-leech.ngrok-free.app/getlink', {
-                    method: "GET",
+                fetch('https://discord.com/api/users/@me', {
                     headers: {
-                        "ngrok-skip-browser-warning": "69420",
-                        "discord-id": loggedin
-                    }
+                        authorization: `Bearer ${loggedin}`,
+                    },
                 })
                 .then(result => result.json())
                 .then(response => {
-                    const link = response.link
+                    const DiscordID = response.id;
 
-                    if (link) {
-                        success("Already Linked", `You're already linked with <b>${link.robloxUser.name}</b>.`)
-                    } else {
-                        console.log("Redirecting to Roblox for authentication...")
-                        loadingStatus("Redirecting to Roblox...")
-                        window.location.href = "https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid"
-                    }
+                    fetch('https://glowworm-learning-leech.ngrok-free.app/getlink', {
+                        method: "GET",
+                        headers: {
+                            "ngrok-skip-browser-warning": "69420",
+                            "discord-id": DiscordID
+                        }
+                    })
+                    .then(result => result.json())
+                    .then(response => {
+                        const link = response.link;
+
+                        if (link) {
+                            success("Already Linked", `You're already linked with <b>${link.robloxUser.name}</b>.`)
+                        } else {
+                            console.log("Redirecting to Roblox for authentication...");
+                            loadingStatus("Redirecting to Roblox...");
+                            window.location.href = "https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid";
+                        }
+                    })
+                    .catch(console.error);
                 })
-                .catch(console.error)
+                .catch(console.error);
             }
         } else {
-            console.log("Not logged in | Redirecting to Discord...")
-            loadingStatus("Redirecting to Discord...")
-            window.location.href = "https://duckybot.xyz/login?redirect=link"
-            return
+            console.log("Not logged in | Redirecting to Discord...");
+            loadingStatus("Redirecting to Discord...");
+            window.location.href = "https://duckybot.xyz/login?redirect=link";
         }
     }
 </script>
