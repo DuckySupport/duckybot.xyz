@@ -52,16 +52,8 @@
 
         const loggedin = getCookie('discord')
         if (loggedin) {
-            fetch('https://discord.com/api/users/@me', {
-                headers: {
-                    authorization: `Bearer ${loggedin}`,
-                },
-            })
-            .then(result => result.json())
-            .then(response => {
                 const params = new URLSearchParams(window.location.search)
                 const authcode = params.get("code")
-                const DiscordID = response.id
 
                 if (authcode) {
                     console.log("Exchanging code and linking account...")
@@ -73,7 +65,7 @@
                             "Content-Type": "application/json",
                             "ngrok-skip-browser-warning": "69420",
                         },
-                        body: JSON.stringify({ auth_code: authcode, discord_id: DiscordID })
+                        body: JSON.stringify({ auth_code: authcode, discord_code: loggedin })
                     })
                     .then(result => result.json())
                     .then(response => {
