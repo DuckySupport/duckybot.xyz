@@ -129,6 +129,10 @@ nav a:hover {
     max-width: 400px;
     animation: float 4s ease-in-out infinite;
 }
+.hero-image-no-animation {
+    width: 100%;
+    max-width: 400px;
+}
 
 @keyframes float {
     0%, 100% {
