@@ -3,27 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Not Found</title>
+    <title>Ducky</title>
+    <link rel="icon" type="image/x-icon" href="/Ducky.svg">
+    <meta content="Ducky Bot" property="og:title" />
+    <meta content="The only bot you'll need for your server, of any kind." property="og:description" />
+    <meta content="https://duckybot.xyz/" property="og:url" />
+    <meta content="Ducky.svg" property="og:image" />
+    <meta content="#77CDFF" data-react-helmet="true" name="theme-color" />
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="notfound">
-        <img src="Island.svg" alt="Island" width="350" height="350">
-        <div class="maintext">
-            <p>
-                You find yourself on an island...
-            </p>
+    <nav>
+        <a href="/"><img src="DuckyText.svg" alt="DuckyText" class="logo-img"></a>
+        <div class="nav-items">
+            <a href="/">Home</a>
+            <a href="/status">Status</a>
+            <a href="/docs">Documentation</a>
+            <a href="/invite">Invite</a>
+            <a href="/support">Support</a>
         </div>
-        <div class="subtext">
-            <p>
-                With this page nowhere to be found.
-            </p>
+    </nav>
+    <section class="hero">
+        
+        <div class="hero-container">
+            <div class="column-left">
+                <img src="DuckyText.svg" alt="DuckyText" class="hero-logo">
+                <p class="hero-tagline">The only bot you need for your server, of any kind.</p>
+                <div class="buttons">
+                    <a href="/invite">
+                        <button class="cta-button">Add Ducky</button>
+                    </a>
+                    <a href="/support">
+                        <button class="cta-button secondary">Support</button>
+                    </a>
+                </div>
+                <b class="about-title">About Ducky</b>
+                <p class="about-description">Ducky is good for all kinds of servers, including many features to tailor to ER:LC server needs.<br><b>You don't need an ER:LC server to use Ducky.</b><br>Ducky bot has many features to keep your server up and running, including <b>economy</b>, and so much more.</p>
+            </div>
+            <div class="column-right">
+                <img src="./Ducky.svg" alt="duckylogo" class="hero-image">
+            </div>
         </div>
-        <a href="/">
-            <p>
-                <br><br>Back Home
-            </p>
-        </a>
-    </div>
+    </section>
 </body>
 </html>
