@@ -1,0 +1,73 @@
+body {
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+}
+
+.game {
+    width: 600px;
+    height: 200px;
+    border: 2px solid #000;
+    background-color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+#dino {
+    width: 40px;
+    height: 40px;
+    background: url('Ducky.svg') no-repeat center center / contain;
+    position: absolute;
+    bottom: 0;
+    left: 50px;
+}
+
+.jump {
+    animation: jump 0.5s ease-out;
+}
+
+@keyframes jump {
+    0% {
+        bottom: 0;
+    }
+    50% {
+        bottom: 80px;
+    }
+    100% {
+        bottom: 0;
+    }
+}
+
+#obstacle {
+    width: 20px;
+    height: 30px;
+    border-width: 2px;
+    border-color: red;
+    border-style: dashed;
+    background: url('gooserun.gif') no-repeat center center / contain;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    animation: moveObstacle 2s linear infinite;
+}
+
+@keyframes moveObstacle {
+    0% {
+        right: -20px;
+    }
+    100% {
+        right: 600px;
+    }
+}
+
+#score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 18px;
+    color: #000;
+}
