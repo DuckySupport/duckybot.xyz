@@ -24,14 +24,15 @@ let scoreInterval = setInterval(function () {
 }, 1000);
 
 let isAlive = setInterval(function () {
-    // Get current dino Y position
-    let dinoBottom = parseInt(window.getComputedStyle(dino).getPropertyValue("bottom"));
+    // Get current dino and obstacle positions
+    let dinoRect = dino.getBoundingClientRect();
+    let obstacleRect = obstacle.getBoundingClientRect();
 
-    // Get current obstacle X position
-    let obstacleLeft = parseInt(window.getComputedStyle(obstacle).getPropertyValue("right"));
+    // Adjusted collision detection
+    let overlapX = dinoRect.right > obstacleRect.left + 5 && dinoRect.left < obstacleRect.right - 5;
+    let overlapY = dinoRect.bottom > obstacleRect.top + 10;
 
-    // Adjusted collision detection with a smaller range
-    if (obstacleLeft > 520 && obstacleLeft < 580 && dinoBottom <= 20) {
+    if (overlapX && overlapY) {
         alert(`Game Over! Your final score is ${score}`);
         clearInterval(scoreInterval);
         clearInterval(isAlive);
