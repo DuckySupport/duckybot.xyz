@@ -162,3 +162,31 @@ nav a:hover {
         justify-content: center;
     }
 }
+
+
+footer {
+    background: rgba(16, 133, 201, 0.8);
+    padding: 1rem;
+    text-align: center;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+    color: #fff;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.footer-links a {
+    color: #77CDFF;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #004aad;
+}
