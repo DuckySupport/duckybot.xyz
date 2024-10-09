@@ -48,7 +48,7 @@ body {
     border-width: 2px;
     border-color: red;
     border-style: dashed;
-    background: url('gooserun.gif') no-repeat center center / contain;
+    background: url('gooserun.gif') no-repeat center center / contain, #000;
     position: absolute;
     right: 0;
     bottom: 0;
