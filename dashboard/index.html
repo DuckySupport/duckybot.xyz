@@ -115,21 +115,33 @@
 
                                                 let currentTab = "basic";
 
-                                                /* a function to generate/load the tab based on the tab's value */
-
                                                 async function setKey(key, val) {
-                                                    try {
-                                                        let response = await fetch("https://glowworm-learning-leech.ngrok-free.app/setkey/" + server.id + "/" + key, {method: "GET", headers: {"Configuration": val, "ngrok-skip-browser-warning": "69420"}});
-                                                        let data = await response.json();
+                                                     try {
 
-                                                        if (data.code !== 200) {
-                                                            throw new Error("Network response was not 200 OK :" + response.statusText)
-                                                        }
+                                                        const response = await fetch("https://glowworm-learning-leech.ngrok-free.app/setkey", {
+                                                        method: "POST",
+                                                        headers: {
+                                                            "Content-Type": "application/json",
+                                                            "ngrok-skip-browser-warning": "69420"
+                                                        },
+                                                        body: JSON.stringify({
+                                                        serverid: server.id,
+                                                        key: key,
+                                                        value: val,
+                                                        discord_code: loggedin
+                                                        })
+                                                });
 
-                                                        return data;
-                                                    } catch (error) {
-                                                        console.error(error)
-                                                    }
+                                                const data = await response.json();
+
+                                                if (data.code !== 200) {
+                                                    throw new Error("API Error: " + data.message);
+                                                }
+
+                                                return data;
+                                                } catch (error) {
+                                                    console.error(error);
+                                                }
                                                 }
 
                                                 function setTitle(i, t, d) {
