@@ -190,3 +190,24 @@ footer {
 .footer-links a:hover {
     color: #004aad;
 }
+.outage-banner {
+  background-color: #FF6B6B;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
+  position: fixed;
+  top: 80px;
+  width: 100%;
+  z-index: 999;
+}
+
+.outage-banner a {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Adjust the hero section to accommodate the banner */
+.hero {
+  padding-top: 130px; /* Increased from 5rem (80px) to 130px */
+}
