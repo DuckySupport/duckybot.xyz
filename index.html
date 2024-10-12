@@ -11,7 +11,6 @@
     <meta content="Ducky.svg" property="og:image" />
     <meta content="#F5FF82" data-react-helmet="true" name="theme-color" />
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <nav>
@@ -24,9 +23,11 @@
             <a href="/support">Support</a>
         </div>
     </nav>
-  <div class="outage-banner">
-      Bot Outages Reported <a href='/status'>Learn More</a>
-  </div>
+  
+    <div id="outage-banner" class="outage-banner" style="display: none;">
+        Bot Outages Reported <a href='/status'>Learn More</a>
+    </div>
+
     <section class="hero">
         <div class="hero-container">
             <div class="column-left">
@@ -44,13 +45,12 @@
                 <p class="about-description">Ducky is good for all kinds of servers, including many features to tailor to ER:LC server needs.<br><b>You don't need an ER:LC server to use Ducky.</b><br>Ducky bot has many features to keep your server up and running, including <b>economy</b>, and so much more.</p>
             </div>
             <div class="column-right">
-                <a href="duckgame.html">
+                <a href="duckgame.html" target="_blank">
                     <img src="./Ducky.svg" alt="duckylogo" class="hero-image">
                 </a>
             </div>
         </div>
     </section>
-
 
     <footer>
         <div class="footer-links">
@@ -60,5 +60,38 @@
         <br>
         <p>&copy; 2024 DUCKY BOT</p>
     </footer>
+
+    <!-- JavaScript to Check for Outage -->
+    <!-- <script>
+        const API_KEY = 'nuh uh';
+        const API_URL = 'https://betteruptime.com/api/v2/incidents';
+
+        async function checkForOutages() {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const activeIncidents = data.data.filter(incident => incident.attributes.status === 'in_progress');
+                    
+                    if (activeIncidents.length > 0) {
+                        document.getElementById('outage-banner').style.display = 'block';
+                    }
+                } else {
+                    console.error('Error fetching BetterStack API:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        window.onload = checkForOutages;
+    </script> -->
 </body>
 </html>
