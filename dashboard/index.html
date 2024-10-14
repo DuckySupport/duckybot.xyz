@@ -97,10 +97,11 @@
                                 const description = document.getElementById("description");
                                 const bigIcon = document.getElementsByClassName("largeicon")[0];
 
-                                fetch("https://glowworm-learning-leech.ngrok-free.app/servers/" + discord.id, {
+                                fetch("https://glowworm-learning-leech.ngrok-free.app/servers/", {
                                     method: "GET",
                                     headers: {
-                                        "ngrok-skip-browser-warning": "69420"
+                                        "ngrok-skip-browser-warning": "69420",
+                                        "discord_code": loggedin
                                     }
                                 })
                                 .then(result => result.json())
@@ -314,10 +315,11 @@
                 document.getElementById("profilePicture").src = "https://cdn.discordapp.com/avatars/" + discord.id + "/" + discord.avatar + ".png"
                 document.getElementById("profilePictureNav").src = "https://cdn.discordapp.com/avatars/" + discord.id + "/" + discord.avatar + ".png"
 
-                fetch("https://glowworm-learning-leech.ngrok-free.app/servers/" + discord.id, {
+                fetch("https://glowworm-learning-leech.ngrok-free.app/servers/", {
                     method: "GET",
                     headers: {
-                        "ngrok-skip-browser-warning": "69420"
+                        "ngrok-skip-browser-warning": "69420",
+                        "discord_code": loggedin
                     }
                 })
                 .then(result => result.json())
