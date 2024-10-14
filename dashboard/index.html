@@ -339,9 +339,10 @@
                             const newdiv = document.createElement("div")
                             newdiv.className = "server"
                             newdiv.innerHTML = `<img src="${server.icon}" alt="${server.name}"></img><p>${server.name}</p>`
+                            const overlay = document.createElement("div");
+                            overlay.className = "overlay";
                             servergrid.appendChild(newdiv)
-
-                            const overlay = newdiv.querySelector('.overlay');
+                            
                                 if (!server.ducky) {
                                     overlay.style.display = 'block';
                                 }
