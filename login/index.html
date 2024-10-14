@@ -86,7 +86,7 @@
         const [accessToken, tokenType, state] = [fragment.get('access_token'), fragment.get('token_type'), fragment.get('state')]
         
         if (!accessToken) {
-            let oauthurl = "https://discord.com/oauth2/authorize?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flogin&scope=identify"
+            let oauthurl = "https://discord.com/oauth2/authorize?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flogin&scope=identify+guilds"
             
             
             if (redirectAfter) {
