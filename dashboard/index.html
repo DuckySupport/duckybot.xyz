@@ -341,9 +341,18 @@
                             newdiv.innerHTML = `<img src="${server.icon}" alt="${server.name}"></img><p>${server.name}</p>`
                             servergrid.appendChild(newdiv)
 
+                            const overlay = newdiv.querySelector('.overlay');
+                                if (!server.ducky) {
+                                    overlay.style.display = 'block';
+                                }
+
                             newdiv.addEventListener("click", function () {
-                                window.location.href = "https://duckybot.xyz/dashboard#" + server.id
-                            })
+                                if (server.ducky) {
+                                    window.location.href = "https://duckybot.xyz/dashboard#" + server.id;
+                                } else {
+                                    window.location.href = "https://discord.com/oauth2/authorize?client_id=1257389588910182411&permissions=8&integration_type=0&scope=bot&redirect_uri=https://duckybot.xyz/dashboard&guild_id=" + server.id;
+                                }
+                            });
                         }
                     })
                 })
