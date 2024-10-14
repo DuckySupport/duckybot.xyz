@@ -157,49 +157,6 @@ nav ul li a {
   100% { transform: rotate(360deg); }
 }
 
-.custom-dropdown {
-  position: relative;
-  width: 100%;
-  cursor: pointer;
-  background-color: #2C2F33;
-  border: 1px solid #23272A;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-.selected-roles {
-  color: #fff;
-}
-
-.options-container {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  max-height: 200px; 
-  overflow-y: scroll;
-  background-color: #2C2F33;
-  border: 1px solid #23272A;
-  border-radius: 5px;
-  z-index: 1000;
-}
-
-.option {
-  padding: 10px;
-  cursor: pointer;
-  color: #fff;
-}
-
-.option:hover {
-  background-color: #7289DA;
-}
-
-.custom-dropdown.active .options-container {
-  display: block;
-}
-
-
 /* Mobile Responsive Section */
 @media only screen and (max-width: 768px) {
   header {
