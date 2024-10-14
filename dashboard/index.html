@@ -1,68 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ducky Dashboard</title>
-    <meta name="description" content="Configure Ducky for your server through the web dashboard, easy and fast.">
-    <link rel="icon" type="image/x-icon" href="/Ducky.svg">
-    <meta content="Ducky Dashboard" property="og:title" />
-    <meta content="Configure Ducky for your server through the web dashboard, easy and fast." property="og:description" />
-    <meta content="https://duckybot.xyz/dashboard" property="og:url" />
-    <meta content="https://duckybot.xyz/Ducky.svg" property="og:image" />
-    <meta content="#F5FF82," data-react-helmet="true" name="theme-color" />
-    <link rel="icon" type="image/x-icon" href="../Ducky.svg">
-    <link rel="stylesheet" href="./styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <meta content="../Ducky.svg" property="og:image" />
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ducky Dashboard</title>
+        <meta name="description"
+            content="Configure Ducky for your server through the web dashboard, easy and fast.">
+        <link rel="icon" type="image/x-icon" href="/Ducky.svg">
+        <meta content="Ducky Dashboard" property="og:title" />
+        <meta
+            content="Configure Ducky for your server through the web dashboard, easy and fast."
+            property="og:description" />
+        <meta content="https://duckybot.xyz/dashboard" property="og:url" />
+        <meta content="https://duckybot.xyz/Ducky.svg" property="og:image" />
+        <meta content="#F5FF82," data-react-helmet="true" name="theme-color" />
+        <link rel="icon" type="image/x-icon" href="../Ducky.svg">
+        <link rel="stylesheet" href="./styles.css">
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+            rel="stylesheet">
+        <meta content="../Ducky.svg" property="og:image" />
+    </head>
 
-<body>
-    <div id="loadingOverlay">
-        <div class="spinner"></div>
-        <p>Loading servers...</p>
-    </div>
-    <header>
-        <a href="https://duckybot.xyz"><img class="logo" src="DuckyFull.svg" alt="Ducky Logo"></a>
-        <nav>
-            <ul>
-                <li><a href="https://duckybot.xyz/">Home</a></li>
-                <li><a href="https://duckybot.xyz/status">Status</a></li>
-                <li><a href="https://duckybot.xyz/support">Support</a></li>
-                <li><a href="https://duckybot.xyz/invite">Invite</a></li>
-            </ul>
-        </nav>
-        <img class="pfp" alt="Profile" id="profilePictureNav">
-    </header>
-    <section class="dashboard">
-        <div class="welcome">
-            <img alt="Profile Image" id="profilePicture">
-            <span>
-                <h2>Hiya, <span class="username" id="username">username</span></h2>
-                <hr style="height:5pt; visibility:hidden;" /><span style="padding-top: 5px; color: #888888;">Welcome to
-                    your dashboard.</span>
-            </span><br>
+    <body>
+        <div id="loadingOverlay">
+            <div class="spinner"></div>
+            <p>Loading servers...</p>
         </div>
-        <div class="servers">
-            <div style="width: 100%; display: table;">
-                <div style="display: table-row">
-                    <div style="width: 600px; display: table-cell;">
-                        <h2>Servers</h2>
+        <header>
+            <a href="https://duckybot.xyz"><img class="logo" src="DuckyFull.svg"
+                    alt="Ducky Logo"></a>
+            <nav>
+                <ul>
+                    <li><a href="https://duckybot.xyz/">Home</a></li>
+                    <li><a href="https://duckybot.xyz/status">Status</a></li>
+                    <li><a href="https://duckybot.xyz/support">Support</a></li>
+                    <li><a href="https://duckybot.xyz/invite">Invite</a></li>
+                </ul>
+            </nav>
+            <img class="pfp" alt="Profile" id="profilePictureNav">
+        </header>
+        <section class="dashboard">
+            <div class="welcome">
+                <img alt="Profile Image" id="profilePicture">
+                <span>
+                    <h2>Hiya, <span class="username"
+                            id="username">username</span></h2>
+                    <hr style="height:5pt; visibility:hidden;" /><span
+                        style="padding-top: 5px; color: #888888;">Welcome to
+                        your dashboard.</span>
+                </span><br>
+            </div>
+            <div class="servers">
+                <div style="width: 100%; display: table;">
+                    <div style="display: table-row">
+                        <div style="width: 600px; display: table-cell;">
+                            <h2>Servers</h2>
+                        </div>
+                        <div style="display: table-cell;"> <i
+                                style="float: right; font-size: 10px; color: #888888;">Only
+                                servers in which you have the <b>Manage
+                                    Server</b> permission will appear here.</i>
+                        </div>
                     </div>
-                    <div style="display: table-cell;"> <i style="float: right; font-size: 10px; color: #888888;">Only
-                            servers in which you have the <b>Manage Server</b> permission will appear here.</i> </div>
+                </div>
+                <div style="padding-top: 1px; padding-bottom: 20px; ">
+                    <hr class="hr">
+                </div>
+                <div class="server-grid">
                 </div>
             </div>
-            <div style="padding-top: 1px; padding-bottom: 20px; ">
-                <hr class="hr">
-            </div>
-            <div class="server-grid">
-            </div>
-        </div>
-    </section>
-</body>
-<script>
+        </section>
+    </body>
+    <script>
     window.onload = () => {
         function getCookie(name) {
             let value = `; ${document.cookie}`;
@@ -216,14 +227,31 @@
                                                         })
                                                     } else if (currentTab === "moderation") {
                                                         setTitle("./icons/Hammer.svg", "Discord Moderation", "Ducky's <b>Discord Moderation</b> module allows you to moderate your server with ease.")
-
+                                                        
                                                         const modRoleComponent = createComponent("Moderator Role", "modRoleComponent");
                                                         const modRoleSelect = document.createElement("div");
-                                                        modRoleSelect.className = "select"
-                                                        
+                                                        modRoleSelect.className = "custom-dropdown";
+
+                                                        const selectedRolesDiv = document.createElement("div");
+                                                        selectedRolesDiv.className = "selected-roles";
+                                                        selectedRolesDiv.innerHTML = "Select roles";
+
+                                                        selectedRolesDiv.addEventListener("click", function () {
+                                                            modRoleSelect.classList.toggle("active");
+                                                        });
+
+                                                        document.addEventListener("click", function (event) {
+                                                            if (!modRoleSelect.contains(event.target)) {
+                                                                modRoleSelect.classList.remove("active");
+                                                            }
+                                                        });
+
+                                                        const optionsContainer = document.createElement("div");
+                                                        optionsContainer.className = "options-container";
+
                                                         server.roles.forEach(role => {
                                                             const newOption = document.createElement("div");
-                                                            newOption.className = "option"
+                                                            newOption.className = "option";
                                                             newOption.id = role.id;
                                                             newOption.innerHTML = "@" + role.name;
                                                             newOption.style.color = "#" + role.color.toString(16).padStart(6, "0");
@@ -232,47 +260,50 @@
                                                                 newOption.style.color = "#99AAB5";
                                                             }
 
-                                                            if (server.config.modrole === role.id) {
-                                                                newOption.selected = true;
-                                                                if (role.color === 0) {
-                                                                    modRoleSelect.style.color = "#99AAB5";
-                                                                } else {
-                                                                    modRoleSelect.style.color = "#" + role.color.toString(16).padStart(6, "0");
-                                                                }
+                                                            newOption.addEventListener("click", function () {
+                                                                toggleRoleSelection(role.id, role.name);
+                                                            });
+
+                                                            optionsContainer.appendChild(newOption);
+                                                        });
+
+                                                        modRoleSelect.appendChild(selectedRolesDiv);
+                                                        modRoleSelect.appendChild(optionsContainer);
+                                                        modRoleComponent.appendChild(modRoleSelect);
+
+                                                        let selectedRoles = [];
+
+                                                        function toggleRoleSelection(roleId, roleName) {
+                                                            const roleIndex = selectedRoles.indexOf(roleId);
+                                                            
+                                                            if (roleIndex === -1) {
+                                                                selectedRoles.push(roleId);
+                                                            } else {
+                                                                selectedRoles.splice(roleIndex, 1);
                                                             }
 
-                                                            modRoleSelect.appendChild(newOption)
-                                                        })
+                                                            if (selectedRoles.length > 0) {
+                                                                selectedRolesDiv.innerHTML = selectedRoles.map(roleId => {
+                                                                    const role = server.roles.find(role => role.id === roleId);
+                                                                    return `@${role.name}`;
+                                                                }).join(", ");
+                                                            } else {
+                                                                selectedRolesDiv.innerHTML = "Select roles";
+                                                            }
 
-                                                        modRoleComponent.appendChild(modRoleSelect)
-
-                                                        modRoleSelect.addEventListener("change", () => {
-                                                            server.roles.forEach(role => {
-                                                                if (role.id === modRoleSelect.value) {
-                                                                    if (role.color === 0) {
-                                                                        modRoleSelect.style.color = "#99AAB5";
-                                                                    } else {
-                                                                        modRoleSelect.style.color = "#" + role.color.toString(16).padStart(6, "0");
-                                                                    }
-                                                                }
-                                                            })
-                                                            if (modRoleSelect.value && modRoleSelect.value !== server.config.modrole) {
-                                                                modRoleSelect.style.backgroundImage = 'url("./icons/Loading.gif")';
-                                                                setKey("modrole", modRoleSelect.value)
+                                                            setKey("modrole", selectedRoles)
                                                                 .then(data => {
                                                                     if (data.code === 200) {
-                                                                        server.config.modrole = modRoleSelect.value;
                                                                         modRoleSelect.style.backgroundImage = 'url("./icons/Success.svg")';
                                                                     } else {
                                                                         modRoleSelect.style.backgroundImage = 'url("./icons/Fail.svg")';
                                                                     }
-
                                                                     setTimeout(() => {
                                                                         modRoleSelect.style.backgroundImage = "";
-                                                                    }, 3000)
-                                                                })
-                                                            }
-                                                        })
+                                                                    }, 3000);
+                                                                });
+                                                        }
+
                                                     } else {
                                                         titleIcon.src = "";
                                                         title.textContent = "Unknown Tab";
