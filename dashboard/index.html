@@ -19,6 +19,10 @@
 </head>
 
 <body>
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>Loading servers...</p>
+    </div>
     <header>
         <a href="https://duckybot.xyz"><img class="logo" src="DuckyFull.svg" alt="Ducky Logo"></a>
         <nav>
@@ -315,6 +319,8 @@
                 document.getElementById("profilePicture").src = "https://cdn.discordapp.com/avatars/" + discord.id + "/" + discord.avatar + ".png"
                 document.getElementById("profilePictureNav").src = "https://cdn.discordapp.com/avatars/" + discord.id + "/" + discord.avatar + ".png"
 
+                loadingOverlay.style.display = 'flex';
+
                 fetch("https://glowworm-learning-leech.ngrok-free.app/servers/", {
                     method: "GET",
                     headers: {
@@ -324,6 +330,9 @@
                 })
                 .then(result => result.json())
                 .then(servers => {
+
+                    loadingOverlay.style.display = 'none';
+
                     servers.sort((a,b) => {
                         if (a.members > b.members) {
                             return -1
@@ -342,7 +351,7 @@
                             const overlay = document.createElement("div");
                             overlay.className = "overlay";
                             servergrid.appendChild(newdiv)
-                            
+
                                 if (!server.ducky) {
                                     overlay.style.display = 'block';
                                 }
