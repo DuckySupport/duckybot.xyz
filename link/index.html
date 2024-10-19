@@ -66,7 +66,7 @@
                 console.log("Exchanging code and linking account...")
                 loadingStatus("Exchanging authorization code and linking...")
 
-                fetch("http://duckyapi.xyz:8001/link", {
+                fetch("https://duckyapi.xyz/link", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -93,7 +93,7 @@
                 .then(response => {
                     const DiscordID = response.id;
 
-                    fetch('http://duckyapi.xyz:8001/getlink', {
+                    fetch('https://duckyapi.xyz/getlink', {
                         method: "GET",
                         headers: {
                             "ngrok-skip-browser-warning": "69420",
