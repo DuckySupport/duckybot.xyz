@@ -49,7 +49,7 @@ nav a:hover {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background: url("DuckyBackground.webp") no-repeat center center / cover;
+    background: url("DuckyBackground.avif") no-repeat center center / cover;
     padding: 5rem 2rem;
     
 }
