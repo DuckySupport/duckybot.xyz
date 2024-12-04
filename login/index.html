@@ -69,18 +69,39 @@
                     authorization: `Bearer ${loggedin}`,
                 },
             })
-            .then(result => result.json())
-            .then(response => {
-                success("Logged In", `You're already logged in as <bold>${response.global_name || response.username}</bold>.`)
+            .then(result => {
+                if (!result.ok) {
+                    console.error("Discord API did not return 200, clearing cookie.");
+                    document.cookie = "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+                    fail("Login Required", "Your session has expired or is invalid. Please log in again.");
+                    const oauthurl = "https://discord.com/oauth2/authorize?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flogin&scope=identify+guilds";
+                    loadingStatus("Redirecting you to Discord...");
+                    console.log("Redirecting to " + oauthurl + "...");
+                    window.location.href = oauthurl;
+                } else {
+                    return result.json();
+                }
             })
-            .catch(console.error)
-
-            if (redirectAfter) {
-                setSub(`Redirecting you to https://duckybot.xyz/${redirectAfter}...`)
-                console.log("Redirecting to https://duckybot.xyz/" + redirectAfter + "...");
-                window.location.href = `https://duckybot.xyz/${redirectAfter}`;
-            }
-            return
+            .then(response => {
+                if (response) {
+                    success("Logged In", `You're already logged in as <bold>${response.global_name || response.username}</bold>.`);
+                    if (redirectAfter) {
+                        setSub(`Redirecting you to https://duckybot.xyz/${redirectAfter}...`);
+                        console.log("Redirecting to https://duckybot.xyz/" + redirectAfter + "...");
+                        window.location.href = `https://duckybot.xyz/${redirectAfter}`;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                document.cookie = "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+                fail("Login Error", "An error occurred while verifying your login. Please try logging in again.");
+                const oauthurl = "https://discord.com/oauth2/authorize?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flogin&scope=identify+guilds";
+                loadingStatus("Redirecting you to Discord...");
+                console.log("Redirecting to " + oauthurl + "...");
+                window.location.href = oauthurl;
+            });
+            return;
         }
         const fragment = new URLSearchParams(window.location.hash.slice(1))
         const [accessToken, tokenType, state] = [fragment.get('access_token'), fragment.get('token_type'), fragment.get('state')]
