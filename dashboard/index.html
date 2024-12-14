@@ -115,7 +115,6 @@
                                 fetch("https://api.duckybot.xyz/servers/", {
                                     method: "GET",
                                     headers: {
-                                        "ngrok-skip-browser-warning": "69420",
                                         "discord-code": loggedin
                                     }
                                 })
@@ -138,7 +137,6 @@
                                                         method: "POST",
                                                         headers: {
                                                             "Content-Type": "application/json",
-                                                            "ngrok-skip-browser-warning": "69420"
                                                         },
                                                         body: JSON.stringify({
                                                         serverid: server.id,
@@ -335,7 +333,6 @@
                 fetch("https://api.duckybot.xyz/servers/", {
                     method: "GET",
                     headers: {
-                        "ngrok-skip-browser-warning": "69420",
                         "discord-code": loggedin
                     }
                 })
