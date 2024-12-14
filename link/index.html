@@ -70,7 +70,6 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "ngrok-skip-browser-warning": "69420",
                     },
                     body: JSON.stringify({ auth_code: authcode, discord_code: loggedin })
                 })
@@ -110,7 +109,6 @@
                         fetch('https://api.duckybot.xyz/getlink', {
                             method: "GET",
                             headers: {
-                                "ngrok-skip-browser-warning": "69420",
                                 "discord-id": DiscordID
                             }
                         })
