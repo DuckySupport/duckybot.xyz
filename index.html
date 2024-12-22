@@ -1,67 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ducky</title>
-    <link rel="icon" type="image/x-icon" href="/Ducky.svg">
-    <meta name="description" content="Power your server with Ducky, a multi-purpose discord bot focused on moderating your Discord and ER:LC server.">
+    <link rel="icon" type="image/x-icon" href="/Ducky.svg" />
+    <meta
+      name="description"
+      content="Power your server with Ducky, a multi-purpose discord bot focused on moderating your Discord and ER:LC server."
+    />
     <meta content="Ducky Bot" property="og:title" />
-    <meta content="Power your server with Ducky, a multi-purpose bot focused on moderating your Discord and ER:LC server." property="og:description" />
+    <meta
+      content="Power your server with Ducky, a multi-purpose bot focused on moderating your Discord and ER:LC server."
+      property="og:description"
+    />
     <meta content="https://duckybot.xyz/" property="og:url" />
     <meta content="Ducky.webp" property="og:image" />
     <meta content="#F5FF82" data-react-helmet="true" name="theme-color" />
-    <link rel="stylesheet" href="styles.css">
-    <link rel="canonical" href="https://duckybot.xyz"/>
-</head>
-<body>
-    <nav>
-        <a href="/"><img src="DuckyText.svg" alt="DuckyText" class="logo-img"></a>
-        <div class="nav-items">
-            <a href="/">Home</a>
-            <a href="/status">Status</a>
-            <a href="/docs">Documentation</a>
-            <a href="/invite">Invite</a>
-            <a href="/support">Support</a>
-        </div>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="canonical" href="https://duckybot.xyz" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="https://duckybot.xyz/" class="logo">
+          <img src="Ducky.svg" alt="DuckyBot Logo" style="height: 30px" />
+          <img src="DuckyText.svg" alt="Duckybot Text" style="height: 50px" />
+        </a>
+        <ul class="nav-links">
+          <li><a href="https://duckybot.xyz/">Home</a></li>
+          <li><a href="https://status.duckybot.xyz/">Status</a></li>
+          <li><a href="https://docs.duckybot.xyz/docs">Documentation</a></li>
+          <li><a href="plus.html">Ducky Plus</a></li>
+          <li>
+            <a
+              href="https://discord.com/oauth2/authorize?client_id=1257389588910182411&permissions=8&integration_type=0&scope=bot"
+              >Invite</a
+            >
+          </li>
+        </ul>
+        <a href="https://discord.com/invite/PgycCBTQDg" class="cta-btn"
+          >Support</a
+        >
+      </div>
     </nav>
-  
-    <div id="outage-banner" class="outage-banner" style="display: none;">
-        Bot Outages Reported <a href='/status'>Learn More</a>
-    </div>
 
-    <section class="hero">
-        <div class="hero-container">
-            <div class="column-left">
-                <img src="DuckyText.svg" alt="DuckyText" class="hero-logo">
-                <p class="hero-tagline">Multi-purpose discord bot focused on moderating your Discord and ER:LC server.</p>
-                <div class="buttons">
-                    <a href="/invite">
-                        <button class="cta-button">Add Ducky</button>
-                    </a>
-                    <a href="/support">
-                        <button class="cta-button secondary">Support</button>
-                    </a>
-                </div>
-                <b class="about-title">About Ducky</b>
-                <p class="about-description">
-                    Ducky is a bot created by <a href="https://discord.com/users/598958193032560642">Troptop</a> and <a href="https://discord.com/users/782235114858872854">bobbibones</a> with <a href="https://github.com/SinisterRectus/Discordia">Discordia</a>, the Discord API wrapper for Lua. Ducky is in Beta, meaning bugs can and will appear. If you find a bug, need support, would like to suggest a feature, and more, join the <a href="https://duckybot.xyz/support">Ducky Support</a> server.
-            </div>
-            <div class="column-right">
-                <a href="duckgame.html" target="_blank">
-                    <img src="./Ducky.svg" alt="duckylogo" class="hero-image">
-                </a>
-            </div>
-        </div>
+    <section class="main-section">
+      <div class="text-content">
+        <h1>Welcome to Ducky!</h1>
+        <p>
+          Ducky is your all-in-one solution for managing and moderating your
+          Discord servers. Simplify server tasks, engage your community, and
+          make your server a better place!
+        </p>
+        <a href="#" class="cta-btn">Get Started</a>
+      </div>
+      <div class="image-content">
+        <img src="image1.png" alt="Image 1" class="image image1" />
+        <img src="image2.png" alt="Image 2" class="image image2" />
+        <img src="image3.png" alt="Image 3" class="image image3" />
+      </div>
     </section>
 
-    <footer>
-        <div class="footer-links">
-            <a href="/legal/terms">Terms of Service</a>
-            <a href="/legal/privacy">Privacy Policy</a>
+    <section class="statistics-section">
+      <div class="statistics-grid">
+        <div class="stat-card">
+          <i class="fas fa-server stat-icon"></i>
+          <h3>700+</h3>
+          <p>Discord Servers</p>
         </div>
-        <br>
-        <p>&copy; 2024 DUCKY BOT</p>
-    </footer>
-</body>
+        <div class="stat-card">
+          <i class="fas fa-users stat-icon"></i>
+          <h3>130,000+</h3>
+          <p>Members Managed</p>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-link stat-icon"></i>
+          <h3>600+</h3>
+          <p>Roblox Links</p>
+        </div>
+      </div>
+    </section>
+
+    <script src="script.js"></script>
+  </body>
 </html>
