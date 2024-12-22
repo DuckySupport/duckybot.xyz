@@ -20,7 +20,7 @@ body {
 #dino {
     width: 40px;
     height: 40px;
-    background: url('Ducky.svg') no-repeat center center / contain;
+    background: url('/images/Ducky.svg') no-repeat center center / contain;
     position: absolute;
     bottom: 0;
     left: 50px;
@@ -48,7 +48,7 @@ body {
     border-width: 2px;
     border-color: red;
     border-style: dashed;
-    background: url('gooserun.gif') no-repeat center center / contain, #000;
+    background: url('/images/gooserun.gif') no-repeat center center / contain, #000;
     position: absolute;
     right: 0;
     bottom: 0;
