@@ -3,26 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ducky - Plus Features</title>
+    <title>Ducky Plus+</title>
     <link rel="icon" type="image/x-icon" href="../images/plus.png" />
     <meta
       name="description"
-      content="Support the development of Ducky and unlock exclusive features that take your experience to the next level."
+      content="Upgrade to Ducky Plus+ and unlock exclusive features designed to supercharge your server."
     />
     <meta content="Ducky Plus+" property="og:title" />
     <meta
-      content="Support the development of Ducky and unlock exclusive features that take your experience to the next level."
+      content="Upgrade to Ducky Plus+ and unlock exclusive features designed to supercharge your server."
       property="og:description"
     />
     <meta content="https://duckybot.xyz/plus" property="og:url" />
-    <meta content="/images/plus.png" property="og:image" />
+    <meta content="../images/plus.png" property="og:image" />
     <meta content="#EE248F" data-react-helmet="true" name="theme-color" />
     <link rel="stylesheet" href="styles.css" />
-    <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -30,7 +29,11 @@
       rel="stylesheet"
     />
   </head>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
   <body>
+    <!-- Navbar -->
     <nav class="navbar">
       <div class="navbar-container">
         <a href="/" class="logo">
@@ -52,105 +55,127 @@
           <li><a href="/plus">Ducky Plus+</a></li>
           <li><a href="/invite">Invite</a></li>
         </ul>
-        <!-- Replacing Support button with Shop button -->
-        <a
-          href="https://www.roblox.com/games/120245327552791/Duckys-Shop"
-          class="cta-btn shop-btn"
-          >Shop</a
-        >
+        <a href="/support" class="cta-btn">Support</a>
       </div>
     </nav>
 
-    <section class="features-section">
-      <h2 class="features-title">
-        Why Choose
-        <img
-          src="../images/plus.png"
-          alt="Ducky Plus+"
-          class="ducky-icon"
-          size="50px"
-        />
-        <span class="highlight-gradient">Ducky Plus+</span>?
-      </h2>
-      <p class="features-subtitle">
-        Support the development of Ducky and unlock exclusive features that take
-        your experience to the next level.
+    <!-- Hero Section -->
+    <section class="hero-section premium">
+      <div class="hero-content">
+        <h1>
+          Unlock the Power of
+          <span class="highlight-gradient">Ducky Plus+</span>
+        </h1>
+        <p>
+          Elevate your Discord and ER:LC experience with exclusive features
+          designed to enhance server management and member engagement.
+        </p>
+        <a
+          href="https://www.roblox.com/games/120245327552791/Duckys-Shop"
+          class="cta-btn"
+          >Get Started Now</a
+        >
+      </div>
+      <div class="hero-image">
+        <img src="../images/plus.png" alt="Ducky Plus+ Banner" />
+      </div>
+    </section>
+
+    <!-- Perks Section -->
+    <section class="perks-section">
+      <h2 class="perks-title">Exclusive Perks of Ducky Plus+</h2>
+      <p class="perks-subtitle">
+        Discover the unique advantages of upgrading to Ducky Plus+.
       </p>
-      <div class="features-grid">
-        <div class="feature-card">
+      <div class="perks-grid">
+        <div class="perk-card" data-aos="fade-up">
           <h3>ERLC Player Panel</h3>
           <p>
-            Manage a player effortlessly with the ERLC player panel, accessible
-            via <code>/erlc panel &lt;player&gt;</code>.
+            Effortlessly manage players via
+            <code>/erlc panel &lt;player&gt;</code>.
           </p>
         </div>
-        <div class="feature-card">
-          <h3>Required Servers for Giveaways</h3>
+        <div class="perk-card" data-aos="fade-up" data-aos-delay="100">
+          <h3>Export Embed Command</h3>
           <p>
-            Ensure users are in the required server before they can enter
-            giveaways.
-            <span class="notice"
-              >Note: Ducky must be added to the required server.</span
-            >
-          </p>
-        </div>
-        <div class="feature-card">
-          <h3>Export Embed Message Command</h3>
-          <p>
-            Right-click on any message with an embed and export it into a Ducky
+            Export any embed message with a simple right-click to a Ducky
             Exportable.
           </p>
         </div>
-        <div class="feature-card">
-          <h3>ERLC Command Queueing</h3>
+        <div class="perk-card" data-aos="fade-up" data-aos-delay="200">
+          <h3>Queue Offline Commands</h3>
           <p>
-            If your server is offline, commands are automatically queued and
-            executed when the server goes online.
+            Queue ER:LC commands to execute automatically when the server goes
+            online.
           </p>
         </div>
-        <div class="feature-card">
-          <h3>Increased /erlc Ratelimits</h3>
-          <p>
-            Run your <code>/erlc</code> commands faster without interruptions.
-          </p>
+        <div class="perk-card" data-aos="fade-up" data-aos-delay="300">
+          <h3>Priority Support</h3>
+          <p>Access exclusive support channels and get priority resolutions.</p>
         </div>
-        <div class="feature-card">
-          <h3>Increased Automations Limit</h3>
+        <div class="perk-card" data-aos="fade-up" data-aos-delay="400">
+          <h3>Enhanced Limits</h3>
           <p>
-            Create up to 50 automations (10 actions per automation), compared to
-            the normal limit of 5.
-          </p>
-        </div>
-        <div class="feature-card">
-          <h3>Increased Autoresponders Limit</h3>
-          <p>
-            Create up to 30 autoresponders, compared to the normal limit of 3.
-          </p>
-        </div>
-        <div class="feature-card">
-          <h3>Increased Reaction Boards Limit</h3>
-          <p>
-            Create unlimited reaction boards for your server, compared to the
-            normal limit of just 1.
-          </p>
-        </div>
-        <div class="feature-card">
-          <h3>Increased Ticket Form Questions</h3>
-          <p>
-            Add up to 5 questions to your ticket subject pre-open forms,
-            compared to the normal limit of 2.
-          </p>
-        </div>
-        <div class="feature-card">
-          <h3>Special Support Server Perks</h3>
-          <p>
-            Enjoy the <span class="highlight">@Ducky Plus+</span> role with
-            exclusive access to <code>🌟・plus-chat</code> and priority support.
+            Create up to 50 automations, 30 autoresponders, and unlimited
+            reaction boards.
           </p>
         </div>
       </div>
     </section>
 
+    <!-- Comparison Table -->
+    <section class="comparison-section">
+      <h2 class="comparison-title">Compare Plans</h2>
+      <table class="comparison-table" data-aos="fade-up">
+        <thead>
+          <tr>
+            <th>Features</th>
+            <th>Free</th>
+            <th>Ducky Plus+</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ERLC Player Panel</td>
+            <td><i class="fas fa-times"></i></td>
+            <td><i class="fas fa-check"></i></td>
+          </tr>
+          <tr>
+            <td>Command Queueing</td>
+            <td><i class="fas fa-times"></i></td>
+            <td><i class="fas fa-check"></i></td>
+          </tr>
+          <tr>
+            <td>Embed Export</td>
+            <td><i class="fas fa-times"></i></td>
+            <td><i class="fas fa-check"></i></td>
+          </tr>
+          <tr>
+            <td>Reaction Boards</td>
+            <td>1 Board</td>
+            <td>Unlimited Boards</td>
+          </tr>
+          <tr>
+            <td>Priority Support</td>
+            <td><i class="fas fa-times"></i></td>
+            <td><i class="fas fa-check"></i></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Call-to-Action Section -->
+    <section class="cta-section">
+      <h2>Upgrade to Ducky Plus+ Today!</h2>
+      <p>Support development and unlock powerful features for your server.</p>
+      <a
+        href="https://www.roblox.com/games/120245327552791/Duckys-Shop"
+        class="cta-btn"
+        >Get Ducky Plus+</a
+      >
+    </section>
+
+    <!-- Footer -->
     <footer class="footer">
       <div class="footer-container">
         <div class="footer-links">
@@ -181,29 +206,8 @@
         <p class="footer-text">&copy; 2024 Ducky. All Rights Reserved.</p>
       </div>
     </footer>
-    <script src="script.js"></script>
     <script>
-      // JavaScript for opening and closing the modal
-      const shopBtn = document.querySelector(".shop-btn");
-      const modal = document.getElementById("shop-modal");
-      const closeModalBtn = modal.querySelector(".close-modal");
-
-      // Open modal when Shop button is clicked
-      shopBtn.addEventListener("click", () => {
-        modal.style.display = "flex"; // Display modal
-      });
-
-      // Close modal when Close button is clicked
-      closeModalBtn.addEventListener("click", () => {
-        modal.style.display = "none"; // Hide modal
-      });
-
-      // Optional: Close modal when clicking outside the modal content
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) {
-          modal.style.display = "none";
-        }
-      });
+      AOS.init();
     </script>
   </body>
 </html>
