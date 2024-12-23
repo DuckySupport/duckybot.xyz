@@ -22,16 +22,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <!-- Navbar -->
     <nav class="navbar">
       <div class="navbar-container">
         <a href="/" class="logo">
@@ -51,31 +51,74 @@
           <li><a href="/status">Status</a></li>
           <li><a href="/docs">Documentation</a></li>
           <li><a href="/plus">Ducky Plus+</a></li>
-          <li>
-            <a href="/invite">Invite</a>
-          </li>
+          <li><a href="/invite">Invite</a></li>
         </ul>
         <a href="/support" class="cta-btn">Support</a>
       </div>
     </nav>
 
-    <section class="main-section">
-      <div class="text-content">
-        <h1>Hiya, I'm <b>Ducky</b>.</h1>
+    <!-- Hero Section -->
+    <section class="hero-section animate fade-in">
+      <div class="hero-content">
+        <h1>Elevate Your Server with <b class="cool-text">Ducky</b></h1>
         <p>
-          Power your server with Ducky, a multi-purpose discord bot focused on
-          moderating your Discord and ER:LC server.
+          A multi-purpose Discord bot designed for moderation, ER:LC
+          integration, and seamless automation.
         </p>
-        <a href="/invite" class="cta-btn">Invit Ducky!</a>
+        <div class="hero-buttons">
+          <a href="/invite" class="cta-btn">Invite Ducky</a>
+          <a href="/docs" class="secondary-btn">Learn More</a>
+        </div>
       </div>
-      <div class="image-content">
-        <img src="images/image1.png" alt="Image 1" class="image image1" />
-        <img src="images/image2.png" alt="Image 2" class="image image2" />
-        <img src="images/image3.png" alt="Image 3" class="image image3" />
+      <div class="hero-image">
+        <img src="images/Ducky.svg" alt="Ducky Hero Image" />
       </div>
     </section>
 
-    <section class="statistics-section">
+    <!-- Features Section -->
+    <section class="features-section animate slide-in">
+      <h2 class="features-title">
+        Why Choose <span class="highlight">Ducky</span>?
+      </h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <i class="fas fa-shield-alt feature-icon"></i>
+          <h3>Advanced Moderation</h3>
+          <p>
+            Keep your server safe with customizable moderation tools, audit
+            logging, and anti-spam features.
+          </p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-gamepad feature-icon"></i>
+          <h3>ER:LC Integration</h3>
+          <p>
+            Seamlessly manage your ER:LC server with custom commands, player
+            panels, and session tracking.
+          </p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-robot feature-icon"></i>
+          <h3>Automation</h3>
+          <p>
+            Simplify server management with powerful automations,
+            autoresponders, and custom workflows.
+          </p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-link feature-icon"></i>
+          <h3>Roblox Links</h3>
+          <p>
+            Easily link Roblox accounts with Discord members and manage
+            server-specific permissions.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="statistics-section animate fade-up">
+      <h2 class="statistics-title">Trusted by Communities Worldwide</h2>
       <div class="statistics-grid">
         <div class="stat-card">
           <i class="fas fa-server stat-icon"></i>
@@ -95,6 +138,17 @@
       </div>
     </section>
 
+    <!-- Call-to-Action Section -->
+    <section class="cta-section animate fade-in">
+      <h2>Ready to Supercharge Your Server?</h2>
+      <p>
+        Join the growing community of Ducky users and unlock your server's full
+        potential.
+      </p>
+      <a href="/plus" class="cta-btn">Upgrade to Ducky Plus+</a>
+    </section>
+
+    <!-- Footer -->
     <footer class="footer">
       <div class="footer-container">
         <div class="footer-links">
@@ -126,6 +180,25 @@
       </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+      // Scroll Animation
+      const animateElements = document.querySelectorAll(".animate");
+      const isInViewport = (element) => {
+        const rect = element.getBoundingClientRect();
+        return (
+          rect.top <=
+          (window.innerHeight || document.documentElement.clientHeight)
+        );
+      };
+      const handleScrollAnimation = () => {
+        animateElements.forEach((el) => {
+          if (isInViewport(el)) {
+            el.classList.add("show");
+          }
+        });
+      };
+      window.addEventListener("scroll", handleScrollAnimation);
+      handleScrollAnimation();
+    </script>
   </body>
 </html>
