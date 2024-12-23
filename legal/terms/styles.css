@@ -102,6 +102,8 @@ a.cta-btn {
 
 .cta-btn:hover {
   background-color: #ccff15;
+  color: black;
+
   transform: scale(1.05);
 }
 
