@@ -39,7 +39,7 @@ body {
 }
 
 .logo span {
-  color: yellow;
+  color: "#F5FF82";
 }
 
 .nav-links {
@@ -71,7 +71,7 @@ body {
 }
 
 .nav-links a:hover {
-  color: yellow;
+  color: "#F5FF82";
 }
 
 .nav-links a::after {
@@ -81,7 +81,7 @@ body {
   bottom: -4px;
   width: 0;
   height: 2px;
-  background-color: yellow;
+  background-color: "#F5FF82";
   transition: width 0.3s ease;
 }
 
@@ -90,7 +90,7 @@ body {
 }
 
 a.cta-btn {
-  background-color: yellow;
+  background-color: "#F5FF82";
   color: black;
   text-decoration: none;
   padding: 10px 30px;
@@ -305,7 +305,7 @@ footer a:hover::after {
 }
 
 .footer-link:hover {
-  color: yellow;
+  color: "#F5FF82";
 }
 
 .footer-links a::after {
@@ -315,7 +315,7 @@ footer a:hover::after {
   bottom: -4px;
   width: 0;
   height: 2px;
-  background-color: yellow;
+  background-color: "#F5FF82";
   transition: width 0.3s ease;
 }
 
@@ -337,7 +337,7 @@ footer a:hover::after {
 }
 
 .social-link:hover {
-  color: yellow;
+  color: "#F5FF82";
   transform: scale(1.1);
 }
 
