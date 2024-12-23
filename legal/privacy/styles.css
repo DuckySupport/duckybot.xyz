@@ -1,10 +1,9 @@
-/* General Styles */
 body {
   font-family: "Inter", sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #121212; /* Dark background for readability */
-  color: #e0e0e0; /* Light gray for better contrast */
+  background-color: #121212;
+  color: #e0e0e0;
   line-height: 1.6;
 }
 
@@ -125,7 +124,6 @@ a.cta-btn {
   border-radius: 2px;
 }
 
-/* Privacy Policy Section */
 .privacy-policy {
   padding: 60px 20px;
   max-width: 800px;
@@ -187,13 +185,11 @@ a:hover {
   color: #4fb4ff;
 }
 
-/* Code and Highlighting */
 strong {
   color: #ffd700;
   font-weight: bold;
 }
 
-/* Footer */
 footer {
   background-color: #1e1e1e;
   padding: 20px;
@@ -213,7 +209,6 @@ footer a:hover {
   color: #4fb4ff;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .privacy-container {
     padding: 30px;
@@ -253,7 +248,6 @@ footer a:hover {
   }
 }
 
-/* Footer */
 footer {
   background-color: #1e1e1e;
   padding: 20px;
@@ -276,7 +270,6 @@ footer a:hover {
   color: yellow;
 }
 
-/* Underline Effect */
 footer a::after {
   content: "";
   position: absolute;
@@ -284,12 +277,12 @@ footer a::after {
   bottom: -2px;
   width: 0;
   height: 2px;
-  background-color: yellow; /* Same color as the hover effect */
+  background-color: yellow;
   transition: width 0.3s ease;
 }
 
 footer a:hover::after {
-  width: 100%; /* Full underline on hover */
+  width: 100%;
 }
 
 .footer-container {

@@ -433,12 +433,7 @@ html {
 }
 
 .cool-text {
-  background: linear-gradient(
-    90deg,
-    #ffeb00,
-    /* Yellow */ #ffa600,
-    /* Orange */ #ff0000 /* Red */
-  );
+  background: linear-gradient(90deg, #ffeb00, #ffa600, #ff0000);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: bold;
@@ -455,14 +450,12 @@ html {
   }
 }
 
-/* General Animate Class (Hidden by Default) */
 .animate {
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.8s ease-out;
 }
 
-/* Fade-In Animation */
 .animate.fade-in {
   opacity: 0;
   transform: translateY(20px);
@@ -473,7 +466,6 @@ html {
   transform: translateY(0);
 }
 
-/* Slide-In Animation */
 .animate.slide-in {
   opacity: 0;
   transform: translateX(-20px);
@@ -484,7 +476,6 @@ html {
   transform: translateX(0);
 }
 
-/* Fade-Up Animation */
 .animate.fade-up {
   opacity: 0;
   transform: translateY(50px);
@@ -500,5 +491,5 @@ html {
 }
 
 .animate.show {
-  transition-delay: 0.2s; /* Add a slight delay for a staggered effect */
+  transition-delay: 0.2s;
 }
