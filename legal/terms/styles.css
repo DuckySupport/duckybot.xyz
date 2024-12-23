@@ -1,10 +1,9 @@
-/* General Styles */
 body {
   font-family: "Inter", sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #121212; /* Dark theme background */
-  color: #e0e0e0; /* Light text for contrast */
+  background-color: #121212;
+  color: #e0e0e0;
   line-height: 1.6;
 }
 
@@ -126,7 +125,6 @@ a.cta-btn {
   border-radius: 2px;
 }
 
-/* ToS Section */
 .tos {
   padding: 60px 20px;
   max-width: 800px;
@@ -184,7 +182,6 @@ ul li {
   margin-bottom: 10px;
 }
 
-/* Links */
 a {
   color: #77cdff;
   text-decoration: none;
@@ -196,13 +193,11 @@ a:hover {
   color: #4fb4ff;
 }
 
-/* Code and Highlighting */
 strong {
   color: #ffd700;
   font-weight: bold;
 }
 
-/* Footer */
 footer {
   background-color: #1e1e1e;
   padding: 20px;
@@ -225,7 +220,6 @@ footer a:hover {
   color: #4fb4ff;
 }
 
-/* Underline Effect */
 footer a::after {
   content: "";
   position: absolute;
@@ -233,15 +227,14 @@ footer a::after {
   bottom: -2px;
   width: 0;
   height: 2px;
-  background-color: #4fb4ff; /* Same color as the hover effect */
+  background-color: #4fb4ff;
   transition: width 0.3s ease;
 }
 
 footer a:hover::after {
-  width: 100%; /* Full underline on hover */
+  width: 100%;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .tos-container {
     padding: 30px;

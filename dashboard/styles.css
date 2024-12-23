@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background-color: #111111;
   color: white;
 }
@@ -14,11 +14,11 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1px 1px; /* Smallest practical padding */
-  background-color: #2F2F2F;
+  padding: 1px 1px;
+  background-color: #2f2f2f;
   border-bottom-style: solid;
   border-color: #444444;
-  height: 70px; /* Explicit height to further control the header thickness */
+  height: 70px;
 }
 
 .logo {
@@ -87,7 +87,6 @@ nav ul li a {
   gap: 10px;
 }
 
-/* Square server box using padding-top trick */
 .server {
   background-color: #222222;
   text-align: center;
@@ -95,12 +94,12 @@ nav ul li a {
   border-radius: 25px;
   border-width: 3px;
   border-style: solid;
-  border-color: #2F2F2F;
+  border-color: #2f2f2f;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative; /* For absolute positioning inside */
+  position: relative;
   width: 200px;
   height: 200px;
 }
@@ -153,11 +152,14 @@ nav ul li a {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-/* Mobile Responsive Section */
 @media only screen and (max-width: 768px) {
   header {
     flex-direction: column;
@@ -188,12 +190,12 @@ nav ul li a {
   }
 
   .server-grid {
-    grid-template-columns: 1fr; /* Stacks the servers vertically */
+    grid-template-columns: 1fr;
   }
 
   .server {
-    width: 100%; /* Ensure full width on mobile */
-    padding-top: 100%; /* Keep square shape on mobile */
+    width: 100%;
+    padding-top: 100%;
   }
 
   .server img {
