@@ -1,117 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ducky Privacy Policy</title>
-    <link rel="icon" type="image/x-icon" href="https://duckybot.xyz/Ducky.svg">
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://duckybot.xyz/Ducky.svg"
+    />
     <meta content="Ducky Bot Privacy Policy" property="og:title" />
-    <meta content="The Privacy Policy for Ducky Bot." property="og:description" />
+    <meta
+      content="The Privacy Policy for Ducky Bot."
+      property="og:description"
+    />
     <meta content="https://duckybot.xyz/legal/privacy" property="og:url" />
     <meta content="Ducky.svg" property="og:image" />
     <meta content="#77CDFF" data-react-helmet="true" name="theme-color" />
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <nav>
-        <a href="/"><img src="https://duckybot.xyz/DuckyText.svg" alt="DuckyText" class="nav-logo"></a>
-        <div class="nav-items">
-            <a href="/">Home</a>
-            <a href="/status">Status</a>
-            <a href="/docs">Documentation</a>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="/" class="logo">
+          <img
+            src="../../images/Ducky.svg"
+            alt="DuckyBot Logo"
+            style="height: 30px"
+          />
+          <img
+            src="../../images/DuckyText.svg"
+            alt="Duckybot Text"
+            style="height: 50px"
+          />
+        </a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/status">Status</a></li>
+          <li><a href="/docs">Documentation</a></li>
+          <li><a href="/plus">Ducky Plus+</a></li>
+          <li>
             <a href="/invite">Invite</a>
-            <a href="/support">Support</a>
-        </div>
+          </li>
+        </ul>
+        <a href="/support" class="cta-btn">Support</a>
+      </div>
     </nav>
 
     <section class="privacy-policy">
-        <div class="privacy-container">
-            <h1>Privacy Policy</h1>
+      <div class="privacy-container">
+        <h1>Privacy Policy</h1>
 
-            <div class="policy-info">
-                <p><strong>Effective Date:</strong> September 29, 2024</p>
-                <p><strong>Last Updated:</strong> December 19, 2024</p>
-            </div>
-    
-            <h2>Definitions</h2>
-            <p>For the purposes of this Privacy Policy:</p>
-            <ul>
-                <li><strong>Bot</strong> refers to the Ducky Discord bot and any services provided by it within Discord.</li>
-                <li><strong>Ducky Developers</strong> (also referred to as "We," "Us," or "Our") means the individuals responsible for creating, maintaining, and supporting the Ducky bot, including Troptop, bobbibones, and rae, as listed in this document.</li>
-                <li><strong>Server</strong> means a community space within Discord where Ducky operates, containing various channels, members, roles, and configuration settings.</li>
-                <li><strong>Server Data</strong> refers to information Ducky collects from a Discord server, such as Server ID, Server Name, Member Count, and Role Count, as detailed in the Data Collection section.</li>
-                <li><strong>User Data</strong> refers to any information that identifies an individual using Ducky, such as User ID, Username, and data collected during interactions.</li>
-                <li><strong>Interaction</strong> refers to an action initiated by a user to perform a function with Ducky, like using a slash or text command, button press, text input, and select menu selection.</li>
-                <li><strong>Command</strong> refers to an trigger by the user to the bot, executing a specific function.</li>
-                <li><strong>Audit Logging</strong> refers to Ducky's collection of certain server events for record-keeping purposes, including message edits, deletions, role changes, and channel activity.</li>
-                <li><strong>Support Ticket</strong> means a request made by a user through the Ducky Support server to obtain assistance, including requests for data access or data deletion.</li>
-                <li><strong>You</strong> refers to the individual using Ducky, or the server owner or representative who configures Ducky for a server.</li>
-            </ul>
-    
-            <h2>Agreement</h2>
-            <p>By using Ducky, you agree to the terms of this Privacy Policy. Discord does not provide an easy way to notify all of our users, therefore you may join the <a href="https://duckybot.xyz/support">Ducky Support server</a> and select the "Announcements" ping in the server onboarding. Doing so will get you pinged in #📣・shouts when we change our ToS or privacy policy.</p>
-    
-            <h2>Data Collection</h2>
-            <p>Ducky collects data from the server and user through its setup command and any interaction with the setup command. The data collected includes, but is not limited to:</p>
-            <ul>
-                <li>Server ID</li>
-                <li>Server Name</li>
-                <li>Server Owner & Server Owner ID</li>
-                <li>Server Membercount</li>
-                <li>Server Rolecount</li>
-                <li>Server Channelcount</li>
-                <li>User ID</li>
-                <li>Username</li>
-            </ul>
-            <p>Ducky may also collect additional data provided through server configurations, such as:</p>
-            <ul>
-                <li>ER:LC API Key</li>
-                <li>Roles</li>
-                <li>Channels</li>
-                <li>Timestamps</li>
-                <li>In-game server information (via session configurations)</li>
-                <li>Select menu inputs</li>
-                <li>Text input data</li>
-            </ul>
-            <p>Based on server configurations, Ducky may also collect data for audit logging purposes, including:</p>
-            <ul>
-                <li>Message edit and deleted content history</li>
-                <li>Role creation/deletion and affected roles</li>
-                <li>Channel creation/deletion and affected channels</li>
-                <li>Reaction add/remove and affected messages/reactions</li>
-                <li>Member join/leave and affected members</li>
-                <li>Built-in Discord Audit Logs</li>
-            </ul>
-    
-            <h2>Command Usage and Server Activity Logs</h2>
-            <p>For debugging purposes, Ducky logs command usage details, including:</p>
-            <ul>
-                <li>Username and User ID of the user executing the command</li>
-                <li>Command name and prefix or slash indicator</li>
-                <li>Timestamp of the command execution</li>
-                <li>Server name where the command was executed</li>
-            </ul>
-            <p>Ducky also logs server activity when it is added to or removed from a server, including:</p>
-            <ul>
-                <li>Server logo</li>
-                <li>Server name and Server ID</li>
-                <li>Server owner’s name and User ID</li>
-                <li>Server member count at the time of addition or removal</li>
-            </ul>
-    
-            <h2>Storage of Data</h2>
-            <p>Your data is securely stored in a JSON file, accessible only by Ducky Developers, including Troptop (<a href="https://discord.com/users/598958193032560642">@literally.nick</a>), bobbibones (<a href="https://discord.com/users/782235114858872854">@bobbibones</a>), and rae (<a href="https://discord.com/users/252171218281693185">@error40440404040404040404</a>).</p>
-            <p>Access to your data is limited to debugging purposes, but we will never view sensative information (such as your PRC API key).</p>
-            <p>Server Data is retained for up to 7 days after Ducky is removed from a server. After this period, all associated Server Data is permanently deleted from our systems.</p>
-    
-            <h2>Access to Data</h2>
-            <p>Your data is not shared or sold to third parties. Ducky Developers may look up any not sensative data for developing and debug pruposes.</p>
-            <p>If you would like a copy of your data, please open a support ticket in the <a href="https://duckybot.xyz/support">Ducky Support server</a>.</p>
-    
-            <h2>Data Removal Requests</h2>
-            <p>If you would like to request the permanent deletion of your data, please open a support ticket in the <a href="https://duckybot.xyz/support">Ducky Support server</a>. This action is irreversible.</p>
-            <p>Requesting data deletion will also remove any associated subscription data for the user, though this will not affect subscriptions granted to servers by the user. Refunds are not available for deleted subscription data.</p>            
+        <div class="policy-info">
+          <p><strong>Effective Date:</strong> September 29, 2024</p>
+          <p><strong>Last Updated:</strong> December 19, 2024</p>
         </div>
+
+        <h2>Definitions</h2>
+        <p>For the purposes of this Privacy Policy:</p>
+        <ul>
+          <li>
+            <strong>Bot</strong> refers to the Ducky Discord bot and any
+            services provided by it within Discord.
+          </li>
+          <li>
+            <strong>Ducky Developers</strong> (also referred to as "We," "Us,"
+            or "Our") means the individuals responsible for creating,
+            maintaining, and supporting the Ducky bot, including Troptop,
+            bobbibones, and rae, as listed in this document.
+          </li>
+          <li>
+            <strong>Server</strong> means a community space within Discord where
+            Ducky operates, containing various channels, members, roles, and
+            configuration settings.
+          </li>
+          <li>
+            <strong>Server Data</strong> refers to information Ducky collects
+            from a Discord server, such as Server ID, Server Name, Member Count,
+            and Role Count, as detailed in the Data Collection section.
+          </li>
+          <li>
+            <strong>User Data</strong> refers to any information that identifies
+            an individual using Ducky, such as User ID, Username, and data
+            collected during interactions.
+          </li>
+          <li>
+            <strong>Interaction</strong> refers to an action initiated by a user
+            to perform a function with Ducky, like using a slash or text
+            command, button press, text input, and select menu selection.
+          </li>
+          <li>
+            <strong>Command</strong> refers to an trigger by the user to the
+            bot, executing a specific function.
+          </li>
+          <li>
+            <strong>Audit Logging</strong> refers to Ducky's collection of
+            certain server events for record-keeping purposes, including message
+            edits, deletions, role changes, and channel activity.
+          </li>
+          <li>
+            <strong>Support Ticket</strong> means a request made by a user
+            through the Ducky Support server to obtain assistance, including
+            requests for data access or data deletion.
+          </li>
+          <li>
+            <strong>You</strong> refers to the individual using Ducky, or the
+            server owner or representative who configures Ducky for a server.
+          </li>
+        </ul>
+
+        <h2>Agreement</h2>
+        <p>
+          By using Ducky, you agree to the terms of this Privacy Policy. Discord
+          does not provide an easy way to notify all of our users, therefore you
+          may join the
+          <a href="https://duckybot.xyz/support">Ducky Support server</a> and
+          select the "Announcements" ping in the server onboarding. Doing so
+          will get you pinged in #📣・shouts when we change our ToS or privacy
+          policy.
+        </p>
+
+        <h2>Data Collection</h2>
+        <p>
+          Ducky collects data from the server and user through its setup command
+          and any interaction with the setup command. The data collected
+          includes, but is not limited to:
+        </p>
+        <ul>
+          <li>Server ID</li>
+          <li>Server Name</li>
+          <li>Server Owner & Server Owner ID</li>
+          <li>Server Membercount</li>
+          <li>Server Rolecount</li>
+          <li>Server Channelcount</li>
+          <li>User ID</li>
+          <li>Username</li>
+        </ul>
+        <p>
+          Ducky may also collect additional data provided through server
+          configurations, such as:
+        </p>
+        <ul>
+          <li>ER:LC API Key</li>
+          <li>Roles</li>
+          <li>Channels</li>
+          <li>Timestamps</li>
+          <li>In-game server information (via session configurations)</li>
+          <li>Select menu inputs</li>
+          <li>Text input data</li>
+        </ul>
+        <p>
+          Based on server configurations, Ducky may also collect data for audit
+          logging purposes, including:
+        </p>
+        <ul>
+          <li>Message edit and deleted content history</li>
+          <li>Role creation/deletion and affected roles</li>
+          <li>Channel creation/deletion and affected channels</li>
+          <li>Reaction add/remove and affected messages/reactions</li>
+          <li>Member join/leave and affected members</li>
+          <li>Built-in Discord Audit Logs</li>
+        </ul>
+
+        <h2>Command Usage and Server Activity Logs</h2>
+        <p>
+          For debugging purposes, Ducky logs command usage details, including:
+        </p>
+        <ul>
+          <li>Username and User ID of the user executing the command</li>
+          <li>Command name and prefix or slash indicator</li>
+          <li>Timestamp of the command execution</li>
+          <li>Server name where the command was executed</li>
+        </ul>
+        <p>
+          Ducky also logs server activity when it is added to or removed from a
+          server, including:
+        </p>
+        <ul>
+          <li>Server logo</li>
+          <li>Server name and Server ID</li>
+          <li>Server owner’s name and User ID</li>
+          <li>Server member count at the time of addition or removal</li>
+        </ul>
+
+        <h2>Storage of Data</h2>
+        <p>
+          Your data is securely stored in a JSON file, accessible only by Ducky
+          Developers, including Troptop (<a
+            href="https://discord.com/users/598958193032560642"
+            >@literally.nick</a
+          >), bobbibones (<a href="https://discord.com/users/782235114858872854"
+            >@bobbibones</a
+          >), and rae (<a href="https://discord.com/users/252171218281693185"
+            >@error40440404040404040404</a
+          >).
+        </p>
+        <p>
+          Access to your data is limited to debugging purposes, but we will
+          never view sensative information (such as your PRC API key).
+        </p>
+        <p>
+          Server Data is retained for up to 7 days after Ducky is removed from a
+          server. After this period, all associated Server Data is permanently
+          deleted from our systems.
+        </p>
+
+        <h2>Access to Data</h2>
+        <p>
+          Your data is not shared or sold to third parties. Ducky Developers may
+          look up any not sensative data for developing and debug pruposes.
+        </p>
+        <p>
+          If you would like a copy of your data, please open a support ticket in
+          the <a href="https://duckybot.xyz/support">Ducky Support server</a>.
+        </p>
+
+        <h2>Data Removal Requests</h2>
+        <p>
+          If you would like to request the permanent deletion of your data,
+          please open a support ticket in the
+          <a href="https://duckybot.xyz/support">Ducky Support server</a>. This
+          action is irreversible.
+        </p>
+        <p>
+          Requesting data deletion will also remove any associated subscription
+          data for the user, though this will not affect subscriptions granted
+          to servers by the user. Refunds are not available for deleted
+          subscription data.
+        </p>
+      </div>
     </section>
-</body>
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-links">
+          <a href="/legal/privacy/" class="footer-link">Privacy Policy</a>
+          <a href="/legal/terms/" class="footer-link">Terms of Service</a>
+          <a href="/support" class="footer-link">Contact Us</a>
+          <a href="/docs" class="footer-link">FAQ</a>
+        </div>
+        <div class="footer-socials">
+          <a
+            href="https://x.com/duckydiscordbot"
+            class="social-link"
+            target="_blank"
+          >
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a
+            href="https://github.com/DuckySupport/duckybot.xyz"
+            class="social-link"
+            target="_blank"
+          >
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="/support/" class="social-link" target="_blank">
+            <i class="fab fa-discord"></i>
+          </a>
+        </div>
+        <p class="footer-text">&copy; 2024 Ducky. All Rights Reserved.</p>
+      </div>
+    </footer>
+  </body>
 </html>
