@@ -249,12 +249,43 @@ footer a:hover {
   }
 }
 
-.footer {
-  background-color: rgb(20, 20, 20);
-  color: white;
+/* Footer */
+footer {
+  background-color: #1e1e1e;
+  padding: 20px;
   text-align: center;
-  padding: 40px 20px;
+  color: #a0a0a0;
+  font-size: 14px;
   margin-top: 40px;
+}
+
+footer a {
+  color: #77cdff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: yellow;
+}
+
+/* Underline Effect */
+footer a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background-color: yellow; /* Same color as the hover effect */
+  transition: width 0.3s ease;
+}
+
+footer a:hover::after {
+  width: 100%; /* Full underline on hover */
 }
 
 .footer-container {
@@ -275,10 +306,6 @@ footer a:hover {
   text-decoration: none;
   font-size: 16px;
   transition: color 0.3s ease;
-}
-
-.footer-link:hover {
-  color: yellow;
 }
 
 .footer-socials {

@@ -210,11 +210,30 @@ footer {
 footer a {
   color: #77cdff;
   text-decoration: none;
-  margin: 0 10px;
+  font-size: 16px;
+  font-weight: bold;
+  position: relative;
+  transition: color 0.3s ease;
 }
 
 footer a:hover {
   color: #4fb4ff;
+}
+
+/* Underline Effect */
+footer a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background-color: #4fb4ff; /* Same color as the hover effect */
+  transition: width 0.3s ease;
+}
+
+footer a:hover::after {
+  width: 100%; /* Full underline on hover */
 }
 
 /* Responsive Design */
@@ -287,6 +306,21 @@ footer a:hover {
 
 .footer-link:hover {
   color: yellow;
+}
+
+.footer-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background-color: yellow;
+  transition: width 0.3s ease;
+}
+
+.footer-links a:hover::after {
+  width: 100%;
 }
 
 .footer-socials {
