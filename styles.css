@@ -139,6 +139,7 @@ html {
   background-color: transparent;
   border: 2px solid white;
   color: white;
+  text-decoration: none;
 }
 
 .hero-buttons .secondary-btn:hover {
