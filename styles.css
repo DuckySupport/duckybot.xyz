@@ -20,7 +20,7 @@ html {
   z-index: 1000;
 }
 
-.navbar-container {
+.bar-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
