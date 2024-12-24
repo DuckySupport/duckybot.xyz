@@ -78,73 +78,37 @@ html {
   color: black;
   padding: 10px 20px;
   border-radius: 8px;
-  text-decoration: none;
   font-weight: bold;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .cta-btn:hover {
-  background-color: #ccff15;
-  transform: scale(1.05);
+  background-color: #ffcc00;
+  transform: scale(1.1);
 }
 
 .hero-section {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 80px 40px;
-  max-width: 1400px;
-  margin: 0 auto;
+  padding: 80px 20px;
+  background-color: black;
+  margin-left: 100px;
 }
 
 .hero-content {
   flex: 1;
-  color: white;
-  max-width: 600px;
-  margin-left: 100px;
-  margin-top: -120px;
 }
 
 .hero-content h1 {
   font-size: 3.5rem;
-  font-weight: 700;
   margin-bottom: 20px;
 }
 
 .hero-content p {
   font-size: 1.2rem;
-  line-height: 1.8;
+  line-height: 1.6;
   margin-bottom: 30px;
-}
-
-.hero-buttons {
-  display: flex;
-  gap: 20px;
-}
-
-.hero-buttons a {
-  padding: 12px 25px;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.hero-buttons .cta-btn {
-  background-color: yellow;
-  color: black;
-}
-
-.hero-buttons .secondary-btn {
-  background-color: transparent;
-  border: 2px solid white;
-  color: white;
-  text-decoration: none;
-}
-
-.hero-buttons .secondary-btn:hover {
-  background-color: white;
-  color: black;
 }
 
 .hero-image {
@@ -155,9 +119,8 @@ html {
 }
 
 .hero-image img {
-  width: 100%;
   max-width: 600px;
-  animation: fadeIn 1s ease;
+  border-radius: 10px;
 }
 
 @keyframes fadeIn {
