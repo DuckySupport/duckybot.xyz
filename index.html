@@ -118,21 +118,49 @@
       <div class="statistics-grid">
         <div class="stat-card">
           <i class="fas fa-server stat-icon"></i>
-          <h3>700+</h3>
+          <h3 id="serverCount">700+</h3>
           <p>Discord Servers</p>
         </div>
         <div class="stat-card">
           <i class="fas fa-users stat-icon"></i>
-          <h3>130,000+</h3>
+          <h3 id="userCount">130,000+</h3>
           <p>Members Managed</p>
         </div>
         <div class="stat-card">
           <i class="fas fa-link stat-icon"></i>
-          <h3>600+</h3>
+          <h3 id="linkCount">600+</h3>
           <p>Roblox Links</p>
         </div>
       </div>
     </section>
+    
+    <script>
+      const defaultStats = {
+        serverCount: "800+",
+        userCount: "120,000+",
+        linkCount: "600+",
+      };
+    
+      async function updateStats() {
+        try {
+          const response = await fetch("https://api.duckybot.xyz/stats");
+          if (!response.ok) throw new Error("API request failed");
+          const data = await response.json();
+    
+          document.getElementById("serverCount").textContent = `${data.serverCount}+`;
+          document.getElementById("userCount").textContent = `${data.userCount}+`;
+          document.getElementById("linkCount").textContent = `${data.linkCount}+`;
+        } catch (error) {
+          console.error("Failed to fetch statistics:", error);
+    
+          document.getElementById("serverCount").textContent = defaultStats.serverCount;
+          document.getElementById("userCount").textContent = defaultStats.userCount;
+          document.getElementById("linkCount").textContent = defaultStats.linkCount;
+        }
+      }
+    
+      updateStats();
+    </script>    
 
     <section class="cta-section animate fade-in">
       <h2>Ready to Supercharge Your Server?</h2>
