@@ -147,9 +147,9 @@
           if (!response.ok) throw new Error("API request failed");
           const data = await response.json();
     
-          document.getElementById("serverCount").textContent = `${data.serverCount}+`;
-          document.getElementById("userCount").textContent = `${data.userCount}+`;
-          document.getElementById("linkCount").textContent = `${data.linkCount}+`;
+          document.getElementById("serverCount").textContent = `${data.serverCount}`;
+          document.getElementById("userCount").textContent = `${data.userCount}`;
+          document.getElementById("linkCount").textContent = `${data.linkCount}`;
         } catch (error) {
           console.error("Failed to fetch statistics:", error);
     
