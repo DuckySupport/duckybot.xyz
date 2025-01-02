@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ducky - Meet the Team</title>
+    <link rel="icon" type="image/x-icon" href="/images/Ducky.svg" />
+    <meta
+      name="description"
+      content="Get to know the dedicated team behind Ducky, the multi-purpose Discord bot making servers better worldwide."
+    />
+    <meta content="Ducky Bot Team" property="og:title" />
+    <meta
+      content="Meet the brilliant team behind Ducky, working tirelessly to deliver cutting-edge features and seamless integration."
+      property="og:description"
+    />
+    <meta content="https://duckybot.xyz/team" property="og:url" />
+    <meta content="/images/DuckyTeam.webp" property="og:image" />
+    <meta content="#F5FF82" data-react-helmet="true" name="theme-color" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="canonical" href="https://duckybot.xyz/team" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="/" class="logo">
+          <img
+            src="images/Ducky.svg"
+            alt="DuckyBot Logo"
+            style="height: 30px"
+          />
+          <img
+            src="images/DuckyText.svg"
+            alt="Duckybot Text"
+            style="height: 50px"
+          />
+        </a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/status">Status</a></li>
+          <li><a href="/docs">Documentation</a></li>
+          <li><a href="/plus">Ducky Plus+</a></li>
+          <li><a href="/invite">Invite</a></li>
+          <li><a href="/team" class="active">Team</a></li>
+        </ul>
+        <a href="/support" class="cta-btn">Support</a>
+      </div>
+    </nav>
+
+    <section class="team-hero-section animate fade-in">
+      <div class="hero-content">
+        <h1>Meet the Team Behind <b class="cool-text">Ducky</b></h1>
+        <p>
+          Dedicated innovators and passionate developers powering the most
+          advanced Discord bot for your server.
+        </p>
+      </div>
+    </section>
+
+    <section class="team-section animate slide-in">
+      <h2 class="team-title">Our Leadership</h2>
+      <div class="team-grid">
+        <div class="team-card">
+          <img
+            src="images/team/founder.jpg"
+            alt="Founder"
+            class="team-photo"
+          />
+          <h3>John Doe</h3>
+          <p>Founder & CEO</p>
+          <p>
+            Visionary behind Ducky, ensuring innovation and seamless server
+            management for communities worldwide.
+          </p>
+        </div>
+        <div class="team-card">
+          <img
+            src="images/team/cofounder.jpg"
+            alt="Co-founder"
+            class="team-photo"
+          />
+          <h3>Jane Smith</h3>
+          <p>Co-founder & CTO</p>
+          <p>
+            Leading Ducky's technological advancements with expertise in
+            automation and integrations.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="team-section animate fade-up">
+      <h2 class="team-title">Our Executives</h2>
+      <div class="team-grid">
+        <div class="team-card">
+          <img
+            src="images/team/marketing.jpg"
+            alt="Marketing Lead"
+            class="team-photo"
+          />
+          <h3>Emily Carter</h3>
+          <p>Chief Marketing Officer</p>
+          <p>
+            Driving community growth and brand awareness for Ducky globally.
+          </p>
+        </div>
+        <div class="team-card">
+          <img
+            src="images/team/operations.jpg"
+            alt="Operations Lead"
+            class="team-photo"
+          />
+          <h3>Michael Lee</h3>
+          <p>Chief Operating Officer</p>
+          <p>
+            Streamlining operations to ensure smooth delivery of all Ducky's
+            features and services.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="team-section animate fade-in">
+      <h2 class="team-title">Our Developers</h2>
+      <div class="team-grid">
+        <div class="team-card">
+          <img
+            src="images/team/dev1.jpg"
+            alt="Developer"
+            class="team-photo"
+          />
+          <h3>Alex Nguyen</h3>
+          <p>Lead Backend Developer</p>
+          <p>
+            Building the robust backend infrastructure that powers Ducky's
+            innovative features.
+          </p>
+        </div>
+        <div class="team-card">
+          <img
+            src="images/team/dev2.jpg"
+            alt="Developer"
+            class="team-photo"
+          />
+          <h3>Sarah Johnson</h3>
+          <p>Frontend Developer</p>
+          <p>
+            Crafting intuitive and beautiful user interfaces for Ducky's
+            dashboard and website.
+          </p>
+        </div>
+        <div class="team-card">
+          <img
+            src="images/team/dev3.jpg"
+            alt="Developer"
+            class="team-photo"
+          />
+          <h3>Daniel Kim</h3>
+          <p>Automation Specialist</p>
+          <p>
+            Designing powerful automations that enhance server management
+            capabilities.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-links">
+          <a href="/legal/privacy/" class="footer-link">Privacy Policy</a>
+          <a href="/legal/terms/" class="footer-link">Terms of Service</a>
+          <a href="/support" class="footer-link">Contact Us</a>
+          <a href="/docs" class="footer-link">Docs</a>
+        </div>
+        <div class="footer-socials">
+          <a
+            href="https://x.com/duckydiscordbot"
+            class="social-link"
+            target="_blank"
+          >
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a
+            href="https://github.com/DuckySupport/duckybot.xyz"
+            class="social-link"
+            target="_blank"
+          >
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="/support/" class="social-link" target="_blank">
+            <i class="fab fa-discord"></i>
+          </a>
+        </div>
+        <p class="footer-text">&copy; 2024 Ducky. All Rights Reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>
