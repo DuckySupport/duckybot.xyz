@@ -37,17 +37,14 @@
       }
 
       .team-grid {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 20px;
       }
 
       .team-card {
-        width: 250px;
-        background-color: #f5f5f5;
+        background-color: transparent;
         border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         padding: 15px;
         text-align: center;
       }
@@ -109,22 +106,6 @@
           />
           <h3>@literally.nick</h3>
           <p>Founder & CEO</p>
-          <p>
-            Visionary behind Ducky, ensuring innovation and seamless server
-            management for communities worldwide.
-          </p>
-        </div>
-        <div class="team-card">
-          <img
-            src="https://cdn.discordapp.com/avatars/782235114858872854/c573a9f6923aefd26a447f7c83a24049.webp?size=1024&width=1024&height=1024"
-            alt="@bobbibones"
-            class="team-photo"
-          />
-          <h3>@bobbibones</h3>
-          <p>Chief Technical Officer</p>
-          <p>
-            Leading technical development with an emphasis on reliability and innovation.
-          </p>
         </div>
         <div class="team-card">
           <img
@@ -134,9 +115,6 @@
           />
           <h3>@mr_brain34578</h3>
           <p>Head of Operations</p>
-          <p>
-            Overseeing Ducky's operational excellence to deliver outstanding features.
-          </p>
         </div>
         <div class="team-card">
           <img
@@ -146,9 +124,21 @@
           />
           <h3>@duckvsgeese</h3>
           <p>Marketing Lead</p>
-          <p>
-            Crafting campaigns to grow Ducky's global community and brand recognition.
-          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="team-section">
+      <h2 class="team-title">Development Team</h2>
+      <div class="team-grid">
+        <div class="team-card">
+          <img
+            src="https://cdn.discordapp.com/avatars/782235114858872854/c573a9f6923aefd26a447f7c83a24049.webp?size=1024&width=1024&height=1024"
+            alt="@bobbibones"
+            class="team-photo"
+          />
+          <h3>@bobbibones</h3>
+          <p>Developer</p>
         </div>
         <div class="team-card">
           <img
@@ -157,10 +147,34 @@
             class="team-photo"
           />
           <h3>@lugab</h3>
-          <p>Customer Experience Manager</p>
-          <p>
-            Ensuring users have the best support and resources for success.
-          </p>
+          <p>Developer</p>
+        </div>
+        <div class="team-card">
+          <img
+            src="https://cdn.discordapp.com/avatars/1241605075047153776/4a95554484d9b55793cdfc319aca81eb.webp?size=1024&width=1024&height=1024"
+            alt="@frinklx"
+            class="team-photo"
+          />
+          <h3>@frinklx</h3>
+          <p>Developer</p>
+        </div>
+        <div class="team-card">
+          <img
+            src="https://cdn.discordapp.com/guilds/1228508072289370172/users/1309137519715160074/avatars/fa0fc4e6ee6425fa27ce71236f7f495d.webp?size=1024&width=1024&height=1024"
+            alt="@fwaurxra"
+            class="team-photo"
+          />
+          <h3>@fwaurxra</h3>
+          <p>Developer</p>
+        </div>
+        <div class="team-card">
+          <img
+            src="https://cdn.discordapp.com/avatars/736651514738901023/745e20203ae75d26433b68f9a886f1c2.webp?size=1024&width=1024&height=1024"
+            alt="@scaryhuman09"
+            class="team-photo"
+          />
+          <h3>@scaryhuman09</h3>
+          <p>Developer</p>
         </div>
       </div>
     </section>
