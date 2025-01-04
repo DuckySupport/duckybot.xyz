@@ -11,58 +11,82 @@
     <meta content="Ducky.svg" property="og:image" />
     <meta content="#77CDFF" data-react-helmet="true" name="theme-color" />
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .container img {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 48px;
+            margin: 0 0 10px;
+            color: #0077cc;
+        }
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .buttons a {
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #0077cc;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .button.secondary {
+            background-color: #555;
+        }
+        .button:hover {
+            background-color: #005fa3;
+        }
+        .button.secondary:hover {
+            background-color: #333;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navbar-container">
-          <a href="/" class="logo">
-            <img
-              src="../images/Ducky.svg"
-              alt="DuckyBot Logo"
-              style="height: 30px"
-            />
-            <img
-              src="../images/DuckyText.svg"
-              alt="Duckybot Text"
-              style="height: 50px"
-            />
-          </a>
-          <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/status">Status</a></li>
-            <li><a href="/docs">Documentation</a></li>
-            <li><a href="/plus">Ducky Plus+</a></li>
-            <li><a href="/invite">Invite</a></li>
-            <li><a href="/team" class="active">Team</a></li>
-          </ul>
-          <a href="/support" class="cta-btn">Support</a>
+    <div class="container">
+        <img src="/images/Ducky.svg" alt="DuckyBot Logo">
+        <h1>404</h1>
+        <p>Oops! The page you are looking for does not exist.</p>
+        <p>Please check the URL or return to the homepage.</p>
+        <div class="buttons">
+            <a href="/">
+                <button class="button">Home</button>
+            </a>
+            <a href="/support">
+                <button class="button secondary">Contact Support</button>
+            </a>
         </div>
-      </nav>
-      
-    <section class="hero">
-        
-        <div class="hero-container">
-            <div class="column-left">
-                
-                <p class="hero-tagline">You find yourself on an island...<br><span style="font-size: 15px; padding-top: 10px;">With this page no where to be found.</span></p>
-                
-                <br>
-                <div class="buttons">
-                    <a href="/">
-                        <button class="cta-button">Home</button>
-                    </a>
-                    <a href="/support">
-                        <button class="cta-button secondary">Support</button>
-                    </a>
-                </div>
-                
-                <p class="404-error-bigtext">Error 404. This page does not exist, check your spelling and try again.</p>
-            </div>
-            <div class="column-right">
-                <img src="./Island.svg" alt="island" class="hero-image-no-animation">
-            </div>
-        </div>
-    </section>
+    </div>
 </body>
 </html>
-
