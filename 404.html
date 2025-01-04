@@ -9,84 +9,74 @@
     <meta content="The only bot you'll need for your server, of any kind." property="og:description" />
     <meta content="https://duckybot.xyz/" property="og:url" />
     <meta content="Ducky.svg" property="og:image" />
-    <meta content="#77CDFF" data-react-helmet="true" name="theme-color" />
+    <meta content="#121212" data-react-helmet="true" name="theme-color" />
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: black;
-            color: rgb(20,20,20);
+            background-color: #121212;
+            color: #FFFFFF;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 40px;
         }
-        .container {
-            text-align: center;
-            max-width: 600px;
-            padding: 20px;
-            border-radius: 10px;
-            background: rgb(20,20,20);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        header {
+            width: 100%;
+            margin-bottom: 50px;
         }
-        .container img {
-            width: 150px;
-            margin-bottom: 20px;
+        header img {
+            height: 40px;
         }
         h1 {
-            font-size: 48px;
-            margin: 0 0 10px;
-            color: #0077cc;
+            font-size: 96px;
+            margin: 0;
+            color: #FF4F4F;
         }
         p {
             font-size: 18px;
-            margin: 10px 0;
+            margin: 20px 0;
+            color: #CCCCCC;
         }
-        .buttons {
-            margin-top: 20px;
+        .links {
+            margin-top: 30px;
         }
-        .buttons a {
-            text-decoration: none;
-            margin: 0 10px;
-        }
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
+        .links a {
+            display: block;
             font-size: 16px;
-            font-weight: bold;
-            color: #ffffff;
-            background-color: #0077cc;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+            color: #77CDFF;
+            text-decoration: none;
+            margin-bottom: 10px;
         }
-        .button.secondary {
-            background-color: #555;
+        .links a:hover {
+            text-decoration: underline;
         }
-        .button:hover {
-            background-color: #005fa3;
+        .illustration {
+            position: absolute;
+            right: 40px;
+            bottom: 40px;
         }
-        .button.secondary:hover {
-            background-color: #333;
+        .illustration img {
+            height: 300px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="/images/Ducky.svg" alt="DuckyBot Logo">
-        <h1>404</h1>
-        <p>Oops! The page you are looking for does not exist.</p>
-        <p>Please check the URL or return to the homepage.</p>
-        <div class="buttons">
-            <a href="/">
-                <button class="button">Home</button>
-            </a>
-            <a href="/support">
-                <button class="button secondary">Contact Support</button>
-            </a>
-        </div>
+    <header>
+        <img src="https://duckybot.xyz/images/DuckyText.svg" alt="DuckyBot Logo">
+    </header>
+    <h1>404</h1>
+    <p>Oops! The page you are looking for does not exist. Please check the URL or try one of the links below:</p>
+    <div class="links">
+        <a href="/">Home</a>
+        <a href="https://status.duckybot.xyz">Status</a>
+        <a href="https://docs.duckybot.xyz">Documentation</a>
+        <a href="https://duckybot.xyz/plus/">Ducky Plus+</a>
+        <a href="https://duckybot.xyz/support">Support</a>
+    </div>
+    <div class="illustration">
+        <img src="https://duckybot.xyz/images/Ducky.svg" alt="DuckyBot Illustration">
     </div>
 </body>
 </html>
