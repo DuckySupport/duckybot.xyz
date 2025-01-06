@@ -134,34 +134,43 @@
         </div>
       </div>
     </section>
-    
+
     <script>
       const defaultStats = {
         serverCount: "800+",
         userCount: "120,000+",
         linkCount: "600+",
       };
-    
+
       async function updateStats() {
         try {
           const response = await fetch("https://api.duckybot.xyz/stats");
           if (!response.ok) throw new Error("API request failed");
           const data = await response.json();
-    
-          document.getElementById("serverCount").textContent = `${data.serverCount}`;
-          document.getElementById("userCount").textContent = `${data.userCount}`;
-          document.getElementById("linkCount").textContent = `${data.linkCount}`;
+
+          document.getElementById(
+            "serverCount"
+          ).textContent = `${data.serverCount}`;
+          document.getElementById(
+            "userCount"
+          ).textContent = `${data.userCount}`;
+          document.getElementById(
+            "linkCount"
+          ).textContent = `${data.linkCount}`;
         } catch (error) {
           console.error("Failed to fetch statistics:", error);
-    
-          document.getElementById("serverCount").textContent = defaultStats.serverCount;
-          document.getElementById("userCount").textContent = defaultStats.userCount;
-          document.getElementById("linkCount").textContent = defaultStats.linkCount;
+
+          document.getElementById("serverCount").textContent =
+            defaultStats.serverCount;
+          document.getElementById("userCount").textContent =
+            defaultStats.userCount;
+          document.getElementById("linkCount").textContent =
+            defaultStats.linkCount;
         }
       }
-    
+
       updateStats();
-    </script>    
+    </script>
 
     <section class="cta-section animate fade-in">
       <h2>Ready to Supercharge Your Server?</h2>
@@ -179,6 +188,7 @@
           <a href="/legal/terms/" class="footer-link">Terms of Service</a>
           <a href="/support" class="footer-link">Contact Us</a>
           <a href="/docs" class="footer-link">Docs</a>
+          <a href="/team" class="footer-link">Our Team</a>
         </div>
         <div class="footer-socials">
           <a
