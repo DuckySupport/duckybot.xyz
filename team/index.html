@@ -30,7 +30,8 @@
       rel="stylesheet"
     />
     <style>
-      .hero-content, .team-grid {
+      .hero-content,
+      .team-grid {
         text-align: center;
         max-width: 800px;
         margin: 0 auto;
@@ -56,6 +57,16 @@
         border-radius: 50%;
         object-fit: cover;
         margin-bottom: 10px;
+      }
+
+      .frinklxtcard h3 {
+        transition: all 0.3s ease-in-out;
+      }
+
+      .frinklxtcard h3:hover {
+        color: #ffff00;
+        transform: scale(1.05);
+        text-shadow: 2px 2px 8px rgba(0, 247, 255, 0.5);
       }
     </style>
   </head>
@@ -97,7 +108,9 @@
     </section>
 
     <section class="team-section">
-      <h2 class="team-title" style="text-align: center;">Ducky Bot Developers</h2>
+      <h2 class="team-title" style="text-align: center">
+        Ducky Bot Developers
+      </h2>
       <div class="team-grid">
         <div class="team-card">
           <img
@@ -116,12 +129,13 @@
           />
           <h3>@bobbibones</h3>
           <p>Senior Developer</p>
-        </div>
-      </div>
+        </div>        
     </section>
 
     <section class="team-section">
-      <h2 class="team-title" style="text-align: center;">Ducky Web Developers</h2>
+      <h2 class="team-title" style="text-align: center">
+        Ducky Web Developers
+      </h2>
       <div class="team-grid">
         <div class="team-card">
           <img
@@ -134,16 +148,21 @@
         </div>
         <div class="team-card">
           <img
-            src="https://cdn.discordapp.com/avatars/1241605075047153776/4a95554484d9b55793cdfc319aca81eb.webp?size=1024&width=1024&height=1024"
+            src="https://cdn.discordapp.com/avatars/1241605075047153776/0e9faf5869c5cd10162a2e41aff027b0.png"
             alt="@frinklx"
             class="team-photo"
           />
-          <h3>@frinklx</h3>
+          <a
+            href="https://discord.com/users/1241605075047153776"
+            style="text-decoration: none; color: white"
+            class="frinklxtcard"
+            ><h3>@frinklx</h3></a
+          >
           <p>Web Developer</p>
         </div>
         <div class="team-card">
           <img
-            src="https://cdn.discordapp.com/avatars/1263353397554188331/a_e6624aeb1264786f6c50287c5beea1ca.gif?size=1024&width=1024&height=1024"
+            src="https://cdn.discordapp.com/avatars/1263353397554188331/5f5e6b290d2cd56e7122ae7203c00b16.png"
             alt="@stxr_dev"
             class="team-photo"
           />
@@ -163,7 +182,7 @@
     </section>
 
     <section class="team-section">
-      <h2 class="team-title" style="text-align: center;">Ducky Executives</h2>
+      <h2 class="team-title" style="text-align: center">Ducky Executives</h2>
       <div class="team-grid">
         <div class="team-card">
           <img
