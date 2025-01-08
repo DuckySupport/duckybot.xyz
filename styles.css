@@ -428,7 +428,7 @@ html {
 }
 
 .cool-text {
-  background: linear-gradient(90deg, #F5FF82, #d0c200, #F5FF82);
+  background: linear-gradient(90deg, #fff000, #a79c00, #fff564, #fff000);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: bold;
