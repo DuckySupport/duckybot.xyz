@@ -146,25 +146,31 @@ img {
 .highlight-gradient {
   background: linear-gradient(
     90deg,
-    #e600ff,
-    #ff0000,
-    #ffa600,
-    #ffeb00,
-    #00ff00
+    #ec42ff,
+    #ff3f3f,
+    #ffbd41,
+    #ffef41,
+    #43ff43,
+    #3971ff,
+    #ec42ff
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradient-move 5s infinite alternate;
+  animation: warm-gradient 6s infinite ease-in-out;
 }
 
-@keyframes gradient-move {
+@keyframes warm-gradient {
   0% {
-    background-position: 0% 50%;
+    background-position: -100% 50%;
   }
-  100% {
+  50% {
     background-position: 100% 50%;
   }
+  100% {
+    background-position: -100% 50%;
+  }
 }
+
 
 .perks-section {
   background-color: #111;
