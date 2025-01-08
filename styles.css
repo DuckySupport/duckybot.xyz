@@ -84,7 +84,7 @@ html {
 }
 
 .cta-btn:hover {
-  background-color: #ccff15;
+  background-color: #fff000;
   transform: scale(1.05);
 }
 
@@ -293,12 +293,7 @@ html {
   gap: 20px;
   flex-wrap: wrap;
   margin-bottom: 20px;
-}
-
-.footer-links {
-  list-style: none;
-  display: flex;
-  gap: 20px;
+  text-align: center;
 }
 
 .footer-links a {
@@ -316,7 +311,7 @@ html {
 .footer-links a::after {
   content: "";
   position: absolute;
-  left: 0;
+  left: 0px;
   bottom: -4px;
   width: 0;
   height: 2px;
@@ -397,7 +392,7 @@ html {
 }
 
 .cta-buttons .cta-btn:hover {
-  background-color: #ccff15;
+  background-color: #fff000;
   transform: scale(1.05);
 }
 
