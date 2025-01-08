@@ -22,7 +22,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700"
       rel="stylesheet"
     />
     <link
@@ -40,15 +40,27 @@
       .team-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
         text-align: center;
+        gap: 5px;
       }
 
       .team-card {
         background-color: transparent;
-        border-radius: 10px;
-        padding: 15px;
         text-align: center;
+      }
+
+      .team-card .username {
+        font-size: 15px;
+        margin-top: 2px;
+        margin-bottom: 5px;
+        font-family: 'Inter';
+        color: #777777;
+      }
+
+      .team-card .role {
+        margin-top: 0px;
+        font-size: 15px;
+        font-family: 'Inter';
       }
 
       .team-photo {
@@ -56,17 +68,17 @@
         height: 100px;
         border-radius: 50%;
         object-fit: cover;
-        margin-bottom: 10px;
       }
 
       .card-name h3 {
+        margin-bottom: 0px;
         transition: all 0.3s ease-in-out;
       }
 
       .card-name h3:hover {
-        color: #ffff00;
+        color: #F5FF82;
         transform: scale(1.05);
-        text-shadow: 2px 2px 8px rgba(0, 247, 255, 0.5);
+        text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.5);
       }
     </style>
   </head>
@@ -122,9 +134,10 @@
             href="https://discord.com/users/782235114858872854"
             style="text-decoration: none; color: white"
             class="card-name"
-            ><h3>@bobbibones</h3></a
+            ><h3>bobbibones</h3></a
           >
-          <p>Senior Developer</p>
+          <p class="username">@bobbibones</p>
+          <p class="role">Senior Developer</p>
         </div>
         <div class="team-card">
           <img
@@ -136,9 +149,10 @@
             href="https://discord.com/users/598958193032560642"
             style="text-decoration: none; color: white"
             class="card-name"
-            ><h3>@literally.nick</h3></a
+            ><h3>Troptop</h3></a
           >
-          <p>Founder</p>
+          <p class="username">@literally.nick</p>
+          <p class="role">Lead Developer</p>
         </div>
         <div class="team-card">
           <img
@@ -150,9 +164,10 @@
             href="https://discord.com/users/1096369071961952377"
             style="text-decoration: none; color: white"
             class="card-name"
-            ><h3>@devs_des1re</h3></a
+            ><h3>devs_des1re</h3></a
           >
-          <p>Trial Developer</p>
+          <p class="username">@devs_des1re</p>
+          <p class="role">Trial Developer</p>
         </div>
       </div>
     </section>
@@ -172,9 +187,10 @@
             href="https://discord.com/users/635834352172793877"
             style="text-decoration: none; color: white"
             class="card-name"
-            ><h3>@lugab</h3></a
+            ><h3>Lugab</h3></a
           >
-          <p>Web Developer</p>
+          <p class="username">@lugab</p>
+          <p class="role">Web Developer</p>
         </div>
         <div class="team-card">
           <img
@@ -186,25 +202,11 @@
             href="https://discord.com/users/1241605075047153776"
             style="text-decoration: none; color: white"
             class="card-name"
-            ><h3>@frinklx</h3></a
+            ><h3>frinklx</h3></a
           >
-          <p>Web Developer</p>
+          <p class="username">@frinklx</p>
+          <p class="role">Web Developer</p>
         </div>
-        <div class="team-card">
-          <img
-            src="../images/discordpfps/cody.png"
-            alt="@stxr_dev"
-            class="team-photo"
-          />
-          <a
-            href="https://discord.com/users/1263353397554188331"
-            style="text-decoration: none; color: white"
-            class="card-name"
-            ><h3>@stxr_dev</h3></a
-          >
-          <p>Web Developer</p>
-        </div>
-      </div>
     </section>
 
     <section class="team-section">
@@ -216,17 +218,14 @@
             alt="@mr_brain34578"
             class="team-photo"
           />
-          <h3>@mr_brain34578</h3>
-          <p>Executive</p>
-        </div>
-        <div class="team-card">
-          <img
-            src="https://cdn.discordapp.com/avatars/1076913798272786522/f8c1bb54fcbd345933e16865db4ddabc.webp?size=1024&width=1024&height=1024"
-            alt="@duckvsgeese"
-            class="team-photo"
-          />
-          <h3>@duckvsgeese</h3>
-          <p>Executive</p>
+          <a
+            href="https://discord.com/users/1017977993051787265"
+            style="text-decoration: none; color: white"
+            class="card-name"
+            ><h3>Brain</h3></a
+          >
+          <p class="username">@mr_brain34578</p>
+          <p class="role">Executive</p>
         </div>
       </div>
     </section>
