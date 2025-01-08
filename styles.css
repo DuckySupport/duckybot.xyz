@@ -428,20 +428,23 @@ html {
 }
 
 .cool-text {
-  background: linear-gradient(90deg, #ffeb00, #ffa600, #ff0000);
+  background: linear-gradient(90deg, #F5FF82, #d0c200, #F5FF82);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: bold;
   background-size: 200%;
-  animation: warm-gradient 6s infinite alternate;
+  animation: warm-gradient 6s infinite ease-in-out;
 }
 
 @keyframes warm-gradient {
   0% {
-    background-position: 0% 50%;
+    background-position: -100% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
   100% {
-    background-position: 100% 50%;
+    background-position: -100% 50%;
   }
 }
 
