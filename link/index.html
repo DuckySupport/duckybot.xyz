@@ -97,7 +97,7 @@
                         document.cookie = "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
                         loadingStatus("Redirecting to Discord...");
                         console.log("Redirecting to login page...");
-                        window.location.href = "https://duckybot.xyz/login?redirect=link";
+                        window.location.href = "/login?redirect=link";
                         return null;
                     }
                     return result.json();
@@ -132,13 +132,13 @@
                     document.cookie = "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
                     loadingStatus("Redirecting to Discord...");
                     console.log("Redirecting to login page...");
-                    window.location.href = "https://duckybot.xyz/login?redirect=link";
+                    window.location.href = "/login?redirect=link";
                 });
             }
         } else {
             console.log("Not logged in | Redirecting to Discord...");
             loadingStatus("Redirecting to Discord...");
-            window.location.href = "https://duckybot.xyz/login?redirect=link";
+            window.location.href = "/login?redirect=link";
         }
     }
 </script>
