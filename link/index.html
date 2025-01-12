@@ -111,7 +111,7 @@
                         })
                         .then(result => result.json())
                         .then(response => {
-                            const link = response.link;
+                            const link = response.data;
 
                             if (link) {
                                 success("Already Linked", `You're already linked with <b>${link.robloxUser.username}</b>.`);
