@@ -106,18 +106,15 @@
                     if (response) {
                         const DiscordID = response.id;
 
-                        fetch('https://api.duckybot.xyz/getlink', {
-                            method: "GET",
-                            headers: {
-                                "discord-id": DiscordID
-                            }
+                        fetch('https://api.duckybot.xyz/link/' + DiscordID, {
+                            method: "GET"
                         })
                         .then(result => result.json())
                         .then(response => {
                             const link = response.link;
 
                             if (link) {
-                                success("Already Linked", `You're already linked with <b>${link.robloxUser.name}</b>.`);
+                                success("Already Linked", `You're already linked with <b>${link.robloxUser.username}</b>.`);
                             } else {
                                 console.log("Redirecting to Roblox for authentication...");
                                 loadingStatus("Redirecting to Roblox...");
