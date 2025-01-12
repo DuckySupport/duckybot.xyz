@@ -112,14 +112,16 @@
                                 const description = document.getElementById("description");
                                 const bigIcon = document.getElementsByClassName("largeicon")[0];
 
-                                fetch("https://api.duckybot.xyz/servers/", {
+                                fetch("https://api.duckybot.xyz/servers", {
                                     method: "GET",
                                     headers: {
-                                        "discord-code": loggedin
+                                        "Discord-Code": loggedin
                                     }
                                 })
                                 .then(result => result.json())
-                                .then(servers => {
+                                .then(response => {
+                                    console.log(response)
+                                    const servers = response.data
                                     let found = false;
                                     servers.forEach(server => {
                                         if (server.id === guildID) {
@@ -333,12 +335,14 @@
                 fetch("https://api.duckybot.xyz/servers/", {
                     method: "GET",
                     headers: {
-                        "discord-code": loggedin
+                        "Discord-Code": loggedin
                     }
                 })
                 .then(result => result.json())
-                .then(servers => {
-
+                .then(response => {
+                    console.log(response)
+                    const servers = response.data
+                    
                     loadingOverlay.style.display = 'none';
 
                     servers.sort((a,b) => {
@@ -360,13 +364,13 @@
                             overlay.className = "overlay";
                             servergrid.appendChild(newdiv)
 
-                                if (!server.ducky) {
-                                    overlay.style.display = 'block';
-                                }
+                            if (!server.ducky) {
+                                overlay.style.display = 'block';
+                            }
 
                             newdiv.addEventListener("click", function () {
                                 if (server.ducky) {
-                                    window.location.href = "https://duckybot.xyz/dashboard#" + server.id;
+                                    window.location.href = "/dashboard#" + server.id;
                                 } else {
                                     window.location.href = "https://discord.com/oauth2/authorize?client_id=1257389588910182411&permissions=8&integration_type=0&scope=bot&redirect_uri=https://duckybot.xyz/dashboard&guild_id=" + server.id;
                                 }
@@ -379,7 +383,7 @@
             .catch(console.error)
         } else {
             document.body.innerHTML = "Redirecting you to the login page..."
-            window.location.href = "https://duckybot.xyz/login?redirect=dashboard"
+            window.location.href = "/login?redirect=dashboard"
         }
     }
 </script>
