@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket Transcripts</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background-color: #2b2d31;
+      color: white;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      text-align: center;
+      padding: 10px;
+      background-color: #1e1f23;
+    }
+    main {
+      padding: 20px;
+    }
+    #loading {
+      text-align: center;
+    }
+    #error {
+      text-align: center;
+      color: #ff6b6b;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Ticket Transcript Viewer</h1>
+  </header>
+  <main>
+    <div id="loading">Loading transcript...</div>
+    <div id="transcript" style="display: none;">
+      <h2>Transcript Details</h2>
+      <div id="ticket-details"></div>
+    </div>
+    <div id="error" style="display: none;">
+      <p>Failed to load transcript. Please check the URL or try again later.</p>
+    </div>
+  </main>
+  <script src="transcripts.js"></script>
+</body>
+</html>
