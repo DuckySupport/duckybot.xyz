@@ -45,6 +45,11 @@
             style="height: 50px"
           />
         </a>
+        <button class="mobile-menu-btn">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
         <ul class="nav-links">
           <li><a href="/">Home</a></li>
           <li><a href="/status">Status</a></li>
@@ -59,18 +64,54 @@
 
     <section class="hero-section animate fade-in">
       <div class="hero-content">
-        <h1>Elevate Your Server with <b class="cool-text">Ducky</b></h1>
+        <h1>Elevate Your Server with <span class="cool-text">Ducky</span></h1>
         <p>
-          A multi-purpose Discord bot designed for moderation, ER:LC
-          integration, and seamless automation.
+          A powerful Discord bot crafted for seamless server management,
+          featuring advanced
+          <span class="highlight">moderation</span>,
+          <span class="highlight">ER:LC integration</span>, and
+          <span class="highlight">automation</span>.
         </p>
         <div class="hero-buttons">
-          <a href="/invite" class="cta-btn">Invite Ducky</a>
-          <a href="/support" class="secondary-btn">Get Assistance</a>
+          <a href="/invite" class="cta-btn">
+            <i class="fas fa-rocket"></i>
+            Invite Ducky
+          </a>
+          <a href="/support" class="secondary-btn">
+            <i class="fas fa-headset"></i>
+            Get Support
+          </a>
+        </div>
+        <div class="hero-badges">
+          <div class="badge">
+            <i class="fas fa-shield-alt"></i>
+            Trusted by 900+ Servers
+          </div>
+          <div class="badge">
+            <i class="fas fa-users"></i>
+            130K+ Users
+          </div>
+          <div class="badge">
+            <i class="fas fa-star"></i>
+            4.9/5 Rating
+          </div>
         </div>
       </div>
       <div class="hero-image">
-        <img src="images/Ducky.svg" alt="Ducky Hero Image" />
+        <div class="hero-image-wrapper">
+          <img src="images/Ducky.svg" alt="Ducky Hero Image" />
+          <div class="floating-elements">
+            <div class="float-element shield">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="float-element robot">
+              <i class="fas fa-robot"></i>
+            </div>
+            <div class="float-element gear">
+              <i class="fas fa-cog"></i>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -134,6 +175,37 @@
         </div>
       </div>
     </section>
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-links">
+          <a href="/legal/privacy/" class="footer-link">Privacy Policy</a>
+          <a href="/legal/terms/" class="footer-link">Terms of Service</a>
+          <a href="/support" class="footer-link">Contact Us</a>
+          <a href="/docs" class="footer-link">Docs</a>
+          <a href="/team" class="footer-link">Our Team</a>
+        </div>
+        <div class="footer-socials">
+          <a
+            href="https://x.com/duckydiscordbot"
+            class="social-link"
+            target="_blank"
+          >
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a
+            href="https://github.com/DuckySupport/duckybot.xyz"
+            class="social-link"
+            target="_blank"
+          >
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="/support/" class="social-link" target="_blank">
+            <i class="fab fa-discord"></i>
+          </a>
+        </div>
+        <p class="footer-text">&copy; 2025 Ducky. All rights reserved.</p>
+      </div>
+    </footer>
 
     <script>
       const defaultStats = {
@@ -170,67 +242,6 @@
       }
 
       updateStats();
-    </script>
-
-    <section class="cta-section animate fade-in">
-      <h2>Ready to Supercharge Your Server?</h2>
-      <p>
-        Join the growing community of Ducky users and unlock your server's full
-        potential.
-      </p>
-      <a href="/plus" class="cta-btn">Upgrade to Ducky Plus+</a>
-    </section>
-
-    <footer class="footer">
-      <div class="footer-container">
-        <div class="footer-links">
-          <a href="/legal/privacy/" class="footer-link">Privacy Policy</a>
-          <a href="/legal/terms/" class="footer-link">Terms of Service</a>
-          <a href="/support" class="footer-link">Contact Us</a>
-          <a href="/docs" class="footer-link">Docs</a>
-          <a href="/team" class="footer-link">Our Team</a>
-        </div>
-        <div class="footer-socials">
-          <a
-            href="https://x.com/duckydiscordbot"
-            class="social-link"
-            target="_blank"
-          >
-            <i class="fab fa-twitter"></i>
-          </a>
-          <a
-            href="https://github.com/DuckySupport/duckybot.xyz"
-            class="social-link"
-            target="_blank"
-          >
-            <i class="fab fa-github"></i>
-          </a>
-          <a href="/support/" class="social-link" target="_blank">
-            <i class="fab fa-discord"></i>
-          </a>
-        </div>
-        <p class="footer-text">&copy; 2025 Ducky. All rights reserved.</p>
-      </div>
-    </footer>
-
-    <script>
-      const animateElements = document.querySelectorAll(".animate");
-      const isInViewport = (element) => {
-        const rect = element.getBoundingClientRect();
-        return (
-          rect.top <=
-          (window.innerHeight || document.documentElement.clientHeight)
-        );
-      };
-      const handleScrollAnimation = () => {
-        animateElements.forEach((el) => {
-          if (isInViewport(el)) {
-            el.classList.add("show");
-          }
-        });
-      };
-      window.addEventListener("scroll", handleScrollAnimation);
-      handleScrollAnimation();
-    </script>
+    </script>    
   </body>
 </html>
