@@ -1,10 +1,3 @@
-const toggleBtn = document.querySelector(".toggle-btn");
-const navLinks = document.querySelector(".nav-links");
-
-toggleBtn.addEventListener("click", () => {
-  navLinks.classList.toggle("active");
-});
-
 const animateElements = document.querySelectorAll(".animate");
 const isInViewport = (element) => {
   const rect = element.getBoundingClientRect();
@@ -176,29 +169,63 @@ document.head.appendChild(style);
 
 const mobileMenuBtn = document.querySelector(".mobile-menu-btn");
 const navLinksContainer = document.querySelector(".nav-links");
+let isMenuOpen = false;
+
+console.log("Initial setup:", {
+  mobileMenuBtn: mobileMenuBtn,
+  navLinksContainer: navLinksContainer,
+});
 
 function toggleMenu() {
+  console.log("Toggle menu called. Current state:", { isMenuOpen });
+
+  isMenuOpen = !isMenuOpen;
+  console.log("Menu button clicked - new state:", { isMenuOpen });
+
   mobileMenuBtn.classList.toggle("active");
   navLinksContainer.classList.toggle("active");
-  document.body.style.overflow = navLinksContainer.classList.contains("active")
-    ? "hidden"
-    : "";
+
+  console.log("Classes after toggle:", {
+    buttonClasses: mobileMenuBtn.classList.toString(),
+    navClasses: navLinksContainer.classList.toString(),
+  });
+
+  document.body.style.overflow = isMenuOpen ? "hidden" : "";
+
+  const navLinks = navLinksContainer.querySelectorAll("a");
+  console.log("Found nav links:", navLinks.length);
+
+  navLinks.forEach((link, index) => {
+    if (isMenuOpen) {
+      link.style.transitionDelay = `${0.1 + index * 0.1}s`;
+    } else {
+      link.style.transitionDelay = "0s";
+    }
+  });
 }
 
-mobileMenuBtn.addEventListener("click", toggleMenu);
+mobileMenuBtn.addEventListener("click", (e) => {
+  console.log("Mobile menu button clicked", e);
+  e.stopPropagation(); 
+  toggleMenu();
+});
 
 document.addEventListener("click", (e) => {
-  if (
-    !e.target.closest(".navbar") &&
-    navLinksContainer.classList.contains("active")
-  ) {
+  console.log("Document clicked", {
+    isMenuOpen,
+    clickedElement: e.target,
+    isNavbar: e.target.closest(".navbar"),
+  });
+
+  if (!e.target.closest(".navbar") && isMenuOpen) {
     toggleMenu();
   }
 });
 
 navLinksContainer.querySelectorAll("a").forEach((link) => {
   link.addEventListener("click", () => {
-    if (navLinksContainer.classList.contains("active")) {
+    console.log("Nav link clicked");
+    if (isMenuOpen) {
       toggleMenu();
     }
   });
@@ -210,15 +237,17 @@ let touchEndY = 0;
 document.addEventListener(
   "touchstart",
   (e) => {
+    console.log("Touch start", e.touches[0].clientY);
     touchStartY = e.touches[0].clientY;
   },
-  false
+  { passive: true }
 );
 
 document.addEventListener(
   "touchmove",
   (e) => {
-    if (navLinksContainer.classList.contains("active")) {
+    if (isMenuOpen) {
+      console.log("Touch move prevented");
       e.preventDefault();
     }
   },
@@ -228,14 +257,27 @@ document.addEventListener(
 document.addEventListener(
   "touchend",
   (e) => {
+    console.log("Touch end");
     touchEndY = e.changedTouches[0].clientY;
     const deltaY = touchEndY - touchStartY;
+    console.log("Touch delta Y:", deltaY);
 
-    if (navLinksContainer.classList.contains("active") && deltaY > 50) {
+    if (isMenuOpen && deltaY > 50) {
       toggleMenu();
     }
   },
-  false
+  { passive: true }
+);
+
+document.body.addEventListener(
+  "touchmove",
+  (e) => {
+    if (isMenuOpen) {
+      console.log("Body touch move prevented");
+      e.preventDefault();
+    }
+  },
+  { passive: false }
 );
 
 const isMobile = window.matchMedia("(max-width: 768px)").matches;
