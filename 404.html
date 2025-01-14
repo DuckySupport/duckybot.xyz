@@ -3,79 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error 404</title>
-    <link rel="icon" type="image/x-icon" href="/Ducky.svg">
-    <meta content="Ducky Bot" property="og:title" />
-    <meta content="The only bot you'll need for your server, of any kind." property="og:description" />
-    <meta content="https://duckybot.xyz/" property="og:url" />
-    <meta content="Ducky.svg" property="og:image" />
-    <meta content="#121212" data-react-helmet="true" name="theme-color" />
-    <link rel="stylesheet" href="styles.css">
+    <title>Ducky - 404</title>
+    <link rel="icon" type="image/x-icon" href="/images/Ducky.svg">
+    <meta name="description" content="Power your server with Ducky, a multi-purpose discord bot focused on moderating your Discord and ER:LC server.">
+    <meta property="og:title" content="Ducky Bot">
+    <meta property="og:description" content="Power your server with Ducky, a multi-purpose bot focused on moderating your Discord and ER:LC server.">
+    <meta property="og:url" content="https://duckybot.xyz/">
+    <meta property="og:image" content="/images/Ducky.webp">
+    <meta name="theme-color" content="#F5FF82">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #FFFFFF;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            height: 100vh;
-            padding: 0 40px;
-        }
-        .left-column {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #FFF;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            max-width: 50%;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            overflow-x: hidden;
+            padding: 20px;
+            box-sizing: border-box;
         }
-        header {
-            margin-bottom: 20px;
-        }
-        header img {
-            height: 40px;
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
         }
         h1 {
-            font-size: 120px;
+            font-size: clamp(80px, 15vw, 140px);
             margin: 0;
-            color: #FF4F4F;
+            background: linear-gradient(45deg, #f6e62d, #fff8ae);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+            letter-spacing: -4px;
+            line-height: 1;
         }
         p {
-            font-size: 20px;
-            margin: 20px 0;
-            color: #CCCCCC;
+            font-size: clamp(14px, 4vw, 16px);
+            margin: 30px 0;
+            color: #888;
+            padding: 0 10px;
         }
         .links {
-            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 40px;
+            padding: 0 10px;
         }
         .links a {
-            display: block;
-            font-size: 18px;
-            color: #77CDFF;
+            font-size: 14px;
+            color: #fff;
             text-decoration: none;
-            margin-bottom: 10px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transition: .2s;
+            backdrop-filter: blur(10px);
+            width: auto;
+            min-width: 120px;
+            display: inline-block;
+            touch-action: manipulation;
         }
-        .links a:hover {
-            text-decoration: underline;
+        .links a:hover, .links a:active {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #f6e62d;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(246, 230, 45, 0.2);
+            outline: 2px solid #f6e62d;
         }
-        .right-column {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .background-image {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(600px, 90vw);
+            height: min(600px, 90vw);
+            opacity: .1;
+            filter: blur(40px);
         }
-        .right-column img {
-            height: 400px;
+        .background-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        @media (max-width: 768px) {
+            .links {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            .links a {
+                margin: 0;
+                width: auto;
+            }
+        }
+        @media (hover: none) {
+            .links a:active {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: #f6e62d;
+                transform: translateY(-1px);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="left-column">
-        <header>
-            <img src="https://duckybot.xyz/images/DuckyText.svg" alt="DuckyBot Logo">
-        </header>
-        <h1 class="cool-text">404</h1>
-        <p>Oops! The page you are looking for does not exist. Please check the URL or try one of the links below:</p>
+    <div class="background-image">
+        <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky">
+    </div>
+    <div class="container">
+        <h1>404</h1>
+        <p>The page you're looking for doesn't exist or has been moved.</p>
         <div class="links">
             <a href="/">Home</a>
             <a href="https://status.duckybot.xyz">Status</a>
@@ -83,9 +131,6 @@
             <a href="https://duckybot.xyz/plus/">Ducky Plus+</a>
             <a href="https://duckybot.xyz/support">Support</a>
         </div>
-    </div>
-    <div class="right-column">
-        <img src="https://duckybot.xyz/images/Ducky.svg" alt="DuckyBot Illustration">
     </div>
 </body>
 </html>
