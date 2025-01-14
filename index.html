@@ -243,24 +243,5 @@
 
       updateStats();
     </script>
-    <script>
-      const animateElements = document.querySelectorAll(".animate");
-      const isInViewport = (element) => {
-        const rect = element.getBoundingClientRect();
-        return (
-          rect.top <=
-          (window.innerHeight || document.documentElement.clientHeight)
-        );
-      };
-      const handleScrollAnimation = () => {
-        animateElements.forEach((el) => {
-          if (isInViewport(el)) {
-            el.classList.add("show");
-          }
-        });
-      };
-      window.addEventListener("scroll", handleScrollAnimation);
-      handleScrollAnimation();
-    </script>
   </body>
 </html>
