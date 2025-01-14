@@ -4,240 +4,165 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ducky TOS</title>
-    <link rel="icon" type="image/x-icon" href="../../images/Ducky.svg" />
+    <link rel="icon" type="image/x-icon" href="https://duckybot.xyz/images/Ducky.svg" />
     <meta content="Ducky Bot Terms Of Service" property="og:title" />
-    <meta
-      content="The Terms of Service for Ducky Bot."
-      property="og:description"
-    />
+    <meta content="The Terms of Service for Ducky Bot." property="og:description" />
     <meta content="https://duckybot.xyz/legal/terms" property="og:url" />
-    <meta content="Ducky.svg" property="og:image" />
+    <meta content="https://duckybot.xyz/images/Ducky.svg" property="og:image" />
     <meta content="#77CDFF" data-react-helmet="true" name="theme-color" />
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
   </head>
   <body>
-    <nav class="navbar">
-      <div class="navbar-container">
-        <a href="/" class="logo">
-          <img
-            src="../../images/Ducky.svg"
-            alt="DuckyBot Logo"
-            style="height: 30px"
-          />
-          <img
-            src="../../images/DuckyText.svg"
-            alt="Duckybot Text"
-            style="height: 50px"
-          />
-        </a>
-        <ul class="nav-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="/status">Status</a></li>
-          <li><a href="/docs">Documentation</a></li>
-          <li><a href="/plus">Ducky Plus+</a></li>
-          <li><a href="/invite">Invite</a></li>
-          <li><a href="/team" class="active">Team</a></li>
-        </ul>
-        <a href="/support" class="cta-btn">Support</a>
-      </div>
-    </nav>
-    <section class="tos">
-      <div class="tos-container">
-        <h1>Terms of Service Agreement</h1>
+    <div class="tos-container">
+      <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky Logo" class="ducky-logo">
+      <h1>Terms of Service</h1>
 
-        <div class="policy-info">
-          <p><strong>Effective Date:</strong> September 29, 2024</p>
-          <p><strong>Last Updated:</strong> December 29, 2024</p>
+      <div class="policy-info">
+        <p><strong>Effective Date:</strong> September 29, 2024</p>
+        <p><strong>Last Updated:</strong> December 29, 2024</p>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header" onclick="toggleSection(this)">
+          <h2>Agreement</h2>
+          <i class="fas fa-chevron-down toggle-icon"></i>
         </div>
-
-        <p>
-          This Terms of Service Agreement (the "Agreement") is entered into
-          between the Ducky Developers ("Ducky team") and the user ("User") of
-          the Ducky Discord bot ("Bot", "Ducky"). By using the Bot, the User
-          agrees to be bound by the terms of this Agreement. If the User does
-          not agree to the terms of this Agreement, they should immediately
-          discontinue use of the Bot. For questions or inquiries contact us
-          through the Discord server Ducky Support ("support server")
-          (accessible at
-          <a href="https://duckybot.xyz/support">https://duckybot.xyz/support</a
-          >), here you may contact our support team ("Ducky Support") through a
-          ticket avalible in the channel named "🐤・support" (with id
-          "1261005301021278321").
-        </p>
-
-        <h2>About Ducky</h2>
-        <p>
-          Ducky is a bot developed for the chat and social platform Discord
-          (accessible at <a href="https://discord.com">https://discord.com</a>),
-          provided by Discord Inc. Utilizing Discord's public API, built with
-          Lua and the Discordia Library (details available at
-          <a href="https://discord.dev">https://discord.dev</a>), Ducky aims to
-          enhance User experience with various tools and interactions in
-          compliance with Discord's terms and guidelines. Ducky strictly adheres
-          to Discord’s Developer Terms and maintains responsible and respectful
-          use of Discord’s services. Users are required to use Ducky in ways
-          that align with both Ducky's terms and Discord's policies.
-          Unauthorized use, such as sending unsolicited messages, spamming
-          channels or direct messages, or engaging in any activity that violates
-          Ducky’s or Discord’s terms, is strictly prohibited. Misuse of this
-          service may lead to restrictions and possible reporting to Discord. If
-          you encounter or suspect any misuse of Ducky, please report it to the
-          developers immediately through our support server.
-        </p>
-
-        <h2>Use of the Bot</h2>
-        <p>
-          The Ducky team grants the User a non-exclusive, non-transferable,
-          limited license to use the Bot for personal or non-commercial
-          purposes.
-        </p>
-        <p>The User must abide by Discord’s Terms of Service.</p>
-        <p>
-          The User is expected to use Ducky as intended, and not with malicious,
-          abusive, or bad intent.
-        </p>
-
-        <h2>Prohibited Use</h2>
-        <p>The User may not use the Bot in any way that:</p>
-        <p>
-          Violates any applicable laws, regulations, or Discord's Terms of
-          Service; Infringes upon the rights, privacy, or safety of any
-          individual or third party; Engages in spamming, unauthorized
-          messaging, or unsolicited advertisements; Attempts to create, spread,
-          or encourage false information, rumors, or drama related to Ducky or
-          its community; Seeks to exploit, disrupt, or reverse-engineer Ducky’s
-          functionality in any way; Violates the intended use and features of
-          Ducky or Discord’s platform.
-        </p>
-        <p>
-          Any prohibited use may result in restricted access or a ban, with
-          potential reporting to Discord if the terms above are violated.
-        </p>
-
-        <h2>Privacy Policy</h2>
-        <p>
-          Ducky’s Privacy Policy (accessible at
-          <a href="https://duckybot.xyz/legal/privacy"
-            >https://duckybot.xyz/legal/privacy</a
-          >) applies to all interactions with the Bot. The User agrees to the
-          collection and use of information as outlined in the Privacy Policy.
-        </p>
-
-        <h2>Limitation of Liability</h2>
-        <p>
-          The Ducky team shall not be liable for any damages arising out of the
-          use or inability to use the Bot, including but not limited to damages
-          for loss of profits, loss of data, or other intangible losses.
-        </p>
-
-        <h2>Modifications to the Bot</h2>
-        <p>
-          The Ducky team may modify or discontinue the Bot at any time without
-          notice. The User agrees that the Ducky team shall not be liable to the
-          User or any third party for any modification, suspension, or
-          discontinuance of the Bot.
-        </p>
-
-        <h2>Ducky Plus+ | Terms & Conditions</h2>
-        <h3>Agreement</h3>
-        <p>
-          By purchasing Ducky Plus+ through any payment method/form, the User
-          agrees to these terms. If you are in the Ducky support server, and
-          have claimed the Ducky Plus+ role (through a Ducky Plus+ ticket in the
-          support channel), you will always be notified about changes in this
-          section.
-        </p>
-
-        <h3>Subscription</h3>
-        <p>
-          At the moment, the User may only purchase Ducky Plus+ through
-          <a href="https://roblox.com/games/120255327552791/Ducky-Plus"
-            >the Roblox game</a
-          >. For every Ducky Plus+ purchase the User makes, their personal
-          subscription will be extended by 30 days. The User will receive 1
-          slot, which can grant a server Ducky Plus+ until their personal
-          subscription expires. This means if the User purchases Ducky Plus+ 2
-          times, the User can grant 2 servers 2 months of Ducky Plus+. A slot
-          cannot be used on a server that has an active subscription. If a slot
-          is not used before the User's personal subscription expires, the slot
-          cannot be used anymore.
-        </p>
-
-        <h3>Refunds</h3>
-        <p>
-          All methods/forms of purchasing Ducky Plus+ are not refundable. The
-          usage of a slot on a server may be refunded only if the server does
-          not have data in our database which was granted by the slot. When a
-          slot is refunded, the slot expires when the User's personal
-          subscription expires.
-        </p>
-
-        <h3>Revokability</h3>
-        <p>
-          The Ducky team reserves the right to terminate a User’s access to
-          Ducky Plus+ for any reason. Appeals can be made via a Support ticket
-          in the Ducky Support server.
-        </p>
-
-        <h2>Intellectual Property</h2>
-        <p>
-          The Bot and all intellectual property rights therein are and shall
-          remain the property of the Ducky team. The User agrees not to copy,
-          modify, or distribute the Bot or any portion thereof without the
-          express written consent of the Ducky team.
-        </p>
-
-        <h2>Indemnification</h2>
-        <p>
-          The User agrees to indemnify and hold harmless the Ducky team, its
-          affiliates, and their respective directors, officers, employees, and
-          agents from any and all claims, damages, liabilities, costs, and
-          expenses, including reasonable attorneys' fees, arising out of the
-          User's use of the Bot.
-        </p>
-
-        <h2>Termination</h2>
-        <p>
-          This Agreement may be terminated by either party at any time for any
-          reason. Upon termination, the User must immediately cease all use of
-          the Bot.
-        </p>
-
-        <h2>Governing Law</h2>
-        <p>
-          This Agreement and any disputes or claims arising out of or in
-          connection with it, including but not limited to its formation,
-          validity, interpretation, performance, and enforcement, shall be
-          governed by and construed in accordance with the laws of the United
-          States. This choice of law applies regardless of any conflicts of law
-          principles or rules that might otherwise apply the laws of another
-          jurisdiction.
-        </p>
-        <p>
-          By using Ducky, you agree that any legal actions or proceedings
-          related to this Agreement shall be subject to the exclusive
-          jurisdiction of the courts located within the United States.
-        </p>
-
-        <h2>Entire Agreement</h2>
-        <p>
-          This Agreement constitutes the entire agreement between the parties
-          and supersedes all prior or contemporaneous agreements or
-          representations, whether written or oral, relating to the Bot.
-        </p>
-
-        <p>
-          For any questions or concerns about these Terms of Service, or to
-          appeal a Ducky Plus+ or general account action, please contact our
-          support team in the
-          <a href="https://duckybot.xyz/support">support server</a>.
-        </p>
+        <div class="section-content">
+          <p>This Terms of Service Agreement (the "Agreement") is entered into between the Ducky Developers ("Ducky team") and the user ("User") of the Ducky Discord bot ("Bot", "Ducky"). By using the Bot, the User agrees to be bound by the terms of this Agreement. If the User does not agree to the terms of this Agreement, they should immediately discontinue use of the Bot.</p>
+          <p>For questions or inquiries contact us through the Discord server Ducky Support ("support server") (accessible at <a href="https://duckybot.xyz/support">https://duckybot.xyz/support</a>), here you may contact our support team ("Ducky Support") through a ticket avalible in the channel named <strong>🐤・support</strong> (with id "1261005301021278321").</p>
+        </div>     
+     </div>
+      <div class="section-card">
+        <div class="section-header" onclick="toggleSection(this)">
+          <h2>About Ducky</h2>
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="section-content">
+          <p>Ducky is a bot developed for the chat and social platform Discord (accessible at <a href="https://discord.com">https://discord.com</a>), provided by Discord Inc. Utilizing Discord's public API, built with Lua and the Discordia Library (details available at <a href="https://discord.dev">https://discord.dev</a>), Ducky aims to enhance User experience with various tools and interactions in compliance with Discord's terms and guidelines. Ducky strictly adheres to Discord's Developer Terms and maintains responsible and respectful use of Discord's services.</p>
+          <p>Users are required to use Ducky in ways that align with both Ducky's terms and Discord's policies. Unauthorized use, such as sending unsolicited messages, spamming channels or direct messages, or engaging in any activity that violates Ducky's or Discord's terms, is strictly prohibited. Misuse of this service may lead to restrictions and possible reporting to Discord. If you encounter or suspect any misuse of Ducky, please report it to the developers immediately through our support server.</p>
+        </div>      
+    </div>
+      <div class="section-card">
+        <div class="section-header" onclick="toggleSection(this)">
+          <h2>Usage Guidelines</h2>
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="section-content">
+          <div class="feature-list">
+            <div class="feature-item">
+              <h3>Use of the Bot</h3>
+              <ul>
+                <li>Non-exclusive, non-transferable, limited license</li>
+                <li>Personal or non-commercial purposes only</li>
+                <li>Must abide by Discord's Terms of Service</li>
+                <li>Use as intended without malicious intent</li>
+              </ul>
+            </div>
+            <div class="feature-item">
+              <h3>Prohibited Use</h3>
+              <ul>
+                <li>Violation of laws or Discord's Terms of Service</li>
+                <li>Infringement of rights, privacy, or safety</li>
+                <li>Spamming or unauthorized messaging</li>
+                <li>Creating or spreading false information</li>
+                <li>Exploiting or reverse-engineering functionality</li>
+                <li>Violating intended use of Ducky or Discord</li>
+              </ul>
+            </div>
+          </div>
+          <p>Any prohibited use may result in restricted access or a ban, with potential reporting to Discord if the terms above are violated.</p>
+        </div>
       </div>
-    </section>
+      <div class="mini-section-card">
+              <div class="mini-section-header" onclick="toggleSection(this)">
+                <h3>Privacy Policy</h3>
+                <i class="fas fa-chevron-down mini-toggle-icon"></i>
+              </div>
+              <div class="mini-section-content">
+                <p>Ducky's Privacy Policy (accessible at <a href="https://duckybot.xyz/legal/privacy">https://duckybot.xyz/legal/privacy</a>) applies to all interactions with the Bot. The User agrees to the collection and use of information as outlined in the Privacy Policy.</p>
+              </div>
+            </div>
+      
+            <div class="mini-section-card">
+              <div class="mini-section-header" onclick="toggleSection(this)">
+                <h3>Limitation of Liability</h3>
+                <i class="fas fa-chevron-down mini-toggle-icon"></i>
+              </div>
+              <div class="mini-section-content">
+                <p>The Ducky team shall not be liable for any damages arising out of the use or inability to use the Bot, including but not limited to damages for loss of profits, loss of data, or other intangible losses.</p>
+              </div>
+            </div>
+      
+            <div class="mini-section-card">
+              <div class="mini-section-header" onclick="toggleSection(this)">
+                <h3>Modifications to the Bot</h3>
+                <i class="fas fa-chevron-down mini-toggle-icon"></i>
+              </div>
+              <div class="mini-section-content">
+                <p>The Ducky team may modify or discontinue the Bot at any time without notice. The User agrees that the Ducky team shall not be liable to the User or any third party for any modification, suspension, or discontinuance of the Bot.</p>
+              </div>
+            </div>
+      
+
+      <div class="section-card">
+        <div class="section-header" onclick="toggleSection(this)">
+          <h2>Ducky Plus+ Subscription</h2>
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="section-content">
+          <div class="feature-list">
+            <div class="feature-item">
+              <h3>Subscription</h3>
+              <ul>
+                <li>Purchase through Roblox game only</li>
+                <li>Each purchase extends subscription by 30 days</li>
+                <li>1 slot granted per purchase</li>
+                <li>Slots can grant Ducky Plus+ to servers</li>
+                <li>Multiple purchases stack duration and slots</li>
+              </ul>
+            </div>
+            <div class="feature-item">
+              <h3>Terms & Conditions</h3>
+              <ul>
+                <li>Slots expire with subscription</li>
+                <li>Cannot be used on active subscriptions</li>
+                <li>Access may be revoked at our discretion</li>
+                <li>Appeals through Support tickets</li>
+                <li>The Ducky team reserves the right to terminate access for any reason</li>
+              </ul>
+            </div>
+          </div>
+          <p class="refunds-notice"><strong>⚠️ No Refunds Policy:</strong> All purchases are final and non-refundable. Slot refunds will only be considered if the server has no existing data. Any refunded slots will expire with the subscription period.</p>
+        </div>      
+    </div>      
+      <div class="section-card">
+        <div class="section-header" onclick="toggleSection(this)">
+          <h2>Legal Information</h2>
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="section-content">
+          <h3>Intellectual Property</h3>
+          <p>The Bot and all intellectual property rights therein are and shall remain the property of the Ducky team. The User agrees not to copy, modify, or distribute the Bot or any portion thereof without the express written consent of the Ducky team.</p>
+          
+          <h3>Indemnification</h3>
+          <p>The User agrees to indemnify and hold harmless the Ducky team, its affiliates, and their respective directors, officers, employees, and agents from any and all claims, damages, liabilities, costs, and expenses, including reasonable attorneys' fees, arising out of the User's use of the Bot.</p>
+          
+          <h3>Termination</h3>
+          <p>This Agreement may be terminated by either party at any time for any reason. Upon termination, the User must immediately cease all use of the Bot.</p>
+          
+          <h3>Governing Law</h3>
+          <p>This Agreement and any disputes or claims arising out of or in connection with it, including but not limited to its formation, validity, interpretation, performance, and enforcement, shall be governed by and construed in accordance with the laws of the United States. This choice of law applies regardless of any conflicts of law principles or rules that might otherwise apply the laws of another jurisdiction.</p>
+          
+          <p>By using Ducky, you agree that any legal actions or proceedings related to this Agreement shall be subject to the exclusive jurisdiction of the courts located within the United States.</p>
+          
+          <h3>Entire Agreement</h3>
+          <p>This Agreement constitutes the entire agreement between the parties and supersedes all prior or contemporaneous agreements or representations, whether written or oral, relating to the Bot.</p>
+          
+          <p>For any questions or concerns about these Terms of Service, or to appeal a Ducky Plus+ or general account action, please contact our support team in the <a href="https://duckybot.xyz/support">support server</a>.</p>
+        </div>
+      </div>
+    </div>
     <footer class="footer">
       <div class="footer-container">
         <div class="footer-links">
@@ -247,26 +172,33 @@
           <a href="/docs" class="footer-link">FAQ</a>
         </div>
         <div class="footer-socials">
-          <a
-            href="https://x.com/duckydiscordbot"
-            class="social-link"
-            target="_blank"
-          >
+          <a href="https://x.com/duckydiscordbot" class="social-link" target="_blank">
             <i class="fab fa-twitter"></i>
           </a>
-          <a
-            href="https://github.com/DuckySupport/duckybot.xyz"
-            class="social-link"
-            target="_blank"
-          >
+          <a href="https://github.com/DuckySupport/duckybot.xyz" class="social-link" target="_blank">
             <i class="fab fa-github"></i>
           </a>
           <a href="/support/" class="social-link" target="_blank">
             <i class="fab fa-discord"></i>
           </a>
         </div>
-        <p class="footer-text">&copy; 2025 Ducky. All rights reserved.</p>
+        <p class="footer-text">© 2025 Ducky. All rights reserved.</p>
       </div>
     </footer>
+
+    <script>
+      function toggleSection(header) {
+        header.classList.toggle('active');
+        const content = header.nextElementSibling;
+        
+        if (content.style.maxHeight) {
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        }
+        
+        content.classList.toggle('active');
+      }
+    </script>
   </body>
 </html>
