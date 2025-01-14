@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Example API URL
-  const apiUrl = `http://38.114.240.180:8002/transcripts/${guildId}/${ticketId}`;
+  const apiUrl = `https://api.duckybot.xyz/transcripts/${guildId}/${ticketId}`;
 
   // Fetch the transcript data
   fetch(apiUrl, {
