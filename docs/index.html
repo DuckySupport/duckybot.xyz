@@ -16,7 +16,7 @@
     <link rel="icon" type="image/x-icon" href="https://duckybot.xyz/images/Ducky.svg" />
     <link href="https://api.fontshare.com/v2/css?f=satoshi@400,500,700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="redirect-container">
@@ -26,12 +26,13 @@
             <p class="redirect-text">Taking you to your destination</p>
             <div class="redirect-spinner"></div>
             <div class="manual-redirect" id="manualRedirect">
-                <a href="#" onclick="window.location.href = REDIRECT_URL; return false;">Continue to location</a>
+                <p style="color: #fafafa;">If you are not redirected automatically, <a href="" onclick="window.location.href=REDIRECT_URL; return false;">click here</a></p>
             </div>
-        </div>      </div>
+        </div>      
+    </div>
     <script>
-        window.location.href = REDIRECT_URL;
         setTimeout(function() {
+            window.location.href = REDIRECT_URL;
             document.getElementById('manualRedirect').classList.add('show');
         }, 1500);
     </script>

@@ -26,12 +26,13 @@
             <p class="redirect-text">Taking you to your destination</p>
             <div class="redirect-spinner"></div>
             <div class="manual-redirect" id="manualRedirect">
-                <a href="#" onclick="window.location.href = REDIRECT_URL; return false;">Continue to location</a>
+                <p style="color: #fafafa;">If you are not redirected automatically, <a href="" onclick="window.location.href=REDIRECT_URL; return false;">click here</a></p>
             </div>
-        </div>      </div>
+        </div>      
+    </div>
     <script>
-        window.location.href = REDIRECT_URL;
         setTimeout(function() {
+            window.location.href = REDIRECT_URL;
             document.getElementById('manualRedirect').classList.add('show');
         }, 1500);
     </script>
