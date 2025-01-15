@@ -15,31 +15,7 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <nav class="navbar">
-      <div class="navbar-container">
-        <a href="/" class="logo">
-          <img
-            src="images/Ducky.svg"
-            alt="DuckyBot Logo"
-            style="height: 30px"
-          />
-          <img
-            src="images/DuckyText.svg"
-            alt="Duckybot Text"
-            style="height: 50px"
-          />
-        </a>
-        <ul class="nav-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="/status">Status</a></li>
-          <li><a href="/docs">Documentation</a></li>
-          <li><a href="/plus">Ducky Plus+</a></li>
-          <li><a href="/invite">Invite</a></li>
-          <li><a href="/team">Team</a></li>
-        </ul>
-        <a href="/support" class="cta-btn">Support</a>
-      </div>
-    </nav>
+    <div id="navbar"></div>
 
     <div class="tos-container">
       <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky Logo" class="ducky-logo">
@@ -201,6 +177,18 @@
         <p class="footer-text">© 2025 Ducky. All rights reserved.</p>
       </div>
     </footer>
+
+    <!-- This is to load the nav bar-->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        fetch("navbar.html")
+          .then((response) => response.text())
+          .then((html) => {
+            document.getElementById("navbar").innerHTML = html;
+          })
+          .catch((error) => console.error("Error loading navbar:", error));
+      });
+    </script>
 
     <script>
       function toggleSection(header) {
