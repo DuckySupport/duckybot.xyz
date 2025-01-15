@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <base href="/">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ducky Plus+</title>
-    <link rel="icon" type="image/x-icon" href="../images/plus.png" />
+    <link rel="icon" type="image/x-icon" href="images/plus.png" />
     <meta
       name="description"
       content="Upgrade to Ducky Plus+ and unlock exclusive features designed to supercharge your server."
@@ -15,9 +16,9 @@
       property="og:description"
     />
     <meta content="https://duckybot.xyz/plus" property="og:url" />
-    <meta content="../images/plus.png" property="og:image" />
+    <meta content="images/plus.png" property="og:image" />
     <meta content="#F5FF82" data-react-helmet="true" name="theme-color" />
-    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="styles.css" />
     <link rel="canonical" href="https://duckybot.xyz/plus" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -298,7 +299,7 @@
         >
       </div>
       <div class="hero-image">
-        <img src="../images/plus.png" alt="Ducky Plus+ Banner" />
+        <img src="images/plus.png" alt="Ducky Plus+ Banner" />
       </div>
     </section>
 
@@ -368,14 +369,14 @@
             <td>ERLC Player Panel</td>
             <td>
               <img
-                src="../dashboard/icons/Fail.svg"
+                src="dashboard/icons/Fail.svg"
                 alt="Not Available"
                 style="width: 30px; height: 30px"
               />
             </td>
             <td>
               <img
-                src="../dashboard/icons/Success.svg"
+                src="dashboard/icons/Success.svg"
                 alt="Available"
                 style="width: 30px; height: 30px"
               />
@@ -385,14 +386,14 @@
             <td>Required Servers Giveaways</td>
             <td>
               <img
-                src="../dashboard/icons/Fail.svg"
+                src="dashboard/icons/Fail.svg"
                 alt="Not Available"
                 style="width: 30px; height: 30px"
               />
             </td>
             <td>
               <img
-                src="../dashboard/icons/Success.svg"
+                src="dashboard/icons/Success.svg"
                 alt="Available"
                 style="width: 30px; height: 30px"
               />
@@ -402,14 +403,14 @@
             <td>Command Queueing</td>
             <td>
               <img
-                src="../dashboard/icons/Fail.svg"
+                src="dashboard/icons/Fail.svg"
                 alt="Not Available"
                 style="width: 30px; height: 30px"
               />
             </td>
             <td>
               <img
-                src="../dashboard/icons/Success.svg"
+                src="dashboard/icons/Success.svg"
                 alt="Available"
                 style="width: 30px; height: 30px"
               />
@@ -419,14 +420,14 @@
             <td>Embed Export</td>
             <td>
               <img
-                src="../dashboard/icons/Fail.svg"
+                src="dashboard/icons/Fail.svg"
                 alt="Not Available"
                 style="width: 30px; height: 30px"
               />
             </td>
             <td>
               <img
-                src="../dashboard/icons/Success.svg"
+                src="dashboard/icons/Success.svg"
                 alt="Available"
                 style="width: 30px; height: 30px"
               />
@@ -441,14 +442,14 @@
             <td>Priority Support</td>
             <td>
               <img
-                src="../dashboard/icons/Fail.svg"
+                src="dashboard/icons/Fail.svg"
                 alt="Not Available"
                 style="width: 30px; height: 30px"
               />
             </td>
             <td>
               <img
-                src="../dashboard/icons/Success.svg"
+                src="dashboard/icons/Success.svg"
                 alt="Available"
                 style="width: 30px; height: 30px"
               />
@@ -524,7 +525,7 @@
     <!-- This is to load the nav bar-->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        fetch("../navbar.html")
+        fetch("navbar.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("navbar").innerHTML = html;
