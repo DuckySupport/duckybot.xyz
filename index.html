@@ -207,8 +207,8 @@
           document.getElementById("linkCount").textContent = stats.links ? `${parseInt(stats.links).toLocaleString()}` : defaultStats.linkCount;
 
           document.querySelector(".badge:nth-child(1)").innerHTML = `
-            <h3 id="badgeServerCount">${stats.guilds ? `Trusted by ${parseInt(stats.guilds).toLocaleString()} Servers` : `Trusted by ${defaultStats.serverCount} Servers`}</h3>
             <i class="fas fa-shield-alt"></i>
+            ${stats.guilds ? `Trusted by ${parseInt(stats.guilds).toLocaleString()} Servers` : `Trusted by ${defaultStats.serverCount} Servers`}
           `;
 
           document.querySelector(".badge:nth-child(2)").innerHTML = `
@@ -226,12 +226,12 @@
 
           document.querySelector(".badge:nth-child(1)").innerHTML = `
             <i class="fas fa-shield-alt"></i>
-            <h3 id="badgeServerCount">Trusted by ${defaultStats.serverCount} Servers</h3>
+            Trusted by ${defaultStats.serverCount} Servers
           `;
 
         document.querySelector(".badge:nth-child(2)").innerHTML = `
           <i class="fas fa-users"></i>
-          <h3 id="badgeUserCount">${defaultStats.userCount} Users</h3>
+          ${defaultStats.userCount} Users
         `;
         }
       }
