@@ -225,13 +225,13 @@
           document.getElementById("badgeUserCount").textContent = `${defaultStats.userCount} Users`;
 
           document.querySelector(".badge:nth-child(1)").innerHTML = `
-            <h3 id="badgeServerCount">Trusted by ${defaultStats.serverCount} Servers</h3>
             <i class="fas fa-shield-alt"></i>
+            <h3 id="badgeServerCount">Trusted by ${defaultStats.serverCount} Servers</h3>
           `;
 
         document.querySelector(".badge:nth-child(2)").innerHTML = `
-          <h3 id="badgeUserCount">${defaultStats.userCount} Users</h3>
           <i class="fas fa-users"></i>
+          <h3 id="badgeUserCount">${defaultStats.userCount} Users</h3>
         `;
         }
       }
