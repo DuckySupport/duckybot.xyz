@@ -106,6 +106,10 @@
         position: relative;
         max-width: 300px;
         margin: 0 auto;
+        min-height: 380px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
       }
       .team-card::before {
         content: '';
@@ -156,6 +160,7 @@
         font-size: 0.95rem;
         color: #F5FF82;
         font-weight: 600;
+        text-align: center;
       }
       .footer {
         background-color: #121212;
@@ -207,6 +212,7 @@
         }
         .team-card {
           padding: 15px;
+          min-height: 360px;
         }
         .team-photo {
           width: 100px;
@@ -298,7 +304,7 @@
           <a href="https://discord.com/users/635834352172793877" class="card-name"
             ><h3>Lugab</h3></a>
           <p class="username">@lugab</p>
-          <p class="role">Infrastructure Admin, Web Developer</p>
+          <p class="role">Web Developer</p>
         </div>
       </div>
     </section>
@@ -344,7 +350,12 @@
           >
             <i class="fab fa-github"></i>
           </a>
-          <a href="/support/" class="social-link" target="_blank" aria-label="Discord">
+          <a
+            href="/support/"
+            class="social-link"
+            target="_blank"
+            aria-label="Discord"
+          >
             <i class="fab fa-discord"></i>
           </a>
         </div>
