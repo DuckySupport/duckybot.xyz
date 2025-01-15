@@ -55,16 +55,14 @@
         </div>
         <div class="hero-badges">
           <div class="badge">
+            <h3 id="badgeServerCount"></h3>
             <i class="fas fa-shield-alt"></i>
             Trusted by 1,000+ Servers
           </div>
           <div class="badge">
+            <h3 id="badgeUserCount"></h3>
             <i class="fas fa-users"></i>
             130K+ Users
-          </div>
-          <div class="badge">
-            <i class="fas fa-star"></i>
-            4.9/5 Rating
           </div>
         </div>
       </div>
@@ -194,7 +192,7 @@
       const defaultStats = {
         serverCount: "1000+",
         userCount: "125,000+",
-        linkCount: "800+",
+        linkCount: "1000+",
       };
     
       async function updateStats() {
@@ -207,11 +205,17 @@
           document.getElementById("serverCount").textContent = stats.guilds ? `${parseInt(stats.guilds).toLocaleString()}` : defaultStats.serverCount;
           document.getElementById("userCount").textContent = stats.users ? `${parseInt(stats.users).toLocaleString()}` : defaultStats.userCount;
           document.getElementById("linkCount").textContent = stats.links ? `${parseInt(stats.links).toLocaleString()}` : defaultStats.linkCount;
+
+          document.getElementById("badgeServerCount").textContent = stats.guilds ? `Trusted by ${parseInt(stats.guilds).toLocaleString()} Servers` : `Trusted by ${defaultStats.serverCount} Servers`;
+          document.getElementById("badgeUserCount").textContent = stats.users ? `${parseInt(stats.users).toLocaleString()} Users` : `${defaultStats.userCount} Users`;
         } catch (error) {
           console.error("Failed to fetch statistics:", error);
           document.getElementById("serverCount").textContent = defaultStats.serverCount;
           document.getElementById("userCount").textContent = defaultStats.userCount;
           document.getElementById("linkCount").textContent = defaultStats.linkCount;
+
+          document.getElementById("badgeServerCount").textContent = `Trusted by ${defaultStats.serverCount} Servers`;
+          document.getElementById("badgeUserCount").textContent = `${defaultStats.userCount} Users`;
         }
       }
     
