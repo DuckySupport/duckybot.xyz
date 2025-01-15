@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <base href="/">
+    <base href="/" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ducky - Meet the Team</title>
@@ -39,54 +39,57 @@
       }
 
       .team-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        text-align: center;
-        gap: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
       }
 
       .team-card {
-        background-color: transparent;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 20px;
         text-align: center;
+        width: 220px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
       }
 
-      .team-card .username {
-        font-size: 15px;
-        margin-top: 2px;
-        margin-bottom: 5px;
-        font-family: 'Inter';
-        color: #777777;
-      }
-
-      .team-card .role {
-        margin-top: 0px;
-        font-size: 15px;
-        font-family: 'Inter';
+      .team-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
       }
 
       .team-photo {
-        width: 100px;
-        height: 100px;
+        width: 120px;
+        height: 120px;
         border-radius: 50%;
         object-fit: cover;
-        transition: all 0.2s ease-in-out;
+        border: 3px solid #f5ff82;
+        transition: transform 0.3s;
       }
 
       .team-photo:hover {
-        box-shadow: 0px 0px 16px 2px rgba(245, 255, 130, 0.5);
-        transform: scale(1.05);
-        border-color: white;
+        transform: scale(1.1);
       }
 
       .card-name h3 {
-        margin-bottom: 0px;
-        transition: all 0.3s ease-in-out;
+        font-size: 1.2em;
+        margin: 10px 0 5px;
+        transition: color 0.3s;
       }
 
       .card-name h3:hover {
-        color: #F5FF82;
-        transform: scale(1.05);
-        text-shadow: 2px 2px 8px rgba(245, 255, 130, 0.5);
+        color: #f5ff82;
+      }
+
+      .username,
+      .role {
+        font-family: 'Inter', sans-serif;
+        color: #ccc;
+        margin: 5px 0;
       }
     </style>
   </head>
@@ -116,7 +119,6 @@
           />
           <a
             href="https://discord.com/users/782235114858872854"
-            style="text-decoration: none; color: white"
             class="card-name"
             ><h3>bobbibones</h3></a
           >
@@ -131,7 +133,6 @@
           />
           <a
             href="https://discord.com/users/598958193032560642"
-            style="text-decoration: none; color: white"
             class="card-name"
             ><h3>Troptop</h3></a
           >
@@ -146,7 +147,6 @@
           />
           <a
             href="https://discord.com/users/1096369071961952377"
-            style="text-decoration: none; color: white"
             class="card-name"
             ><h3>devs_des1re</h3></a
           >
@@ -169,13 +169,13 @@
           />
           <a
             href="https://discord.com/users/635834352172793877"
-            style="text-decoration: none; color: white"
             class="card-name"
             ><h3>Lugab</h3></a
           >
           <p class="username">@lugab</p>
           <p class="role">Infrastructure Admin, Web Developer</p>
         </div>
+      </div>
     </section>
 
     <section class="team-section">
@@ -191,7 +191,6 @@
           />
           <a
             href="https://discord.com/users/1241605075047153776"
-            style="text-decoration: none; color: white"
             class="card-name"
             ><h3>frinklx</h3></a
           >
@@ -206,7 +205,6 @@
           />
           <a
             href="https://discord.com/users/1263353397554188331"
-            style="text-decoration: none; color: white"
             class="card-name"
             ><h3>Cody</h3></a
           >
@@ -217,7 +215,9 @@
     </section>
 
     <section class="team-section">
-      <h2 class="team-title" style="text-align: center">Ducky Executives</h2>
+      <h2 class="team-title" style="text-align: center">
+        Ducky Executives
+      </h2>
       <div class="team-grid">
         <div class="team-card">
           <img
@@ -227,7 +227,6 @@
           />
           <a
             href="https://discord.com/users/1017977993051787265"
-            style="text-decoration: none; color: white"
             class="card-name"
             ><h3>Brain</h3></a
           >
@@ -245,7 +244,6 @@
           <a href="/support" class="footer-link">Contact Us</a>
           <a href="/docs" class="footer-link">Docs</a>
           <a href="/team" class="footer-link">Our Team</a>
-
         </div>
         <div class="footer-socials">
           <a
@@ -281,6 +279,5 @@
           .catch((error) => console.error("Error loading navbar:", error));
       });
     </script>
-
   </body>
 </html>
