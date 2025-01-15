@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <base href="/">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ducky - Meet the Team</title>
-    <link rel="icon" type="image/x-icon" href="../images/Ducky.svg" />
+    <link rel="icon" type="image/x-icon" href="images/Ducky.svg" />
     <meta
       name="description"
       content="Get to know the dedicated team behind Ducky, the multi-purpose Discord bot making servers better worldwide."
@@ -15,9 +16,9 @@
       property="og:description"
     />
     <meta content="https://duckybot.xyz/team" property="og:url" />
-    <meta content="../images/Ducky.webp" property="og:image" />
+    <meta content="images/Ducky.webp" property="og:image" />
     <meta content="#F5FF82" data-react-helmet="true" name="theme-color" />
-    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="styles.css" />
     <link rel="canonical" href="https://duckybot.xyz/team" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -184,7 +185,7 @@
       <div class="team-grid">
         <div class="team-card">
           <img
-            src="../images/discordpfps/frinklx.jpg"
+            src="images/discordpfps/frinklx.jpg"
             alt="@frinklx"
             class="team-photo"
           />
@@ -272,7 +273,7 @@
     <!-- This is to load the nav bar-->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        fetch("../navbar.html")
+        fetch("navbar.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("navbar").innerHTML = html;

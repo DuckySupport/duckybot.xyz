@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <base href="/">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ducky TOS</title>
@@ -192,7 +193,7 @@
     <!-- This is to load the nav bar-->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        fetch("../../navbar.html")
+        fetch("navbar.html")
           .then((response) => response.text())
           .then((html) => {
             document.getElementById("navbar").innerHTML = html;
