@@ -13,39 +13,10 @@
     <meta content="#77CDFF" data-react-helmet="true" name="theme-color" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="legal/terms/styles.css" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <nav class="navbar">
-      <div class="navbar-container">
-        <a href="/" class="logo">
-          <img
-            src="images/Ducky.svg"
-            alt="DuckyBot Logo"
-            style="height: 30px"
-          />
-          <img
-            src="images/DuckyText.svg"
-            alt="Duckybot Text"
-            style="height: 50px"
-          />
-        </a>
-        <button class="mobile-menu-btn">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <ul class="nav-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="/status">Status</a></li>
-          <li><a href="/docs">Documentation</a></li>
-          <li><a href="/plus">Ducky Plus+</a></li>
-          <li><a href="/support">Support</a></li>
-          <li><a href="/team">Team</a></li>
-        </ul>
-        <a href="/invite" class="cta-btn">Invite</a>
-      </div>
-    </nav>
+    <div id="navbar"></div>
 
     <div class="tos-container">
       <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky Logo" class="ducky-logo">
@@ -220,6 +191,18 @@
         <p class="footer-text">© 2025 Ducky. All rights reserved.</p>
       </div>
     </footer>
+
+    <!-- This is to load the nav bar-->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        fetch("navbar.html")
+          .then((response) => response.text())
+          .then((html) => {
+            document.getElementById("navbar").innerHTML = html;
+          })
+          .catch((error) => console.error("Error loading navbar:", error));
+      });
+    </script>
 
     <script>
       function toggleSection(header) {
