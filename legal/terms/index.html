@@ -16,7 +16,36 @@
     <link rel="stylesheet" href="legal/terms/styles.css" />
   </head>
   <body>
-    <div id="navbar"></div>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="/" class="logo">
+          <img
+            src="images/Ducky.svg"
+            alt="DuckyBot Logo"
+            style="height: 30px"
+          />
+          <img
+            src="images/DuckyText.svg"
+            alt="Duckybot Text"
+            style="height: 50px"
+          />
+        </a>
+        <button class="mobile-menu-btn">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/status">Status</a></li>
+          <li><a href="/docs">Documentation</a></li>
+          <li><a href="/plus">Ducky Plus+</a></li>
+          <li><a href="/support">Support</a></li>
+          <li><a href="/team">Team</a></li>
+        </ul>
+        <a href="/invite" class="cta-btn">Invite</a>
+      </div>
+    </nav>
 
     <div class="tos-container">
       <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky Logo" class="ducky-logo">
@@ -119,7 +148,7 @@
             <div class="feature-item">
               <h3>Subscription</h3>
               <ul>
-                <li>Purchased through the Ducky's Shop Roblox Game</li>
+                <li>Purchased through the Roblox game</li>
                 <li>Each purchase extends the user subscription by 30 days</li>
                 <li>1 slot is granted per purchase</li>
                 <li>Slots can grant Ducky Plus+ to servers</li>
@@ -131,7 +160,9 @@
             <div class="feature-item">
               <h3>Terms & Conditions</h3>
               <ul>
-                <li>Subscriptions are non-transferable and may not be sold, assigned, or shared with any third party.</li>
+                <li>Subscriptions are non-transferable</li>
+                <li>Subscriptions may not be sold.</li>
+                <li>Subscriptions may not be assigned, or shared with any third party.</li>
                 <li>We may terminate your subscription upon violate of our Terms of Service</li>
                 <li>Terminations can be appealed through our Support Server</li>
               </ul>
@@ -189,18 +220,6 @@
         <p class="footer-text">© 2025 Ducky. All rights reserved.</p>
       </div>
     </footer>
-
-    <!-- This is to load the nav bar-->
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        fetch("navbar.html")
-          .then((response) => response.text())
-          .then((html) => {
-            document.getElementById("navbar").innerHTML = html;
-          })
-          .catch((error) => console.error("Error loading navbar:", error));
-      });
-    </script>
 
     <script>
       function toggleSection(header) {
