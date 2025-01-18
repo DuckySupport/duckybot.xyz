@@ -8,13 +8,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
   <style>
     :root {
-      --bg-primary: #0a0a0c;
-      --bg-secondary: #151619;
-      --accent: #ffd700;
-      --text: #ffffff;
+      --bg-primary: #36393f;
+      --bg-secondary: #2f3136;
+      --accent: #5865f2;
+      --text: #dcddde;
       --border: rgba(255,255,255,0.1);
-      --code-bg: #1a1b1f;
-      --link-color: #ffd700;
+      --code-bg: #2b2d31;
+      --link-color: #00b0f4;
       --success: #3ba55c;
       --warning: #faa61a;
     }
@@ -23,8 +23,8 @@
       background-color: var(--bg-primary);
       color: var(--text);
       margin: 0;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      line-height: 1.7;
+      font-family: gg sans, 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      line-height: 1.375rem;
       font-size: 16px;
     }
     
@@ -50,68 +50,90 @@
       background: rgba(237,66,69,0.1);
       border-left: 4px solid #ed4245;
       padding: 1.5rem;
-      border-radius: 12px;
+      border-radius: 4px;
       margin: 1.5rem 0;
       animation: slideIn 0.3s ease;
     }
     
     #transcript {
       background: var(--bg-secondary);
-      border-radius: 16px;
-      padding: 2.5rem;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      border-radius: 4px;
+      padding: 1rem;
       animation: fadeIn 0.4s ease;
     }
     
-    h2 {
-      font-size: 1.8rem;
-      margin-bottom: 2rem;
-      color: var(--accent);
-      font-weight: 700;
-      letter-spacing: -0.5px;
+    .author-table {
+      margin: 0.5rem 0;
+      border-spacing: 0.5rem;
     }
     
-    .markdown-content {
-      font-size: 1.1rem;
+    .author-pfp {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
     }
     
-    .markdown-content strong {
-      color: var(--accent);
-      font-weight: 700;
+    .embed {
+      background: var(--bg-primary);
+      border-left: 4px solid var(--accent);
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem 0;
     }
     
-    .markdown-content em {
-      color: var(--warning);
-      font-style: italic;
+    .embed-field {
+      margin: 0.5rem 0;
     }
     
-    .markdown-content code {
+    .embed-footer {
+      color: var(--text);
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+    
+    .spoiler {
+      background-color: #202225;
+      padding: 0 2px;
+      cursor: pointer;
+    }
+    
+    .spoiler:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+    
+    code {
       background: var(--code-bg);
-      padding: 0.3em 0.6em;
-      border-radius: 6px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.95em;
-      color: #e6edf3;
-      border: 1px solid var(--border);
+      padding: 0.2em;
+      border-radius: 3px;
+      font-family: Consolas, 'Andale Mono WT', 'Andale Mono', 'Lucida Console', 'Lucida Sans Typewriter', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L', Monaco, 'Courier New', Courier, monospace;
+      font-size: 0.875rem;
+      color: #dcddde;
     }
     
-    .markdown-content pre {
-      background: var(--code-bg);
-      border-radius: 12px;
-      padding: 1.5rem;
+    pre code {
+      display: block;
+      padding: 0.5em;
       overflow-x: auto;
-      border: 1px solid var(--border);
+      background: var(--code-bg);
     }
     
-    .markdown-content a {
+    a {
       color: var(--link-color);
       text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s ease;
     }
     
-    .markdown-content a:hover {
-      border-bottom-color: var(--link-color);
+    a:hover {
+      text-decoration: underline;
+    }
+    
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    li {
+      margin: 1rem 0;
     }
     
     @keyframes fadeIn {
@@ -130,11 +152,7 @@
       }
       
       #transcript {
-        padding: 1.5rem;
-      }
-      
-      .markdown-content {
-        font-size: 1rem;
+        padding: 0.5rem;
       }
     }
   </style>
@@ -149,8 +167,8 @@
       <span>Loading your transcript...</span>
     </div>
     <div id="transcript" style="display: none;">
-      <h2>Transcript Details</h2>
-      <div id="ticket-details" class="markdown-content"></div>
+      <h2>Ticket Transcript</h2>
+      <div id="ticket-details"></div>
     </div>
     <div id="error" style="display: none;">
       <p>Failed to load transcript. Please check the URL or try again later.</p>
