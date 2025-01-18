@@ -54,22 +54,16 @@ document.addEventListener("DOMContentLoaded", () => {
   
     function formatDiscordMarkdown(text) {
         return text
-            // bold
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            // italic
-            .replace(/\*(.*?)\*/g, '<em>$1</em>')
-            .replace(/_([^_]+)_/g, '<em>$1</em>')
-            // underline
-            .replace(/__(.*?)__/g, '<u>$1</u>')
-            // strikethrough
-            .replace(/~~(.*?)~~/g, '<s>$1</s>')
-            // code blocks
-            .replace(/([^`]+)/g, '<pre><code>$1</code></pre>')
-            // inline code
-            .replace(/`([^`]+)`/g, '<code>$1</code>')
-            // spoiler
-            .replace(/\|\|(.*?)\|\|/g, '<span class="spoiler">$1</span>');
-    }
+        .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/_([^_]+)_/g, '<em>$1</em>')
+        .replace(/__(.*?)__/g, '<u>$1</u>')
+        .replace(/~~(.*?)~~/, '<s>$1</s>')
+        .replace(/\|\|(.*?)\|\|/g, '<span class="spoiler">$1</span>')
+        .replace(/\n/g, '<br>');
+}
   
     function renderMessage(msg) {
         const { author, content, pfp, embeds = [], stickers = [], attachments = [] } = msg;
