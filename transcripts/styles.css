@@ -1,33 +1,188 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background: #030712;
+  color: #e2e8f0;
+  margin: 0;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+h1 {
+  text-align: center;
+  padding: 2rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #7289da, #60a5fa, #f472b6);
+  background-size: 200% 200%;
+  animation: gradient 5s ease infinite;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.03em;
+  margin-bottom: 2rem;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 3rem;
+}
+
+#loading {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.1rem;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#error {
+  text-align: center;
+  color: #f87171;
+  background: #2b2d31;
+  padding: 1.5rem;
+  border-radius: 16px;
+  margin: 1.5rem 0;
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+#transcript {
+  background: #2b2d31;
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+h2 {
+  color: #7289da;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid rgba(114, 137, 218, 0.3);
+  padding-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+#ticket-details {
+  background: rgba(24, 24, 27, 0.8);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
 .author-table {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+  background: #2b2d31;
+  padding: 0.75rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.author-pfp {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 1rem;
+  border: 2px solid rgba(114, 137, 218, 0.3);
+}
+
+.embed {
+  background: #2b2d31;
+  border-left: 4px solid #7289da;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0 12px 12px 0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.embed h4 {
+  color: #7289da;
+  margin-bottom: 0.5rem;
+}
+
+.embed-field {
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.embed-footer {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sticker {
+  background: #2b2d31;
+  padding: 1rem;
+  border-radius: 12px;
+  display: inline-block;
+  text-align: center;
+  margin: 1rem 0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.attachment {
+  background: #2b2d31;
+  padding: 1rem;
+  border-radius: 12px;
+  margin: 1rem 0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+a {
+  color: #7289da;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  color: #93c5fd;
+  text-shadow: 0 0 8px rgba(114, 137, 218, 0.3);
+}
+
+@media (max-width: 600px) {
+  main {
+    padding: 1.5rem;
   }
   
-  .author-pfp {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
+  #transcript {
+    padding: 1.5rem;
   }
   
-  ul {
-    list-style: none;
-    padding: 0;
+  h1 {
+    font-size: 2rem;
+    padding: 1.5rem;
   }
-  
-  li {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
-  
-  .embed {
-    background-color: #2b2d31;
-    border-left: 4px solid #7289da;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
-  }
-  
+}
