@@ -5,26 +5,131 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ticket Transcripts</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+  <style>
+    :root {
+      --bg-primary: #2b2d31;
+      --bg-secondary: #1e1f23;
+      --accent: #7289da;
+      --text: #ffffff;
+      --border: rgba(255,255,255,0.1);
+    }
+    
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text);
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+    
+    header {
+      text-align: center;
+      padding: 1.5rem;
+      background-color: var(--bg-secondary);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 600;
+      background: linear-gradient(45deg, var(--accent), #a3b7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    #loading {
+      text-align: center;
+      padding: 2rem;
+      font-size: 1.2rem;
+      color: var(--accent);
+    }
+    
+    #error {
+      text-align: center;
+      background: rgba(255,107,107,0.1);
+      border-left: 4px solid #ff6b6b;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+    
+    #transcript {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--accent);
+    }
+    
+    .markdown-content strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    
+    .markdown-content code {
+      background: rgba(114,137,218,0.1);
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9em;
+    }
+    
+    .markdown-content pre {
+      background: var(--bg-primary);
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+    }
+    
+    @media (max-width: 768px) {
+      main {
+        padding: 1rem;
+      }
+      
+      #transcript {
+        padding: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Ticket Transcript Viewer</h1>
+  <header>
+    <h1>Ticket Transcript Viewer</h1>
+  </header>
   <main>
     <div id="loading">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7289da" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 1s linear infinite;">
-        <circle cx="12" cy="12" r="10"></circle>
-        <path d="M12 6v6l4 2"></path>
+      <svg class="animate-spin" width="24" height="24" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
       </svg>
-      Loading transcript...
+      <span>Loading transcript...</span>
     </div>
     <div id="transcript" style="display: none;">
       <h2>Transcript Details</h2>
-      <div id="ticket-details"></div>
+      <div id="ticket-details" class="markdown-content"></div>
     </div>
     <div id="error" style="display: none;">
       <p>Failed to load transcript. Please check the URL or try again later.</p>
     </div>
   </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/3.0.7/marked.min.js"></script>
   <script src="transcripts.js"></script>
 </body>
 </html>
