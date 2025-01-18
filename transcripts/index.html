@@ -8,11 +8,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
   <style>
     :root {
-      --bg-primary: #2b2d31;
-      --bg-secondary: #1e1f23;
-      --accent: #7289da;
+      --bg-primary: #1a1b1f;
+      --bg-secondary: #2d2f36;
+      --accent: #5865f2;
       --text: #ffffff;
-      --border: rgba(255,255,255,0.1);
+      --border: rgba(255,255,255,0.15);
+      --code-bg: #2b2d31;
+      --link-color: #00b0f4;
+      --success: #3ba55c;
+      --warning: #faa61a;
     }
     
     body {
@@ -20,90 +24,139 @@
       color: var(--text);
       margin: 0;
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      line-height: 1.6;
+      line-height: 1.7;
+      font-size: 16px;
     }
     
     header {
       text-align: center;
-      padding: 1.5rem;
+      padding: 2rem;
       background-color: var(--bg-secondary);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
       position: sticky;
       top: 0;
       z-index: 100;
+      backdrop-filter: blur(10px);
     }
     
     header h1 {
       margin: 0;
-      font-size: 1.8rem;
-      font-weight: 600;
-      background: linear-gradient(45deg, var(--accent), #a3b7ff);
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #00b0f4);
+      background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
     }
     
     main {
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 3rem 2rem;
     }
     
     #loading {
       text-align: center;
-      padding: 2rem;
+      padding: 3rem;
       font-size: 1.2rem;
       color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
     }
     
     #error {
       text-align: center;
-      background: rgba(255,107,107,0.1);
-      border-left: 4px solid #ff6b6b;
-      padding: 1rem;
-      border-radius: 8px;
-      margin: 1rem 0;
+      background: rgba(237,66,69,0.1);
+      border-left: 4px solid #ed4245;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+      animation: slideIn 0.3s ease;
     }
     
     #transcript {
       background: var(--bg-secondary);
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      animation: fadeIn 0.4s ease;
     }
     
     h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
       color: var(--accent);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    
+    .markdown-content {
+      font-size: 1.1rem;
     }
     
     .markdown-content strong {
       color: var(--accent);
-      font-weight: 600;
+      font-weight: 700;
+    }
+    
+    .markdown-content em {
+      color: var(--warning);
+      font-style: italic;
     }
     
     .markdown-content code {
-      background: rgba(114,137,218,0.1);
-      padding: 0.2em 0.4em;
-      border-radius: 4px;
+      background: var(--code-bg);
+      padding: 0.3em 0.6em;
+      border-radius: 6px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9em;
+      font-size: 0.95em;
+      color: #e6edf3;
+      border: 1px solid var(--border);
     }
     
     .markdown-content pre {
-      background: var(--bg-primary);
-      border-radius: 8px;
-      padding: 1rem;
+      background: var(--code-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
       overflow-x: auto;
+      border: 1px solid var(--border);
+    }
+    
+    .markdown-content a {
+      color: var(--link-color);
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+    
+    .markdown-content a:hover {
+      border-bottom-color: var(--link-color);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateX(-10px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
     }
     
     @media (max-width: 768px) {
       main {
-        padding: 1rem;
+        padding: 1.5rem;
       }
       
       #transcript {
-        padding: 1rem;
+        padding: 1.5rem;
+      }
+      
+      header h1 {
+        font-size: 1.8rem;
       }
     }
   </style>
@@ -114,11 +167,11 @@
   </header>
   <main>
     <div id="loading">
-      <svg class="animate-spin" width="24" height="24" viewBox="0 0 24 24">
+      <svg class="animate-spin" width="28" height="28" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
       </svg>
-      <span>Loading transcript...</span>
+      <span>Loading your transcript...</span>
     </div>
     <div id="transcript" style="display: none;">
       <h2>Transcript Details</h2>
