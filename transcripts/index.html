@@ -5,36 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ticket Transcripts</title>
   <link rel="stylesheet" href="styles.css">
-  <style>
-    body {
-      background-color: #2b2d31;
-      color: white;
-      margin: 0;
-      font-family: Arial, sans-serif;
-    }
-    header {
-      text-align: center;
-      padding: 10px;
-      background-color: #1e1f23;
-    }
-    main {
-      padding: 20px;
-    }
-    #loading {
-      text-align: center;
-    }
-    #error {
-      text-align: center;
-      color: #ff6b6b;
-    }
-  </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 </head>
 <body>
-  <header>
-    <h1>Ticket Transcript Viewer</h1>
-  </header>
+  <h1>Ticket Transcript Viewer</h1>
   <main>
-    <div id="loading">Loading transcript...</div>
+    <div id="loading">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7289da" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 1s linear infinite;">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M12 6v6l4 2"></path>
+      </svg>
+      Loading transcript...
+    </div>
     <div id="transcript" style="display: none;">
       <h2>Transcript Details</h2>
       <div id="ticket-details"></div>
