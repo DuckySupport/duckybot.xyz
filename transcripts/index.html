@@ -8,13 +8,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
   <style>
     :root {
-      --bg-primary: #1a1b1f;
-      --bg-secondary: #2d2f36;
-      --accent: #5865f2;
+      --bg-primary: #0a0a0c;
+      --bg-secondary: #151619;
+      --accent: #ffd700;
       --text: #ffffff;
-      --border: rgba(255,255,255,0.15);
-      --code-bg: #2b2d31;
-      --link-color: #00b0f4;
+      --border: rgba(255,255,255,0.1);
+      --code-bg: #1a1b1f;
+      --link-color: #ffd700;
       --success: #3ba55c;
       --warning: #faa61a;
     }
@@ -28,32 +28,10 @@
       font-size: 16px;
     }
     
-    header {
-      text-align: center;
-      padding: 2rem;
-      background-color: var(--bg-secondary);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(10px);
-    }
-    
-    header h1 {
-      margin: 0;
-      font-size: 2.2rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--accent), #00b0f4);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -0.5px;
-    }
-    
     main {
-      max-width: 1000px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 3rem 2rem;
+      padding: 2rem;
     }
     
     #loading {
@@ -81,7 +59,7 @@
       background: var(--bg-secondary);
       border-radius: 16px;
       padding: 2.5rem;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
       animation: fadeIn 0.4s ease;
     }
     
@@ -148,23 +126,20 @@
     
     @media (max-width: 768px) {
       main {
-        padding: 1.5rem;
+        padding: 1rem;
       }
       
       #transcript {
         padding: 1.5rem;
       }
       
-      header h1 {
-        font-size: 1.8rem;
+      .markdown-content {
+        font-size: 1rem;
       }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Ticket Transcript Viewer</h1>
-  </header>
   <main>
     <div id="loading">
       <svg class="animate-spin" width="28" height="28" viewBox="0 0 24 24">
