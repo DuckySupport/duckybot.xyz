@@ -227,6 +227,11 @@
             <i class="fas fa-shield-alt"></i>
             Trusted by ${defaultStats.serverCount} Servers
           `;
+
+          document.querySelector(".badge:nth-child(2)").innerHTML = `
+          <i class="fas fa-users"></i>
+          ${defaultStats.userCount} Users
+        `;
         }
       }
     
