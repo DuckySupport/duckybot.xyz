@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </ul>
         `;
   
-        ticketDetailsElement.innerHTML = marked(ticketInfo);
+        ticketDetailsElement.innerHTML = ticketInfo;
     }
   
     function formatDiscordMarkdown(text) {
