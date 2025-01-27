@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
   
     function renderTranscript(data) {
-        transcriptElement.style.display = "block";
+        transcriptElement.style.display = "flex";
   
         const { guildName, messages } = data;
   
