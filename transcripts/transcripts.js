@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
   
     function renderTranscript(data) {
-        transcriptElement.style.display = "flex";
+        transcriptElement.style.display = "block";
   
         const { guildName, messages } = data;
   
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </ul>
         `;
   
-        ticketDetailsElement.innerHTML = marked(ticketInfo);
+        ticketDetailsElement.innerHTML = ticketInfo;
     }
   
     function formatDiscordMarkdown(text) {
