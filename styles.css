@@ -471,6 +471,7 @@ html {
 
 .footer-links a:hover {
   color: yellow;
+  text-decoration: none;
 }
 
 .footer-links a::after {
@@ -512,6 +513,7 @@ html {
   transform: translateY(-5px);
   box-shadow: 0 5px 15px rgba(245, 255, 130, 0.3);
   color: yellow;
+  text-decoration: none;
 }
 
 .footer-text {
