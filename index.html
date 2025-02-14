@@ -202,18 +202,18 @@
           const data = await response.json();
           const stats = data.data
     
-          document.getElementById("serverCount").textContent = stats.guilds ? `${parseInt(stats.guilds).toLocaleString()}` : defaultStats.serverCount;
-          document.getElementById("userCount").textContent = stats.users ? `${parseInt(stats.users).toLocaleString()}` : defaultStats.userCount;
-          document.getElementById("linkCount").textContent = stats.links ? `${parseInt(stats.links).toLocaleString()}` : defaultStats.linkCount;
+          document.getElementById("serverCount").textContent = stats.guilds ? `${parseInt(stats.guilds)}` : defaultStats.serverCount;
+          document.getElementById("userCount").textContent = stats.users ? `${parseInt(stats.users)}` : defaultStats.userCount;
+          document.getElementById("linkCount").textContent = stats.links ? `${parseInt(stats.links)}` : defaultStats.linkCount;
 
           document.querySelector(".badge:nth-child(1)").innerHTML = `
             <i class="fas fa-shield-alt"></i>
-            ${stats.guilds ? `Trusted by ${parseInt(stats.guilds).toLocaleString()} Servers` : `Trusted by ${defaultStats.serverCount} Servers`}
+            ${stats.guilds ? `Trusted by ${parseInt(stats.guilds)} Servers` : `Trusted by ${defaultStats.serverCount} Servers`}
           `;
 
           document.querySelector(".badge:nth-child(2)").innerHTML = `
             <i class="fas fa-users"></i>
-            ${stats.users ? `${parseInt(stats.users).toLocaleString()} Users` : `${defaultStats.userCount} Users`}
+            ${stats.users ? `${parseInt(stats.users)} Users` : `${defaultStats.userCount} Users`}
           `;
         } catch (error) {
           console.error("Failed to fetch statistics:", error);
