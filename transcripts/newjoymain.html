@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ducky - Homepage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F5FF82',
+                        background: '#12131a',
+                        secondary: '#828699',
+                        'gray-850': '#1e1f2e',
+                        'gray-820': '#252736',
+                        'gray-800': '#2a2c3d'
+                    },
+                    animation: {
+                        'rainbow': 'rainbow 6s linear infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        rainbow: {
+                            '0%, 100%': { color: '#ff6b6b' },
+                            '16%': { color: '#ffd93d' },
+                            '32%': { color: '#6ce5b1' },
+                            '48%': { color: '#51cf66' },
+                            '64%': { color: '#339af0' },
+                            '80%': { color: '#845ef7' },
+                            '96%': { color: '#ff6b6b' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '20%': { transform: 'translateY(210px)' },
+                        },
+                        glow: {
+                            '0%, 100%': { filter: 'brightness(20%)' },
+                            '20%': { filter: 'brightness(20%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body, html, #__next, .wrapper {
+            height: auto;
+            background-color: #12131a;
+        }
+        .landing-headline {
+            font-size: clamp(2rem, 5vw, 3.75rem);
+            font-weight: 800;
+            line-height: 1.25;
+            margin-bottom: 1.5rem;
+            white-space: nowrap;
+        }
+        .landing-para {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            line-height: 1.75;
+        }
+        .landing-headline-sec {
+            font-size: clamp(1.75rem, 4vw, 3rem);
+            font-weight: 700;
+            line-height: 1.25;
+        }
+        .button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(245, 255, 130, 0.2);
+        }
+        .button:active {
+            transform: translateY(0);
+        }
+        .premium_hero_bg {
+            background-image: linear-gradient(to right, rgba(245, 255, 130, 0.15), rgba(245, 255, 130, 0.05));
+        }
+        .custom-link {
+            font-size: clamp(1.5rem, 3vw, 2.25rem);
+            font-weight: 700;
+            color: #F5FF82;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .custom-link:hover {
+            text-shadow: 0 0 15px rgba(245, 255, 130, 0.5);
+        }
+        .nav-link {
+            font-size: clamp(0.875rem, 2vw, 1.125rem);
+            transition: all 0.3s ease;
+        }
+        .footer-link {
+            font-size: clamp(0.875rem, 2vw, 1.125rem);
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+        .rainbow-text {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6ce5b1, #51cf66, #339af0, #845ef7);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradient 6s ease infinite;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            letter-spacing: 0.5px;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .update-badge {
+            transition: all 0.3s ease;
+        }
+        .update-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(245, 255, 130, 0.3);
+            filter: brightness(125%);
+        }
+        @media (max-width: 768px) {
+            .nav-items {
+                display: none;
+            }
+            .grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+            .landing-headline {
+                white-space: normal;
+            }
+        }
+</style>
+    <link rel="icon" type="image/x-icon" href="https://duckybot.xyz/images/Ducky.svg" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+</head>
+
+<body class="bg-background font-['Inter'] text-white">
+<nav class="sticky top-0 backdrop-blur-md z-50 border-b border-gray-850 bg-gray-900/30 transition-all duration-300">
+    <div class="m-auto max-w-[1440px] px-4 lg:px-12">
+        <div class="flex items-center justify-between py-4 lg:py-6">
+            <div class="flex items-center gap-3">
+                <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky Logo" class="w-8 h-8" />
+                <a href="/" class="block custom-link hover:animate-float">Ducky</a>
+            </div>
+            <div class="hidden md:flex items-center gap-4 lg:gap-6">
+                <a href="#features" class="nav-link text-gray-400 hover:text-primary hover:bg-gray-850/80 font-semibold px-4 py-2 lg:px-5 lg:py-3 rounded-md transition-all hover:scale-105">Features</a>
+                <a href="/docs" class="nav-link text-gray-400 hover:text-primary hover:bg-gray-850/80 font-semibold px-4 py-2 lg:px-5 lg:py-3 rounded-md transition-all hover:scale-105">Docs</a>
+                <a href="/invite" class="nav-link text-gray-400 hover:text-primary hover:bg-gray-850/80 font-semibold px-4 py-2 lg:px-5 lg:py-3 rounded-md transition-all hover:scale-105">Invite</a>
+                <a href="/support" class="nav-link text-gray-400 hover:text-primary hover:bg-gray-850/80 font-semibold px-4 py-2 lg:px-5 lg:py-3 rounded-md transition-all hover:scale-105">Support</a>
+                <a href="/premium" class="button bg-primary text-background border-solid border-primary/20 hover:bg-primary/90 transition-all duration-300 rounded-md py-2 px-4 lg:py-3 lg:px-6 hover:shadow-[0_0_20px_rgba(245,255,130,0.3)]">
+                    <i class="fas fa-crown"></i>Ducky Plus+
+                </a>           
+             </div>        
+        </div>
+    </div>
+</nav>
+
+    <div class="max-w-[1440px] m-auto px-6 lg:px-12">
+        <section class="flex min-h-[85vh] items-center justify-center">
+            <div class="flex max-w-[800px] flex-col items-center gap-12">
+                <div class="flex flex-col items-center">
+                    <a href="https://discord.com/channels/1228508072289370172/1258891581583528098/1343267862659334358" data-aos="fade-up" class="text-lg border w-fit rounded-full border-solid border-primary/20 bg-primary/5 px-6 py-3 font-semibold mb-8 text-white no-underline hover:glow hover:brightness-125 transition-all duration-300">
+                        <i class="fas fa-sparkles"></i> Ducky v0.4.4 Beta is out!
+                    </a>
+                    <h1 data-aos="fade-up" data-aos-delay="100" class="landing-headline text-center">
+                        Elevate Your Server with <span class="text-primary">Ducky</span>
+                    </h1>
+                    <p data-aos="fade-up" data-aos-delay="200" class="landing-para text-center text-gray-300">
+                        A powerful Discord bot crafted for seamless server management, featuring advanced 
+                        <span class="text-primary">Roblox moderation</span>, 
+                        <span class="text-primary">ER:LC integration</span>, and 
+                        <span class="text-primary">automation</span>.
+                    </p>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="300" class="flex items-center gap-6">
+                    <a href="/invite" class="button bg-primary text-background border-solid border-primary/20 hover:bg-primary/90 transition-all duration-150 rounded-md py-4 px-8">
+                        <i class="fas fa-rocket"></i> Get Started
+                    </a>
+                    <a href="/support" class="button bg-gray-850 border-solid border-gray-800 hover:bg-gray-800 transition-all duration-150 rounded-md py-4 px-8">
+                        <i class="fas fa-headset"></i> Get Support
+                    </a>
+                </div>
+                <div class="flex gap-12 text-xl">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-shield-alt text-primary text-2xl"></i>
+                        <span id="serverCount" class="text-gray-300">1,000+ Servers</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-users text-primary text-2xl"></i>
+                        <span id="userCount" class="text-gray-300">125k+ Users</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        
+        <section id="features" class="flex flex-col gap-20 py-32">
+            <h2 class="landing-headline-sec text-center">Why Choose <span class="text-primary">Ducky</span>?</h2>
+            <div class="grid grid-cols-2 gap-10">
+                <div data-aos="fade-up" data-aos-offset="150" data-aos-duration="600" class="bg-gray-850 p-10 rounded-lg transition duration-300 border border-gray-820 hover:translate-y-[-4px] hover:bg-gray-800 hover:border-primary">
+                    <i class="fas fa-user-shield text-primary text-4xl"></i>
+                    <h3 class="text-2xl font-bold mt-6 mb-4">Staff Management</h3>
+                    <p class="text-gray-400 text-lg">Custom infraction and promotion modules with state of the art management features</p>
+                </div>
+                <div data-aos="fade-up" data-aos-offset="150" data-aos-duration="600" class="bg-gray-850 p-10 rounded-lg transition duration-300 border border-gray-820 hover:translate-y-[-4px] hover:bg-gray-800 hover:border-primary">
+                    <i class="fas fa-code text-primary text-4xl"></i>
+                    <h3 class="text-2xl font-bold mt-6 mb-4">ER:LC Integration</h3>
+                    <p class="text-gray-400 text-lg">Seamlessly manage your ER:LC server with custom commands and tracking</p>
+                </div>
+                <div data-aos="fade-up" data-aos-offset="150" data-aos-duration="600" class="bg-gray-850 p-10 rounded-lg transition duration-300 border border-gray-820 hover:translate-y-[-4px] hover:bg-gray-800 hover:border-primary">
+                    <i class="fas fa-robot text-primary text-4xl"></i>
+                    <h3 class="text-2xl font-bold mt-6 mb-4">Automation</h3>
+                    <p class="text-gray-400 text-lg">Powerful automations, autoresponders, and custom workflows</p>
+                </div>
+                <div data-aos="fade-up" data-aos-offset="150" data-aos-duration="600" class="bg-gray-850 p-10 rounded-lg transition duration-300 border border-gray-820 hover:translate-y-[-4px] hover:bg-gray-800 hover:border-primary">
+                    <i class="fas fa-link text-primary text-4xl"></i>
+                    <h3 class="text-2xl font-bold mt-6 mb-4">Roblox Links</h3>
+                    <p class="text-gray-400 text-lg">Link Roblox accounts with Discord members easily</p>
+                </div>
+            </div>
+        </section>     
+
+        <section class="flex flex-col gap-20 py-32" data-aos="fade-up">
+            <h2 class="landing-headline-sec text-center">Trusted by Communities Worldwide</h2>
+            <div class="grid grid-cols-3 gap-10">
+                <div class="bg-gray-850 p-10 rounded-lg transition duration-300 border border-gray-820 hover:translate-y-[-4px] hover:bg-gray-800 hover:border-primary flex flex-col items-center">
+                    <i class="fas fa-server text-primary text-4xl mb-4"></i>
+                    <h3 id="statServerCount" class="text-3xl font-bold mb-2">0</h3>
+                    <p class="text-gray-400">Discord Servers</p>
+                </div>
+                <div class="bg-gray-850 p-10 rounded-lg transition duration-300 border border-gray-820 hover:translate-y-[-4px] hover:bg-gray-800 hover:border-primary flex flex-col items-center">
+                    <i class="fas fa-users text-primary text-4xl mb-4"></i>
+                    <h3 id="statUserCount" class="text-3xl font-bold mb-2">0</h3>
+                    <p class="text-gray-400">Members Managed</p>
+                </div>
+                <div class="bg-gray-850 p-10 rounded-lg transition duration-300 border border-gray-820 hover:translate-y-[-4px] hover:bg-gray-800 hover:border-primary flex flex-col items-center">
+                    <i class="fas fa-link text-primary text-4xl mb-4"></i>
+                    <h3 id="statLinkCount" class="text-3xl font-bold mb-2">0</h3>
+                    <p class="text-gray-400">Roblox Links</p>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            (() => {
+                const ANIMATION_DURATION = 2000;
+                const DEFAULT_STATS = {
+                    guilds: 1000,
+                    users: 125000,
+                    links: 1000
+                };
+                const API_URL = 'https://api.duckybot.xyz/stats';
+                
+                let hasAnimated = false;
+
+                const animateValue = (element, start, end) => {
+                    const startTime = performance.now();
+                    
+                    const animate = (currentTime) => {
+                        const elapsed = currentTime - startTime;
+                        const progress = Math.min(elapsed / ANIMATION_DURATION, 1);
+                        
+                        const currentValue = Math.floor(progress * (end - start) + start);
+                        element.textContent = currentValue.toLocaleString();
+                        
+                        if (progress < 1) {
+                            requestAnimationFrame(animate);
+                        } else {
+                            element.textContent = end.toLocaleString() + '+';
+                        }
+                    };
+                    
+                    requestAnimationFrame(animate);
+                };
+
+                const startAnimation = (stats) => {
+                    ['Server', 'User', 'Link'].forEach(type => {
+                        const element = document.getElementById(`stat${type}Count`);
+                        const value = type.toLowerCase() === 'server' ? stats.guilds : 
+                                    type.toLowerCase() === 'user' ? stats.users : stats.links;
+                        animateValue(element, 0, value);
+                    });
+                };
+
+                const fetchStats = async () => {
+                    try {
+                        const response = await fetch(API_URL);
+                        if (!response.ok) throw new Error('API request failed');
+                        const { data } = await response.json();
+                        return {
+                            guilds: data.guilds || DEFAULT_STATS.guilds,
+                            users: data.users || DEFAULT_STATS.users,
+                            links: data.links || DEFAULT_STATS.links
+                        };
+                    } catch (error) {
+                        console.error('Failed to fetch statistics:', error);
+                        return DEFAULT_STATS;
+                    }
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(async (entry) => {
+                        if (entry.isIntersecting && !hasAnimated) {
+                            hasAnimated = true;
+                            const stats = await fetchStats();
+                            startAnimation(stats);
+                            observer.disconnect();
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                document.addEventListener('DOMContentLoaded', () => {
+                    const statsSection = document.querySelector('.grid-cols-3');
+                    if (statsSection) observer.observe(statsSection);
+                });
+            })();
+        </script>
+
+           
+        <section class="premium_hero_bg relative mt-32 w-full rounded-lg px-12 py-20">
+            <div class="flex items-center justify-between">
+                <div class="flex flex-col gap-8">
+                    <h2 class="landing-headline-sec">Power up with <span class="animate-rainbow">Ducky Plus+</span></h2>
+                    <p class="text-gray-300 text-2xl">Join over <span class="font-bold text-primary">125,000+</span> members using Ducky</p>
+                    <a href="/premium" class="button bg-primary text-background border-solid border-primary/20 hover:bg-primary/90 transition-all duration-150 rounded-md w-fit px-8 py-4 group">
+                        <i class="fas fa-crown"></i> Get Ducky Plus+</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>   
+
+     <footer class="mt-32 border-t border-gray-850">
+        <div class="max-w-[1440px] m-auto px-6 lg:px-12 py-12">
+            <div class="flex flex-col gap-8">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky Logo" class="w-8 h-8" />
+                        <a href="/" class="text-primary font-bold text-3xl">Ducky</a>
+                    </div>
+                    <div class="flex gap-6">
+                        <a href="https://twitter.com/duckydiscordbot" class="text-gray-400 hover:text-primary transition">
+                            <i class="fab fa-twitter text-2xl"></i>
+                        </a>
+                        <a href="https://github.com/DuckySupport" class="text-gray-400 hover:text-primary transition">
+                            <i class="fab fa-github text-2xl"></i>
+                        </a>
+                        <a href="/support" class="text-gray-400 hover:text-primary transition">
+                            <i class="fab fa-discord text-2xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flex justify-center gap-8 text-lg">
+                    <a href="/legal/privacy/" class="text-gray-400 hover:text-primary transition">Privacy Policy</a>
+                    <a href="/legal/terms/" class="text-gray-400 hover:text-primary transition">Terms of Service</a>
+                    <a href="/support" class="text-gray-400 hover:text-primary transition">Contact Us</a>
+                    <a href="/docs" class="text-gray-400 hover:text-primary transition">Docs</a>
+                    <a href="/team" class="text-gray-400 hover:text-primary transition">Our Team</a>
+                </div>
+                <p class="text-center text-gray-400 text-lg">© 2024 Ducky Bot. All rights reserved.</p>
+            </div>
+
+        </div>
+    </footer>
+    <script>
+        AOS.init();
+    </script>
+</body>
+</html>
