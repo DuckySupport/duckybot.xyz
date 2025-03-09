@@ -41,12 +41,23 @@
             .flex.flex-col.lg\:flex-row { gap: 2rem; }
             section { padding: 2rem 1rem; }
             footer .flex.gap-6 { flex-wrap: wrap; justify-content: center; }
+            .stats-container { padding: 1rem; }
+            .stats-item { margin-bottom: 1rem; }
+            .stats-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+            .stats-number { font-size: 1.5rem; }
+            .stats-label { font-size: 0.9rem; }
+            img[src*="Ducky.svg"] { max-width: 80%; height: auto; }
         }
         @media (max-width: 480px) {
             .landing-headline { font-size: 2rem; }
             .landing-headline-sec { font-size: 1.75rem; }
             .text-4xl { font-size: 1.75rem; }
             .text-2xl { font-size: 1.25rem; }
+            .stats-container { grid-template-columns: 1fr; }
+            .stats-item { padding: 1.5rem; }
+            .stats-number { font-size: 1.25rem; }
+            .premium_hero_bg .text-4xl { font-size: 1.5rem; }
+            .premium_hero_bg .text-2xl { font-size: 1rem; }
         }
     </style>
 </head>
@@ -116,25 +127,25 @@
       </section>
 
       <section class="flex flex-col gap-20 py-32" data-aos="fade-up">
-          <h2 class="landing-headline-sec text-center">Trusted by Communities Worldwide</h2>
-          <div class="grid grid-cols-3 gap-10">
-              <div data-aos="fade-up" data-aos-offset="150" class="bg-gray-850 p-10 rounded-lg transition duration-300 border border-gray-820 hover:translate-y-[-4px] hover:bg-gray-800 hover:border-primary">
-                  <i class="fas fa-server text-primary text-4xl mb-4"></i>
-                  <h3 id="statServerCount" class="text-3xl font-bold mb-2">0</h3>
-                  <p class="text-gray-400">Discord Servers</p>
-              </div>
-              <div data-aos="fade-up" data-aos-offset="150" class="bg-gray-850 p-10 rounded-lg transition duration-300 border border-gray-820 hover:translate-y-[-4px] hover:bg-gray-800 hover:border-primary">
-                  <i class="fas fa-users text-primary text-4xl mb-4"></i>
-                  <h3 id="statUserCount" class="text-3xl font-bold mb-2">0</h3>
-                  <p class="text-gray-400">Members Managed</p>
-              </div>
-              <div data-aos="fade-up" data-aos-offset="150" class="bg-gray-850 p-10 rounded-lg transition duration-300 border border-gray-820 hover:translate-y-[-4px] hover:bg-gray-800 hover:border-primary">
-                  <i class="fas fa-link text-primary text-4xl mb-4"></i>
-                  <h3 id="statLinkCount" class="text-3xl font-bold mb-2">0</h3>
-                  <p class="text-gray-400">Roblox Links</p>
-              </div>
-          </div>
-      </section>
+        <h2 class="landing-headline-sec text-center">Trusted by Communities Worldwide</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10 px-4">
+            <div data-aos="fade-up" data-aos-offset="150" class="stats-item bg-gray-850 p-6 md:p-10 rounded-lg transition duration-300 border border-gray-820 hover:translate-y-[-4px] hover:bg-gray-800 hover:border-primary">
+                <i class="stats-icon fas fa-server text-primary text-3xl md:text-4xl mb-4"></i>
+                <h3 id="statServerCount" class="stats-number text-2xl md:text-3xl font-bold mb-2">0</h3>
+                <p class="stats-label text-gray-400 text-sm md:text-base">Discord Servers</p>
+            </div>
+            <div data-aos="fade-up" data-aos-offset="150" class="stats-item bg-gray-850 p-6 md:p-10 rounded-lg transition duration-300 border border-gray-820 hover:translate-y-[-4px] hover:bg-gray-800 hover:border-primary">
+                <i class="stats-icon fas fa-users text-primary text-3xl md:text-4xl mb-4"></i>
+                <h3 id="statUserCount" class="stats-number text-2xl md:text-3xl font-bold mb-2">0</h3>
+                <p class="stats-label text-gray-400 text-sm md:text-base">Members Managed</p>
+            </div>
+            <div data-aos="fade-up" data-aos-offset="150" class="stats-item bg-gray-850 p-6 md:p-10 rounded-lg transition duration-300 border border-gray-820 hover:translate-y-[-4px] hover:bg-gray-800 hover:border-primary">
+                <i class="stats-icon fas fa-link text-primary text-3xl md:text-4xl mb-4"></i>
+                <h3 id="statLinkCount" class="stats-number text-2xl md:text-3xl font-bold mb-2">0</h3>
+                <p class="stats-label text-gray-400 text-sm md:text-base">Roblox Links</p>
+            </div>
+        </div>
+    </section>
 
       <script>
           document.addEventListener('DOMContentLoaded', () => {
