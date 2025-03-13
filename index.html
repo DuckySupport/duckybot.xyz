@@ -1,243 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ducky - Homepage</title>
-    <link rel="icon" type="image/x-icon" href="/images/Ducky.svg" />
-    <meta
-      name="description"
-      content="Power your server with Ducky, a multi-purpose discord bot focused on moderating your Discord and ER:LC server."
-    />
-    <meta content="Ducky Bot" property="og:title" />
-    <meta
-      content="Power your server with Ducky, a multi-purpose bot focused on moderating your Discord and ER:LC server."
-      property="og:description"
-    />
-    <meta content="https://duckybot.xyz/" property="og:url" />
-    <meta content="/images/Ducky.webp" property="og:image" />
-    <meta content="#F5FF82" data-react-helmet="true" name="theme-color" />
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="canonical" href="https://duckybot.xyz" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div id="navbar"></div>
-
-    <section class="hero-section animate fade-in">
-      <div class="hero-content">
-        <h1>Elevate Your Server with <span class="cool-text">Ducky</span></h1>
-        <p>
-          A powerful Discord bot crafted for seamless server management,
-          featuring advanced
-          <span class="highlight">Roblox moderation</span>,
-          <span class="highlight">ER:LC integration</span>, and
-          <span class="highlight">automation</span>.
-        </p>
-        <div class="hero-buttons">
-          <a href="/invite" class="cta-btn">
-            <i class="fas fa-rocket"></i>
-            Invite Ducky
-          </a>
-          <a href="/support" class="secondary-btn">
-            <i class="fas fa-headset"></i>
-            Get Support
-          </a>
-        </div>
-        <div class="hero-badges">
-          <div class="badge">
-            <h3 id="badgeServerCount"></h3>
-            <i class="fas fa-shield-alt"></i>
-            Trusted by 1,000+ Servers
-          </div>
-          <div class="badge">
-            <h3 id="badgeUserCount"></h3>
-            <i class="fas fa-users"></i>
-            125k+ Users
-          </div>
-        </div>
-      </div>
-      <div class="hero-image">
-        <div class="hero-image-wrapper">
-          <img src="images/Ducky.svg" alt="Ducky Hero Image" />
-          <div class="floating-elements">
-            <div class="float-element shield">
-              <i class="fas fa-shield-alt"></i>
-            </div>
-            <div class="float-element robot">
-              <i class="fas fa-robot"></i>
-            </div>
-            <div class="float-element gear">
-              <i class="fas fa-cog"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="features-section animate slide-in">
-      <h2 class="features-title">
-        Why Choose <span class="highlight">Ducky</span>?
-      </h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <i class="fas fa-shield feature-icon"></i>
-          <h3>Staff Management</h3>
-          <p>
-            Ease your mind by using our custom infraction, promotion modules
-            with state of the art management features
-          </p>
-        </div>
-        <div class="feature-card">
-          <i class="fas fa-gamepad feature-icon"></i>
-          <h3>ER:LC Integration</h3>
-          <p>
-            Seamlessly manage your ER:LC server with custom commands, player
-            panels, and session tracking.
-          </p>
-        </div>
-        <div class="feature-card">
-          <i class="fas fa-robot feature-icon"></i>
-          <h3>Automation</h3>
-          <p>
-            Simplify server management with powerful automations,
-            autoresponders, and custom workflows.
-          </p>
-        </div>
-        <div class="feature-card">
-          <i class="fas fa-link feature-icon"></i>
-          <h3>Roblox Links</h3>
-          <p>
-            Easily link Roblox accounts with Discord members and manage
-            server-specific permissions.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="statistics-section animate fade-up">
-      <h2 class="statistics-title">Trusted by Communities Worldwide</h2>
-      <div class="statistics-grid">
-        <div class="stat-card">
-          <i class="fas fa-server stat-icon"></i>
-          <h3 id="serverCount"></h3>
-          <p>Discord Servers</p>
-        </div>
-        <div class="stat-card">
-          <i class="fas fa-users stat-icon"></i>
-          <h3 id="userCount"></h3>
-          <p>Members Managed</p>
-        </div>
-        <div class="stat-card">
-          <i class="fas fa-link stat-icon"></i>
-          <h3 id="linkCount"></h3>
-          <p>Roblox Links</p>
-        </div>
-      </div>
-    </section>
-    <footer class="footer">
-      <div class="footer-container">
-        <div class="footer-links">
-          <a href="/legal/privacy/" class="footer-link">Privacy Policy</a>
-          <a href="/legal/terms/" class="footer-link">Terms of Service</a>
-          <a href="/support" class="footer-link">Contact Us</a>
-          <a href="/docs" class="footer-link">Docs</a>
-          <a href="/team" class="footer-link">Our Team</a>
-        </div>
-        <div class="footer-socials">
-          <a
-            href="https://x.com/duckydiscordbot"
-            class="social-link"
-            target="_blank"
-          >
-            <i class="fab fa-twitter"></i>
-          </a>
-          <a
-            href="https://github.com/DuckySupport/duckybot.xyz"
-            class="social-link"
-            target="_blank"
-          >
-            <i class="fab fa-github"></i>
-          </a>
-          <a href="/support/" class="social-link" target="_blank">
-            <i class="fab fa-discord"></i>
-          </a>
-        </div>
-        <p class="footer-text">&copy; 2025 Ducky. All rights reserved.</p>
-      </div>
-    </footer>
-
-  <!-- This is to load the nav bar-->
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        fetch("navbar.html")
-          .then((response) => response.text())
-          .then((html) => {
-            document.getElementById("navbar").innerHTML = html;
-          })
-          .catch((error) => console.error("Error loading navbar:", error));
-      });
-    </script>
-
-    <script>
-      const defaultStats = {
-        serverCount: "1000+",
-        userCount: "125,000+",
-        linkCount: "1000+",
-      };
-    
-      async function updateStats() {
-        try {
-          const response = await fetch("https://api.duckybot.xyz/stats");
-          if (!response.ok) throw new Error("Failed to fetch statistics.");
-          const data = await response.json();
-          const stats = data.data
-    
-          document.getElementById("serverCount").textContent = stats.guilds ? `${parseInt(stats.guilds)}` : defaultStats.serverCount;
-          document.getElementById("userCount").textContent = stats.users ? `${parseInt(stats.users)}` : defaultStats.userCount;
-          document.getElementById("linkCount").textContent = stats.links ? `${parseInt(stats.links)}` : defaultStats.linkCount;
-
-          document.querySelector(".badge:nth-child(1)").innerHTML = `
-            <i class="fas fa-shield-alt"></i>
-            ${stats.guilds ? `Trusted by ${parseInt(stats.guilds)} Servers` : `Trusted by ${defaultStats.serverCount} Servers`}
-          `;
-
-          document.querySelector(".badge:nth-child(2)").innerHTML = `
-            <i class="fas fa-users"></i>
-            ${stats.users ? `${parseInt(stats.users)} Users` : `${defaultStats.userCount} Users`}
-          `;
-        } catch (error) {
-          console.error("Failed to fetch statistics:", error);
-          document.getElementById("serverCount").textContent = defaultStats.serverCount;
-          document.getElementById("userCount").textContent = defaultStats.userCount;
-          document.getElementById("linkCount").textContent = defaultStats.linkCount;
-
-          document.getElementById("badgeServerCount").textContent = `Trusted by ${defaultStats.serverCount} Servers`;
-          document.getElementById("badgeUserCount").textContent = `${defaultStats.userCount} Users`;
-
-          document.querySelector(".badge:nth-child(1)").innerHTML = `
-            <i class="fas fa-shield-alt"></i>
-            Trusted by ${defaultStats.serverCount} Servers
-          `;
-
-        document.querySelector(".badge:nth-child(2)").innerHTML = `
-          <i class="fas fa-users"></i>
-          ${defaultStats.userCount} Users
-        `;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Power your server with Ducky, a multi-purpose bot focused on moderating your Discord and ER:LC server.">
+    <meta content="Ducky Bot" property="og:title">
+    <meta content="Power your server with Ducky, a multi-purpose discord bot focused on moderating your Discord and ER:LC server." property="og:description">
+    <meta content="https://duckybot.xyz" property="og:url">
+    <meta content="https://duckybot.xyz/Ducky.svg" property="og:image">
+    <meta content="#F5FF82" name="theme-color">
+    <link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
+    <title>Ducky</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f0f0f;
+            -webkit-tap-highlight-color: transparent;
         }
-      }
-    
-      updateStats();
+        .glass-card {
+            background: rgba(245, 255, 130, 0.03);
+            border: 1px solid rgba(245, 255, 130, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            background: rgba(245, 255, 130, 0.06);
+            transform: translateY(-5px);
+        }
+        .animate-fade {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .glow {
+            position: absolute;
+            width: 100%;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.08;
+            z-index: -1;
+        }
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 15, 15, 0.95);
+            z-index: 40;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .mobile-menu.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .container {
+                padding: 1rem;
+            }
+            .grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="text-white">
+    <div class="glow bg-[#F5FF82] top-0 left-0"></div>
+    <div class="glow bg-[#F5FF82] bottom-0 right-0"></div>
+
+    <nav class="sticky top-0 z-50 backdrop-blur-sm border-b border-white/5 bg-[#0f0f0f]/30">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <a href="/" class="flex items-center gap-3">
+                    <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
+                    <span class="text-2xl font-bold text-[#F5FF82]">Ducky</span>
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <div class="hidden md:flex items-center gap-6">
+                        <a href="/team" class="text-gray-300 hover:text-[#F5FF82] transition">Team</a>
+                        <a href="/docs" class="text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
+                        <a href="/invite" class="text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
+                        <a href="/status" class="text-gray-300 hover:text-[#F5FF82] transition">Status</a>
+                        <a href="/plus" class="px-4 py-2 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
+                            Get Ducky Plus+
+                        </a>
+                </div>
+                <button class="md:hidden text-2xl text-[#F5FF82] hover:opacity-80 transition" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="mobileMenu" class="mobile-menu flex-col items-center justify-center gap-8">
+        <button class="absolute top-6 right-6 text-2xl" onclick="toggleMenu()">
+            <i class="fas fa-times"></i>
+        </button>
+        <a href="#features" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" onclick="toggleMenu()">Features</a>
+        <a href="/docs" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" onclick="toggleMenu()">Docs</a>
+        <a href="/invite" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" onclick="toggleMenu()">Invite</a>
+        <a href="/premium" class="px-6 py-3 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition" onclick="toggleMenu()">
+            Get Ducky Plus+
+        </a>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.body.style.overflow = document.body.style.overflow === 'hidden' ? '' : 'hidden';
+        }
     </script>
-    <script src="script.js"></script>
-  </body>
+</body>
+</html>
+    <main class="max-w-7xl mx-auto px-4 py-24">
+        <section class="text-center mb-24 animate-fade">
+            <span class="bg-[#F5FF82]/10 text-white px-6 py-2 rounded-full text-sm font-medium inline-block mb-8">
+                Ducky v0.4.4 Beta is now live!
+            </span>
+            <h1 class="text-4xl md:text-7xl font-bold mb-8">
+                Elevate your server with <span class="text-[#F5FF82]">Ducky</span>
+            </h1>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12">
+                A powerful Discord bot crafted for seamless server management, featuring advanced <span class="text-[#F5FF82]">Roblox moderation, ER:LC integration</span>, and <span class="text-[#F5FF82]">automation</span>.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="/invite" class="px-8 py-4 bg-[#F5FF82] text-[#12131a] rounded-lg font-semibold hover:opacity-90 transition">
+                    Get Started
+                </a>
+                <a href="/support" class="px-8 py-4 bg-[#12131a] border border-[#F5FF82]/20 rounded-lg font-semibold hover:bg-[#F5FF82]/10 transition">
+                    Join Community
+                </a>
+            </div>
+        </section>
+
+        <section id="features" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
+            <div class="glass-card p-8">
+                <i class="fas fa-shield-alt text-[#F5FF82] text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-4">Advanced Moderation</h3>
+                <p class="text-gray-400">Powerful tools to keep your server safe and organized.</p>
+            </div>
+            <div class="glass-card p-8">
+                <i class="fas fa-robot text-[#F5FF82] text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-4">Smart Automation</h3>
+                <p class="text-gray-400">Automate tasks and workflows with ease.</p>
+            </div>
+            <div class="glass-card p-8">
+                <i class="fas fa-code text-[#F5FF82] text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-4">ER:LC Integration</h3>
+                <p class="text-gray-400">Seamless integration with Emergency Response: Liberty County.</p>
+            </div>
+        </section>
+
+        <main class="max-w-7xl mx-auto px-4 py-24">
+            <section class="flex flex-col gap-20 py-32" data-aos="fade-up">
+                <h2 class="text-4xl font-bold text-center mb-8">Trusted by Communities Worldwide</h2>
+                <div id="stats" class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div class="glass-card p-10 flex flex-col items-center">
+                        <i class="fas fa-server text-[#F5FF82] text-4xl mb-4"></i>
+                        <h3 id="serverCount" class="text-3xl font-bold mb-2">0</h3>
+                        <p class="text-gray-400">Discord Servers</p>
+                    </div>
+                    <div class="glass-card p-10 flex flex-col items-center">
+                        <i class="fas fa-users text-[#F5FF82] text-4xl mb-4"></i>
+                        <h3 id="userCount" class="text-3xl font-bold mb-2">0</h3>
+                        <p class="text-gray-400">Members Managed</p>
+                    </div>
+                    <div class="glass-card p-10 flex flex-col items-center">
+                        <i class="fas fa-link text-[#F5FF82] text-4xl mb-4"></i>
+                        <h3 id="linkCount" class="text-3xl font-bold mb-2">0</h3>
+                        <p class="text-gray-400">Roblox Links</p>
+                    </div>
+                </div>
+            </section>
+        </main>            <script>
+            const animateStats = async () => {
+                const stats = {guilds: 1000, users: 125000, links: 1000};
+                try {
+                    const res = await fetch('https://api.duckybot.xyz/stats');
+                    if (res.ok) {
+                        const {data} = await res.json();
+                        Object.assign(stats, data);
+                    }
+                } catch (e) {
+                    console.error('Stats fetch failed:', e);
+                }
+                
+                ['server', 'user', 'link'].forEach(type => {
+                    const el = document.getElementById(`${type}Count`);
+                    const target = type === 'server' ? stats.guilds : type === 'user' ? stats.users : stats.links;
+                    let current = 0;
+                    const step = target / 100;
+                    const animate = () => {
+                        current = Math.min(current + step, target);
+                        el.textContent = Math.floor(current).toLocaleString();
+                        if (current < target) requestAnimationFrame(animate);
+                    };
+                    animate();
+                });
+            };
+    
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateStats();
+                        observer.disconnect();
+                    }
+                });
+            });
+    
+            document.addEventListener('DOMContentLoaded', () => {
+                observer.observe(document.getElementById('stats'));
+            });
+        </script>
+
+        <section class="glass-card p-8 md:p-12 text-center mb-24 bg-gradient-to-r from-[#F5FF82]/10 via-purple-500/10 to-[#F5FF82]/10 relative overflow-hidden transition-all duration-300 transform hover:scale-105 shadow-xl">
+            <img src="https://duckybot.xyz/images/plus.png" alt="Plus" class="absolute top-4 right-4 w-24 h-24 opacity-10">
+            <h2 class="text-3xl md:text-5xl font-bold mb-8">Ready to upgrade?</h2>
+            <p class="text-gray-400 text-lg mb-8 max-w-3xl mx-auto">Elevate your Discord and ER:LC experience with exclusive features designed to enhance server management and member engagement.</p>
+            <a href="/plus" class="px-8 py-4 bg-[#F5FF82] text-[#12131a] rounded-lg font-semibold transition-all duration-300 hover:bg-[#e6ff4d] inline-flex items-center gap-2 hover:shadow-lg">
+                Upgrade to Ducky Plus+</span>
+            </a>
+        </section>               
+    </main>
+
+    <footer class="border-t border-[#F5FF82]/10">
+        <div class="max-w-7xl mx-auto px-4 py-12">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-3">
+                    <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
+                    <span class="text-xl font-bold text-[#F5FF82]">Ducky</span>
+                </div>
+                <div class="flex gap-6">
+                    <a href="/privacy" class="text-gray-400 hover:text-[#F5FF82] transition">Privacy</a>
+                    <a href="/terms" class="text-gray-400 hover:text-[#F5FF82] transition">Terms</a>
+                    <a href="/support" class="text-gray-400 hover:text-[#F5FF82] transition">Support</a>
+                </div>
+            </div>
+            <p class="text-center text-gray-400 mt-8">© 2024 Ducky Bot. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
 </html>

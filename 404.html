@@ -2,135 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ducky - 404</title>
-    <link rel="icon" type="image/x-icon" href="/images/Ducky.svg">
-    <meta name="description" content="Power your server with Ducky, a multi-purpose discord bot focused on moderating your Discord and ER:LC server.">
-    <meta property="og:title" content="Ducky Bot">
-    <meta property="og:description" content="Power your server with Ducky, a multi-purpose bot focused on moderating your Discord and ER:LC server.">
-    <meta property="og:url" content="https://duckybot.xyz/">
-    <meta property="og:image" content="/images/Ducky.webp">
-    <meta name="theme-color" content="#F5FF82">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Power your server with Ducky, a multi-purpose bot focused on moderating your Discord and ER:LC server.">
+    <meta content="Ducky Bot" property="og:title">
+    <meta content="Power your server with Ducky, a multi-purpose discord bot focused on moderating your Discord and ER:LC server." property="og:description">
+    <meta content="https://duckybot.xyz" property="og:url">
+    <meta content="https://duckybot.xyz/Ducky.svg" property="og:image">
+    <meta content="#F5FF82" name="theme-color">
+    <link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
+    <title>Ducky - 404 Not Found</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            margin: 0;
             font-family: 'Inter', sans-serif;
-            background: #000;
-            color: #FFF;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            text-align: center;
-            overflow-x: hidden;
-            padding: 20px;
-            box-sizing: border-box;
+            background-color: #0f0f0f;
+            -webkit-tap-highlight-color: transparent;
         }
-        .container {
+        .glass-card {
+            background: rgba(245, 255, 130, 0.03);
+            border: 1px solid rgba(245, 255, 130, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            background: rgba(245, 255, 130, 0.06);
+            transform: translateY(-5px);
+        }
+        .animate-fade {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .glow {
+            position: absolute;
             width: 100%;
-            max-width: 600px;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-        }
-        h1 {
-            font-size: clamp(80px, 15vw, 140px);
-            margin: 0;
-            background: linear-gradient(45deg, #f6e62d, #fff8ae);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: 800;
-            letter-spacing: -4px;
-            line-height: 1;
-        }
-        p {
-            font-size: clamp(14px, 4vw, 16px);
-            margin: 30px 0;
-            color: #888;
-            padding: 0 10px;
-        }
-        .links {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 40px;
-            padding: 0 10px;
-        }
-        .links a {
-            font-size: 14px;
-            color: #fff;
-            text-decoration: none;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            transition: .2s;
-            backdrop-filter: blur(10px);
-            width: auto;
-            min-width: 120px;
-            display: inline-block;
-            touch-action: manipulation;
-        }
-        .links a:hover, .links a:active {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #f6e62d;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(246, 230, 45, 0.2);
-            outline: 2px solid #f6e62d;
-        }
-        .background-image {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: min(600px, 90vw);
-            height: min(600px, 90vw);
-            opacity: .1;
-            filter: blur(40px);
-        }
-        .background-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-        @media (max-width: 768px) {
-            .links {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 10px;
-            }
-            .links a {
-                margin: 0;
-                width: auto;
-            }
-        }
-        @media (hover: none) {
-            .links a:active {
-                background: rgba(255, 255, 255, 0.1);
-                border-color: #f6e62d;
-                transform: translateY(-1px);
-            }
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.08;
+            z-index: -1;
         }
     </style>
 </head>
-<body>
-    <div class="background-image">
-        <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky">
-    </div>
-    <div class="container">
-        <h1>404</h1>
-        <p>The page you're looking for doesn't exist or has been moved.</p>
-        <div class="links">
-            <a href="/">Home</a>
-            <a href="https://status.duckybot.xyz">Status</a>
-            <a href="https://docs.duckybot.xyz">Documentation</a>
-            <a href="https://duckybot.xyz/plus/">Ducky Plus+</a>
-            <a href="https://duckybot.xyz/support">Support</a>
+<body class="text-white">
+    <div class="glow bg-[#F5FF82] top-0 left-0"></div>
+    <div class="glow bg-[#F5FF82] bottom-0 right-0"></div>
+
+    <main class="flex-grow flex items-center justify-center p-4 sm:px-4 min-h-screen">
+        <div class="text-center w-full max-w-md mx-auto animate-fade">
+            <div>
+                <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky Logo" class="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-6 sm:mb-8">
+            </div>
+            <h1 class="text-3xl sm:text-4xl lg:text-6xl font-bold mb-3 sm:mb-4">404</h1>
+            <p class="text-gray-400 text-lg sm:text-xl lg:text-2xl mb-6 sm:mb-8">We can't find this page!</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="/" class="inline-flex items-center px-6 py-3 bg-[#F5FF82] text-[#12131a] rounded-lg font-semibold hover:opacity-90 transition whitespace-nowrap">
+                    <i class="fas fa-home mr-2"></i> Go Home
+                </a>
+                <a href="/support" class="inline-flex items-center px-6 py-3 bg-[#12131a] border border-[#F5FF82]/20 rounded-lg font-semibold hover:bg-[#F5FF82]/10 transition whitespace-nowrap">
+                    <i class="fas fa-headset mr-2"></i> Get Support
+                </a>
+            </div>
         </div>
-    </div>
+    </main>
 </body>
 </html>
