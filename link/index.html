@@ -50,8 +50,10 @@
     </style>
 </head>
 <body class="text-white min-h-screen flex items-center justify-center">
-    <div class="glow bg-red-300 top-0 left-0"></div>
-    <div class="glow bg-green-300 bottom-0 right-0"></div>
+    <div id="glow-container">
+        <div class="glow bg-red-300 top-0 left-0"></div>
+        <div class="glow bg-red-300 bottom-0 right-0"></div>
+    </div>
 
     <div class="container max-w-lg mx-auto px-4">
         <div id="card" class="glass-card p-8 text-center loading">
@@ -68,6 +70,16 @@
             const title = document.getElementById("title")
             const text = document.getElementById("text")
             const subtext = document.getElementById("subtext")
+            const glowContainer = document.getElementById("glow-container")
+
+            function updateGlowColor(isLoggedIn) {
+                const glowHtml = isLoggedIn ? 
+                    `<div class="glow bg-green-200 top-0 left-0"></div>
+                     <div class="glow bg-green-200 bottom-0 right-0"></div>` :
+                    `<div class="glow bg-red-300 top-0 left-0"></div>
+                     <div class="glow bg-red-300 bottom-0 right-0"></div>`;
+                glowContainer.innerHTML = glowHtml;
+            }
 
             function loadingStatus(lstat) {
                 card.className = "glass-card p-8 text-center loading";
@@ -97,6 +109,8 @@
             }
 
             const loggedin = getCookie('discord')
+            updateGlowColor(!!loggedin);
+
             if (loggedin) {
                 const params = new URLSearchParams(window.location.search);
                 const authcode = params.get("code");
@@ -136,6 +150,7 @@
                             document.cookie = "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
                             loadingStatus("Redirecting to Discord...");
                             console.log("Redirecting to login page...");
+                            updateGlowColor(false);
                             window.location.href = "/login?redirect=link";
                             return null;
                         }
@@ -171,6 +186,7 @@
                         document.cookie = "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
                         loadingStatus("Redirecting to Discord...");
                         console.log("Redirecting to login page...");
+                        updateGlowColor(false);
                         window.location.href = "/login?redirect=link";
                     });
                 }
