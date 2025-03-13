@@ -1,542 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <base href="/">
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ducky Plus+</title>
-    <link rel="icon" type="image/x-icon" href="images/plus.png" />
-    <meta
-      name="description"
-      content="Upgrade to Ducky Plus+ and unlock exclusive features designed to supercharge your server."
-    />
-    <meta content="Ducky Plus+" property="og:title" />
-    <meta
-      content="Upgrade to Ducky Plus+ and unlock exclusive features designed to supercharge your server."
-      property="og:description"
-    />
-    <meta content="https://duckybot.xyz/plus" property="og:url" />
-    <meta content="images/plus.png" property="og:image" />
-    <meta content="#F5FF82" data-react-helmet="true" name="theme-color" />
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="canonical" href="https://duckybot.xyz/plus" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-      rel="stylesheet"
-    />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Power your server with Ducky, a multi-purpose bot focused on moderating your Discord and ER:LC server.">
+    <meta content="Ducky Bot" property="og:title">
+    <meta content="Power your server with Ducky, a multi-purpose discord bot focused on moderating your Discord and ER:LC server." property="og:description">
+    <meta content="https://duckybot.xyz" property="og:url">
+    <meta content="https://duckybot.xyz/Ducky.svg" property="og:image">
+    <meta content="#F5FF82" name="theme-color">
+    <link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
+    <title>Ducky Plus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-      a {
-        text-decoration: none;
-        color: inherit;
-      }
-
-      ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-
-      img {
-        max-width: 100%;
-        height: auto;
-      }
-
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-      }
-
-      .hero-section {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 80px 20px;
-        background-color: black;
-        margin-left: 100px;
-        margin: 0 auto;
-        animation: fadeIn 1s ease;
-      }
-
-      .hero-content {
-        flex: 1;
-      }
-
-      .hero-content h1 {
-        font-size: 3.5rem;
-        margin-bottom: 20px;
-      }
-
-      .hero-content p {
-        font-size: 1.2rem;
-        line-height: 1.6;
-        margin-bottom: 30px;
-      }
-
-      .hero-image {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        animation: fadeIn 1s ease;
-      }
-
-      .hero-image img {
-        max-width: 600px;
-        border-radius: 10px;
-      }
-
-      .highlight-gradient {
-        background: linear-gradient(
-          90deg,
-          #ec42ff,
-          #ff3f3f,
-          #ffbd41,
-          #ffef41,
-          #43ff43,
-          #3971ff,
-          #ec42ff
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: warm-gradient 6s infinite ease-in-out;
-      }
-
-      @keyframes warm-gradient {
-        0% {
-          background-position: -100% 50%;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f0f0f;
+            -webkit-tap-highlight-color: transparent;
         }
-        50% {
-          background-position: 100% 50%;
+        .glass-card {
+            background: rgba(245, 255, 130, 0.03);
+            border: 1px solid rgba(245, 255, 130, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            transition: all 0.3s ease;
         }
-        100% {
-          background-position: -100% 50%;
+        .glass-card:hover {
+            background: rgba(245, 255, 130, 0.06);
+            transform: translateY(-5px);
         }
-      }
-
-
-      .perks-section {
-        background-color: #111;
-        color: white;
-        padding: 60px 20px;
-        text-align: center;
-        margin-top: 10px;
-        animation: fadeIn 1s ease;
-      }
-
-      .perks-title {
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-      }
-
-      .perks-subtitle {
-        font-size: 1.2rem;
-        margin-bottom: 40px;
-      }
-
-      .perks-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 20px;
-        margin: 0 auto;
-        max-width: 1000px;
-      }
-
-      .perk-card {
-        background-color: #222;
-        border-radius: 10px;
-        padding: 20px;
-        text-align: center;
-        border: 2px solid transparent;
-        transition: transform 0.3s ease, border-color 0.5s ease;
-      }
-
-      .perk-card:hover {
-        transform: translateY(-5px);
-       border-color: rgba(255, 242, 112, 0.8);
-
-      }
-
-      .perk-card:not(:hover) {
-        border-color: transparent;
-      }
-
-      @keyframes neon-border-fade {
-        from {
-          border-color: transparent;
+        .animate-fade {
+            animation: fadeIn 0.5s ease-out forwards;
         }
-        to {
-          border-color: rgba(0, 170, 255, 1);
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
+        .glow {
+            position: absolute;
+            width: 100%;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.08;
+            z-index: -1;
         }
-        to {
-          opacity: 1;
-          transform: translateY(0);
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 15, 15, 0.95);
+            z-index: 40;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
-      }
-
-      .perk-card h3 {
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-      }
-
-      .perk-card p {
-        font-size: 1rem;
-        line-height: 1.6;
-      }
-
-      .comparison-section {
-        background-color: #000;
-        color: white;
-        padding: 60px 20px;
-        text-align: center;
-      }
-
-      .comparison-title {
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-      }
-
-      .comparison-table {
-        width: 100%;
-        max-width: 800px;
-        margin: 0 auto;
-        border-collapse: collapse;
-      }
-
-      .comparison-table th,
-      .comparison-table td {
-        border: 1px solid #444;
-        padding: 15px;
-        text-align: center;
-      }
-
-      .comparison-table th {
-        background-color: #222;
-        color: yellow;
-      }
-
-      .comparison-table td {
-        background-color: #111;
-      }
-
-      .comparison-table i {
-        font-size: 1.5rem;
-        color: yellow;
-      }
-
-      .comparison-table td:hover {
-        background-color: #222;
-        color: #ffd700;
-        transition: background-color 0.3s ease, color 0.3s ease;
-      }
-
-      .cta-section {
-        background-color: #1a1a1a;
-        text-align: center;
-        padding: 60px 20px;
-      }
-
-      .cta-section h2 {
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-      }
-
-      .cta-section p {
-        font-size: 1.2rem;
-        margin-bottom: 30px;
-      }
-
-      .cta-section .cta-btn {
-        padding: 15px 30px;
-        font-size: 1.2rem;
-      }
-
-      [data-aos] {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.4s ease, transform 0.4s ease;
-      }
-
-      [data-aos].aos-animate {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
+        .mobile-menu.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .container {
+                padding: 1rem;
+            }
+            .grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
-  </head>
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+</head>
+<body class="text-white">
+    <div class="glow bg-[#F5FF82] top-0 left-0"></div>
+    <div class="glow bg-[#F5FF82] bottom-0 right-0"></div>
 
-  <body>
-    <!-- Navbar -->
-    <div id="navbar"></div>
+    <nav class="sticky top-0 z-50 backdrop-blur-sm border-b border-white/5 bg-[#0f0f0f]/30">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <a href="/" class="flex items-center gap-3">
+                    <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
+                    <span class="text-2xl font-bold text-[#F5FF82]">Ducky</span>
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="/team" class="text-gray-300 hover:text-[#F5FF82] transition">Team</a>
+                    <a href="/docs" class="text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
+                    <a href="/invite" class="text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
+                    <a href="/status" class="text-gray-300 hover:text-[#F5FF82] transition">Status</a>
+                    <a href="/plus" class="px-4 py-2 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
+                        Get Ducky Plus+
+                    </a>
+                </div>
+                <button class="md:hidden text-2xl text-[#F5FF82] hover:opacity-80 transition" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
 
-    <!-- Hero Section -->
-    <section class="hero-section premium">
-      <div class="hero-content">
-        <h1>Unlock the Power of <b class="highlight-gradient">Ducky Plus+</b></h1>
-        <p>
-          Elevate your Discord and ER:LC experience with exclusive features
-          designed to enhance server management and member engagement.
-        </p>
-        <a
-          href="https://www.roblox.com/games/120245327552791"
-          class="cta-btn"
-          >Get Started Now</a
-        >
-      </div>
-      <div class="hero-image">
-        <img src="images/plus.png" alt="Ducky Plus+ Banner" />
-      </div>
-    </section>
+    <div id="mobileMenu" class="mobile-menu flex-col items-center justify-center gap-8">
+        <button class="absolute top-6 right-6 text-2xl" onclick="toggleMenu()">
+            <i class="fas fa-times"></i>
+        </button>
+        <a href="#perks" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" onclick="toggleMenu()">Perks</a>
+        <a href="/docs" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" onclick="toggleMenu()">Docs</a>
+        <a href="/invite" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" onclick="toggleMenu()">Invite</a>
+        <a href="/premium" class="px-6 py-3 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition" onclick="toggleMenu()">
+            Get Ducky Plus+
+        </a>
+    </div>
 
-    <section class="perks-section">
-      <h2 class="perks-title">
-        Exclusive Perks of
-        <strong class="highlight-gradient">Ducky Plus+</strong>
-      </h2>
-      <p class="perks-subtitle">
-        Discover the unique advantages of upgrading to Ducky Plus+.
-      </p>
-      <div class="perks-grid">
-        <div class="perk-card">
-          <h3>ERLC Player Panel</h3>
-          <p>
-            Effortlessly manage players via
-            <code>/erlc panel &lt;player&gt;</code>.
-          </p>
-        </div>
-        <div class="perk-card">
-          <h3>Required Servers for Giveaways</h3>
-          <p>
-            Make sure users are in the required server before they can enter the
-            giveaway. Notice: Ducky must be added to the required server.
-          </p>
-        </div>
-        <div class="perk-card">
-          <h3>Export Embed Command</h3>
-          <p>
-            Export any embed message with a simple right-click to a Ducky
-            Exportable.
-          </p>
-        </div>
-        <div class="perk-card">
-          <h3>Queue Offline Commands</h3>
-          <p>
-            Queue ER:LC commands to execute automatically when the server goes
-            online.
-          </p>
-        </div>
-        <div class="perk-card">
-          <h3>Priority Support</h3>
-          <p>Access exclusive support channels and get priority resolutions.</p>
-        </div>
-        <div class="perk-card">
-          <h3>Enhanced Limits</h3>
-          <p>
-            Create up to 50 automations, 30 autoresponders, and unlimited
-            reaction boards.
-          </p>
-        </div>
-      </div>
-    </section>
+    <main class="max-w-7xl mx-auto px-4 py-24">
+        <section class="text-center mb-24 animate-fade">
+            <h1 class="text-3xl md:text-7xl font-bold mb-8 flex flex-col md:flex-row items-center justify-center gap-4">
+                <span>Unlock the Power of</span> 
+                <div class="flex items-center gap-2">
+                    <span class="bg-gradient-to-r from-[#F5FF82] via-purple-500 to-[#F5FF82] text-transparent bg-clip-text">Ducky Plus+</span>
+                    <img src="https://duckybot.xyz/images/plus.png" alt="Plus" class="w-8 h-8 md:w-12 md:h-12">
+                </div>
+            </h1>
+            <p class="text-gray-400 text-base md:text-xl max-w-2xl mx-auto mb-12 px-4">
+                Elevate your Discord and ER:LC experience with exclusive features designed to enhance server management and member engagement.
+            </p>
+        </section>
 
-    <section class="comparison-section">
-      <h2 class="comparison-title">Compare Plans</h2>
-      <table class="comparison-table" data-aos="fade-up">
-        <thead>
-          <tr>
-            <th>Features</th>
-            <th>Free</th>
-            <th>Ducky Plus+</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="comparison-row">
-            <td>ERLC Player Panel</td>
-            <td>
-              <img
-                src="dashboard/icons/Fail.svg"
-                alt="Not Available"
-                style="width: 30px; height: 30px"
-              />
-            </td>
-            <td>
-              <img
-                src="dashboard/icons/Success.svg"
-                alt="Available"
-                style="width: 30px; height: 30px"
-              />
-            </td>
-          </tr>
-          <tr class="comparison-row">
-            <td>Required Servers Giveaways</td>
-            <td>
-              <img
-                src="dashboard/icons/Fail.svg"
-                alt="Not Available"
-                style="width: 30px; height: 30px"
-              />
-            </td>
-            <td>
-              <img
-                src="dashboard/icons/Success.svg"
-                alt="Available"
-                style="width: 30px; height: 30px"
-              />
-            </td>
-          </tr>
-          <tr class="comparison-row">
-            <td>Command Queueing</td>
-            <td>
-              <img
-                src="dashboard/icons/Fail.svg"
-                alt="Not Available"
-                style="width: 30px; height: 30px"
-              />
-            </td>
-            <td>
-              <img
-                src="dashboard/icons/Success.svg"
-                alt="Available"
-                style="width: 30px; height: 30px"
-              />
-            </td>
-          </tr>
-          <tr class="comparison-row">
-            <td>Embed Export</td>
-            <td>
-              <img
-                src="dashboard/icons/Fail.svg"
-                alt="Not Available"
-                style="width: 30px; height: 30px"
-              />
-            </td>
-            <td>
-              <img
-                src="dashboard/icons/Success.svg"
-                alt="Available"
-                style="width: 30px; height: 30px"
-              />
-            </td>
-          </tr>
-          <tr class="comparison-row">
-            <td>Reaction Boards</td>
-            <td>1 Board</td>
-            <td>Unlimited Boards</td>
-          </tr>
-          <tr class="comparison-row">
-            <td>Priority Support</td>
-            <td>
-              <img
-                src="dashboard/icons/Fail.svg"
-                alt="Not Available"
-                style="width: 30px; height: 30px"
-              />
-            </td>
-            <td>
-              <img
-                src="dashboard/icons/Success.svg"
-                alt="Available"
-                style="width: 30px; height: 30px"
-              />
-            </td>
-          </tr>
-          <tr class="comparison-row">
-            <td>Automations</td>
-            <td>10 Automations</td>
-            <td>50 Automations</td>
-          </tr>
-          <tr class="comparison-row">
-            <td>Actions per Automation</td>
-            <td>5 Actions</td>
-            <td>10 Actions</td>
-          </tr>
-          <tr class="comparison-row">
-            <td>Autoresponders</td>
-            <td>3 Autoresponders</td>
-            <td>30 Autoresponders</td>
-          </tr>
-          <tr class="comparison-row">
-            <td>Ticket Form Questions</td>
-            <td>2 Questions</td>
-            <td>5 Questions</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+        <section id="perks" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
+            <div class="glass-card p-8">
+                <i class="fas fa-shield-alt text-[#F5FF82] text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-4">ERLC Player Panel</h3>
+                <p class="text-gray-400">Effortlessly manage players via /erlc panel <player>.</p>
+            </div>
+            <div class="glass-card p-8">
+                <i class="fas fa-users text-[#F5FF82] text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-4">Required Servers for Giveaways</h3>
+                <p class="text-gray-400">Make sure users are in the required server before they can enter the giveaway.</p>
+            </div>
+            <div class="glass-card p-8">
+                <i class="fas fa-code text-[#F5FF82] text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-4">Export Embed Command</h3>
+                <p class="text-gray-400">Export any embed message with a simple right-click to a Ducky Exportable.</p>
+            </div>
+            <div class="glass-card p-8">
+                <i class="fas fa-clock text-[#F5FF82] text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-4">Queue Offline Commands</h3>
+                <p class="text-gray-400">Queue ER:LC commands to execute automatically when the server goes online.</p>
+            </div>
+            <div class="glass-card p-8">
+                <i class="fas fa-headset text-[#F5FF82] text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-4">Priority Support</h3>
+                <p class="text-gray-400">Access exclusive support channels and get priority resolutions.</p>
+            </div>
+            <div class="glass-card p-8">
+                <i class="fas fa-chart-line text-[#F5FF82] text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-4">Enhanced Limits</h3>
+                <p class="text-gray-400">Create up to 50 automations, 30 autoresponders, and unlimited reaction boards.</p>
+            </div>
+        </section>       
+        <section class="mb-24">
+            <h2 class="text-4xl font-bold text-center mb-12">Compare Plans</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full max-w-4xl mx-auto glass-card rounded-lg overflow-hidden">
+                    <thead>
+                        <tr>
+                            <th class="backdrop-blur-sm text-[#F5FF82] p-6 text-left">Features</th>
+                            <th class="backdrop-blur-sm text-[#F5FF82] p-6 text-center">Free</th>
+                            <th class="backdrop-blur-sm text-[#F5FF82] p-6 text-center">Ducky Plus+</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="p-6">ERLC Player Panel</td>
+                            <td class="p-6 text-center"><i class="fas fa-times text-red-500"></i></td>
+                            <td class="p-6 text-center"><i class="fas fa-check text-[#F5FF82]"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="p-6">Required Servers Giveaways</td>
+                            <td class="p-6 text-center"><i class="fas fa-times text-red-500"></i></td>
+                            <td class="p-6 text-center"><i class="fas fa-check text-[#F5FF82]"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="p-6">Command Queueing</td>
+                            <td class="p-6 text-center"><i class="fas fa-times text-red-500"></i></td>
+                            <td class="p-6 text-center"><i class="fas fa-check text-[#F5FF82]"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="p-6">Embed Export</td>
+                            <td class="p-6 text-center"><i class="fas fa-times text-red-500"></i></td>
+                            <td class="p-6 text-center"><i class="fas fa-check text-[#F5FF82]"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="p-6">Reaction Boards</td>
+                            <td class="p-6 text-center">1 Board</td>
+                            <td class="p-6 text-center font-semibold text-[#F5FF82]">Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td class="p-6">Priority Support</td>
+                            <td class="p-6 text-center"><i class="fas fa-times text-red-500"></i></td>
+                            <td class="p-6 text-center"><i class="fas fa-check text-[#F5FF82]"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="p-6">Automations</td>
+                            <td class="p-6 text-center">10</td>
+                            <td class="p-6 text-center font-semibold text-[#F5FF82]">50</td>
+                        </tr>
+                        <tr>
+                            <td class="p-6">Actions per Automation</td>
+                            <td class="p-6 text-center">5</td>
+                            <td class="p-6 text-center font-semibold text-[#F5FF82]">10</td>
+                        </tr>
+                        <tr>
+                            <td class="p-6">Autoresponders</td>
+                            <td class="p-6 text-center">3</td>
+                            <td class="p-6 text-center font-semibold text-[#F5FF82]">30</td>
+                        </tr>
+                        <tr>
+                            <td class="p-6">Ticket Form Questions</td>
+                            <td class="p-6 text-center">2</td>
+                            <td class="p-6 text-center font-semibold text-[#F5FF82]">5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section class="glass-card p-8 md:p-12 text-center mb-24 bg-gradient-to-r from-[#F5FF82]/10 via-purple-500/10 to-[#F5FF82]/10 relative overflow-hidden transition-all duration-300 transform hover:scale-105 shadow-xl">
+            <img src="https://duckybot.xyz/images/plus.png" alt="Plus" class="absolute top-4 right-4 w-24 h-24 opacity-10">
+            <h2 class="text-3xl md:text-5xl font-bold mb-8">Ready to upgrade?</h2>
+            <p class="text-gray-400 text-lg mb-8 max-w-3xl mx-auto">Elevate your Discord and ER:LC experience with exclusive features designed to enhance server management and member engagement.</p>
+            <a href="/plus" class="px-8 py-4 bg-[#F5FF82] text-[#12131a] rounded-lg font-semibold transition-all duration-300 hover:bg-[#e6ff4d] inline-flex items-center gap-2 hover:shadow-lg">
+                Upgrade to Ducky Plus+</span>
+            </a>
+        </section>   
+     </main>
 
-    <section class="cta-section">
-      <h2>Upgrade to Ducky Plus+ Today!</h2>
-      <p>Support development and unlock powerful features for your server.</p>
-      <a
-        href="https://www.roblox.com/games/120245327552791"
-        class="cta-btn"
-        >Get Ducky Plus+</a
-      >
-    </section>
-
-    <footer class="footer">
-      <div class="footer-container">
-        <div class="footer-links">
-          <a href="/legal/privacy/" class="footer-link">Privacy Policy</a>
-          <a href="/legal/terms/" class="footer-link">Terms of Service</a>
-          <a href="/support" class="footer-link">Contact Us</a>
-          <a href="/docs" class="footer-link">Docs</a>
-          <a href="/team" class="footer-link">Our Team</a>
-
+    <footer class="border-t border-[#F5FF82]/10">
+        <div class="max-w-7xl mx-auto px-4 py-12">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-3">
+                    <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
+                    <span class="text-xl font-bold text-[#F5FF82]">Ducky</span>
+                </div>
+                <div class="flex gap-6">
+                    <a href="/privacy" class="text-gray-400 hover:text-[#F5FF82] transition">Privacy</a>
+                    <a href="/terms" class="text-gray-400 hover:text-[#F5FF82] transition">Terms</a>
+                    <a href="/support" class="text-gray-400 hover:text-[#F5FF82] transition">Support</a>
+                </div>
+            </div>
+            <p class="text-center text-gray-400 mt-8">© 2024 Ducky Bot. All rights reserved.</p>
         </div>
-        <div class="footer-socials">
-          <a
-            href="https://x.com/duckydiscordbot"
-            class="social-link"
-            target="_blank"
-          >
-            <i class="fab fa-twitter"></i>
-          </a>
-          <a
-            href="https://github.com/DuckySupport/duckybot.xyz"
-            class="social-link"
-            target="_blank"
-          >
-            <i class="fab fa-github"></i>
-          </a>
-          <a href="/support/" class="social-link" target="_blank">
-            <i class="fab fa-discord"></i>
-          </a>
-        </div>
-        <p class="footer-text">&copy; 2025 Ducky. All rights reserved.</p>
-      </div>
     </footer>
 
-    <!-- This is to load the nav bar-->
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        fetch("navbar.html")
-          .then((response) => response.text())
-          .then((html) => {
-            document.getElementById("navbar").innerHTML = html;
-          })
-          .catch((error) => console.error("Error loading navbar:", error));
-      });
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.body.style.overflow = document.body.style.overflow === 'hidden' ? '' : 'hidden';
+        }
     </script>
-
-    <script>
-      AOS.init();
-    </script>
-
-  </body>
+</body>
 </html>
