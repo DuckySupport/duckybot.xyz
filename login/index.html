@@ -46,12 +46,13 @@
             filter: blur(120px);
             opacity: 0.08;
             z-index: -1;
+            transition: all 0.3s ease;
         }
     </style>
 </head>
 <body class="text-white min-h-screen flex items-center justify-center">
-    <div class="glow bg-red-300 top-0 left-0"></div>
-    <div class="glow bg-green-300 bottom-0 right-0"></div>
+    <div id="glow1" class="glow bg-red-300 top-0 left-0"></div>
+    <div id="glow2" class="glow bg-green-300 bottom-0 right-0"></div>
 
     <div class="container max-w-lg mx-auto px-4">
         <div id="card" class="glass-card p-8 text-center loading">
@@ -68,12 +69,16 @@
         const title = document.getElementById("title")
         const text = document.getElementById("text")
         const subtext = document.getElementById("subtext")
+        const glow1 = document.getElementById("glow1")
+        const glow2 = document.getElementById("glow2")
 
         function loadingStatus(lstat) {
             card.className = "glass-card p-8 text-center loading";
             title.innerHTML = "Loading...";
             text.innerHTML = lstat;
             subtext.innerHTML = "This may take a moment.";
+            glow1.className = "glow bg-red-300 top-0 left-0";
+            glow2.className = "glow bg-green-300 bottom-0 right-0";
         }
 
         function success(successTitle, successString, successSubtext) {
@@ -81,6 +86,8 @@
             title.innerHTML = successTitle;
             text.innerHTML = successString;
             subtext.innerHTML = successSubtext || "";
+            glow1.className = "glow bg-green-200 top-0 left-0";
+            glow2.className = "glow bg-green-200 bottom-0 right-0";
         }
 
         function fail(errorTitle, errorString) {
@@ -88,6 +95,8 @@
             title.innerHTML = errorTitle;
             text.innerHTML = errorString;
             subtext.innerHTML = "For more assistance, contact Ducky Support.";
+            glow1.className = "glow bg-red-200 top-0 left-0";
+            glow2.className = "glow bg-red-200 bottom-0 right-0";
         }
 
         function setSub(subtext) {
