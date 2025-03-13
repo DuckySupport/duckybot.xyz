@@ -4,85 +4,178 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ticket Transcripts</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
   <style>
-      body {
-          font-family: 'Inter', sans-serif;
-          background-color: #0f0f0f;
-          -webkit-tap-highlight-color: transparent;
+    :root {
+      --bg-primary: #36393f;
+      --bg-secondary: #2f3136;
+      --accent: #5865f2;
+      --text: #dcddde;
+      --border: rgba(255,255,255,0.1);
+      --code-bg: #2b2d31;
+      --link-color: #00b0f4;
+      --success: #3ba55c;
+      --warning: #faa61a;
+    }
+    
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text);
+      margin: 0;
+      font-family: gg sans, 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      line-height: 1.375rem;
+      font-size: 16px;
+    }
+    
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    #loading {
+      text-align: center;
+      padding: 3rem;
+      font-size: 1.2rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    
+    #error {
+      text-align: center;
+      background: rgba(237,66,69,0.1);
+      border-left: 4px solid #ed4245;
+      padding: 1.5rem;
+      border-radius: 4px;
+      margin: 1.5rem 0;
+      animation: slideIn 0.3s ease;
+    }
+    
+    #transcript {
+      background: var(--bg-secondary);
+      border-radius: 4px;
+      padding: 1rem;
+      animation: fadeIn 0.4s ease;
+    }
+    
+    .author-table {
+      margin: 0.5rem 0;
+      border-spacing: 0.5rem;
+    }
+    
+    .author-pfp {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    
+    .embed {
+      background: var(--bg-primary);
+      border-left: 4px solid var(--accent);
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem 0;
+    }
+    
+    .embed-field {
+      margin: 0.5rem 0;
+    }
+    
+    .embed-footer {
+      color: var(--text);
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+    
+    .spoiler {
+      background-color: #202225;
+      padding: 0 2px;
+      cursor: pointer;
+    }
+    
+    .spoiler:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+    
+    code {
+      background: var(--code-bg);
+      padding: 0.2em;
+      border-radius: 3px;
+      font-family: Consolas, 'Andale Mono WT', 'Andale Mono', 'Lucida Console', 'Lucida Sans Typewriter', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L', Monaco, 'Courier New', Courier, monospace;
+      font-size: 0.875rem;
+      color: #dcddde;
+    }
+    
+    pre code {
+      display: block;
+      padding: 0.5em;
+      overflow-x: auto;
+      background: var(--code-bg);
+    }
+    
+    a {
+      color: var(--link-color);
+      text-decoration: none;
+    }
+    
+    a:hover {
+      text-decoration: underline;
+    }
+    
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    li {
+      margin: 1rem 0;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateX(-10px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @media (max-width: 768px) {
+      main {
+        padding: 1rem;
       }
-      .glass-card {
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(20px);
-          border-radius: 16px;
+      
+      #transcript {
+        padding: 0.5rem;
       }
-      .message {
-          padding: 1rem;
-          transition: background-color 0.2s;
-      }
-      .message:hover {
-          background: rgba(255, 255, 255, 0.02);
-      }
-      .embed {
-          background: rgba(255, 255, 255, 0.02);
-          border-left: 4px solid #F5FF82;
-          border-radius: 4px;
-          padding: 1rem;
-          margin: 0.5rem 0;
-      }
-      .attachment img {
-          max-width: 400px;
-          border-radius: 8px;
-          margin-top: 0.5rem;
-      }
-      code {
-          background: rgba(0, 0, 0, 0.2);
-          padding: 0.2em 0.4em;
-          border-radius: 3px;
-          font-family: monospace;
-          white-space: pre-wrap;
-      }
-      pre code {
-          display: block;
-          padding: 1em;
-          overflow-x: auto;
-          margin: 0.5em 0;
-      }
-      .raw-data {
-          font-size: 0.9em;
-          max-height: 300px;
-          overflow-y: auto;
-      }
+    }
   </style>
 </head>
-<body class="text-white min-h-screen">
-  <main class="max-w-4xl mx-auto px-4 py-8">
-      <div id="loading" class="flex items-center justify-center gap-3 py-8">
-          <div class="animate-spin rounded-full h-8 w-8 border-4 border-[#F5FF82] border-t-transparent"></div>
-          <span class="text-[#F5FF82]">Loading transcript...</span>
-      </div>
-
-      <div id="transcript" class="glass-card p-6 hidden">
-          <div id="ticket-header" class="mb-6">
-              <div class="flex items-center gap-4 mb-4">
-                  <img id="guild-icon" class="w-16 h-16 rounded-full" src="" alt="Server Icon">
-                  <div>
-                      <h1 id="guild-name" class="text-2xl font-bold"></h1>
-                      <p id="channel-name" class="text-gray-400"></p>
-                  </div>
-              </div>
-              <div class="h-0.5 bg-white/10"></div>
-          </div>
-          <div id="messages" class="space-y-4"></div>
-      </div>
-
-      <div id="error" class="glass-card p-6 text-center hidden">
-          <p class="text-red-400">Failed to load transcript. Please check the URL or try again later.</p>
-      </div>
+<body>
+  <main>
+    <div id="loading">
+      <svg class="animate-spin" width="28" height="28" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      <span>Loading your transcript...</span>
+    </div>
+    <div id="transcript" style="display: none;">
+      <h2>Ticket Transcript</h2>
+      <div id="ticket-details"></div>
+    </div>
+    <div id="error" style="display: none;">
+      <p>Failed to load transcript. Please check the URL or try again later.</p>
+    </div>
   </main>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/3.0.7/marked.min.js"></script>
   <script src="transcripts.js"></script>
 </body>
 </html>
