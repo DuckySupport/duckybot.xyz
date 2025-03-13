@@ -56,6 +56,9 @@
     </div>
 
     <div class="container max-w-lg mx-auto px-4">
+        <div id="disclaimer" class="glass-card p-4 text-center mb-4 hidden">
+            <p class="text-sm text-gray-400">Service provided by Ducky, duckybot.xyz is our only official domain.</p>
+        </div>
         <div id="card" class="glass-card p-8 text-center loading">
             <h1 id="title" class="text-2xl font-bold mb-4">Loading...</h1>
             <div class="w-16 h-0.5 bg-white/20 mx-auto mb-4"></div>
@@ -71,6 +74,7 @@
             const text = document.getElementById("text")
             const subtext = document.getElementById("subtext")
             const glowContainer = document.getElementById("glow-container")
+            const disclaimer = document.getElementById("disclaimer")
 
             function updateGlowColor(isLoggedIn) {
                 const glowHtml = isLoggedIn ? 
@@ -86,6 +90,7 @@
                 title.innerHTML = "Loading...";
                 text.innerHTML = lstat;
                 subtext.innerHTML = "This may take a moment.";
+                disclaimer.classList.add("hidden");
             }
 
             function success(successTitle, successString) {
@@ -93,6 +98,7 @@
                 title.innerHTML = successTitle;
                 text.innerHTML = successString;
                 subtext.innerHTML = "You may now return back to Discord.";
+                disclaimer.classList.remove("hidden");
             }
             
             function fail(errorTitle, errorString) {
@@ -100,6 +106,7 @@
                 title.innerHTML = errorTitle;
                 text.innerHTML = errorString;
                 subtext.innerHTML = "For more assistance, contact Ducky Support.";
+                disclaimer.classList.add("hidden");
             }
 
             function getCookie(name) {
