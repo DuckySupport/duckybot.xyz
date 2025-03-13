@@ -26,15 +26,13 @@
             backdrop-filter: blur(20px);
             border-radius: 16px;
             transition: all 0.3s ease;
-            max-width: 500px;
-            margin: 0 auto;
         }
         .glass-card.loading {
             border-color: rgba(255, 255, 255, 0.2);
         }
         .glass-card.success {
-            background: rgba(245, 255, 130, 0.05);
-            border-color: rgba(245, 255, 130, 0.2);
+            background: rgba(134, 239, 172, 0.03);
+            border-color: rgba(134, 239, 172, 0.2);
         }
         .glass-card.fail {
             background: rgba(252, 165, 165, 0.03);
@@ -49,16 +47,6 @@
             opacity: 0.08;
             z-index: -1;
         }
-        .notification-text {
-            font-size: 1.1rem;
-            line-height: 1.5;
-            letter-spacing: 0.015em;
-            white-space: normal;
-        }
-        .highlight {
-            color: #F5FF82;
-            font-weight: 600;
-        }
     </style>
 </head>
 <body class="text-white min-h-screen flex items-center justify-center">
@@ -69,13 +57,13 @@
 
     <div class="container max-w-lg mx-auto px-4">
         <div id="disclaimer" class="glass-card p-4 text-center mb-4 hidden">
-            <p class="text-sm text-gray-400">Service provided by <span class="text-[#F5FF82]">Ducky</span>, duckybot.xyz is our only official domain.</p>
+            <p class="text-sm text-gray-400">Service provided by Ducky, duckybot.xyz is our only official domain.</p>
         </div>
         <div id="card" class="glass-card p-8 text-center loading">
-            <h1 id="title" class="text-2xl font-bold mb-4 text-[#F5FF82]">Loading...</h1>
-            <div class="w-16 h-0.5 bg-[#F5FF82]/20 mx-auto mb-4"></div>
-            <p id="text" class="notification-text text-gray-200 mb-4">We're fetching data from our API.</p>
-            <p><small id="subtext" class="text-gray-400">This may take a moment.</small></p>
+            <h1 id="title" class="text-2xl font-bold mb-4">Loading...</h1>
+            <div class="w-16 h-0.5 bg-white/20 mx-auto mb-4"></div>
+            <p id="text" class="text-gray-400 mb-2">We're fetching data from our API.</p>
+            <p><small id="subtext" class="text-gray-500">This may take a moment.</small></p>
         </div>
     </div>
 
@@ -90,8 +78,8 @@
 
             function updateGlowColor(isLoggedIn) {
                 const glowHtml = isLoggedIn ? 
-                    `<div class="glow bg-[#F5FF82] top-0 left-0"></div>
-                     <div class="glow bg-[#F5FF82] bottom-0 right-0"></div>` :
+                    `<div class="glow bg-green-200 top-0 left-0"></div>
+                     <div class="glow bg-green-200 bottom-0 right-0"></div>` :
                     `<div class="glow bg-red-300 top-0 left-0"></div>
                      <div class="glow bg-red-300 bottom-0 right-0"></div>`;
                 glowContainer.innerHTML = glowHtml;
@@ -100,29 +88,120 @@
             function loadingStatus(lstat) {
                 card.className = "glass-card p-8 text-center loading";
                 title.innerHTML = "Loading...";
-                text.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> ${lstat}`;
+                text.innerHTML = lstat;
                 subtext.innerHTML = "This may take a moment.";
                 disclaimer.classList.add("hidden");
             }
 
             function success(successTitle, successString) {
                 card.className = "glass-card p-8 text-center success";
-                title.innerHTML = `<i class="fas fa-check-circle mr-2"></i>${successTitle}`;
-                text.innerHTML = successString.replace(/\<b\>(.*?)\<\/b\>/g, '<span class="highlight">$1</span>');
+                title.innerHTML = successTitle;
+                text.innerHTML = successString;
                 subtext.innerHTML = "You may now return back to Discord.";
                 disclaimer.classList.remove("hidden");
             }
             
             function fail(errorTitle, errorString) {
                 card.className = "glass-card p-8 text-center fail";
-                title.innerHTML = `<i class="fas fa-exclamation-circle mr-2"></i>${errorTitle}`;
+                title.innerHTML = errorTitle;
                 text.innerHTML = errorString;
                 subtext.innerHTML = "For more assistance, contact Ducky Support.";
                 disclaimer.classList.add("hidden");
             }
 
-            // Rest of the JavaScript remains the same
-            // ... (keeping all the existing functionality)
+            function getCookie(name) {
+                let value = `; ${document.cookie}`;
+                let parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+            }
+
+            const loggedin = getCookie('discord')
+            updateGlowColor(!!loggedin);
+
+            if (loggedin) {
+                const params = new URLSearchParams(window.location.search);
+                const authcode = params.get("code");
+
+                if (authcode) {
+                    console.log("Exchanging code and linking account...");
+                    loadingStatus("Exchanging authorization code and linking...");
+
+                    fetch("https://api.duckybot.xyz/link", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ auth_code: authcode, discord_code: loggedin })
+                    })
+                    .then(result => result.json())
+                    .then(response => {
+                        if (response.code === 200) {
+                            success("Successfully Linked", `You've been successfully linked with <b>${response.data.robloxUser.username}</b>.`);
+                        } else {
+                            fail("API Error", response.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        fail("Error", "An error occurred while linking your account. Please try again.");
+                    });
+                } else {
+                    fetch('https://discord.com/api/users/@me', {
+                        headers: {
+                            authorization: `Bearer ${loggedin}`,
+                        },
+                    })
+                    .then(result => {
+                        if (!result.ok) {
+                            console.error("Discord API did not return 200. Clearing cookie.");
+                            document.cookie = "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+                            loadingStatus("Redirecting to Discord...");
+                            console.log("Redirecting to login page...");
+                            updateGlowColor(false);
+                            window.location.href = "/login?redirect=link";
+                            return null;
+                        }
+                        return result.json();
+                    })
+                    .then(response => {
+                        if (response) {
+                            const DiscordID = response.id;
+
+                            fetch('https://api.duckybot.xyz/link/' + DiscordID, {
+                                method: "GET"
+                            })
+                            .then(result => result.json())
+                            .then(response => {
+                                const link = response.data;
+
+                                if (link) {
+                                    success("Already Linked", `You're already linked with <b>${link.robloxUser.name}</b>.`);
+                                } else {
+                                    console.log("Redirecting to Roblox for authentication...");
+                                    loadingStatus("Redirecting to Roblox...");
+                                    window.location.href = "https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid";
+                                }
+                            })
+                            .catch(error => {
+                                console.error(error);
+                                fail("Error", "An error occurred while fetching your link status. Please try again.");
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        document.cookie = "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+                        loadingStatus("Redirecting to Discord...");
+                        console.log("Redirecting to login page...");
+                        updateGlowColor(false);
+                        window.location.href = "/login?redirect=link";
+                    });
+                }
+            } else {
+                console.log("Not logged in | Redirecting to Discord...");
+                loadingStatus("Redirecting to Discord...");
+                window.location.href = "/login?redirect=link";
+            }
         }
     </script>
 </body>
