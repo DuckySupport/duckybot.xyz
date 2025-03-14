@@ -21,15 +21,73 @@
             -webkit-tap-highlight-color: transparent;
         }
         .glass-card {
-            background: rgba(245, 255, 130, 0.03);
-            border: 1px solid rgba(245, 255, 130, 0.1);
-            backdrop-filter: blur(20px);
             border-radius: 16px;
             transition: border 0.3s ease;
             box-sizing: border-box;
         }
-        .glass-card:hover {
-            border: 1px solid rgba(245, 255, 130, 0.8);
+        .glass-card.dev {
+            background: rgba(86, 188, 255, 0.03);
+            border: 1px solid rgba(86, 188, 255, 0.1);
+            backdrop-filter: blur(20px);
+        }
+        .glass-card.dev:hover {
+            border: 1px solid rgba(86, 188, 255, 0.8);
+        }
+        .glass-card.web {
+            background: rgba(91, 215, 255, 0.03);
+            border: 1px solid rgba(91, 215, 255, 0.1);
+            backdrop-filter: blur(20px);
+        }
+        .glass-card.web:hover {
+            border: 1px solid rgba(91, 215, 255, 0.8);
+        }
+        .glass-card.exec {
+            background: rgba(86, 188, 255, 0.03);
+            border: 1px solid rgba(86, 188, 255, 0.1);
+            backdrop-filter: blur(20px);
+        }
+        .glass-card.exec:hover {
+            border: 1px solid rgba(86, 188, 255, 0.8);
+        }
+        .glass-card.cm {
+            background: rgba(230, 126, 34, 0.03);
+            border: 1px solid rgba(230, 126, 34, 0.1);
+            backdrop-filter: blur(20px);
+        }
+        .glass-card.cm:hover {
+            border: 1px solid rgba(230, 126, 34, 0.8);
+        }
+        .glass-card.admin {
+            background: rgba(170, 170, 221, 0.03);
+            border: 1px solid rgba(170, 170, 221, 0.1);
+            backdrop-filter: blur(20px);
+        }
+        .glass-card.admin:hover {
+            border: 1px solid rgba(170, 170, 221, 0.8);
+        }
+        .glass-card.support {
+            background: rgba(255, 203, 72, 0.03);
+            border: 1px solid rgba(255, 203, 72, 0.1);
+            backdrop-filter: blur(20px);
+        }
+        .glass-card.support:hover {
+            border: 1px solid rgba(255, 203, 72, 0.8);
+        }
+        .glass-card.mod {
+            background: rgba(126, 238, 255, 0.03);
+            border: 1px solid rgba(126, 238, 255, 0.1);
+            backdrop-filter: blur(20px);
+        }
+        .glass-card.mod:hover {
+            border: 1px solid rgba(126, 238, 255, 0.8);
+        }
+        .glass-card.doc {
+            background: rgba(35, 154, 165, 0.03);
+            border: 1px solid rgba(35, 154, 165, 0.1);
+            backdrop-filter: blur(20px);
+        }
+        .glass-card.doc:hover {
+            border: 1px solid rgba(35, 154, 165, 0.8);
         }
         .animate-fade {
             animation: fadeIn 0.5s ease-out forwards;
@@ -131,55 +189,130 @@
         </section>
         <section class="py-12">
             <h2 class="text-3xl font-bold text-center mb-12">Bot Developers</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center max-w-3xl mx-auto">
-                <div class="glass-card p-8 w-full max-w-md">
-                    <img src="https://duckybot.xyz/images/discordpfps/bobbibones.png" alt="@bobbibones" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#F5FF82] group-hover:scale-105 transition-transform"/>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center items-center max-w-3xl mx-auto">
+                <div class="glass-card dev p-8 w-full max-w-md">
+                    <img src="https://duckybot.xyz/images/discordpfps/bobbibones.png" alt="@bobbibones" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#56bcff] group-hover:scale-105 transition-transform"/>
                     <a href="https://discord.com/users/782235114858872854" class="block text-center">
-                        <h3 class="text-2xl font-bold mb-2 hover:text-[#F5FF82] transition-colors">bobbibones</h3>
+                        <h3 class="text-2xl font-bold mb-2 hover:text-[#56bcff] transition-colors">bobbibones</h3>
                     </a>
                     <p class="text-gray-400 text-center mb-3">@bobbibones</p>
-                    <p class="text-[#F5FF82] font-semibold text-xl text-center">Senior Developer</p>
+                    <p class="text-[#56bcff] font-semibold text-xl text-center">Senior Developer</p>
                 </div>
 
-                <div class="glass-card p-8 w-full max-w-md">
-                    <img src="https://duckybot.xyz/images/discordpfps/troptop.png" alt="@literally.nick" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#F5FF82] group-hover:scale-105 transition-transform"/>
+                <div class="glass-card dev p-8 w-full max-w-md">
+                    <img src="https://duckybot.xyz/images/discordpfps/troptop.png" alt="@literally.nick" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#56bcff] group-hover:scale-105 transition-transform"/>
                     <a href="https://discord.com/users/598958193032560642" class="block text-center">
-                        <h3 class="text-2xl font-bold mb-2 hover:text-[#F5FF82] transition-colors">Troptop</h3>
+                        <h3 class="text-2xl font-bold mb-2 hover:text-[#56bcff] transition-colors">Troptop</h3>
                     </a>
                     <p class="text-gray-400 text-center mb-3">@literally.nick</p>
-                    <p class="text-[#F5FF82] font-semibold text-xl text-center">Founder/Lead Developer</p>
+                    <p class="text-[#56bcff] font-semibold text-xl text-center">Founder/Lead Developer</p>
                 </div>
             </div>
         </section>
         <section class="py-12">
-            <h2 class="text-3xl font-bold text-center mb-12">Web Developers</h2>
-            <div class="grid grid-cols-1 md:grid-cols-1 gap-6 max-w-md mx-auto">
-                <div class="glass-card p-8 w-full max-w-md">
-                    <img src="https://duckybot.xyz/images/discordpfps/joyclens.png" alt="@joyclens" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#F5FF82] group-hover:scale-105 transition-transform"/>
+            <h2 class="text-3xl font-bold text-center mb-12">Web Team</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center max-w-3xl mx-auto">
+                <div class="glass-card web p-8 w-full max-w-md md:col-span-2 justify-self-center">
+                    <img src="https://duckybot.xyz/images/discordpfps/joyclens.png" alt="@joyclens" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#5bd7ff] group-hover:scale-105 transition-transform"/>
                     <a href="https://discord.com/users/1057310810440994967" class="block text-center">
-                        <h3 class="text-2xl font-bold mb-2 hover:text-[#F5FF82] transition-colors">joyclens</h3>
+                        <h3 class="text-2xl font-bold mb-2 hover:text-[#5bd7ff] transition-colors">joyclens</h3>
                     </a>
                     <p class="text-gray-400 text-center mb-3">@joyclens</p>
-                    <p class="text-[#F5FF82] font-semibold text-xl text-center">Lead Web Developer</p>
+                    <p class="text-[#5bd7ff] font-semibold text-xl text-center">Lead Web Developer</p>
                 </div>
             </div>
         </section>
         <section class="py-12">
             <h2 class="text-3xl font-bold text-center mb-12">Ducky Executives</h2>
-            <div class="grid grid-cols-1 md:grid-cols-1 gap-6 max-w-md mx-auto">
-                <div class="glass-card p-8">
-                    <img src="https://duckybot.xyz/images/discordpfps/brainy.png" alt="@mr_brain34578" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#F5FF82] group-hover:scale-105 transition-transform"/>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center max-w-3xl mx-auto">
+                <div class="glass-card exec p-8 w-full max-w-md md:col-span-2 justify-self-center">
+                    <img src="https://duckybot.xyz/images/discordpfps/brainy.png" alt="@mr_brain34578" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#56bcff] group-hover:scale-105 transition-transform"/>
                     <a href="https://discord.com/users/1017977993051787265" class="block text-center">
-                        <h3 class="text-2xl font-bold mb-2 hover:text-[#F5FF82] transition-colors">Brain</h3>
+                        <h3 class="text-2xl font-bold mb-2 hover:text-[#56bcff] transition-colors">Brain</h3>
                     </a>
                     <p class="text-gray-400 text-center mb-3">@mr_brain34578</p>
-                    <p class="text-[#F5FF82] font-semibold text-center">Executive</p>
+                    <p class="text-[#56bcff] font-semibold text-xl text-center">Executive</p>
                 </div>
             </div>
         </section>
-    </main>
-    <footer class="border-t border-[#F5FF82]/10">
-        <div class="max-w-7xl mx-auto px-4 py-12">
+        <section class="py-12">
+            <h2 class="text-3xl font-bold text-center mb-12">Community Management</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center max-w-3xl mx-auto">
+                <div class="glass-card cm p-8 w-full max-w-md md:col-span-2 justify-self-center">
+                    <img src="https://duckybot.xyz/images/discordpfps/spooderman.gif" alt="@syink" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#e67e22] group-hover:scale-105 transition-transform"/>
+                    <a href="https://discord.com/users/syink" class="block text-center">
+                        <h3 class="text-2xl font-bold mb-2 hover:text-[#e67e22] transition-colors">spoderman</h3>
+                    </a>
+                    <p class="text-gray-400 text-center mb-3">@syink</p>
+                    <p class="text-[#e67e22] font-semibold text-xl text-center">Community Manager</p>
+                </div>
+            </div>
+        </section>
+        <section class="py-12">
+            <h2 class="text-3xl font-bold text-center mb-12">Administration</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center max-w-3xl mx-auto">
+                <div class="glass-card admin p-8 w-full max-w-md md:col-span-2 justify-self-center">
+                    <img src="https://duckybot.xyz/images/discordpfps/electron.png" alt="@robloxkiller1340_4" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#aaaadd] group-hover:scale-105 transition-transform"/>
+                    <a href="https://discord.com/users/robloxkiller1340_4" class="block text-center">
+                        <h3 class="text-2xl font-bold mb-2 hover:text-[#aaaadd] transition-colors">Electron</h3>
+                    </a>
+                    <p class="text-gray-400 text-center mb-3">@robloxkiller1340_4</p>
+                    <p class="text-[#aaaadd] font-semibold text-xl text-center">Administrator</p>
+                </div>
+            </div>
+        </section>
+        <section class="py-12">
+            <h2 class="text-3xl font-bold text-center mb-12">Support Team</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center items-center max-w-3xl mx-auto">
+                <div class="glass-card support p-8 w-full max-w-md">
+                    <img src="https://duckybot.xyz/images/discordpfps/lilkid.png" alt="@thatlilkidb0k" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#ffcb48] group-hover:scale-105 transition-transform"/>
+                    <a href="https://discord.com/users/thatlilkidb0k" class="block text-center">
+                        <h3 class="text-2xl font-bold mb-2 hover:text-[#ffcb48] transition-colors">Lilkid</h3>
+                    </a>
+                    <p class="text-gray-400 text-center mb-3">@thatlilkidb0k</p>
+                    <p class="text-[#ffcb48] font-semibold text-xl text-center">Support Team Member</p>
+                </div>
+                <div class="glass-card support p-8 w-full max-w-md">
+                    <img src="https://duckybot.xyz/images/discordpfps/vakx3n.gif" alt="@vakx3n" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#ffcb48] group-hover:scale-105 transition-transform"/>
+                    <a href="https://discord.com/users/vakx3n" class="block text-center">
+                        <h3 class="text-2xl font-bold mb-2 hover:text-[#ffcb48] transition-colors">𝙑𝙖𝙠𝙭3𝙣</h3>
+                    </a>
+                    <p class="text-gray-400 text-center mb-3">@vakx3n</p>
+                    <p class="text-[#ffcb48] font-semibold text-xl text-center">Support Team Member</p>
+                </div>
+            </div>
+        </section>
+        <section class="py-12">
+            <h2 class="text-3xl font-bold text-center mb-12">Moderators</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center max-w-3xl mx-auto">
+                <div class="glass-card mod p-8 w-full max-w-md">
+                    <img src="https://duckybot.xyz/images/discordpfps/pixelcat.png" alt="@pixelpops" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#7eeeff] group-hover:scale-105 transition-transform"/>
+                    <a href="https://discord.com/users/pixelpops" class="block text-center">
+                        <h3 class="text-2xl font-bold mb-2 hover:text-[#7eeeff] transition-colors">pixelcat</h3>
+                    </a>
+                    <p class="text-gray-400 text-center mb-3">@pixelpops</p>
+                    <p class="text-[#7eeeff] font-semibold text-xl text-center">Junior Moderator</p>
+                </div>
+                <div class="glass-card mod p-8 w-full max-w-md">
+                    <img src="https://duckybot.xyz/images/discordpfps/thtman.gif" alt="@thtman" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#7eeeff] group-hover:scale-105 transition-transform"/>
+                    <a href="https://discord.com/users/thtman" class="block text-center">
+                        <h3 class="text-2xl font-bold mb-2 hover:text-[#7eeeff] transition-colors">thtman</h3>
+                    </a>
+                    <p class="text-gray-400 text-center mb-3">@thtman</p>
+                    <p class="text-[#7eeeff] font-semibold text-xl text-center">Moderator</p>
+                </div>
+                <div class="glass-card mod p-8 w-full max-w-md md:col-span-2 justify-self-center">
+                    <img src="https://duckybot.xyz/images/discordpfps/dan.png" alt="Dan" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#7eeeff] group-hover:scale-105 transition-transform"/>
+                    <a href="https://discord.com/users/dan" class="block text-center">
+                        <h3 class="text-2xl font-bold mb-2 hover:text-[#7eeeff] transition-colors">Dan</h3>
+                    </a>
+                    <p class="text-gray-400 text-center mb-3">@dvan6392</p>
+                    <p class="text-[#7eeeff] font-semibold text-xl text-center">Moderator</p>
+                </div>
+            </div>
+        </section>        
+    </main>    
+    <footer class="border-t border-[#F5FF82]/10">        <div class="max-w-7xl mx-auto px-4 py-12">
             <div class="flex flex-col md:flex-row justify-between items-center gap-8">
                 <div class="flex items-center gap-3">
                     <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
