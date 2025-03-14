@@ -10,7 +10,7 @@
     <meta content="https://duckybot.xyz/Ducky.svg" property="og:image">
     <meta content="#F5FF82" name="theme-color">
     <link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
-    <title>Ducky - Reviews</title>
+    <title>Reviews - Ducky</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -26,10 +26,27 @@
             backdrop-filter: blur(20px);
             border-radius: 16px;
             transition: border 0.3s ease;
+            box-sizing: border-box;
             text-align: center;
         }
         .glass-card:hover {
             border: 1px solid rgba(245, 255, 130, 0.8);
+        }
+        .animate-fade {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .glow {
+            position: absolute;
+            width: 100%;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.08;
+            z-index: -1;
         }
         .filter-container {
             background: rgba(245, 255, 130, 0.05);
@@ -85,6 +102,9 @@
             }
             .container {
                 padding: 1rem;
+            }
+            .grid-cols-3 {
+                grid-template-columns: 1fr;
             }
         }
     </style>

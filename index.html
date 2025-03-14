@@ -20,6 +20,7 @@
             background-color: #0f0f0f;
             -webkit-tap-highlight-color: transparent;
         }
+
         .glass-card {
             background: rgba(245, 255, 130, 0.03);
             border: 1px solid rgba(245, 255, 130, 0.1);
@@ -28,16 +29,20 @@
             transition: border 0.3s ease;
             box-sizing: border-box;
         }
+
         .glass-card:hover {
             border: 1px solid rgba(245, 255, 130, 0.8);
         }
+
         .animate-fade {
             animation: fadeIn 0.5s ease-out forwards;
         }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
+
         .glow {
             position: absolute;
             width: 100%;
@@ -47,6 +52,7 @@
             opacity: 0.08;
             z-index: -1;
         }
+
         .mobile-menu {
             display: none;
             position: fixed;
@@ -60,23 +66,59 @@
             transform: translateY(-100%);
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
+
         .mobile-menu.active {
             display: flex;
             opacity: 1;
             transform: translateY(0);
         }
+
         @media (max-width: 768px) {
             .nav-menu {
                 display: none;
             }
+
             .container {
                 padding: 1rem;
             }
+
             .grid-cols-3 {
                 grid-template-columns: 1fr;
             }
         }
-    </style></head>
+
+        @keyframes fadeInSlide {
+            0% {
+                opacity: 0;
+                transform: translateX(50px) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        .feedback-card {
+            min-width: 300px;
+            margin-right: 20px;
+            opacity: 0.3;
+            transform: scale(0.8);
+            transition: all 0.5s ease-in-out;
+        }
+
+        .feedback-card.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        #feedbackContainer {
+            perspective: 1000px;
+
+
+
+        }
+    </style>
+</head>
 <body class="text-white">
     <div class="glow bg-[#F5FF82] top-0 left-0"></div>
     <div class="glow bg-[#F5FF82] bottom-0 right-0"></div>
@@ -170,6 +212,9 @@
             <h2 class="text-3xl font-bold text-center mb-12">What Our Users Say</h2>
             <div id="feedbackContainer" class="overflow-hidden relative">
                 <div id="feedbackSlider" class="flex transition-all duration-700 ease-in-out"></div>
+            </div>
+            <div class="text-center mt-8">
+                <p class="text-gray-400">Want to see all of Ducky's reviews? <a href="/reviews" class="text-[#F5FF82] hover:underline">Click here!</a></p>
             </div>
         </section>
 
