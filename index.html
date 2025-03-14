@@ -218,19 +218,19 @@
                         card.className = 'glass-card p-8 opacity-0';
                         card.style.animation = `fadeInSlide 0.5s ease-out ${index * 0.2}s forwards`;
                         
-                        const stars = `<img src="https://duckybot.xyz/images/star.png" class="w-4 h-4 inline-block mx-[2.5px]">`.repeat(review.rating) + 
-                                    `<img src="https://duckybot.xyz/images/star.png" class="w-4 h-4 inline-block opacity-30 mx-[2.5px]">`.repeat(5 - review.rating);
+                        const filledStars = `<img src="https://duckybot.xyz/images/star.png" class="w-6 h-6 inline-block mx-[3px]">`.repeat(review.rating);
+                        const emptyStars = `<img src="https://duckybot.xyz/images/star-empty.png" class="w-6 h-6 inline-block mx-[3px]">`.repeat(5 - review.rating);
                         
                         card.innerHTML = `
-                            <div class="flex items-center gap-4 mb-6">
-                                <img src="${review.submitter.avatar}" alt="${review.submitter.username}" 
-                                     class="w-16 h-16 rounded-full">
-                                <div>
-                                    <h4 class="font-semibold text-lg truncate max-w-[150px]">${review.submitter.username}</h4>
-                                    <div class="text-[#F5FF82] text-lg">${stars}</div>
+                            <div class="flex flex-col items-center gap-4 mb-6">
+                                <img src="${review.submitter.avatar}" alt="${review.submitter.username}"
+                                      class="w-20 h-20 rounded-full">
+                                <div class="text-center">
+                                    <h4 class="font-semibold text-lg truncate max-w-[200px]">${review.submitter.username}</h4>
+                                    <div class="text-[#F5FF82] text-lg mt-2">${filledStars}${emptyStars}</div>
                                 </div>
                             </div>
-                            <p class="text-gray-400 text-base line-clamp-4 h-[96px] overflow-hidden">${review.feedback}</p>
+                            <p class="text-gray-400 text-base text-center">${review.feedback}</p>
                         `;
                         
                         container.appendChild(card);
@@ -241,8 +241,7 @@
             }
 
             document.addEventListener('DOMContentLoaded', loadFeedback);
-        </script>        
-        <main class="max-w-7xl mx-auto px-4 py-24">
+        </script>        <main class="max-w-7xl mx-auto px-4 py-24">
             <section class="flex flex-col gap-20 py-32" data-aos="fade-up">
                 <h2 class="text-4xl font-bold text-center mb-8">Trusted by Communities Worldwide</h2>
                 <div id="stats" class="grid grid-cols-1 md:grid-cols-3 gap-10">
