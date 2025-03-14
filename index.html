@@ -25,11 +25,11 @@
             border: 1px solid rgba(245, 255, 130, 0.1);
             backdrop-filter: blur(20px);
             border-radius: 16px;
-            transition: all 0.3s ease;
+            transition: border 0.3s ease;
+            box-sizing: border-box;
         }
         .glass-card:hover {
-            background: rgba(245, 255, 130, 0.06);
-            transform: translateY(-5px);
+            border: 1px solid rgba(245, 255, 130, 0.8);
         }
         .animate-fade {
             animation: fadeIn 0.5s ease-out forwards;
@@ -76,8 +76,7 @@
                 grid-template-columns: 1fr;
             }
         }
-    </style>
-</head>
+    </style></head>
 <body class="text-white">
     <div class="glow bg-[#F5FF82] top-0 left-0"></div>
     <div class="glow bg-[#F5FF82] bottom-0 right-0"></div>
@@ -167,6 +166,82 @@
             </div>
         </section>
 
+        <section class="mb-24">
+            <h2 class="text-3xl font-bold text-center mb-12">What Our Users Say</h2>
+            <div id="feedbackContainer" class="overflow-hidden relative">
+                <div id="feedbackSlider" class="flex transition-all duration-700 ease-in-out"></div>
+            </div>
+        </section>
+
+        <style>
+            @keyframes fadeInSlide {
+                0% {
+                    opacity: 0;
+                    transform: translateX(50px) scale(0.8);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateX(0) scale(1);
+                }
+            }
+            .feedback-card {
+                min-width: 300px;
+                margin-right: 20px;
+                opacity: 0.3;
+                transform: scale(0.8);
+                transition: all 0.5s ease-in-out;
+            }
+            .feedback-card.active {
+                opacity: 1;
+                transform: scale(1);
+            }
+            #feedbackContainer {
+                perspective: 1000px;
+            }
+        </style>
+
+        <script>
+            async function loadFeedback() {
+                const container = document.getElementById('feedbackSlider');
+                container.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8';
+                
+                try {
+                    const response = await fetch('https://api.duckybot.xyz/feedback');
+                    const { data: reviews } = await response.json();
+                    
+                    const shuffledReviews = reviews
+                        .sort(() => Math.random() - 0.5)
+                        .slice(0, 5);
+                    
+                    shuffledReviews.forEach((review, index) => {
+                        const card = document.createElement('div');
+                        card.className = 'glass-card p-8 opacity-0';
+                        card.style.animation = `fadeInSlide 0.5s ease-out ${index * 0.2}s forwards`;
+                        
+                        const stars = `<img src="https://duckybot.xyz/images/star.png" class="w-4 h-4 inline-block mx-[2.5px]">`.repeat(review.rating) + 
+                                    `<img src="https://duckybot.xyz/images/star.png" class="w-4 h-4 inline-block opacity-30 mx-[2.5px]">`.repeat(5 - review.rating);
+                        
+                        card.innerHTML = `
+                            <div class="flex items-center gap-4 mb-6">
+                                <img src="${review.submitter.avatar}" alt="${review.submitter.username}" 
+                                     class="w-16 h-16 rounded-full">
+                                <div>
+                                    <h4 class="font-semibold text-lg">${review.submitter.username}</h4>
+                                    <div class="text-[#F5FF82] text-lg">${stars}</div>
+                                </div>
+                            </div>
+                            <p class="text-gray-400 text-base">${review.feedback}</p>
+                        `;
+                        
+                        container.appendChild(card);
+                    });
+                } catch (error) {
+                    console.error('Failed to fetch feedback:', error);
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', loadFeedback);
+        </script>        
         <main class="max-w-7xl mx-auto px-4 py-24">
             <section class="flex flex-col gap-20 py-32" data-aos="fade-up">
                 <h2 class="text-4xl font-bold text-center mb-8">Trusted by Communities Worldwide</h2>
@@ -188,7 +263,9 @@
                     </div>
                 </div>
             </section>
-        </main>            <script>
+        </main>            
+        
+        <script>
             const animateStats = async () => {
                 const stats = {guilds: 1000, users: 125000, links: 1000};
                 try {
