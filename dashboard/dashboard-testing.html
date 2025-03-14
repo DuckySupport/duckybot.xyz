@@ -171,29 +171,32 @@
                 const sortedServers = servers.sort((a, b) => {
                     if (a.ducky && !b.ducky) return -1;
                     if (!a.ducky && b.ducky) return 1;
-                    return b.members - a.members;
+                    return 0;
                 });
 
                 serverGrid.innerHTML = '';
-                sortedServers
-                    .filter(server => server.manager)
-                    .forEach(server => {
-                        const serverCard = document.createElement('div');
-                        serverCard.className = 'server glass-card';
-                        serverCard.innerHTML = `
-                            <img src="${server.icon}" alt="${server.name}" class="${!server.ducky ? 'no-ducky' : ''}">
-                            <p class="text-center font-medium">${server.name}</p>
-                            ${!server.ducky ? '<span class="text-sm text-gray-400">Click to add Ducky</span>' : ''}
-                        `;
-                        
-                        serverCard.addEventListener('click', () => {
-                            window.location.href = server.ducky 
-                                ? `/dashboard#${server.id}`
-                                : `https://discord.com/oauth2/authorize?client_id=1257389588910182411&permissions=8&scope=bot&redirect_uri=https://duckybot.xyz/dashboard&guild_id=${server.id}`;
-                        });
-                        
-                        serverGrid.appendChild(serverCard);
+                sortedServers.forEach(server => {
+                    const serverCard = document.createElement('div');
+                    serverCard.className = 'server glass-card';
+                    
+                    const iconUrl = server.icon 
+                        ? `https://cdn.discordapp.com/icons/${server.id}/${server.icon}.${server.icon.startsWith('a_') ? 'gif' : 'webp'}`
+                        : 'https://duckybot.xyz/images/default_server_icon.png';
+                    
+                    serverCard.innerHTML = `
+                        <img src="${iconUrl}" alt="${server.name}" class="${!server.ducky ? 'no-ducky' : ''}">
+                        <p class="text-center font-medium">${server.name}</p>
+                        ${!server.ducky ? '<span class="text-sm text-gray-400">Ducky isn\'t in this server</span>' : ''}
+                    `;
+                    
+                    serverCard.addEventListener('click', () => {
+                        window.location.href = server.ducky 
+                            ? `/dashboard/${server.id}`
+                            : `https://discord.com/oauth2/authorize?client_id=1257389588910182411&permissions=8&scope=bot&redirect_uri=https://duckybot.xyz/dashboard&guild_id=${server.id}`;
                     });
+                    
+                    serverGrid.appendChild(serverCard);
+                });
             } catch (error) {
                 console.error('Error:', error);
                 serverGrid.innerHTML = '<p class="text-center text-gray-400 col-span-full">Failed to load servers. Please try again later.</p>';
