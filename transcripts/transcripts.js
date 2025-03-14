@@ -1,7 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
     const loadingElement = document.getElementById("loading");
     const transcriptElement = document.getElementById("transcript");
-    const ticketDetailsElement = document.getElementById("ticket-details");
+    const messagesElement = document.getElementById("messages");
+    const guildIconElement = document.getElementById("guild-icon");
+    const guildNameElement = document.getElementById("guild-name");
+    const channelNameElement = document.getElementById("channel-name");
     const errorElement = document.getElementById("error");
   
     const hash = window.location.hash.substring(1); 
@@ -25,8 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return response.json();
         })
         .then((response) => {
-            loadingElement.style.display = "none";
             const data = response.data;
+            loadingElement.style.display = "none";
             renderTranscript(data);
         })
         .catch((error) => {
@@ -39,147 +42,104 @@ document.addEventListener("DOMContentLoaded", () => {
         transcriptElement.style.display = "block";
   
         const { guild, channel, messages } = data;
-  
-        const ticketInfo = `
-            <div class="ticket-header">
-                <p><strong>Guild:</strong> ${guild.name}</p>
-                <p><strong>Channel:</strong> ${channel.name} (${channel.id})</p>
-            </div>
-            <h3>Messages:</h3>
-            <div class="messages-container">
-                ${messages.map(renderMessage).join("")}
-            </div>
-        `;
-  
-        ticketDetailsElement.innerHTML = ticketInfo;
         
-        Prism.highlightAll();
+        guildIconElement.src = guild.icon;
+        guildNameElement.textContent = guild.name;
+        channelNameElement.textContent = `#${channel.name}`;
+  
+        messagesElement.innerHTML = messages.map(renderMessage).join("");
     }
   
     function formatDiscordMarkdown(text) {
-        if (!text) return '';
-        
-        // codeblock (```code```)
-        let formattedText = text.replace(/```(\w+)?\n([\s\S]*?)```/g, function(match, language, code) {
-            return `<pre><code class="language-${language || 'plaintext'}">${code.trim()}</code></pre>`;
-        });
-        
-        // code (`code`)
-        formattedText = formattedText.replace(/`([^`]+)`/g, '<code>$1</code>');
-        
-        // bold (**text**)
-        formattedText = formattedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        
-        // Process italic (*text* or _text_)
-        formattedText = formattedText.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        formattedText = formattedText.replace(/_([^_]+)_/g, '<em>$1</em>');
-        
-        // underline (__text__)
-        formattedText = formattedText.replace(/__(.*?)__/g, '<u>$1</u>');
-        
-        // strikethrough (~~text~~)
-        formattedText = formattedText.replace(/~~(.*?)~~/g, '<s>$1</s>');
-        
-        // spoilers (||text||)
-        formattedText = formattedText.replace(/\|\|(.*?)\|\|/g, '<span class="spoiler">$1</span>');
-        
-        // newlines
-        formattedText = formattedText.replace(/\n/g, '<br>');
-        
-        // emojis
-        formattedText = formattedText.replace(/<:([^:]+):(\d+)>/g, '<img src="https://cdn.discordapp.com/emojis/$2.png" alt="$1" class="emoji" />');
-        
-        // mentions
-        formattedText = formattedText.replace(/@([a-zA-Z0-9_]+)/g, '<span class="mention">@$1</span>');
-        
-        return formattedText;
+        if (!text) return "";
+        return text
+        .replace(/(\w+)?\n([\s\S]*?)/g, '<pre><code class="language-$1 break-words whitespace-pre-wrap">$2</code></pre>')
+        .replace(/`([^`]+)`/g, '<code class="break-words whitespace-pre-wrap">$1</code>')
+        .replace(/\*\*\*([^*]+)\*\*\*/g, '<strong><em>$1</em></strong>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+        .replace(/_([^_]+)_/g, '<em>$1</em>')
+        .replace(/__(.*?)__/g, '<u>$1</u>')
+        .replace(/~~(.*?)~~/, '<s>$1</s>')
+        .replace(/\|\|(.*?)\|\|/g, '<span class="spoiler">$1</span>')
+        .replace(/^# (.*?)$/gm, '<h1>$1</h1>')
+        .replace(/^## (.*?)$/gm, '<h2>$1</h2>')
+        .replace(/^### (.*?)$/gm, '<h3>$1</h3>')
+        .replace(/^-# (.*?)$/gm, '<div class="subtext">$1</div>')
+        .replace(/^(?:- |\* )(.*)/gm, '<li>$1</li>')
+        .replace(/^(?:  - |  \* )(.*)/gm, '<li class="indent">$1</li>')
+        .replace(/^(?:\d+\. )(.*)/gm, '<li class="numbered">$1</li>')
+        .replace(/>>>([\s\S]*)/g, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
+        .replace(/^> (.+)/gm, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
+        .replace(/<:([^:]+):\d+>/g, '$1')
+        .replace(/\n/g, '<br>');
     }
   
     function renderMessage(msg) {
         const { author, content, pfp, embeds = [], stickers = [], attachments = [] } = msg;
   
-        const authorTable = `
-            <div class="message-header">
-                <img src="${pfp}" alt="${author}'s avatar" class="author-pfp" />
-                <strong class="author-name">${author}</strong>
+        const messageHeader = `
+            <div class="flex items-center gap-2 mb-2">
+                <img src="${pfp}" alt="${author}'s avatar" class="w-8 h-8 rounded-full" />
+                <strong class="text-[#F5FF82]">${author}</strong>
             </div>
         `;
   
         const embedHtml = embeds.map((embed) => renderEmbed(embed)).join("");
   
-        const stickerHtml =
-            stickers && stickers.length > 0
-                ? `
-            <div class="sticker">
-                <img src="${stickers[0].url}" alt="${stickers[0].name}" title="${stickers[0].name}" style="max-width: 100px;"/>
-                <p>${stickers[0].name}</p>
-            </div>`
-                : "";
+        const stickerHtml = stickers.map(sticker => `
+            <div class="sticker mt-2">
+                <img src="${sticker.url}" alt="${sticker.name}" title="${sticker.name}" class="max-w-[100px]"/>
+                <p class="text-sm text-gray-400">${sticker.name}</p>
+            </div>
+        `).join("");
   
-        const attachmentHtml = attachments && attachments.length > 0
-            ? attachments
-                .map(
-                    (attachment) => `
-                <div class="attachment">
-                    <p><strong>File:</strong> <a href="${attachment.url}" target="_blank">${attachment.filename}</a></p>
-                    ${
-                        attachment.content_type?.startsWith("image/")
-                            ? `<img src="${attachment.proxy_url}" alt="${attachment.filename}" style="max-width: 300px;"/>`
-                            : ""
-                    }
-                </div>`
-                )
-                .join("")
-            : "";
+        const attachmentHtml = attachments.map(attachment => `
+            <div class="attachment">
+                ${
+                    attachment.content_type?.startsWith("image/")
+                        ? `<img src="${attachment.proxy_url}" alt="${attachment.filename}" />`
+                        : `<p><strong>File:</strong> <a href="${attachment.url}" target="_blank" class="text-[#F5FF82]">${attachment.filename}</a></p>`
+                }
+            </div>
+        `).join("");
   
         return `
             <div class="message">
-                ${authorTable}
-                <div class="message-content">
-                    ${content ? formatDiscordMarkdown(content) : ""}
-                    ${embedHtml}
-                    ${stickerHtml}
-                    ${attachmentHtml}
-                </div>
+                ${messageHeader}
+                ${content ? `<p class="mb-2 break-words whitespace-pre-wrap">${formatDiscordMarkdown(content)}</p>` : ""}
+                ${embedHtml}
+                ${stickerHtml}
+                ${attachmentHtml}
             </div>
         `;
     }
   
     function renderEmbed(embed) {
         const { title, description, url, fields = [], image, footer, color, author } = embed;
-        
-        // discord color --> hex
-        const colorHex = color ? `#${color.toString(16).padStart(6, '0')}` : '#2f3136';
-        
+  
         const authorHtml = author ? `
-            <div class="embed-author">
-                ${author.icon_url ? `<img src="${author.icon_url}" alt="${author.name}" class="embed-author-icon" />` : ''}
-                <span>${author.name}</span>
+            <div class="flex items-center gap-2 mb-2">
+                ${author.icon_url ? `<img src="${author.icon_url}" class="w-6 h-6 rounded-full" />` : ''}
+                <span class="font-semibold">${author.name}</span>
             </div>
         ` : '';
-
-        const fieldsHtml = fields
-            .map(
-                (field) => `
-            <div class="embed-field">
-                <strong>${formatDiscordMarkdown(field.name)}</strong>
-                <div>${formatDiscordMarkdown(field.value)}</div>
-            </div>`
-            )
-            .join("");
+  
+        const fieldsHtml = fields.map(field => `
+            <div class="embed-field mb-2">
+                <strong>${field.name}</strong>
+                <div class="break-words whitespace-pre-wrap">${formatDiscordMarkdown(field.value)}</div>
+            </div>
+        `).join("");
   
         return `
-            <div class="embed" style="border-left: 4px solid ${colorHex}">
+            <div class="embed" style="${color ? `border-color: #${color.toString(16).padStart(6, '0')}` : ''}">
                 ${authorHtml}
-                ${title ? `<h4>${url ? `<a href="${url}">${formatDiscordMarkdown(title)}</a>` : formatDiscordMarkdown(title)}</h4>` : ""}
-                ${description ? `<div class="embed-description">${formatDiscordMarkdown(description)}</div>` : ""}
+                ${title ? `<h4 class="font-bold mb-2">${title}</h4>` : ""}
+                ${description ? `<div class="mb-2 break-words whitespace-pre-wrap">${formatDiscordMarkdown(description)}</div>` : ""}
                 ${fieldsHtml}
-                ${
-                    image
-                        ? `<div class="embed-image"><img src="${image.url}" alt="Embed Image" style="max-width: 100%; max-height: 300px;"/></div>`
-                        : ""
-                }
-                ${footer ? `<p class="embed-footer">${formatDiscordMarkdown(footer.text)}</p>` : ""}
+                ${image ? `<div class="embed-image mt-2"><img src="${image.url}" alt="Embed Image" /></div>` : ""}
+                ${footer ? `<p class="text-sm text-gray-400 mt-2 break-words whitespace-pre-wrap">${formatDiscordMarkdown(footer.text)}</p>` : ""}
             </div>
         `;
     }

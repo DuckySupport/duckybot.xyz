@@ -3,322 +3,86 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ducky - Transcripts</title>
+  <title>Ticket Transcripts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #0f0f0f;
-      -webkit-tap-highlight-color: transparent;
-      color: #ffffff;
-      margin: 0;
-      line-height: 1.375rem;
-      font-size: 16px;
-    }
-
-    .glass-card {
-      background: rgba(245, 255, 130, 0.03);
-      border: 1px solid rgba(245, 255, 130, 0.1);
-      backdrop-filter: blur(20px);
-      border-radius: 16px;
-      transition: all 0.3s ease;
-      box-sizing: border-box;
-      transform: translateY(0);
-      padding: 2rem;
-    }
-
-    .glass-card:hover {
-      border: 1px solid rgba(245, 255, 130, 0.8);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(245, 255, 130, 0.1);
-    }
-
-    main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-
-    #loading {
-      text-align: center;
-      padding: 3rem;
-      font-size: 1.2rem;
-      color: #F5FF82;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      animation: pulse 2s infinite;
-    }
-
-    #error {
-      text-align: center;
-      background: rgba(237,66,69,0.1);
-      border: 1px solid rgba(237,66,69,0.2);
-      backdrop-filter: blur(20px);
-      padding: 1.5rem;
-      border-radius: 16px;
-      margin: 1.5rem 0;
-      animation: slideIn 0.3s ease;
-      transform-origin: top;
-    }
-
-    #transcript {
-      animation: fadeScale 0.5s ease-out forwards;
-    }
-
-    .ticket-header {
-      margin-bottom: 2rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid rgba(245, 255, 130, 0.1);
-    }
-
-    .messages-container {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .message {
-      background: rgba(30, 30, 30, 0.3);
-      border-radius: 8px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      transition: background-color 0.2s ease;
-    }
-
-    .message:hover {
-      background: rgba(40, 40, 40, 0.5);
-    }
-
-    .message-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 0.5rem;
-    }
-
-    .author-pfp {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 2px solid rgba(245, 255, 130, 0.2);
-      margin-right: 0.75rem;
-      transition: border-color 0.3s ease;
-    }
-
-    .author-name {
-      font-weight: 600;
-      color: #F5FF82;
-    }
-
-    .message-content {
-      margin-left: 3.5rem;
-      word-wrap: break-word;
-    }
-
-    .embed {
-      margin: 0.75rem 0;
-      padding: 0.75rem 1rem;
-      border-radius: 4px;
-      background-color: rgba(47, 49, 54, 0.3);
-    }
-
-    .embed-description {
-      margin: 0.5rem 0;
-      white-space: pre-wrap;
-    }
-
-    .embed-author {
-      display: flex;
-      align-items: center;
-      margin-bottom: 0.5rem;
-    }
-
-    .embed-author-icon {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      margin-right: 0.5rem;
-    }
-
-    .embed-field {
-      margin: 0.8rem 0;
-      padding: 0.5rem;
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 4px;
-    }
-
-    .embed-footer {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 0.85rem;
-      margin-top: 1rem;
-      padding-top: 0.5rem;
-      border-top: 1px solid rgba(245, 255, 130, 0.1);
-    }
-
-    .spoiler {
-      background-color: #202225;
-      color: transparent;
-      border-radius: 3px;
-      padding: 0 2px;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .spoiler:hover, .spoiler.revealed {
-      background-color: rgba(32, 34, 37, 0.5);
-      color: #ffffff;
-    }
-
-    code {
-      background: rgba(42, 42, 42, 0.8);
-      padding: 0.3em 0.6em;
-      border-radius: 8px;
-      font-family: 'Inter', monospace;
-      font-size: 0.875rem;
-      color: #F5FF82;
-      transition: background-color 0.3s ease;
-    }
-
-    pre {
-      margin: 0.5rem 0;
-      border-radius: 4px;
-      background-color: #2f3136 !important;
-      max-height: 400px;
-      overflow-y: auto;
-    }
-
-    pre code {
-      background: transparent;
-      padding: 0;
-      color: #e6e6e6;
-    }
-
-    a {
-      color: #F5FF82;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    a:hover {
-      opacity: 0.8;
-      text-shadow: 0 0 8px rgba(245, 255, 130, 0.3);
-    }
-
-    a::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 1px;
-      bottom: -2px;
-      left: 0;
-      background-color: #F5FF82;
-      transform: scaleX(0);
-      transition: transform 0.3s ease;
-    }
-
-    a:hover::after {
-      transform: scaleX(1);
-    }
-
-    .mention {
-      background-color: rgba(88, 101, 242, 0.3);
-      color: #dee0fc;
-      padding: 0 2px;
-      border-radius: 3px;
-      font-weight: 500;
-    }
-
-    .emoji {
-      width: 1.375em;
-      height: 1.375em;
-      vertical-align: middle;
-    }
-
-    .attachment {
-      margin: 0.5rem 0;
-      padding: 0.5rem;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 4px;
-      max-width: 520px;
-    }
-
-    @keyframes fadeScale {
-      from {
-        opacity: 0;
-        transform: scale(0.95);
+      body {
+          font-family: 'Inter', sans-serif;
+          background-color: #0f0f0f;
+          -webkit-tap-highlight-color: transparent;
       }
-      to {
-        opacity: 1;
-        transform: scale(1);
+      .glass-card {
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(20px);
+          border-radius: 16px;
       }
-    }
-
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
+      .message {
+          padding: 1rem;
+          transition: background-color 0.2s;
       }
-      to {
-        opacity: 1;
-        transform: translateY(0);
+      .message:hover {
+          background: rgba(255, 255, 255, 0.02);
       }
-    }
-
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.5; }
-      100% { opacity: 1; }
-    }
-
-    @media (max-width: 768px) {
-      main {
-        padding: 1rem;
+      .embed {
+          background: rgba(255, 255, 255, 0.02);
+          border-left: 4px solid #F5FF82;
+          border-radius: 4px;
+          padding: 1rem;
+          margin: 0.5rem 0;
       }
-      
-      #transcript {
-        padding: 1rem;
+      .attachment img {
+          max-width: 400px;
+          border-radius: 8px;
+          margin-top: 0.5rem;
       }
-      
-      .message-content {
-        margin-left: 0;
-        margin-top: 0.5rem;
+      code {
+          background: rgba(0, 0, 0, 0.2);
+          padding: 0.2em 0.4em;
+          border-radius: 3px;
+          font-family: monospace;
+          white-space: pre-wrap;
       }
-    }
+      pre code {
+          display: block;
+          padding: 1em;
+          overflow-x: auto;
+          margin: 0.5em 0;
+      }
+      .raw-data {
+          font-size: 0.9em;
+          max-height: 300px;
+          overflow-y: auto;
+      }
   </style>
 </head>
-<body>
-  <main>
-    <div id="loading" class="glass-card">
-      <svg class="animate-spin" width="28" height="28" viewBox="0 0 24 24">
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-      </svg>
-      <span>Loading your transcript...</span>
-    </div>
-    <div id="transcript" class="glass-card" style="display: none;">
-      <h2>Ticket Transcript</h2>
-      <div id="ticket-details"></div>
-    </div>
-    <div id="error" class="glass-card" style="display: none;">
-      <p>Failed to load transcript. Please check the URL or try again later.</p>
-    </div>
+<body class="text-white min-h-screen">
+  <main class="max-w-4xl mx-auto px-4 py-8">
+      <div id="loading" class="flex items-center justify-center gap-3 py-8">
+          <div class="animate-spin rounded-full h-8 w-8 border-4 border-[#F5FF82] border-t-transparent"></div>
+          <span class="text-[#F5FF82]">Loading transcript...</span>
+      </div>
+
+      <div id="transcript" class="glass-card p-6 hidden">
+          <div id="ticket-header" class="mb-6">
+              <div class="flex items-center gap-4 mb-4">
+                  <img id="guild-icon" class="w-16 h-16 rounded-full" src="" alt="Server Icon">
+                  <div>
+                      <h1 id="guild-name" class="text-2xl font-bold"></h1>
+                      <p id="channel-name" class="text-gray-400"></p>
+                  </div>
+              </div>
+              <div class="h-0.5 bg-white/10"></div>
+          </div>
+          <div id="messages" class="space-y-4"></div>
+      </div>
+
+      <div id="error" class="glass-card p-6 text-center hidden">
+          <p class="text-red-400">Failed to load transcript. Please check the URL or try again later.</p>
+      </div>
   </main>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-json.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/3.0.7/marked.min.js"></script>
-  <script src="./transcripts.js"></script>
-  <script>
-    document.addEventListener('click', function(e) {
-      if (e.target.classList.contains('spoiler')) {
-        e.target.classList.toggle('revealed');
-      }
-    });
-  </script>
+
+  <script src="transcripts.js"></script>
 </body>
 </html>
