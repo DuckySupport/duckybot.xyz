@@ -35,13 +35,20 @@
         }
         .toast {
             position: fixed;
-            bottom: 20px;
+            bottom: -100px;
             right: 20px;
-            transform: translateY(100px);
-            transition: transform 0.3s ease;
+            transition: bottom 0.3s ease;
             z-index: 1000;
         }
-        .toast.show { transform: translateY(0); }
+        .toast.success {
+            background: rgba(134, 239, 172, 0.03);
+            border-color: rgba(134, 239, 172, 0.2);
+        }
+        .toast.error {
+            background: rgba(252, 165, 165, 0.03);
+            border-color: rgba(252, 165, 165, 0.2);
+        }
+        .toast.show { bottom: 20px; }
         .loading-spinner {
             border: 3px solid rgba(245, 255, 130, 0.1);
             border-top: 3px solid #F5FF82;
@@ -105,7 +112,7 @@
     <div id="confirm-dialog" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center">
         <div class="glass-card p-6 max-w-sm mx-4">
             <h2 class="text-xl font-bold mb-4">Unlink Account</h2>
-            <p class="text-gray-300 mb-6">Are you sure you want to unlink your Roblox account? This action cannot be undone.</p>
+            <p class="text-gray-300 mb-6">Are you sure you want to unlink your Roblox account?</p>
             <div class="flex gap-4 justify-end">
                 <button onclick="closeConfirmDialog()" class="px-4 py-2 bg-[#F5FF82]/10 text-[#F5FF82] rounded-lg hover:bg-[#F5FF82]/20 transition">Cancel</button>
                 <button onclick="confirmUnlink()" class="px-4 py-2 bg-red-500/10 text-red-400 rounded-lg hover:bg-red-500/20 transition">Unlink</button>
@@ -113,14 +120,16 @@
         </div>
     </div>
 
-    <div id="toast" class="toast glass-card p-4 hidden"></div>
+    <div id="toast" class="toast glass-card p-4"></div>
 
     <script>
         const showToast = (msg, type = '') => {
             const toast = document.getElementById('toast');
             toast.textContent = msg;
-            toast.className = `toast glass-card p-4 ${type} show`;
-            setTimeout(() => toast.className = 'toast glass-card p-4 hidden', 3000);
+            toast.className = `toast glass-card p-4 ${type === 'error' ? 'error' : 'success'} show`;
+            setTimeout(() => {
+                toast.className = 'toast glass-card p-4';
+            }, 3000);
         };
 
         const showConfirmDialog = () => {
@@ -137,13 +146,15 @@
                 const response = await fetch('https://api.duckybot.xyz/unlink', {
                     method: 'POST',
                     headers: { 
-                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
-                    }
+                    },
+                    body: JSON.stringify({
+                        discord_code: token
+                    })
                 });
                 
                 if (response.ok) {
-                    showToast('Account unlinked successfully');
+                    showToast('Account unlinked successfully', 'success');
                     setTimeout(() => window.location.href = '/', 1500);
                 } else {
                     throw new Error('Failed to unlink account');
