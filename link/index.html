@@ -83,17 +83,27 @@
                 const deniedInfo = document.createElement('div');
                 deniedInfo.className = 'glass-card p-6 text-center mt-4';
                 deniedInfo.innerHTML = `
-                    <p class="text-gray-400">Access denied because you came from: <span class="text-white">${referrer || 'Unknown source'}</span></p>
-                    <p class="text-gray-400 mt-2">Allowed domains:</p>
-                    <ul class="text-gray-400 mt-1 list-disc list-inside">
-                        <li>duckybot.xyz</li>
-                        <li>discord.com</li>
-                        <li>roblox.com</li>
-                    </ul>
+                    <p class="text-gray-400">Access denied because you came from: <span class="text-white">${referrer || 'Unknown source'}</span> - which is not operated by Ducky</p>
+                    <p class="text-gray-400">Redirecting to Ducky Bot in <span id="countdown">5</span> seconds...</p>
                 `;
                 card.parentNode.appendChild(deniedInfo);
+
+                let timeLeft = 5;
+                const countdownElement = deniedInfo.querySelector('#countdown');
+                
+                const timer = setInterval(() => {
+                    timeLeft--;
+                    countdownElement.textContent = timeLeft;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        window.location.href = 'https://duckybot.xyz';
+                    }
+                }, 1000);
+                
                 return;
-            }            function updateGlowColor(isLoggedIn) {
+            }            
+            function updateGlowColor(isLoggedIn) {
                 const glowHtml = isLoggedIn ? 
                     `<div class="glow bg-green-200 top-0 left-0"></div>
                      <div class="glow bg-green-200 bottom-0 right-0"></div>` :
