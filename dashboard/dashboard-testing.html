@@ -208,14 +208,14 @@
 
         function displayServers(servers, start, end) {
             const fragment = document.createDocumentFragment();
-            const serversToShow = servers.slice(start, end);
+            const serversToShow = servers.filter(server => server.manage_server).slice(start, end);
             
             serversToShow.forEach(server => {
                 const serverCard = document.createElement('div');
                 serverCard.className = `server glass-card ${!server.ducky ? 'glass-card-dark' : ''}`;
                 
                 const img = new Image();
-                img.src = server.icon;
+                img.src = server.icon || 'https://duckybot.xyz/images/Ducky.svg';
                 img.alt = server.name;
                 img.className = !server.ducky ? 'no-ducky' : '';
                 img.loading = 'lazy';
@@ -244,7 +244,7 @@
             });
 
             serverGrid.appendChild(fragment);
-            viewMoreBtn.style.display = end < servers.length ? 'block' : 'none';
+            viewMoreBtn.style.display = end < servers.filter(server => server.manage_server).length ? 'block' : 'none';
         }
 
         const loadServers = async () => {
@@ -273,7 +273,7 @@
                 document.getElementById('profilePicture').src = avatarUrl;
                 document.getElementById('profilePictureNav').src = avatarUrl;
                 
-                allServers = servers.sort((a, b) => {
+                allServers = servers.filter(server => server.manage_server).sort((a, b) => {
                     if (a.ducky && !b.ducky) return -1;
                     if (!a.ducky && b.ducky) return 1;
                     return 0;
