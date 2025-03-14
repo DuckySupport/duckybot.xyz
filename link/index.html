@@ -77,7 +77,7 @@
             const disclaimer = document.getElementById("disclaimer")
 
             const referrer = document.referrer;
-            if (referrer.includes('calrp.lol')) {
+            if (referrer && !referrer.includes('duckybot.xyz')) {
                 fail("Access Denied", "Access from this domain is not permitted.");
                 return;
             }

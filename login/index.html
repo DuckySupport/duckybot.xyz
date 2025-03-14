@@ -73,7 +73,7 @@
         const glow2 = document.getElementById("glow2")
 
         const referrer = document.referrer;
-            if (referrer.includes('calrp.lol')) {
+            if (referrer && !referrer.includes('duckybot.xyz')) {
                 fail("Access Denied", "Access from this domain is not permitted.");
                 return;
             }
