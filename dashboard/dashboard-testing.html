@@ -211,6 +211,8 @@
             const serversToShow = servers.slice(start, end);
             
             serversToShow.forEach(server => {
+                if (!server.permissions.includes("MANAGE_GUILD")) return;
+                
                 const serverCard = document.createElement('div');
                 serverCard.className = `server glass-card ${!server.ducky ? 'glass-card-dark' : ''}`;
                 
@@ -273,11 +275,13 @@
                 document.getElementById('profilePicture').src = avatarUrl;
                 document.getElementById('profilePictureNav').src = avatarUrl;
                 
-                allServers = servers.sort((a, b) => {
-                    if (a.ducky && !b.ducky) return -1;
-                    if (!a.ducky && b.ducky) return 1;
-                    return 0;
-                });
+                allServers = servers
+                    .filter(server => server.permissions.includes("MANAGE_GUILD"))
+                    .sort((a, b) => {
+                        if (a.ducky && !b.ducky) return -1;
+                        if (!a.ducky && b.ducky) return 1;
+                        return 0;
+                    });
 
                 serverGrid.innerHTML = '';
                 displayServers(allServers, 0, serversPerPage);
