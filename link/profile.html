@@ -2,9 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ducky Profile</title>
-    <meta name="description" content="View your Ducky profile and linked servers.">
+    <meta name="description" content="Power your server with Ducky, a multi-purpose bot focused on moderating your Discord and ER:LC server.">
+    <meta content="Ducky Roblox Link" property="og:title">
+    <meta content="Link your Roblox account with Ducky, and unlock even more amazing features of Ducky." property="og:description">
+    <meta content="https://duckybot.xyz/link" property="og:url">
+    <meta content="https://duckybot.xyz/images/Ducky.svg" property="og:image">
+    <meta content="#F5FF82" name="theme-color">
     <link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -162,37 +167,29 @@
             }
 
             try {
-                const [discordResponse, profileResponse] = await Promise.all([
-                    fetch('https://discord.com/api/users/@me', {
-                        headers: { authorization: `Bearer ${token}` }
-                    }),
-                    fetch(`https://api.duckybot.xyz/link/${user.id}`)
-                ]);
+                const discordResponse = await fetch('https://discord.com/api/users/@me', {
+                    headers: { authorization: `Bearer ${token}` }
+                });
 
-                if (!discordResponse.ok || !profileResponse.ok) throw new Error();
+                if (!discordResponse.ok) throw new Error();
                 
-                const user = await discordResponse.json();
+                const discordUser = await discordResponse.json();
+                
+                const profileResponse = await fetch(`https://api.duckybot.xyz/link/${discordUser.id}`);
+                if (!profileResponse.ok) throw new Error();
+                
                 const profile = await profileResponse.json();
                 
                 if (profile.code === 200) {
-                    const {discordUser, robloxUser, servers} = profile.data;
+                    const {discordUser, robloxUser} = profile.data;
                     
                     document.getElementById('discord-avatar').src = discordUser.avatar;
                     document.getElementById('roblox-avatar').src = robloxUser.avatar;
                     document.getElementById('username').textContent = `${discordUser.name} • ${robloxUser.displayName}`;
                     document.getElementById('roblox-info').innerHTML = `<a href="${robloxUser.profile}" class="text-[#F5FF82] hover:underline">@${robloxUser.name}</a>`;
                     
-                    if (servers?.length) {
-                        document.getElementById('server-list').innerHTML = servers.map(s => 
-                            `<div class="glass-card p-4">
-                                <div class="font-semibold">${s.name}</div>
-                                <div class="text-sm text-gray-400">Role: ${s.role}</div>
-                            </div>`
-                        ).join('');
-                    } else {
-                        document.getElementById('server-list').innerHTML = 
-                            '<div class="text-gray-400 text-center py-4">No servers linked yet</div>';
-                    }
+                    document.getElementById('server-list').innerHTML = 
+                        '<div class="text-gray-400 text-center py-4">No servers linked yet</div>';
                     
                     document.getElementById('loading-state').classList.add('hidden');
                     document.getElementById('profile-content').classList.remove('hidden');
