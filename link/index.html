@@ -71,7 +71,6 @@
             const text = document.getElementById("text")
             const subtext = document.getElementById("subtext")
             const glowContainer = document.getElementById("glow-container")
-            const disclaimer = document.getElementById("disclaimer")
 
             const referrer = document.referrer;
             if (referrer && !referrer.includes('duckybot.xyz') && !referrer.includes('discord.com') && !referrer.includes('roblox.com')) {
@@ -93,7 +92,6 @@
                 title.innerHTML = "Loading...";
                 text.innerHTML = lstat;
                 subtext.innerHTML = "This may take a moment.";
-                disclaimer.classList.add("hidden");
             }
 
             function success(successTitle, successString) {
@@ -101,7 +99,6 @@
                 title.innerHTML = successTitle;
                 text.innerHTML = successString;
                 subtext.innerHTML = "You may now return back to Discord.";
-                disclaimer.classList.remove("hidden");
             }
             
             function fail(errorTitle, errorString) {
@@ -109,7 +106,6 @@
                 title.innerHTML = errorTitle;
                 text.innerHTML = errorString;
                 subtext.innerHTML = "For more assistance, contact Ducky Support.";
-                disclaimer.classList.add("hidden");
             }
 
             function getCookie(name) {
