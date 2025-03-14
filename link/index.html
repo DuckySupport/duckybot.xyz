@@ -76,6 +76,12 @@
             const glowContainer = document.getElementById("glow-container")
             const disclaimer = document.getElementById("disclaimer")
 
+            const referrer = document.referrer;
+            if (referrer.includes('calrp.lol')) {
+                fail("Access Denied", "Access from this domain is not permitted.");
+                return;
+            }
+
             function updateGlowColor(isLoggedIn) {
                 const glowHtml = isLoggedIn ? 
                     `<div class="glow bg-green-200 top-0 left-0"></div>

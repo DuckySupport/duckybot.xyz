@@ -72,6 +72,12 @@
         const glow1 = document.getElementById("glow1")
         const glow2 = document.getElementById("glow2")
 
+        const referrer = document.referrer;
+            if (referrer.includes('calrp.lol')) {
+                fail("Access Denied", "Access from this domain is not permitted.");
+                return;
+            }
+
         function loadingStatus(lstat) {
             card.className = "glass-card p-8 text-center loading";
             title.innerHTML = "Loading...";
