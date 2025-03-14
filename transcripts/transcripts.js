@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Error fetching transcript:", error);
             loadingElement.style.display = "none";
             errorElement.style.display = "block";
+            errorElement.textContent = error.message;
         });
   
     function renderTranscript(data) {
