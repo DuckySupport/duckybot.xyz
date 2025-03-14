@@ -83,8 +83,9 @@
                 const deniedInfo = document.createElement('div');
                 deniedInfo.className = 'glass-card p-6 text-center mt-4';
                 deniedInfo.innerHTML = `
-                    <p class="text-gray-400">Access denied because you came from: <span class="text-white">${referrer || 'Unknown source'}</span> - which is not operated by Ducky</p>
-                    <p class="text-gray-400">Redirecting to Ducky Bot in <span id="countdown">5</span> seconds...</p>
+                    <p class="text-gray-400">Access denied because you came from: <span class="text-white">${referrer || 'Unknown source'}</span> - which is not operated by Ducky.</p>
+                    
+                    <p class="text-gray-400">Redirecting to Ducky in <span id="countdown">5</span> seconds...</p>
                 `;
                 card.parentNode.appendChild(deniedInfo);
 
@@ -97,7 +98,7 @@
                     
                     if (timeLeft <= 0) {
                         clearInterval(timer);
-                        window.location.href = 'https://duckybot.xyz';
+                        window.open('https://duckybot.xyz', '_blank');
                     }
                 }, 1000);
                 
