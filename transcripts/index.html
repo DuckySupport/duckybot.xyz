@@ -86,25 +86,35 @@
     }
 
     .embed {
-      background: rgba(15, 15, 15, 0.6);
-      border: 1px solid rgba(245, 255, 130, 0.1);
-      backdrop-filter: blur(20px);
-      border-radius: 16px;
-      padding: 1rem;
-      margin: 1rem 0;
-      transition: all 0.3s ease;
+      margin: 0.5rem 0;
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      background-color: rgba(47, 49, 54, 0.3);
     }
 
-    .embed:hover {
-      border-color: rgba(245, 255, 130, 0.3);
-      transform: translateY(-2px);
+    .embed-description {
+      margin: 0.5rem 0;
+      white-space: pre-wrap;
+    }
+
+    .embed-author {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .embed-author-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
     }
 
     .embed-field {
-      margin: 0.8rem 0;
+      margin: 0.5rem 0;
       padding: 0.5rem;
-      background: rgba(245, 255, 130, 0.03);
-      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
     }
 
     .embed-footer {
@@ -116,15 +126,17 @@
     }
 
     .spoiler {
-      background-color: rgba(42, 42, 42, 0.8);
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
+      background-color: #202225;
+      color: transparent;
+      border-radius: 3px;
+      padding: 0 2px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      user-select: none;
     }
 
-    .spoiler:hover {
-      background-color: rgba(245, 255, 130, 0.1);
+    .spoiler:hover, .spoiler.revealed {
+      background-color: rgba(32, 34, 37, 0.5);
+      color: #ffffff;
     }
 
     code {
@@ -137,12 +149,18 @@
       transition: background-color 0.3s ease;
     }
 
+    pre {
+      margin: 0.5rem 0;
+      border-radius: 4px;
+      background-color: #2f3136 !important;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
     pre code {
-      display: block;
-      padding: 1em;
-      overflow-x: auto;
-      background: rgba(42, 42, 42, 0.8);
-      border: 1px solid rgba(245, 255, 130, 0.1);
+      background: transparent;
+      padding: 0;
+      color: #e6e6e6;
     }
 
     a {
@@ -171,6 +189,44 @@
 
     a:hover::after {
       transform: scaleX(1);
+    }
+
+    .message {
+      margin-bottom: 1.5rem;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: background-color 0.2s ease;
+    }
+
+    .message:hover {
+      background-color: rgba(245, 255, 130, 0.05);
+    }
+
+    .message-content {
+      margin-left: 3rem;
+      margin-top: 0.5rem;
+    }
+
+    .mention {
+      background-color: rgba(88, 101, 242, 0.3);
+      color: #dee0fc;
+      padding: 0 2px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+
+    .emoji {
+      width: 1.375em;
+      height: 1.375em;
+      vertical-align: middle;
+    }
+
+    .attachment {
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+      max-width: 520px;
     }
 
     @keyframes fadeScale {
@@ -232,5 +288,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/3.0.7/marked.min.js"></script>
   <script src="./transcripts.js"></script>
+  <script>
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('spoiler')) {
+        e.target.classList.toggle('revealed');
+      }
+    });
+  </script>
 </body>
 </html>
