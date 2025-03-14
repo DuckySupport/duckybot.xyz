@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,6 +46,10 @@
         }
         .server img {
             @apply w-24 h-24 rounded-full;
+        }
+        .server img.no-ducky {
+            filter: grayscale(100%);
+            opacity: 0.7;
         }
     </style>
 </head>
@@ -122,14 +125,20 @@
                 });
                 const { data: servers } = await serversResponse.json();
 
-                servers
-                    .sort((a, b) => b.members - a.members)
+                // Sort servers: Ducky servers first, then by member count
+                const sortedServers = servers.sort((a, b) => {
+                    if (a.ducky && !b.ducky) return -1;
+                    if (!a.ducky && b.ducky) return 1;
+                    return b.members - a.members;
+                });
+
+                sortedServers
                     .filter(server => server.manager)
                     .forEach(server => {
                         const serverCard = document.createElement('div');
                         serverCard.className = 'server';
                         serverCard.innerHTML = `
-                            <img src="${server.icon}" alt="${server.name}">
+                            <img src="${server.icon}" alt="${server.name}" class="${!server.ducky ? 'no-ducky' : ''}">
                             <p class="text-center font-medium">${server.name}</p>
                             ${!server.ducky ? '<span class="text-sm text-gray-400">Click to add Ducky</span>' : ''}
                         `;
