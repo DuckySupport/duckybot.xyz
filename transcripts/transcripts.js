@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then((response) => {
             loadingElement.style.display = "none";
-            // Extract the data from the response
             const data = response.data;
             renderTranscript(data);
         })
@@ -42,54 +41,55 @@ document.addEventListener("DOMContentLoaded", () => {
         const { guild, channel, messages } = data;
   
         const ticketInfo = `
-            <p><strong>Guild:</strong> ${guild.name}</p>
-            <p><strong>Channel:</strong> ${channel.name} (${channel.id})</p>
+            <div class="ticket-header">
+                <p><strong>Guild:</strong> ${guild.name}</p>
+                <p><strong>Channel:</strong> ${channel.name} (${channel.id})</p>
+            </div>
             <h3>Messages:</h3>
-            <ul>
+            <div class="messages-container">
                 ${messages.map(renderMessage).join("")}
-            </ul>
+            </div>
         `;
   
-        ticketDetailsElement.innerHTML = marked.parse(ticketInfo);
+        ticketDetailsElement.innerHTML = ticketInfo;
         
-        // Initialize Prism.js for code highlighting after content is loaded
         Prism.highlightAll();
     }
   
     function formatDiscordMarkdown(text) {
         if (!text) return '';
         
-        // Process code blocks first (```code```)
+        // codeblock (```code```)
         let formattedText = text.replace(/```(\w+)?\n([\s\S]*?)```/g, function(match, language, code) {
             return `<pre><code class="language-${language || 'plaintext'}">${code.trim()}</code></pre>`;
         });
         
-        // Process inline code (`code`)
+        // code (`code`)
         formattedText = formattedText.replace(/`([^`]+)`/g, '<code>$1</code>');
         
-        // Process bold (**text**)
+        // bold (**text**)
         formattedText = formattedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         
         // Process italic (*text* or _text_)
         formattedText = formattedText.replace(/\*(.*?)\*/g, '<em>$1</em>');
         formattedText = formattedText.replace(/_([^_]+)_/g, '<em>$1</em>');
         
-        // Process underline (__text__)
+        // underline (__text__)
         formattedText = formattedText.replace(/__(.*?)__/g, '<u>$1</u>');
         
-        // Process strikethrough (~~text~~)
+        // strikethrough (~~text~~)
         formattedText = formattedText.replace(/~~(.*?)~~/g, '<s>$1</s>');
         
-        // Process spoilers (||text||)
+        // spoilers (||text||)
         formattedText = formattedText.replace(/\|\|(.*?)\|\|/g, '<span class="spoiler">$1</span>');
         
-        // Process newlines
+        // newlines
         formattedText = formattedText.replace(/\n/g, '<br>');
         
-        // Process custom emojis
+        // emojis
         formattedText = formattedText.replace(/<:([^:]+):(\d+)>/g, '<img src="https://cdn.discordapp.com/emojis/$2.png" alt="$1" class="emoji" />');
         
-        // Process mentions
+        // mentions
         formattedText = formattedText.replace(/@([a-zA-Z0-9_]+)/g, '<span class="mention">@$1</span>');
         
         return formattedText;
@@ -99,16 +99,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const { author, content, pfp, embeds = [], stickers = [], attachments = [] } = msg;
   
         const authorTable = `
-            <table class="author-table">
-                <tr>
-                    <td>
-                        <img src="${pfp}" alt="${author}'s avatar" class="author-pfp" />
-                    </td>
-                    <td>
-                        <strong>${author}</strong>
-                    </td>
-                </tr>
-            </table>
+            <div class="message-header">
+                <img src="${pfp}" alt="${author}'s avatar" class="author-pfp" />
+                <strong class="author-name">${author}</strong>
+            </div>
         `;
   
         const embedHtml = embeds.map((embed) => renderEmbed(embed)).join("");
@@ -139,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
             : "";
   
         return `
-            <li class="message">
+            <div class="message">
                 ${authorTable}
                 <div class="message-content">
                     ${content ? formatDiscordMarkdown(content) : ""}
@@ -147,14 +141,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     ${stickerHtml}
                     ${attachmentHtml}
                 </div>
-            </li>
+            </div>
         `;
     }
   
     function renderEmbed(embed) {
         const { title, description, url, fields = [], image, footer, color, author } = embed;
         
-        // Convert Discord color integer to hex
+        // discord color --> hex
         const colorHex = color ? `#${color.toString(16).padStart(6, '0')}` : '#2f3136';
         
         const authorHtml = author ? `
