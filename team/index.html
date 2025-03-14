@@ -25,11 +25,11 @@
             border: 1px solid rgba(245, 255, 130, 0.1);
             backdrop-filter: blur(20px);
             border-radius: 16px;
-            transition: all 0.3s ease;
+            transition: border 0.3s ease;
+            box-sizing: border-box;
         }
         .glass-card:hover {
-            background: rgba(245, 255, 130, 0.06);
-            transform: translateY(-5px);
+            border: 1px solid rgba(245, 255, 130, 0.8);
         }
         .animate-fade {
             animation: fadeIn 0.5s ease-out forwards;
