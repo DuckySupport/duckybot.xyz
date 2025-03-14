@@ -11,28 +11,39 @@
     <meta content="https://duckybot.xyz/Ducky.svg" property="og:image">
     <meta content="#F5FF82" name="theme-color">
     <link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com" defer></script>
     <style>
+        :root {
+            --primary-color: #F5FF82;
+            --bg-color: #0f0f0f;
+        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0f0f0f;
+            background-color: var(--bg-color);
             -webkit-tap-highlight-color: transparent;
+            overscroll-behavior: none;
         }
         .glass-card {
             background: rgba(245, 255, 130, 0.03);
             border: 1px solid rgba(245, 255, 130, 0.1);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 12px;
-            transition: all 0.2s ease;
+            transition: transform 0.2s ease;
+            will-change: transform;
         }
         .glass-card-dark {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .glass-card:hover {
-            transform: translateY(-1px);
+        @media (hover: hover) {
+            .glass-card:hover {
+                transform: translateY(-1px);
+            }
         }
         .loading-overlay {
             position: fixed;
@@ -43,23 +54,32 @@
             justify-content: center;
             z-index: 50;
             backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
         .spinner {
             width: 2.5rem;
             height: 2.5rem;
             border: 3px solid rgba(245, 255, 130, 0.2);
-            border-top-color: #F5FF82;
+            border-top-color: var(--primary-color);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
+            will-change: transform;
         }
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
         .server-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 1rem;
             padding: 1rem;
+        }
+        @media (max-width: 640px) {
+            .server-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 0.75rem;
+                padding: 0.75rem;
+            }
         }
         .server {
             display: flex;
@@ -74,10 +94,37 @@
             height: 4rem;
             border-radius: 50%;
             object-fit: cover;
+            will-change: transform;
         }
         .server img.no-ducky {
             filter: grayscale(100%);
             opacity: 0.5;
+        }
+        .mobile-menu {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .mobile-menu {
+                display: block;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(15, 15, 15, 0.95);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 1rem;
+                z-index: 40;
+            }
+            .mobile-menu-items {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+            }
+            main {
+                padding-bottom: 5rem;
+            }
         }
     </style>
 </head>
@@ -93,7 +140,7 @@
         <div class="max-w-7xl mx-auto px-4 py-3">
             <div class="flex items-center justify-between">
                 <a href="/" class="flex items-center gap-3">
-                    <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-7 h-7">
+                    <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-7 h-7" loading="lazy">
                     <span class="text-xl font-bold text-[#F5FF82]">Ducky</span>
                 </a>
                 <div class="hidden md:flex items-center gap-6">
@@ -102,14 +149,14 @@
                     <a href="/support" class="text-gray-300 hover:text-[#F5FF82] transition">Support</a>
                     <a href="/invite" class="text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
                 </div>
-                <img id="profilePictureNav" alt="Profile" class="w-8 h-8 rounded-full cursor-pointer">
+                <img id="profilePictureNav" alt="Profile" class="w-8 h-8 rounded-full cursor-pointer" loading="lazy">
             </div>
         </div>
     </nav>
 
     <main class="max-w-7xl mx-auto px-4 py-8">
         <div class="glass-card p-6 mb-8 flex items-center gap-4">
-            <img id="profilePicture" alt="Profile Image" class="w-16 h-16 rounded-full">
+            <img id="profilePicture" alt="Profile Image" class="w-16 h-16 rounded-full" loading="lazy">
             <div>
                 <h2 class="text-xl font-bold">Welcome, <span id="username" class="text-[#F5FF82]"></span></h2>
                 <p class="text-gray-400 mt-1">Manage your Discord servers with Ducky</p>
@@ -117,7 +164,7 @@
         </div>
 
         <div class="glass-card p-6">
-            <div class="flex justify-between items-center mb-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
                 <h2 class="text-lg font-bold">Your Servers</h2>
                 <span class="text-sm text-gray-400">Only servers with "Manage Server" permission are shown</span>
             </div>
@@ -130,25 +177,62 @@
         </div>
     </main>
 
+    <div class="mobile-menu md:hidden">
+        <div class="mobile-menu-items">
+            <a href="/" class="text-gray-300 hover:text-[#F5FF82] transition">Home</a>
+            <a href="/status" class="text-gray-300 hover:text-[#F5FF82] transition">Status</a>
+            <a href="/support" class="text-gray-300 hover:text-[#F5FF82] transition">Support</a>
+            <a href="/invite" class="text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
+        </div>
+    </div>
+
     <script>
         const loadingOverlay = document.getElementById('loadingOverlay');
         const serverGrid = document.getElementById('serverGrid');
         const viewMoreBtn = document.getElementById('viewMoreBtn');
         let allServers = [];
-        const serversPerPage = 10;
+        const serversPerPage = window.innerWidth <= 640 ? 8 : 12;
         let currentlyShown = serversPerPage;
 
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
         function displayServers(servers, start, end) {
+            const fragment = document.createDocumentFragment();
             const serversToShow = servers.slice(start, end);
+            
             serversToShow.forEach(server => {
                 const serverCard = document.createElement('div');
                 serverCard.className = `server glass-card ${!server.ducky ? 'glass-card-dark' : ''}`;
                 
-                serverCard.innerHTML = `
-                    <img src="${server.icon}" alt="${server.name}" class="${!server.ducky ? 'no-ducky' : ''}">
-                    <p class="text-center font-medium text-sm">${server.name}</p>
-                    ${!server.ducky ? '<span class="text-xs text-gray-400">Add Ducky</span>' : ''}
-                `;
+                const img = new Image();
+                img.src = server.icon;
+                img.alt = server.name;
+                img.className = !server.ducky ? 'no-ducky' : '';
+                img.loading = 'lazy';
+
+                const name = document.createElement('p');
+                name.className = 'text-center font-medium text-sm';
+                name.textContent = server.name;
+
+                serverCard.appendChild(img);
+                serverCard.appendChild(name);
+
+                if (!server.ducky) {
+                    const span = document.createElement('span');
+                    span.className = 'text-xs text-gray-400';
+                    span.textContent = 'Add Ducky';
+                    serverCard.appendChild(span);
+                }
                 
                 serverCard.addEventListener('click', () => {
                     window.location.href = server.ducky 
@@ -156,17 +240,14 @@
                         : `https://discord.com/oauth2/authorize?client_id=1257389588910182411&permissions=8&scope=bot&redirect_uri=https://duckybot.xyz/dashboard&guild_id=${server.id}`;
                 });
                 
-                serverGrid.appendChild(serverCard);
+                fragment.appendChild(serverCard);
             });
 
-            if (end < servers.length) {
-                viewMoreBtn.classList.remove('hidden');
-            } else {
-                viewMoreBtn.classList.add('hidden');
-            }
+            serverGrid.appendChild(fragment);
+            viewMoreBtn.style.display = end < servers.length ? 'block' : 'none';
         }
 
-        window.onload = async () => {
+        const loadServers = async () => {
             const token = document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
             
             if (!token) {
@@ -175,21 +256,23 @@
             }
 
             try {
-                const userResponse = await fetch('https://discord.com/api/users/@me', {
-                    headers: { authorization: `Bearer ${token}` }
-                });
+                const [userResponse, serversResponse] = await Promise.all([
+                    fetch('https://discord.com/api/users/@me', {
+                        headers: { authorization: `Bearer ${token}` }
+                    }),
+                    fetch("https://api.duckybot.xyz/servers/", {
+                        headers: { "Discord-Code": token }
+                    })
+                ]);
+
                 const userData = await userResponse.json();
+                const { data: servers } = await serversResponse.json();
                 
                 document.getElementById('username').textContent = userData.global_name || userData.username;
                 const avatarUrl = `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png`;
                 document.getElementById('profilePicture').src = avatarUrl;
                 document.getElementById('profilePictureNav').src = avatarUrl;
                 
-                const serversResponse = await fetch("https://api.duckybot.xyz/servers/", {
-                    headers: { "Discord-Code": token }
-                });
-                const { data: servers } = await serversResponse.json();
-
                 allServers = servers.sort((a, b) => {
                     if (a.ducky && !b.ducky) return -1;
                     if (!a.ducky && b.ducky) return 1;
@@ -199,11 +282,6 @@
                 serverGrid.innerHTML = '';
                 displayServers(allServers, 0, serversPerPage);
 
-                viewMoreBtn.addEventListener('click', () => {
-                    displayServers(allServers, currentlyShown, currentlyShown + serversPerPage);
-                    currentlyShown += serversPerPage;
-                });
-
             } catch (error) {
                 console.error('Error:', error);
                 serverGrid.innerHTML = '<p class="text-center text-gray-400 col-span-full">Failed to load servers. Please try again later.</p>';
@@ -211,6 +289,22 @@
                 loadingOverlay.style.display = 'none';
             }
         };
+
+        window.addEventListener('load', loadServers);
+        
+        viewMoreBtn.addEventListener('click', () => {
+            displayServers(allServers, currentlyShown, currentlyShown + serversPerPage);
+            currentlyShown += serversPerPage;
+        });
+
+        window.addEventListener('resize', debounce(() => {
+            const newServersPerPage = window.innerWidth <= 640 ? 8 : 12;
+            if (newServersPerPage !== serversPerPage) {
+                currentlyShown = newServersPerPage;
+                serverGrid.innerHTML = '';
+                displayServers(allServers, 0, currentlyShown);
+            }
+        }, 250));
     </script>
 </body>
 </html>
