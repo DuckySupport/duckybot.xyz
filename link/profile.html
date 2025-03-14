@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ducky Profile</title>
+    <meta name="description" content="View your Ducky profile and linked servers.">
+    <meta content="Ducky Profile" property="og:title">
+    <meta content="View your linked Roblox account and server information for Ducky." property="og:description">
+    <meta content="https://duckybot.xyz/link-profile" property="og:url">
+    <meta content="https://duckybot.xyz/images/Ducky.svg" property="og:image">
+    <meta content="#F5FF82" name="theme-color">
+    <link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f0f0f;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        .glass-card.loading {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .glass-card.success {
+            background: rgba(134, 239, 172, 0.03);
+            border-color: rgba(134, 239, 172, 0.2);
+        }
+        .glass-card.fail {
+            background: rgba(252, 165, 165, 0.03);
+            border-color: rgba(252, 165, 165, 0.2);
+        }
+        .glow {
+            position: absolute;
+            width: 100%;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.08;
+            z-index: -1;
+        }
+        .server-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .server-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            padding: 12px;
+        }
+        .unlink-button {
+            background: rgba(252, 165, 165, 0.1);
+            border: 1px solid rgba(252, 165, 165, 0.2);
+            color: rgb(252, 165, 165);
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .unlink-button:hover {
+            background: rgba(252, 165, 165, 0.2);
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen flex items-center justify-center">
+    <div id="glow-container">
+        <div class="glow bg-blue-300 top-0 left-0"></div>
+        <div class="glow bg-blue-300 bottom-0 right-0"></div>
+    </div>
+
+    <div class="container max-w-lg mx-auto px-4">
+        <div id="card" class="glass-card p-8 text-center loading">
+            <h1 id="title" class="text-2xl font-bold mb-4">Loading Profile...</h1>
+            <div class="w-16 h-0.5 bg-white/20 mx-auto mb-4"></div>
+            <div id="profile-content">
+                <div id="user-info" class="mb-6">
+                    <div class="flex items-center justify-center gap-6 mb-4">
+                        <div class="text-right">
+                            <img id="discord-avatar" class="w-24 h-24 rounded-full" src="" alt="Discord Avatar" style="display: none;">
+                            <p class="mt-2 text-sm text-gray-400">Discord</p>
+                        </div>
+                        <div class="text-left">
+                            <img id="roblox-avatar" class="w-24 h-24 rounded-full" src="" alt="Roblox Avatar" style="display: none;">
+                            <p class="mt-2 text-sm text-gray-400">Roblox</p>
+                        </div>
+                    </div>
+                    <h2 id="username" class="text-xl font-semibold mb-2"></h2>
+                    <p id="roblox-info" class="text-gray-400 mb-4"></p>
+                    <button id="unlink-button" class="unlink-button" style="display: none;">
+                        Unlink Roblox Account
+                    </button>
+                </div>
+                <div id="servers-section" class="mt-6" style="display: none;">
+                    <h3 class="text-lg font-semibold mb-3">Linked Servers</h3>
+                    <div id="server-list" class="server-list text-left"></div>
+                </div>
+            </div>
+            <p><small id="subtext" class="text-gray-500">Loading your profile information...</small></p>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => {
+            const card = document.getElementById("card");
+            const title = document.getElementById("title");
+            const discordAvatar = document.getElementById("discord-avatar");
+            const robloxAvatar = document.getElementById("roblox-avatar");
+            const username = document.getElementById("username");
+            const robloxInfo = document.getElementById("roblox-info");
+            const unlinkButton = document.getElementById("unlink-button");
+            const serversSection = document.getElementById("servers-section");
+            const serverList = document.getElementById("server-list");
+            const subtext = document.getElementById("subtext");
+
+            function loadingStatus(lstat) {
+                card.className = "glass-card p-8 text-center loading";
+                title.innerHTML = "Loading Profile...";
+                subtext.innerHTML = lstat;
+            }
+
+            function success(userData) {
+                card.className = "glass-card p-8 text-center success";
+                title.innerHTML = "Profile Information";
+                
+                discordAvatar.src = userData.discordUser.avatar;
+                discordAvatar.style.display = "block";
+                robloxAvatar.src = userData.robloxUser.avatar;
+                robloxAvatar.style.display = "block";
+                
+                username.innerHTML = `${userData.discordUser.name} <span class="text-gray-400">•</span> ${userData.robloxUser.displayName}`;
+                robloxInfo.innerHTML = `<a href="${userData.robloxUser.profile}" target="_blank" class="text-blue-400 hover:underline">@${userData.robloxUser.name}</a>`;
+                
+                unlinkButton.style.display = "inline-block";
+                unlinkButton.onclick = () => {
+                    if(confirm("Are you sure you want to unlink your Roblox account?")) {
+                        fetch("https://api.duckybot.xyz/unlink", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ discord_code: getCookie('discord') })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data.code === 200) {
+                                window.location.href = "/link";
+                            }
+                        });
+                    }
+                };
+
+                if (userData.servers && userData.servers.length > 0) {
+                    serversSection.style.display = "block";
+                    serverList.innerHTML = userData.servers.map(server => `
+                        <div class="server-item">
+                            <div class="font-semibold">${server.name}</div>
+                            <div class="text-sm text-gray-400">Role: ${server.role}</div>
+                        </div>
+                    `).join('');
+                }
+                
+                subtext.innerHTML = "Last updated: " + new Date().toLocaleString();
+            }
+
+            function fail(errorTitle, errorString) {
+                card.className = "glass-card p-8 text-center fail";
+                title.innerHTML = errorTitle;
+                subtext.innerHTML = errorString;
+            }
+
+            function getCookie(name) {
+                let value = `; ${document.cookie}`;
+                let parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+            }
+
+            const loggedin = getCookie('discord');
+
+            if (loggedin) {
+                fetch('https://discord.com/api/users/@me', {
+                    headers: {
+                        authorization: `Bearer ${loggedin}`,
+                    },
+                })
+                .then(result => {
+                    if (!result.ok) {
+                        document.cookie = "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+                        window.location.href = "/login?redirect=link-profile";
+                        return null;
+                    }
+                    return result.json();
+                })
+                .then(response => {
+                    if (response) {
+                        fetch(`https://api.duckybot.xyz/link/${response.id}`)
+                        .then(result => result.json())
+                        .then(profileData => {
+                            if(profileData.code === 200) {
+                                success(profileData.data);
+                            } else {
+                                fail("Error", profileData.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            fail("Error", "Failed to load profile data. Please try again later.");
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    fail("Error", "An error occurred while loading your profile.");
+                });
+            } else {
+                window.location.href = "/login?redirect=link-profile";
+            }
+        }
+    </script>
+</body>
+</html>
