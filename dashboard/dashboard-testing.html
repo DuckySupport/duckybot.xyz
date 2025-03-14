@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ducky Dashboard</title>
+    <meta name="description" content="Configure Ducky for your server through the web dashboard, easy and fast.">
+    <meta content="Ducky Dashboard" property="og:title">
+    <meta content="Configure Ducky for your server through the web dashboard, easy and fast." property="og:description">
+    <meta content="https://duckybot.xyz/dashboard" property="og:url">
+    <meta content="https://duckybot.xyz/Ducky.svg" property="og:image">
+    <meta content="#F5FF82" name="theme-color">
+    <link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f0f0f;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .glass-card {
+            background: rgba(245, 255, 130, 0.03);
+            border: 1px solid rgba(245, 255, 130, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(245, 255, 130, 0.8);
+            transform: translateY(-2px);
+        }
+        #loadingOverlay {
+            @apply fixed inset-0 bg-[#0f0f0f]/90 flex items-center justify-center z-50;
+            backdrop-filter: blur(5px);
+        }
+        .spinner {
+            @apply w-12 h-12 border-4 border-[#F5FF82]/20 border-t-[#F5FF82] rounded-full animate-spin;
+        }
+        .server-grid {
+            @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6;
+        }
+        .server {
+            @apply glass-card p-6 flex flex-col items-center gap-4 cursor-pointer transition-all duration-300;
+        }
+        .server img {
+            @apply w-24 h-24 rounded-full;
+        }
+    </style>
+</head>
+<body class="text-white">
+    <div id="loadingOverlay" class="hidden">
+        <div class="spinner"></div>
+        <p class="mt-4 text-gray-400">Loading servers...</p>
+    </div>
+
+    <nav class="sticky top-0 z-50 backdrop-blur-sm border-b border-white/5 bg-[#0f0f0f]/30">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <a href="/" class="flex items-center gap-3">
+                    <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
+                    <span class="text-2xl font-bold text-[#F5FF82]">Ducky</span>
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="/" class="text-gray-300 hover:text-[#F5FF82] transition">Home</a>
+                    <a href="/status" class="text-gray-300 hover:text-[#F5FF82] transition">Status</a>
+                    <a href="/support" class="text-gray-300 hover:text-[#F5FF82] transition">Support</a>
+                    <a href="/invite" class="text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
+                </div>
+                <img id="profilePictureNav" alt="Profile" class="w-10 h-10 rounded-full cursor-pointer">
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-12">
+        <div class="glass-card p-8 mb-12 flex items-center gap-6">
+            <img id="profilePicture" alt="Profile Image" class="w-20 h-20 rounded-full">
+            <div>
+                <h2 class="text-2xl font-bold">Welcome, <span id="username" class="text-[#F5FF82]"></span></h2>
+                <p class="text-gray-400 mt-2">Manage your Discord servers with Ducky</p>
+            </div>
+        </div>
+
+        <div class="glass-card p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">Your Servers</h2>
+                <span class="text-sm text-gray-400">Only servers with "Manage Server" permission are shown</span>
+            </div>
+            <div class="server-grid" id="serverGrid"></div>
+        </div>
+    </main>
+
+    <script>
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const serverGrid = document.getElementById('serverGrid');
+
+        window.onload = async () => {
+            const token = document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
+            
+            if (!token) {
+                window.location.href = "/login?redirect=dashboard";
+                return;
+            }
+
+            try {
+                const userResponse = await fetch('https://discord.com/api/users/@me', {
+                    headers: { authorization: `Bearer ${token}` }
+                });
+                const userData = await userResponse.json();
+                
+                document.getElementById('username').textContent = userData.global_name || userData.username;
+                const avatarUrl = `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png`;
+                document.getElementById('profilePicture').src = avatarUrl;
+                document.getElementById('profilePictureNav').src = avatarUrl;
+
+                loadingOverlay.style.display = 'flex';
+                
+                const serversResponse = await fetch("https://api.duckybot.xyz/servers/", {
+                    headers: { "Discord-Code": token }
+                });
+                const { data: servers } = await serversResponse.json();
+
+                servers
+                    .sort((a, b) => b.members - a.members)
+                    .filter(server => server.manager)
+                    .forEach(server => {
+                        const serverCard = document.createElement('div');
+                        serverCard.className = 'server';
+                        serverCard.innerHTML = `
+                            <img src="${server.icon}" alt="${server.name}">
+                            <p class="text-center font-medium">${server.name}</p>
+                            ${!server.ducky ? '<span class="text-sm text-gray-400">Click to add Ducky</span>' : ''}
+                        `;
+                        
+                        serverCard.addEventListener('click', () => {
+                            window.location.href = server.ducky 
+                                ? `/dashboard#${server.id}`
+                                : `https://discord.com/oauth2/authorize?client_id=1257389588910182411&permissions=8&scope=bot&redirect_uri=https://duckybot.xyz/dashboard&guild_id=${server.id}`;
+                        });
+                        
+                        serverGrid.appendChild(serverCard);
+                    });
+            } catch (error) {
+                console.error('Error:', error);
+            } finally {
+                loadingOverlay.style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html>
