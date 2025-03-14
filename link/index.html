@@ -142,7 +142,7 @@
                     .then(result => result.json())
                     .then(response => {
                         if (response.code === 200) {
-                            success("Successfully Linked", `You've been successfully linked with <b>${response.data.robloxUser.username}</b>.`);
+                            success("Successfully Linked", `You've been successfully linked with <b>${response.data.robloxUser.name}</b>.`);
                         } else {
                             fail("API Error", response.message);
                         }
