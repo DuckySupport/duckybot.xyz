@@ -241,11 +241,11 @@
                         return;
                     }
 
-                    const sortedReviews = reviews
-                        .sort((a, b) => b.rating - a.rating)
+                    const shuffledReviews = reviews
+                        .sort(() => Math.random() - 0.5)
                         .slice(0, 6);
                     
-                    sortedReviews.forEach((review, index) => {
+                    shuffledReviews.forEach((review, index) => {
                         const card = document.createElement('div');
                         card.className = 'glass-card p-8 opacity-0';
                         card.style.animation = `fadeInSlide 0.5s ease-out ${index * 0.2}s forwards`;
@@ -316,7 +316,12 @@
             }
 
             document.addEventListener('DOMContentLoaded', loadFeedback);
-        </script>        <main class="max-w-7xl mx-auto px-4 py-24">
+        </script>        
+
+
+
+
+        <main class="max-w-7xl mx-auto px-4 py-24">
             <section class="flex flex-col gap-20 py-32" data-aos="fade-up">
                 <h2 class="text-4xl font-bold text-center mb-8">Trusted by Communities Worldwide</h2>
                 <div id="stats" class="grid grid-cols-1 md:grid-cols-3 gap-10">
