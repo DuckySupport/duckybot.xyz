@@ -78,43 +78,22 @@
 
             const referrer = document.referrer;
             if (referrer && !referrer.includes('duckybot.xyz') && !referrer.includes('discord.com') && !referrer.includes('roblox.com')) {
-                fail("Access Denied", `Access from this domain is not permitted. <i class='fas fa-question-circle ml-2 cursor-pointer text-gray-400 hover:text-white' onclick="showReferrerInfo()"></i>`);
-                return;
-            }
-
-            function showReferrerInfo() {
-                const popup = document.createElement('div');
-                popup.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 transition-opacity duration-300';
-                popup.onclick = (e) => {
-                    if (e.target === popup) {
-                        popup.style.opacity = '0';
-                        setTimeout(() => popup.remove(), 300);
-                    }
-                };
+                fail("Access Denied", "Access from this domain is not permitted.");
                 
-                popup.innerHTML = `
-                    <div class="glass-card p-8 max-w-md mx-4 relative transform scale-95 transition-transform duration-300">
-                        <button onclick="this.closest('.fixed').remove()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                            <i class="fas fa-times"></i>
-                        </button>
-                        <h3 class="text-xl font-bold mb-4">Why was access denied?</h3>
-                        <p class="text-gray-400">For security reasons, this page can only be accessed from:</p>
-                        <ul class="text-gray-400 mt-2 mb-4 list-disc list-inside">
-                            <li>duckybot.xyz</li>
-                            <li>discord.com</li>
-                            <li>roblox.com</li>
-                        </ul>
-                        <p class="text-gray-400">You came from: <span class="text-white">${referrer || 'Unknown source'}</span></p>
-                    </div>
+                const deniedInfo = document.createElement('div');
+                deniedInfo.className = 'glass-card p-6 text-center mt-4';
+                deniedInfo.innerHTML = `
+                    <p class="text-gray-400">Access denied because you came from: <span class="text-white">${referrer || 'Unknown source'}</span></p>
+                    <p class="text-gray-400 mt-2">Allowed domains:</p>
+                    <ul class="text-gray-400 mt-1 list-disc list-inside">
+                        <li>duckybot.xyz</li>
+                        <li>discord.com</li>
+                        <li>roblox.com</li>
+                    </ul>
                 `;
-                
-                document.body.appendChild(popup);
-                requestAnimationFrame(() => {
-                    popup.style.opacity = '1';
-                    popup.querySelector('.glass-card').style.transform = 'scale(1)';
-                });
-            }
-            function updateGlowColor(isLoggedIn) {
+                card.parentNode.appendChild(deniedInfo);
+                return;
+            }            function updateGlowColor(isLoggedIn) {
                 const glowHtml = isLoggedIn ? 
                     `<div class="glow bg-green-200 top-0 left-0"></div>
                      <div class="glow bg-green-200 bottom-0 right-0"></div>` :
