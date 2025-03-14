@@ -122,12 +122,49 @@
                 <span class="text-sm text-gray-400">Only servers with "Manage Server" permission are shown</span>
             </div>
             <div class="server-grid" id="serverGrid"></div>
+            <div class="flex justify-center mt-4">
+                <button id="viewMoreBtn" class="hidden px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:bg-[#e6ff4d] transition">
+                    View More Servers
+                </button>
+            </div>
         </div>
     </main>
 
     <script>
         const loadingOverlay = document.getElementById('loadingOverlay');
         const serverGrid = document.getElementById('serverGrid');
+        const viewMoreBtn = document.getElementById('viewMoreBtn');
+        let allServers = [];
+        const serversPerPage = 10;
+        let currentlyShown = serversPerPage;
+
+        function displayServers(servers, start, end) {
+            const serversToShow = servers.slice(start, end);
+            serversToShow.forEach(server => {
+                const serverCard = document.createElement('div');
+                serverCard.className = `server glass-card ${!server.ducky ? 'glass-card-dark' : ''}`;
+                
+                serverCard.innerHTML = `
+                    <img src="${server.icon}" alt="${server.name}" class="${!server.ducky ? 'no-ducky' : ''}">
+                    <p class="text-center font-medium text-sm">${server.name}</p>
+                    ${!server.ducky ? '<span class="text-xs text-gray-400">Add Ducky</span>' : ''}
+                `;
+                
+                serverCard.addEventListener('click', () => {
+                    window.location.href = server.ducky 
+                        ? `/dashboard/${server.id}`
+                        : `https://discord.com/oauth2/authorize?client_id=1257389588910182411&permissions=8&scope=bot&redirect_uri=https://duckybot.xyz/dashboard&guild_id=${server.id}`;
+                });
+                
+                serverGrid.appendChild(serverCard);
+            });
+
+            if (end < servers.length) {
+                viewMoreBtn.classList.remove('hidden');
+            } else {
+                viewMoreBtn.classList.add('hidden');
+            }
+        }
 
         window.onload = async () => {
             const token = document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
@@ -153,31 +190,20 @@
                 });
                 const { data: servers } = await serversResponse.json();
 
-                const sortedServers = servers.sort((a, b) => {
+                allServers = servers.sort((a, b) => {
                     if (a.ducky && !b.ducky) return -1;
                     if (!a.ducky && b.ducky) return 1;
                     return 0;
                 });
 
                 serverGrid.innerHTML = '';
-                sortedServers.forEach(server => {
-                    const serverCard = document.createElement('div');
-                    serverCard.className = `server glass-card ${!server.ducky ? 'glass-card-dark' : ''}`;
-                    
-                    serverCard.innerHTML = `
-                        <img src="${server.icon}" alt="${server.name}" class="${!server.ducky ? 'no-ducky' : ''}">
-                        <p class="text-center font-medium text-sm">${server.name}</p>
-                        ${!server.ducky ? '<span class="text-xs text-gray-400">Add Ducky</span>' : ''}
-                    `;
-                    
-                    serverCard.addEventListener('click', () => {
-                        window.location.href = server.ducky 
-                            ? `/dashboard/${server.id}`
-                            : `https://discord.com/oauth2/authorize?client_id=1257389588910182411&permissions=8&scope=bot&redirect_uri=https://duckybot.xyz/dashboard&guild_id=${server.id}`;
-                    });
-                    
-                    serverGrid.appendChild(serverCard);
+                displayServers(allServers, 0, serversPerPage);
+
+                viewMoreBtn.addEventListener('click', () => {
+                    displayServers(allServers, currentlyShown, currentlyShown + serversPerPage);
+                    currentlyShown += serversPerPage;
                 });
+
             } catch (error) {
                 console.error('Error:', error);
                 serverGrid.innerHTML = '<p class="text-center text-gray-400 col-span-full">Failed to load servers. Please try again later.</p>';
