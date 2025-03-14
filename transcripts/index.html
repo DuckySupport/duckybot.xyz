@@ -26,6 +26,7 @@
       transition: all 0.3s ease;
       box-sizing: border-box;
       transform: translateY(0);
+      padding: 2rem;
     }
 
     .glass-card:hover {
@@ -68,9 +69,34 @@
       animation: fadeScale 0.5s ease-out forwards;
     }
 
-    .author-table {
-      margin: 0.5rem 0;
-      border-spacing: 0.5rem;
+    .ticket-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(245, 255, 130, 0.1);
+    }
+
+    .messages-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .message {
+      background: rgba(30, 30, 30, 0.3);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: background-color 0.2s ease;
+    }
+
+    .message:hover {
+      background: rgba(40, 40, 40, 0.5);
+    }
+
+    .message-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
     }
 
     .author-pfp {
@@ -78,15 +104,22 @@
       height: 40px;
       border-radius: 50%;
       border: 2px solid rgba(245, 255, 130, 0.2);
+      margin-right: 0.75rem;
       transition: border-color 0.3s ease;
     }
 
-    .author-pfp:hover {
-      border-color: rgba(245, 255, 130, 0.8);
+    .author-name {
+      font-weight: 600;
+      color: #F5FF82;
+    }
+
+    .message-content {
+      margin-left: 3.5rem;
+      word-wrap: break-word;
     }
 
     .embed {
-      margin: 0.5rem 0;
+      margin: 0.75rem 0;
       padding: 0.75rem 1rem;
       border-radius: 4px;
       background-color: rgba(47, 49, 54, 0.3);
@@ -111,7 +144,7 @@
     }
 
     .embed-field {
-      margin: 0.5rem 0;
+      margin: 0.8rem 0;
       padding: 0.5rem;
       background: rgba(0, 0, 0, 0.1);
       border-radius: 4px;
@@ -191,22 +224,6 @@
       transform: scaleX(1);
     }
 
-    .message {
-      margin-bottom: 1.5rem;
-      padding: 0.5rem;
-      border-radius: 8px;
-      transition: background-color 0.2s ease;
-    }
-
-    .message:hover {
-      background-color: rgba(245, 255, 130, 0.05);
-    }
-
-    .message-content {
-      margin-left: 3rem;
-      margin-top: 0.5rem;
-    }
-
     .mention {
       background-color: rgba(88, 101, 242, 0.3);
       color: #dee0fc;
@@ -265,6 +282,11 @@
       #transcript {
         padding: 1rem;
       }
+      
+      .message-content {
+        margin-left: 0;
+        margin-top: 0.5rem;
+      }
     }
   </style>
 </head>
@@ -277,7 +299,7 @@
       </svg>
       <span>Loading your transcript...</span>
     </div>
-    <div id="transcript" class="glass-card p-8" style="display: none;">
+    <div id="transcript" class="glass-card" style="display: none;">
       <h2>Ticket Transcript</h2>
       <div id="ticket-details"></div>
     </div>
@@ -286,6 +308,9 @@
     </div>
   </main>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-json.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/3.0.7/marked.min.js"></script>
   <script src="./transcripts.js"></script>
   <script>
