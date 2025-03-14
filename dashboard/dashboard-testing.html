@@ -26,6 +26,7 @@
             background-color: var(--bg-color);
             -webkit-tap-highlight-color: transparent;
             overscroll-behavior: none;
+            touch-action: manipulation;
         }
         .glass-card {
             background: rgba(245, 255, 130, 0.03);
@@ -70,28 +71,30 @@
         }
         .server-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             gap: 1rem;
             padding: 1rem;
         }
         @media (max-width: 640px) {
             .server-grid {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-                gap: 0.75rem;
-                padding: 0.75rem;
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.5rem;
+                padding: 0.5rem;
             }
         }
         .server {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.75rem;
-            padding: 1rem;
+            gap: 0.5rem;
+            padding: 0.75rem;
             cursor: pointer;
+            min-height: 120px;
+            justify-content: center;
         }
         .server img {
-            width: 4rem;
-            height: 4rem;
+            width: 3.5rem;
+            height: 3.5rem;
             border-radius: 50%;
             object-fit: cover;
             will-change: transform;
@@ -114,16 +117,43 @@
                 backdrop-filter: blur(10px);
                 -webkit-backdrop-filter: blur(10px);
                 border-top: 1px solid rgba(255, 255, 255, 0.1);
-                padding: 1rem;
+                padding: 0.75rem;
                 z-index: 40;
             }
             .mobile-menu-items {
                 display: flex;
                 justify-content: space-around;
                 align-items: center;
+                gap: 0.5rem;
+            }
+            .mobile-menu a {
+                padding: 0.5rem;
+                font-size: 0.875rem;
             }
             main {
                 padding-bottom: 5rem;
+            }
+            .glass-card {
+                padding: 1rem !important;
+            }
+            h2 {
+                font-size: 1.1rem !important;
+            }
+            .text-sm {
+                font-size: 0.75rem !important;
+            }
+        }
+        @media (max-width: 380px) {
+            .server-grid {
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            }
+            .server {
+                padding: 0.5rem;
+                min-height: 100px;
+            }
+            .server img {
+                width: 3rem;
+                height: 3rem;
             }
         }
     </style>
@@ -137,11 +167,11 @@
     </div>
 
     <nav class="sticky top-0 z-50 backdrop-blur-sm border-b border-white/5 bg-[#0f0f0f]/30">
-        <div class="max-w-7xl mx-auto px-4 py-3">
+        <div class="max-w-7xl mx-auto px-3 py-2">
             <div class="flex items-center justify-between">
-                <a href="/" class="flex items-center gap-3">
-                    <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-7 h-7" loading="lazy">
-                    <span class="text-xl font-bold text-[#F5FF82]">Ducky</span>
+                <a href="/" class="flex items-center gap-2">
+                    <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-6 h-6" loading="lazy">
+                    <span class="text-lg font-bold text-[#F5FF82]">Ducky</span>
                 </a>
                 <div class="hidden md:flex items-center gap-6">
                     <a href="/" class="text-gray-300 hover:text-[#F5FF82] transition">Home</a>
@@ -149,28 +179,28 @@
                     <a href="/support" class="text-gray-300 hover:text-[#F5FF82] transition">Support</a>
                     <a href="/invite" class="text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
                 </div>
-                <img id="profilePictureNav" alt="Profile" class="w-8 h-8 rounded-full cursor-pointer" loading="lazy">
+                <img id="profilePictureNav" alt="Profile" class="w-7 h-7 rounded-full cursor-pointer" loading="lazy">
             </div>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-4 py-8">
-        <div class="glass-card p-6 mb-8 flex items-center gap-4">
-            <img id="profilePicture" alt="Profile Image" class="w-16 h-16 rounded-full" loading="lazy">
+    <main class="max-w-7xl mx-auto px-3 py-4">
+        <div class="glass-card p-4 mb-4 flex items-center gap-3">
+            <img id="profilePicture" alt="Profile Image" class="w-12 h-12 rounded-full" loading="lazy">
             <div>
-                <h2 class="text-xl font-bold">Welcome, <span id="username" class="text-[#F5FF82]"></span></h2>
-                <p class="text-gray-400 mt-1">Manage your Discord servers with Ducky</p>
+                <h2 class="text-lg font-bold">Welcome, <span id="username" class="text-[#F5FF82]"></span></h2>
+                <p class="text-gray-400 mt-0.5 text-sm">Manage your Discord servers with Ducky</p>
             </div>
         </div>
 
-        <div class="glass-card p-6">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+        <div class="glass-card p-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-1">
                 <h2 class="text-lg font-bold">Your Servers</h2>
                 <span class="text-sm text-gray-400">Only servers with "Manage Server" permission are shown</span>
             </div>
             <div class="server-grid" id="serverGrid"></div>
             <div class="flex justify-center mt-4">
-                <button id="viewMoreBtn" class="hidden px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:bg-[#e6ff4d] transition">
+                <button id="viewMoreBtn" class="hidden px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:bg-[#e6ff4d] transition text-sm">
                     View More Servers
                 </button>
             </div>
@@ -191,7 +221,7 @@
         const serverGrid = document.getElementById('serverGrid');
         const viewMoreBtn = document.getElementById('viewMoreBtn');
         let allServers = [];
-        const serversPerPage = window.innerWidth <= 640 ? 8 : 12;
+        const serversPerPage = window.innerWidth <= 640 ? 6 : 12;
         let currentlyShown = serversPerPage;
 
         function debounce(func, wait) {
@@ -221,7 +251,7 @@
                 img.loading = 'lazy';
 
                 const name = document.createElement('p');
-                name.className = 'text-center font-medium text-sm';
+                name.className = 'text-center font-medium text-xs';
                 name.textContent = server.name;
 
                 serverCard.appendChild(img);
@@ -298,7 +328,7 @@
         });
 
         window.addEventListener('resize', debounce(() => {
-            const newServersPerPage = window.innerWidth <= 640 ? 8 : 12;
+            const newServersPerPage = window.innerWidth <= 640 ? 6 : 12;
             if (newServersPerPage !== serversPerPage) {
                 currentlyShown = newServersPerPage;
                 serverGrid.innerHTML = '';
