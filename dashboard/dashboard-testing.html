@@ -31,21 +31,64 @@
             border-color: rgba(245, 255, 130, 0.8);
             transform: translateY(-2px);
         }
-        #loadingOverlay {
-            @apply fixed inset-0 bg-[#0f0f0f]/90 flex items-center justify-center z-50;
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 15, 15, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
             backdrop-filter: blur(5px);
         }
         .spinner {
-            @apply w-12 h-12 border-4 border-[#F5FF82]/20 border-t-[#F5FF82] rounded-full animate-spin;
+            width: 3rem;
+            height: 3rem;
+            border: 4px solid rgba(245, 255, 130, 0.2);
+            border-top-color: #F5FF82;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
         .server-grid {
-            @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6;
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1.5rem;
+            padding: 1rem;
+        }
+        @media (min-width: 640px) {
+            .server-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 768px) {
+            .server-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (min-width: 1024px) {
+            .server-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
         .server {
-            @apply glass-card p-6 flex flex-col items-center gap-4 cursor-pointer transition-all duration-300;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
         .server img {
-            @apply w-24 h-24 rounded-full;
+            width: 6rem;
+            height: 6rem;
+            border-radius: 50%;
+            object-fit: cover;
         }
         .server img.no-ducky {
             filter: grayscale(100%);
@@ -54,9 +97,11 @@
     </style>
 </head>
 <body class="text-white">
-    <div id="loadingOverlay" class="hidden">
-        <div class="spinner"></div>
-        <p class="mt-4 text-gray-400">Loading servers...</p>
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="flex flex-col items-center">
+            <div class="spinner mb-4"></div>
+            <p class="text-gray-400">Loading servers...</p>
+        </div>
     </div>
 
     <nav class="sticky top-0 z-50 backdrop-blur-sm border-b border-white/5 bg-[#0f0f0f]/30">
@@ -117,26 +162,24 @@
                 const avatarUrl = `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png`;
                 document.getElementById('profilePicture').src = avatarUrl;
                 document.getElementById('profilePictureNav').src = avatarUrl;
-
-                loadingOverlay.style.display = 'flex';
                 
                 const serversResponse = await fetch("https://api.duckybot.xyz/servers/", {
                     headers: { "Discord-Code": token }
                 });
                 const { data: servers } = await serversResponse.json();
 
-                // Sort servers: Ducky servers first, then by member count
                 const sortedServers = servers.sort((a, b) => {
                     if (a.ducky && !b.ducky) return -1;
                     if (!a.ducky && b.ducky) return 1;
                     return b.members - a.members;
                 });
 
+                serverGrid.innerHTML = '';
                 sortedServers
                     .filter(server => server.manager)
                     .forEach(server => {
                         const serverCard = document.createElement('div');
-                        serverCard.className = 'server';
+                        serverCard.className = 'server glass-card';
                         serverCard.innerHTML = `
                             <img src="${server.icon}" alt="${server.name}" class="${!server.ducky ? 'no-ducky' : ''}">
                             <p class="text-center font-medium">${server.name}</p>
@@ -153,6 +196,7 @@
                     });
             } catch (error) {
                 console.error('Error:', error);
+                serverGrid.innerHTML = '<p class="text-center text-gray-400 col-span-full">Failed to load servers. Please try again later.</p>';
             } finally {
                 loadingOverlay.style.display = 'none';
             }
