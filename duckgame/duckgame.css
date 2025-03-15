@@ -45,10 +45,7 @@ body {
 #obstacle {
     width: 20px;
     height: 30px;
-    border-width: 2px;
-    border-color: red;
-    border-style: dashed;
-    background: url('/images/gooserun.gif') no-repeat center center / contain, #000;
+    background: url('/images/gooserun.gif');
     position: absolute;
     right: 0;
     bottom: 0;
