@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Power your server with Ducky, a multi-purpose bot focused on moderating your Discord and ER:LC server.">
+    <meta name="description"
+        content="Power your server with Ducky, a multi-purpose bot focused on moderating your Discord and ER:LC server.">
     <meta content="Ducky Bot" property="og:title">
-    <meta content="Power your server with Ducky, a multi-purpose discord bot focused on moderating your Discord and ER:LC server." property="og:description">
+    <meta
+        content="Power your server with Ducky, a multi-purpose discord bot focused on moderating your Discord and ER:LC server."
+        property="og:description">
     <meta content="https://duckybot.xyz" property="og:url">
     <meta content="https://duckybot.xyz/Ducky.svg" property="og:image">
     <meta content="#F5FF82" name="theme-color">
@@ -20,6 +24,7 @@
             background-color: #0f0f0f;
             -webkit-tap-highlight-color: transparent;
         }
+
         .glass-card {
             background: rgba(245, 255, 130, 0.03);
             border: 1px solid rgba(245, 255, 130, 0.1);
@@ -28,16 +33,25 @@
             transition: border 0.3s ease;
             box-sizing: border-box;
         }
+
         .glass-card:hover {
             border: 1px solid rgba(245, 255, 130, 0.8);
         }
+
         .animate-fade {
             animation: fadeIn 0.5s ease-out forwards;
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
+
         .glow {
             position: absolute;
             width: 100%;
@@ -47,6 +61,7 @@
             opacity: 0.08;
             z-index: -1;
         }
+
         .mobile-menu {
             display: none;
             position: fixed;
@@ -60,24 +75,29 @@
             transform: translateY(-100%);
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
+
         .mobile-menu.active {
             display: flex;
             opacity: 1;
             transform: translateY(0);
         }
+
         @media (max-width: 768px) {
             .nav-menu {
                 display: none;
             }
+
             .container {
                 padding: 1rem;
             }
+
             .grid-cols-3 {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
+
 <body class="text-white">
     <div class="glow bg-[#F5FF82] top-0 left-0"></div>
     <div class="glow bg-[#F5FF82] bottom-0 right-0"></div>
@@ -95,7 +115,8 @@
                     <a href="/invite" class="text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
                     <a href="/status" class="text-gray-300 hover:text-[#F5FF82] transition">Status</a>
                     <a href="/support" class="text-gray-300 hover:text-[#F5FF82] transition">Support</a>
-                    <a href="/plus" class="px-4 py-2 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
+                    <a href="/plus"
+                        class="px-4 py-2 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
                         Get Ducky Plus+
                     </a>
                 </div>
@@ -107,30 +128,37 @@
     </nav>
 
     <div id="mobileMenu" class="mobile-menu flex-col items-center justify-center gap-8">
-      <button class="absolute top-6 right-6 text-2xl" onclick="toggleMenu()">
-          <i class="fas fa-times"></i>
-      </button>
-      <a href="/team" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" onclick="toggleMenu()">Team</a>
-      <a href="/docs" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" onclick="toggleMenu()">Docs</a>
-      <a href="/invite" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" onclick="toggleMenu()">Invite</a>
-      <a href="/status" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" onclick="toggleMenu()">Status</a>
-      <a href="/support" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" onclick="toggleMenu()">Support</a>
-      <a href="/plus" class="px-6 py-3 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition" onclick="toggleMenu()">
-          Get Ducky Plus+
-      </a>
-  </div>
+        <button class="absolute top-6 right-6 text-2xl" onclick="toggleMenu()">
+            <i class="fas fa-times"></i>
+        </button>
+        <a href="/team" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" onclick="toggleMenu()">Team</a>
+        <a href="/docs" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" onclick="toggleMenu()">Docs</a>
+        <a href="/invite" class="text-xl text-gray-300 hover:text-[#F5FF82] transition"
+            onclick="toggleMenu()">Invite</a>
+        <a href="/status" class="text-xl text-gray-300 hover:text-[#F5FF82] transition"
+            onclick="toggleMenu()">Status</a>
+        <a href="/support" class="text-xl text-gray-300 hover:text-[#F5FF82] transition"
+            onclick="toggleMenu()">Support</a>
+        <a href="/plus" class="px-6 py-3 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition"
+            onclick="toggleMenu()">
+            Get Ducky Plus+
+        </a>
+    </div>
 
     <main class="max-w-7xl mx-auto px-4 py-24">
         <section class="text-center mb-24 animate-fade">
             <h1 class="text-3xl md:text-7xl font-bold mb-8 flex flex-col md:flex-row items-center justify-center gap-4">
-                <span>Unlock the Power of</span> 
+                <span>Unlock the Power of</span>
                 <div class="flex items-center gap-2">
-                    <span class="bg-gradient-to-r from-[#F5FF82] via-purple-500 to-[#F5FF82] text-transparent bg-clip-text">Ducky Plus+</span>
+                    <span
+                        class="bg-gradient-to-r from-[#F5FF82] via-purple-500 to-[#F5FF82] text-transparent bg-clip-text">Ducky
+                        Plus+</span>
                     <img src="https://duckybot.xyz/images/plus.png" alt="Plus" class="w-8 h-8 md:w-12 md:h-12">
                 </div>
             </h1>
             <p class="text-gray-400 text-base md:text-xl max-w-2xl mx-auto mb-12 px-4">
-                Elevate your Discord and ER:LC experience with exclusive features designed to enhance server management and member engagement.
+                Elevate your Discord and ER:LC experience with exclusive features designed to enhance server management
+                and member engagement.
             </p>
         </section>
 
@@ -143,7 +171,8 @@
             <div class="glass-card p-8">
                 <i class="fas fa-users text-[#F5FF82] text-3xl mb-4"></i>
                 <h3 class="text-xl font-bold mb-4">Advanced Giveaway Requirements</h3>
-                <p class="text-gray-400">Enforce deeper and more advanced requirements on giveaways, such as required servers, required roles, required to be in-game, and more.</p>
+                <p class="text-gray-400">Enforce deeper and more advanced requirements on giveaways, such as required
+                    servers, required roles, required to be in-game, and more.</p>
             </div>
             <div class="glass-card p-8">
                 <i class="fas fa-code text-[#F5FF82] text-3xl mb-4"></i>
@@ -163,9 +192,10 @@
             <div class="glass-card p-8">
                 <i class="fas fa-chart-line text-[#F5FF82] text-3xl mb-4"></i>
                 <h3 class="text-xl font-bold mb-4">Enhanced Limits</h3>
-                <p class="text-gray-400">Create up to 50 automations, 30 autoresponders, and unlimited reaction boards.</p>
+                <p class="text-gray-400">Create up to 50 automations, 30 autoresponders, and unlimited reaction boards.
+                </p>
             </div>
-        </section>       
+        </section>
         <section class="mb-24">
             <h2 class="text-4xl font-bold text-center mb-12">Compare Plans</h2>
             <div class="overflow-x-auto">
@@ -232,17 +262,21 @@
                 </table>
             </div>
         </section>
-        <section class="glass-card p-8 md:p-12 text-center mb-24 bg-gradient-to-r from-[#F5FF82]/10 via-purple-500/10 to-[#F5FF82]/10 relative overflow-hidden transition-all duration-300 transform hover:scale-105 shadow-xl">
-            <img src="https://duckybot.xyz/images/plus.png" alt="Plus" class="absolute top-4 right-4 w-24 h-24 opacity-10">
+        <section
+            class="glass-card p-8 md:p-12 text-center mb-24 bg-gradient-to-r from-[#F5FF82]/10 via-purple-500/10 to-[#F5FF82]/10 relative overflow-hidden transition-all duration-300 transform hover:scale-105 shadow-xl">
+            <img src="https://duckybot.xyz/images/plus.png" alt="Plus"
+                class="absolute top-4 right-4 w-24 h-24 opacity-10">
             <h2 class="text-3xl md:text-5xl font-bold mb-8">Ready to upgrade?</h2>
-            <p class="text-gray-400 text-lg mb-8 max-w-3xl mx-auto">Elevate your Discord and ER:LC experience with exclusive features designed to enhance server management and member engagement.</p>
-            <a href="https://roblox.com/games/120245327552791/" class="px-8 py-4 bg-[#F5FF82] text-[#12131a] rounded-lg font-semibold transition-all duration-300 hover:bg-[#e6ff4d] inline-flex items-center gap-2 hover:shadow-lg">
+            <p class="text-gray-400 text-lg mb-8 max-w-3xl mx-auto">Elevate your Discord and ER:LC experience with
+                exclusive features designed to enhance server management and member engagement.</p>
+            <a href="https://roblox.com/games/120245327552791/"
+                class="px-8 py-4 bg-[#F5FF82] text-[#12131a] rounded-lg font-semibold transition-all duration-300 hover:bg-[#e6ff4d] inline-flex items-center gap-2 hover:shadow-lg">
                 Upgrade to Ducky Plus+</span>
             </a>
-        </section>   
-     </main>
+        </section>
+    </main>
 
-     <footer class="border-t border-[#F5FF82]/10">
+    <footer class="border-t border-[#F5FF82]/10">
         <div class="max-w-7xl mx-auto px-4 py-12">
             <div class="flex flex-col md:flex-row justify-between items-center gap-8">
                 <div class="flex items-center gap-3">
@@ -250,7 +284,7 @@
                     <span class="text-xl font-bold text-[#F5FF82]">Ducky</span>
                 </div>
                 <div class="flex gap-6">
-                    <a href="/legal/terms/" class="text-gray-400 hover:text-[#F5FF82] transition">Privacy</a>
+                    <a href="/legal/privacy/" class="text-gray-400 hover:text-[#F5FF82] transition">Privacy</a>
                     <a href="/legal/terms/" class="text-gray-400 hover:text-[#F5FF82] transition">Terms</a>
                     <a href="/support" class="text-gray-400 hover:text-[#F5FF82] transition">Support</a>
                 </div>
@@ -266,4 +300,5 @@
         }
     </script>
 </body>
+
 </html>
