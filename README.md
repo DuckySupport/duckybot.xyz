@@ -1,6 +1,6 @@
-# DuckyBot Website
+# Ducky Website
 
-Welcome to the official repository for [DuckyBot](https://duckybot.xyz)! 🦆
+Welcome to the official repository for [Ducky](https://duckybot.xyz)! 🦆
 
 ## About
 DuckyBot's website serves as the central hub for all information and services related to our bot.
