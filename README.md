@@ -3,7 +3,7 @@
 Welcome to the official repository for [Ducky](https://duckybot.xyz)! 🦆
 
 ## About
-DuckyBot's website serves as the central hub for all information and services related to our bot.
+Ducky's website serves as the central hub for all information and services related to our bot.
 
 ## Links
 - [Main Website](https://duckybot.xyz)
