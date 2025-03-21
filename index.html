@@ -374,9 +374,9 @@
     </main>
     <script>
         const animateStats = async () => {
-            const stats = { guilds: 1000, users: 125000, links: 1000 };
+            const stats = { guilds: 1700, users: 250000, links: 6000 };
             try {
-                const res = await fetch('https://api.duckybot.xyz/stats');
+                const res = await fetch('https://api.duckybot.xyz/statistics');
                 if (res.ok) {
                     const { data } = await res.json();
                     Object.assign(stats, data);
