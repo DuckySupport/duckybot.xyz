@@ -3,297 +3,489 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ducky Dashboard</title>
-    <meta name="description" content="Configure Ducky for your server through the web dashboard, easy and fast.">
-    <meta content="Ducky Dashboard" property="og:title">
-    <meta content="Configure Ducky for your server through the web dashboard, easy and fast." property="og:description">
-    <meta content="https://duckybot.xyz/dashboard" property="og:url">
-    <meta content="https://duckybot.xyz/Ducky.svg" property="og:image">
+    <meta name="description" content="Ducky Moderation Panel - Manage your ER:LC server">
+    <meta content="Ducky Moderation Panel" property="og:title">
+    <meta content="Manage your ER:LC server with Ducky's powerful moderation tools" property="og:description">
+    <meta content="https://duckybot.xyz/modpanel" property="og:url">
+    <meta content="https://duckybot.xyz/images/Ducky.svg" property="og:image">
     <meta content="#F5FF82" name="theme-color">
     <link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Ducky Moderation Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com" defer></script>
     <style>
-        :root {
-            --primary-color: #F5FF82;
-            --bg-color: #0f0f0f;
-        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
+            background-color: black;
+            color: white;
             -webkit-tap-highlight-color: transparent;
-            overscroll-behavior: none;
-            touch-action: manipulation;
         }
         .glass-card {
             background: rgba(245, 255, 130, 0.03);
             border: 1px solid rgba(245, 255, 130, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             border-radius: 12px;
-            transition: transform 0.2s ease;
-            will-change: transform;
+            transition: border 0.2s ease;
         }
-        .glass-card-dark {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .glass-card:hover {
+            border: 1px solid rgba(245, 255, 130, 0.3);
         }
-        @media (hover: hover) {
-            .glass-card:hover {
-                transform: translateY(-1px);
-            }
-        }
-        .loading-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 15, 15, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 50;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-        }
-        .spinner {
-            width: 2.5rem;
-            height: 2.5rem;
-            border: 3px solid rgba(245, 255, 130, 0.2);
-            border-top-color: var(--primary-color);
+        .glow {
+            position: absolute;
+            width: 100%;
+            height: 300px;
             border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            will-change: transform;
+            filter: blur(120px);
+            opacity: 0.05;
+            z-index: -1;
+            pointer-events: none;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 40;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .mobile-menu.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
         }
         .server-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             gap: 1rem;
-            padding: 1rem;
         }
-        @media (max-width: 640px) {
-            .server-grid {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-                gap: 0.5rem;
-                padding: 0.5rem;
-            }
-        }
-        .server {
+        .server-card {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.75rem;
+            padding: 1rem;
             cursor: pointer;
-            min-height: 120px;
-            justify-content: center;
         }
-        .server img {
-            width: 3.5rem;
-            height: 3.5rem;
+        .server-card img {
+            width: 3rem;
+            height: 3rem;
             border-radius: 50%;
             object-fit: cover;
-            will-change: transform;
         }
-        .server img.no-ducky {
-            filter: grayscale(100%);
-            opacity: 0.5;
+        .tab-button {
+            position: relative;
+            transition: all 0.2s ease;
         }
-        .mobile-menu {
-            display: none;
+        .tab-button.active {
+            color: #F5FF82;
+        }
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #F5FF82;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 8px;
+            z-index: 100;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .toast.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .toast.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .spinner {
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid rgba(245, 255, 130, 0.2);
+            border-top-color: #F5FF82;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
         @media (max-width: 768px) {
-            .mobile-menu {
-                display: block;
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: rgba(15, 15, 15, 0.95);
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
-                border-top: 1px solid rgba(255, 255, 255, 0.1);
-                padding: 0.75rem;
-                z-index: 40;
-            }
-            .mobile-menu-items {
-                display: flex;
-                justify-content: space-around;
-                align-items: center;
-                gap: 0.5rem;
-            }
-            .mobile-menu a {
-                padding: 0.5rem;
-                font-size: 0.875rem;
-            }
-            main {
-                padding-bottom: 5rem;
-            }
-            .glass-card {
-                padding: 1rem !important;
-            }
-            h2 {
-                font-size: 1.1rem !important;
-            }
-            .text-sm {
-                font-size: 0.75rem !important;
-            }
-        }
-        @media (max-width: 380px) {
             .server-grid {
-                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-            }
-            .server {
-                padding: 0.5rem;
-                min-height: 100px;
-            }
-            .server img {
-                width: 3rem;
-                height: 3rem;
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             }
         }
     </style>
 </head>
-<body class="text-white">
-    <div id="loadingOverlay" class="loading-overlay">
+<body>
+    <div class="glow bg-[#F5FF82] top-0 left-0"></div>
+    <div class="glow bg-[#F5FF82] bottom-0 right-0"></div>
+
+    <div id="loadingOverlay" class="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
         <div class="flex flex-col items-center">
-            <div class="spinner mb-4"></div>
-            <p class="text-gray-400">Loading servers...</p>
+            <div class="w-12 h-12 border-4 border-[#F5FF82]/20 border-t-[#F5FF82] rounded-full animate-spin mb-4"></div>
+            <p class="text-gray-400">Loading...</p>
         </div>
     </div>
 
-    <nav class="sticky top-0 z-50 backdrop-blur-sm border-b border-white/5 bg-[#0f0f0f]/30">
-        <div class="max-w-7xl mx-auto px-3 py-2">
+    <nav class="sticky top-0 z-50 border-b border-white/5 bg-black">
+        <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
-                <a href="/" class="flex items-center gap-2">
-                    <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-6 h-6" loading="lazy">
-                    <span class="text-lg font-bold text-[#F5FF82]">Ducky</span>
+                <a href="/" class="flex items-center gap-3">
+                    <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
+                    <span class="text-2xl font-bold text-[#F5FF82]">Ducky</span>
                 </a>
                 <div class="hidden md:flex items-center gap-6">
-                    <a href="/" class="text-gray-300 hover:text-[#F5FF82] transition">Home</a>
+                    <a href="/team" class="text-gray-300 hover:text-[#F5FF82] transition">Team</a>
+                    <a href="/docs" class="text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
+                    <a href="/invite" class="text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
                     <a href="/status" class="text-gray-300 hover:text-[#F5FF82] transition">Status</a>
                     <a href="/support" class="text-gray-300 hover:text-[#F5FF82] transition">Support</a>
-                    <a href="/invite" class="text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
+                    <a href="/plus" class="px-4 py-2 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
+                        Get Ducky Plus+
+                    </a>
                 </div>
-                <img id="profilePictureNav" alt="Profile" class="w-7 h-7 rounded-full cursor-pointer" loading="lazy">
+                <button id="menuBtn" class="md:hidden text-2xl text-[#F5FF82] hover:opacity-80 transition">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-3 py-4">
-        <div class="glass-card p-4 mb-4 flex items-center gap-3">
-            <img id="profilePicture" alt="Profile Image" class="w-12 h-12 rounded-full" loading="lazy">
-            <div>
-                <h2 class="text-lg font-bold">Welcome, <span id="username" class="text-[#F5FF82]"></span></h2>
-                <p class="text-gray-400 mt-0.5 text-sm">Manage your Discord servers with Ducky</p>
+    <div id="mobileMenu" class="mobile-menu flex-col items-center justify-center gap-8">
+        <button class="absolute top-6 right-6 text-2xl" id="closeMenuBtn">
+            <i class="fas fa-times"></i>
+        </button>
+        <a href="/team" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Team</a>
+        <a href="/docs" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
+        <a href="/invite" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
+        <a href="/status" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Status</a>
+        <a href="/support" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Support</a>
+        <a href="/plus" class="px-6 py-3 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
+            Get Ducky Plus+
+        </a>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div id="serverSelectionView" class="mt-4">
+            <div class="glass-card p-4 mb-6 flex items-center gap-3">
+                <img id="profilePicture" alt="Profile" class="w-12 h-12 rounded-full">
+                <div>
+                    <h2 class="text-lg font-bold">Welcome, <span id="username" class="text-[#F5FF82]"></span></h2>
+                    <p class="text-gray-400 mt-0.5 text-sm">Select a server to moderate</p>
+                </div>
+            </div>
+
+            <div class="glass-card p-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                    <h2 class="text-lg font-bold">Your Servers</h2>
+                    <span class="text-sm text-gray-400">Only servers with Ducky and moderation permissions are shown</span>
+                </div>
+                <div id="serverGrid" class="server-grid p-2">
+                    <div class="col-span-full text-center py-4">
+                        <div class="spinner mx-auto mb-2"></div>
+                        <p class="text-gray-400">Loading servers...</p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="glass-card p-4">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-1">
-                <h2 class="text-lg font-bold">Your Servers</h2>
-                <span class="text-sm text-gray-400">Only servers with "Manage Server" permission are shown</span>
-            </div>
-            <div class="server-grid" id="serverGrid"></div>
-            <div class="flex justify-center mt-4">
-                <button id="viewMoreBtn" class="hidden px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:bg-[#e6ff4d] transition text-sm">
-                    View More Servers
+        <div id="moderationPanelView" class="hidden mt-4">
+            <div class="glass-card p-4 mb-6 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <img id="serverIcon" alt="Server Icon" class="w-12 h-12 rounded-full">
+                    <div>
+                        <h2 class="text-lg font-bold"><span id="serverName" class="text-[#F5FF82]"></span></h2>
+                        <p class="text-gray-400 mt-0.5 text-sm">Moderation Panel</p>
+                    </div>
+                </div>
+                <button id="backToServersBtn" class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition text-sm">
+                    <i class="fas fa-arrow-left mr-2"></i>Back
                 </button>
+            </div>
+
+            <div class="flex gap-4 mb-4 border-b border-white/10 pb-2">
+                <button id="punishmentsTabBtn" class="tab-button active px-4 py-2 font-medium">Punishments</button>
+                <button id="shiftsTabBtn" class="tab-button px-4 py-2 text-gray-400 hover:text-white font-medium">Shifts</button>
+            </div>
+
+            <div id="punishmentsTab">
+                <div class="glass-card p-4 mb-6">
+                    <h3 class="text-lg font-bold mb-4">Issue Punishment</h3>
+                    <form id="punishmentForm" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="robloxUsername" class="block text-sm font-medium text-gray-400 mb-1">Roblox Username</label>
+                                <input type="text" id="robloxUsername" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter username" required>
+                            </div>
+                            <div>
+                                <label for="punishmentType" class="block text-sm font-medium text-gray-400 mb-1">Punishment Type</label>
+                                <select id="punishmentType" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" required>
+                                    <option value="" disabled selected>Select type...</option>
+                                    <option value="warn">Warn</option>
+                                    <option value="kick">Kick</option>
+                                    <option value="ban">Ban</option>
+                                    <option value="tempban">Temporary Ban</option>
+                                </select>
+                            </div>
+                        </div>                        
+                        <div id="durationContainer" class="hidden">
+                            <label for="duration" class="block text-sm font-medium text-gray-400 mb-1">Duration</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="number" id="durationValue" min="1" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Duration">
+                                <select id="durationUnit" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white">
+                                    <option value="minutes">Minutes</option>
+                                    <option value="hours">Hours</option>
+                                    <option value="days">Days</option>
+                                    <option value="weeks">Weeks</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="reason" class="block text-sm font-medium text-gray-400 mb-1">Reason</label>
+                            <textarea id="reason" rows="2" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter reason" required></textarea>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button type="submit" id="submitBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:bg-[#e6ff4d] transition">
+                                Issue Punishment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="glass-card p-4">
+                    <h3 class="text-lg font-bold mb-4">Punishment History</h3>
+                    <div id="punishmentHistory" class="space-y-3">
+                        <div class="text-center py-4">
+                            <div class="spinner mx-auto mb-2"></div>
+                            <p class="text-gray-400">Loading punishment history...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="shiftsTab" class="hidden">
+                <div class="glass-card p-4 mb-6">
+                    <h3 class="text-lg font-bold mb-4">Active Shifts</h3>
+                    <div id="activeShifts" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="text-center py-4 col-span-full">
+                            <div class="spinner mx-auto mb-2"></div>
+                            <p class="text-gray-400">Loading active shifts...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-card p-4">
+                    <h3 class="text-lg font-bold mb-4">Recent Shifts</h3>
+                    <div id="recentShifts" class="space-y-3">
+                        <div class="text-center py-4">
+                            <div class="spinner mx-auto mb-2"></div>
+                            <p class="text-gray-400">Loading recent shifts...</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
-    <div class="mobile-menu md:hidden">
-        <div class="mobile-menu-items">
-            <a href="/" class="text-gray-300 hover:text-[#F5FF82] transition">Home</a>
-            <a href="/status" class="text-gray-300 hover:text-[#F5FF82] transition">Status</a>
-            <a href="/support" class="text-gray-300 hover:text-[#F5FF82] transition">Support</a>
-            <a href="/invite" class="text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
+    <footer class="border-t border-[#F5FF82]/10 mt-8">
+        <div class="max-w-7xl mx-auto px-4 py-12">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-3">
+                    <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
+                    <span class="text-xl font-bold text-[#F5FF82]">Ducky</span>
+                </div>
+                <div class="flex gap-6">
+                    <a href="/legal/privacy/" class="text-gray-400 hover:text-[#F5FF82] transition">Privacy</a>
+                    <a href="/legal/terms/" class="text-gray-400 hover:text-[#F5FF82] transition">Terms</a>
+                    <a href="/support" class="text-gray-400 hover:text-[#F5FF82] transition">Support</a>
+                </div>
+            </div>
+            <p class="text-center text-gray-400 mt-8">© 2025 Ducky Bot. All rights reserved.</p>
         </div>
+    </footer>
+
+    <div id="toast" class="toast">
+        <p id="toastMessage"></p>
     </div>
 
     <script>
         const loadingOverlay = document.getElementById('loadingOverlay');
         const serverGrid = document.getElementById('serverGrid');
-        const viewMoreBtn = document.getElementById('viewMoreBtn');
-        let allServers = [];
-        const serversPerPage = window.innerWidth <= 640 ? 6 : 12;
-        let currentlyShown = serversPerPage;
+        const serverSelectionView = document.getElementById('serverSelectionView');
+        const moderationPanelView = document.getElementById('moderationPanelView');
+        const backToServersBtn = document.getElementById('backToServersBtn');
+        const punishmentsTabBtn = document.getElementById('punishmentsTabBtn');
+        const shiftsTabBtn = document.getElementById('shiftsTabBtn');
+        const punishmentsTab = document.getElementById('punishmentsTab');
+        const shiftsTab = document.getElementById('shiftsTab');
+        const punishmentForm = document.getElementById('punishmentForm');
+        const punishmentType = document.getElementById('punishmentType');
+        const durationContainer = document.getElementById('durationContainer');
+        const punishmentHistory = document.getElementById('punishmentHistory');
+        const activeShifts = document.getElementById('activeShifts');
+        const recentShifts = document.getElementById('recentShifts');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+        const menuBtn = document.getElementById('menuBtn');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
 
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
+        let selectedServerId = null;
+        let userCache = new Map();
+        let discordToken = null;
+
+        function getDiscordToken() {
+            return document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
         }
 
-        function displayServers(servers, start, end) {
-            const fragment = document.createDocumentFragment();
-            const serversToShow = servers.filter(server => server.manage_server).slice(start, end);
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        punishmentType.addEventListener('change', function() {
+            durationContainer.classList.toggle('hidden', this.value !== 'tempban');
+        });
+
+        backToServersBtn.addEventListener('click', () => {
+            moderationPanelView.classList.add('hidden');
+            serverSelectionView.classList.remove('hidden');
+        });
+
+        punishmentsTabBtn.addEventListener('click', () => {
+            punishmentsTabBtn.classList.add('active');
+            shiftsTabBtn.classList.remove('active');
+            punishmentsTab.classList.remove('hidden');
+            shiftsTab.classList.add('hidden');
+        });
+
+        shiftsTabBtn.addEventListener('click', () => {
+            shiftsTabBtn.classList.add('active');
+            punishmentsTabBtn.classList.remove('active');
+            shiftsTab.classList.remove('hidden');
+            punishmentsTab.classList.add('hidden');
             
-            serversToShow.forEach(server => {
-                const serverCard = document.createElement('div');
-                serverCard.className = `server glass-card ${!server.ducky ? 'glass-card-dark' : ''}`;
+            if (activeShifts.innerHTML.includes('Loading')) {
+                loadShifts(selectedServerId);
+            }
+        });
+
+        punishmentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            issuePunishment();
+        });
+
+        function formatDate(timestamp) {
+            const date = new Date(timestamp * 1000);
+            return date.toLocaleString();
+        }
+
+        function formatDuration(seconds) {
+            if (seconds < 60) return `${seconds} seconds`;
+            if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours`;
+            return `${Math.floor(seconds / 86400)} days`;
+        }
+
+        function showToast(message, type = 'success') {
+            toastMessage.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        async function fetchDiscordUsername(userId) {
+            if (userCache.has(userId)) {
+                return userCache.get(userId);
+            }
+            
+            if (!discordToken) {
+                return userId;
+            }
+            
+            try {
+                const response = await fetch(`https://api.duckybot.xyz/link/${userId}`);
                 
-                const img = new Image();
-                img.src = server.icon || 'https://duckybot.xyz/images/Ducky.svg';
-                img.alt = server.name;
-                img.className = !server.ducky ? 'no-ducky' : '';
-                img.loading = 'lazy';
-
-                const name = document.createElement('p');
-                name.className = 'text-center font-medium text-xs';
-                name.textContent = server.name;
-
-                serverCard.appendChild(img);
-                serverCard.appendChild(name);
-
-                if (!server.ducky) {
-                    const span = document.createElement('span');
-                    span.className = 'text-xs text-gray-400';
-                    span.textContent = 'Add Ducky';
-                    serverCard.appendChild(span);
+                if (!response.ok) {
+                    return userId;
                 }
                 
-                serverCard.addEventListener('click', () => {
-                    window.location.href = server.ducky 
-                        ? `/dashboard/${server.id}`
-                        : `https://discord.com/oauth2/authorize?client_id=1257389588910182411&permissions=8&scope=bot&redirect_uri=https://duckybot.xyz/dashboard&guild_id=${server.id}`;
-                });
+                const data = await response.json();
                 
-                fragment.appendChild(serverCard);
-            });
-
-            serverGrid.appendChild(fragment);
-            viewMoreBtn.style.display = end < servers.filter(server => server.manage_server).length ? 'block' : 'none';
+                if (data.code === 200 && data.data) {
+                    const username = data.data.discordUser.username || userId;
+                    userCache.set(userId, username);
+                    return username;
+                }
+                
+                return userId;
+            } catch (error) {
+                console.error('Error fetching username:', error);
+                return userId;
+            }
         }
 
-        const loadServers = async () => {
-            const token = document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
+        function selectServer(serverId, serverName, serverIcon) {
+            selectedServerId = serverId;
             
-            if (!token) {
-                window.location.href = "/login?redirect=dashboard";
+            document.getElementById('serverName').textContent = serverName;
+            document.getElementById('serverIcon').src = serverIcon || 'https://duckybot.xyz/images/Ducky.svg';
+            
+            serverSelectionView.classList.add('hidden');
+            moderationPanelView.classList.remove('hidden');
+            
+            loadPunishments(serverId);
+        }
+
+        async function loadServers() {
+            discordToken = getDiscordToken();
+            
+            if (!discordToken) {
+                window.location.href = "/login?redirect=modpanel";
                 return;
             }
 
             try {
                 const [userResponse, serversResponse] = await Promise.all([
                     fetch('https://discord.com/api/users/@me', {
-                        headers: { authorization: `Bearer ${token}` }
+                        headers: { authorization: `Bearer ${discordToken}` }
                     }),
                     fetch("https://api.duckybot.xyz/servers/", {
-                        headers: { "Discord-Code": token }
+                        headers: { "Discord-Code": discordToken }
                     })
                 ]);
+
+                if (!userResponse.ok || !serversResponse.ok) {
+                    throw new Error('Failed to fetch data');
+                }
 
                 const userData = await userResponse.json();
                 const { data: servers } = await serversResponse.json();
@@ -301,40 +493,344 @@
                 document.getElementById('username').textContent = userData.global_name || userData.username;
                 const avatarUrl = `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png`;
                 document.getElementById('profilePicture').src = avatarUrl;
-                document.getElementById('profilePictureNav').src = avatarUrl;
                 
-                allServers = servers.filter(server => server.manage_server).sort((a, b) => {
-                    if (a.ducky && !b.ducky) return -1;
-                    if (!a.ducky && b.ducky) return 1;
-                    return 0;
-                });
+                const filteredServers = servers.filter(server => server.manage_server && server.ducky);
+                
+                if (filteredServers.length === 0) {
+                    serverGrid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-4">No servers with Ducky found. Make sure you have the right permissions.</p>';
+                } else {
+                    serverGrid.innerHTML = '';
+                    
+                    filteredServers.forEach(server => {
+                        const serverCard = document.createElement('div');
+                        serverCard.className = 'server-card glass-card';
+                        
+                        const img = document.createElement('img');
+                        img.src = server.icon || 'https://duckybot.xyz/images/Ducky.svg';
+                        img.alt = server.name;
+                        img.loading = 'lazy';
 
-                serverGrid.innerHTML = '';
-                displayServers(allServers, 0, serversPerPage);
-
+                        const name = document.createElement('p');
+                        name.className = 'text-center font-medium text-xs';
+                        name.textContent = server.name;
+                        
+                        serverCard.appendChild(img);
+                        serverCard.appendChild(name);
+                        
+                        serverCard.addEventListener('click', () => {
+                            selectServer(server.id, server.name, server.icon);
+                        });
+                        
+                        serverGrid.appendChild(serverCard);
+                    });
+                }
             } catch (error) {
                 console.error('Error:', error);
-                serverGrid.innerHTML = '<p class="text-center text-gray-400 col-span-full">Failed to load servers. Please try again later.</p>';
+                serverGrid.innerHTML = '<p class="col-span-full text-center text-red-400 py-4">Failed to load servers. Please try again later.</p>';
             } finally {
                 loadingOverlay.style.display = 'none';
             }
-        };
+        }
+
+        async function loadPunishments(serverId) {
+            punishmentHistory.innerHTML = `
+                <div class="text-center py-4">
+                    <div class="spinner mx-auto mb-2"></div>
+                    <p class="text-gray-400">Loading punishment history...</p>
+                </div>
+            `;
+            
+            if (!discordToken) {
+                punishmentHistory.innerHTML = '<p class="text-center text-red-400 py-4">Authentication error. Please log in again.</p>';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`https://api.duckybot.xyz/punishments/${serverId}`, {
+                    headers: { "Discord-Code": discordToken }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch punishments');
+                }
+                
+                const { data: punishments } = await response.json();
+                
+                if (!punishments || punishments.length === 0) {
+                    punishmentHistory.innerHTML = '<p class="text-center text-gray-400 py-4">No punishment history found.</p>';
+                    return;
+                }
+                
+                punishmentHistory.innerHTML = '';
+                
+                punishments.sort((a, b) => b.timestamp - a.timestamp);
+                
+                const fragment = document.createDocumentFragment();
+                
+                for (const punishment of punishments.slice(0, 10)) {
+                    const item = document.createElement('div');
+                    item.className = 'p-3 pl-4 bg-black/30 rounded-md border-l-2 border-[#F5FF82] hover:bg-black/40 transition-colors';
+                    
+                    const typeColors = {
+                        warn: 'text-yellow-400',
+                        warning: 'text-yellow-400',
+                        kick: 'text-orange-400',
+                        ban: 'text-red-500',
+                        tempban: 'text-red-400'
+                    };
+                    
+                    const typeColor = typeColors[punishment.type.toLowerCase()] || 'text-gray-400';
+                    
+                    const moderatorName = await fetchDiscordUsername(punishment.moderator);
+                    
+                    item.innerHTML = `
+                        <div class="flex flex-col md:flex-row justify-between items-start gap-2">
+                            <div class="flex items-start gap-3">
+                                <img src="${punishment.robloxUser.pfpURL}" alt="${punishment.robloxUser.name}" class="w-10 h-10 rounded-full hidden sm:block">
+                                <div>
+                                    <h4 class="font-medium">${punishment.robloxUser.displayName} <span class="text-sm text-gray-400">(${punishment.robloxUser.name})</span></h4>
+                                    <p class="text-sm ${typeColor} mt-1">${punishment.type.toUpperCase()}</p>
+                                    <p class="text-sm text-gray-400 mt-1">${punishment.reason}</p>
+                                </div>
+                            </div>
+                            <div class="text-right text-xs">
+                                <p class="text-gray-500">${formatDate(punishment.timestamp)}</p>
+                                <p class="text-gray-400 mt-1">By: ${moderatorName}</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    fragment.appendChild(item);
+                }
+                
+                punishmentHistory.appendChild(fragment);
+                
+            } catch (error) {
+                console.error('Error fetching punishments:', error);
+                punishmentHistory.innerHTML = '<p class="text-center text-red-400 py-4">Failed to load punishment history. Please try again.</p>';
+            }
+        }
+
+        async function loadShifts(serverId) {
+            activeShifts.innerHTML = `
+                <div class="text-center py-4 col-span-full">
+                    <div class="spinner mx-auto mb-2"></div>
+                    <p class="text-gray-400">Loading active shifts...</p>
+                </div>
+            `;
+            
+            recentShifts.innerHTML = `
+                <div class="text-center py-4">
+                    <div class="spinner mx-auto mb-2"></div>
+                    <p class="text-gray-400">Loading recent shifts...</p>
+                </div>
+            `;
+            
+            if (!discordToken) {
+                activeShifts.innerHTML = '<p class="text-center text-red-400 py-4 col-span-full">Authentication error. Please log in again.</p>';
+                recentShifts.innerHTML = '<p class="text-center text-red-400 py-4">Authentication error. Please log in again.</p>';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`https://api.duckybot.xyz/shifts/${serverId}`, {
+                    headers: { "Discord-Code": discordToken }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch shifts');
+                }
+                
+                const { data } = await response.json();
+                
+                if (!data.activeshifts || data.activeshifts.length === 0) {
+                    activeShifts.innerHTML = '<p class="text-center text-gray-400 py-4 col-span-full">No active shifts found.</p>';
+                } else {
+                    activeShifts.innerHTML = '';
+                    
+                    const fragment = document.createDocumentFragment();
+                    
+                    for (const shift of data.activeshifts) {
+                        const card = document.createElement('div');
+                        card.className = 'glass-card p-4';
+                        
+                        const startTime = new Date(shift.started * 1000);
+                        const duration = Math.floor(Date.now() / 1000 - shift.started);
+                        
+                        const months = Math.floor(duration / (30 * 24 * 60 * 60));
+                        const weeks = Math.floor((duration % (30 * 24 * 60 * 60)) / (7 * 24 * 60 * 60));
+                        const hours = Math.floor((duration % (7 * 24 * 60 * 60)) / (60 * 60));
+                        const minutes = Math.floor((duration % (60 * 60)) / 60);
+                        const seconds = duration % 60;
+                        
+                        let durationString = '';
+                        if (months > 0) durationString += `${months} months, `;
+                        if (weeks > 0) durationString += `${weeks} weeks, `;
+                        if (hours > 0) durationString += `${hours} hours, `;
+                        if (minutes > 0) durationString += `${minutes} minutes, `;
+                        if (seconds > 0) durationString += `${seconds} seconds`;
+                        
+                        durationString = durationString.replace(/, $/, '');
+                        
+                        const username = await fetchDiscordUsername(shift.user);
+                        
+                        card.innerHTML = `
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-medium">${username}</h4>
+                                    <p class="text-sm text-[#F5FF82] mt-1">Active for ${durationString}</p>
+                                    <p class="text-xs text-gray-400 mt-1">Type: ${shift.type || 'Default'}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xs text-gray-500">Started: ${formatDate(shift.started)}</p>
+                                    <p class="text-xs text-gray-400 mt-1">Punishments: ${shift.punishments}</p>
+                                </div>
+                            </div>
+                        `;
+                        
+                        fragment.appendChild(card);
+                    }
+                    
+                    activeShifts.appendChild(fragment);
+                }
+                
+                if (!data.shifts || data.shifts.length === 0) {
+                    recentShifts.innerHTML = '<p class="text-center text-gray-400 py-4">No recent shifts found.</p>';
+                } else {
+                    recentShifts.innerHTML = '';
+                    
+                    const fragment = document.createDocumentFragment();
+                    
+                    const sortedShifts = data.shifts
+                        .sort((a, b) => b.ended - a.ended)
+                        .slice(0, 5);
+                    
+                    for (const shift of sortedShifts) {
+                        const item = document.createElement('div');
+                        item.className = 'p-3 pl-4 bg-black/30 rounded-md border-l-2 border-[#F5FF82] hover:bg-black/40 transition-colors';
+                        
+                        const username = await fetchDiscordUsername(shift.user);
+                        
+                        const actualDuration = shift.elapsed > 0 ? shift.elapsed : 0;
+                        const months = Math.floor(actualDuration / (30 * 24 * 60));
+                        const weeks = Math.floor((actualDuration % (30 * 24 * 60)) / (7 * 24 * 60));
+                        const hours = Math.floor((actualDuration % (7 * 24 * 60)) / 60);
+                        const minutes = actualDuration % 60;
+                        
+                        let durationString = '';
+                        if (months > 0) durationString += `${months} months, `;
+                        if (weeks > 0) durationString += `${weeks} weeks, `;
+                        if (hours > 0) durationString += `${hours} hours, `;
+                        if (minutes > 0) durationString += `${minutes} minutes`;
+                        
+                        durationString = durationString.replace(/, $/, '');
+                        
+                        item.innerHTML = `
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-medium">${username}</h4>
+                                    <p class="text-sm text-gray-400 mt-1">Duration: ${durationString}</p>
+                                    <p class="text-xs text-gray-400 mt-1">Type: ${shift.type || 'Default'}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xs text-gray-500">Ended: ${formatDate(shift.ended)}</p>
+                                    <p class="text-xs text-gray-400 mt-1">Punishments: ${shift.punishments}</p>
+                                </div>
+                            </div>
+                        `;
+                        
+                        fragment.appendChild(item);
+                    }
+                    
+                    recentShifts.appendChild(fragment);
+                }
+                
+            } catch (error) {
+                console.error('Error fetching shifts:', error);
+                activeShifts.innerHTML = '<p class="text-center text-red-400 py-4 col-span-full">Failed to load active shifts. Please try again.</p>';
+                recentShifts.innerHTML = '<p class="text-center text-red-400 py-4">Failed to load recent shifts. Please try again.</p>';
+            }
+        }
+
+        let lastPunishmentTime = 0;
+        const PUNISHMENT_COOLDOWN = 5000;
+
+        async function issuePunishment() {
+            const now = Date.now();
+            if (now - lastPunishmentTime < PUNISHMENT_COOLDOWN) {
+                showToast('Please wait 5 seconds between punishments', 'error');
+                return;
+            }
+
+            if (!discordToken) {
+                showToast('Authentication error. Please log in again.', 'error');
+                return;
+            }
+            
+            const robloxUsername = document.getElementById('robloxUsername').value;
+            const type = document.getElementById('punishmentType').value;
+            const reason = document.getElementById('reason').value;
+            
+            let expires = null;
+            if (type === 'tempban') {
+                const durationValue = document.getElementById('durationValue').value;
+                const durationUnit = document.getElementById('durationUnit').value;
+                
+                const multipliers = {
+                    minutes: 60,
+                    hours: 3600,
+                    days: 86400,
+                    weeks: 604800
+                };
+                
+                const duration = durationValue * multipliers[durationUnit];
+                expires = Math.floor(Date.now() / 1000) + duration;
+            }
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+            
+            try {
+                const response = await fetch(`https://api.duckybot.xyz/punishments/${selectedServerId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Discord-Code': discordToken
+                    },
+                    body: JSON.stringify({
+                        username: robloxUsername,
+                        type,
+                        reason,
+                        expires
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to issue punishment');
+                }
+                
+                punishmentForm.reset();
+                durationContainer.classList.add('hidden');
+                
+                showToast(`Successfully issued ${type} to ${robloxUsername}`);
+                lastPunishmentTime = now;
+                
+                loadPunishments(selectedServerId);
+                
+            } catch (error) {
+                console.error('Error issuing punishment:', error);
+                showToast(error.message || 'Failed to issue punishment. Please try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
+        }
 
         window.addEventListener('load', loadServers);
-        
-        viewMoreBtn.addEventListener('click', () => {
-            displayServers(allServers, currentlyShown, currentlyShown + serversPerPage);
-            currentlyShown += serversPerPage;
-        });
-
-        window.addEventListener('resize', debounce(() => {
-            const newServersPerPage = window.innerWidth <= 640 ? 6 : 12;
-            if (newServersPerPage !== serversPerPage) {
-                currentlyShown = newServersPerPage;
-                serverGrid.innerHTML = '';
-                displayServers(allServers, 0, currentlyShown);
-            }
-        }, 250));
     </script>
 </body>
 </html>
