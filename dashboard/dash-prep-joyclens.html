@@ -17,15 +17,15 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0f0f0f;
+            background-color: black;
+            color: white;
             -webkit-tap-highlight-color: transparent;
         }
         .glass-card {
             background: rgba(245, 255, 130, 0.03);
             border: 1px solid rgba(245, 255, 130, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            transition: border 0.3s ease;
+            border-radius: 12px;
+            transition: border 0.2s ease;
         }
         .glass-card:hover {
             border: 1px solid rgba(245, 255, 130, 0.3);
@@ -36,8 +36,9 @@
             height: 300px;
             border-radius: 50%;
             filter: blur(120px);
-            opacity: 0.08;
+            opacity: 0.05;
             z-index: -1;
+            pointer-events: none;
         }
         .mobile-menu {
             display: none;
@@ -46,7 +47,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(15, 15, 15, 0.95);
+            background: rgba(0, 0, 0, 0.95);
             z-index: 40;
             opacity: 0;
             transform: translateY(-100%);
@@ -133,7 +134,7 @@
         }
     </style>
 </head>
-<body class="text-white">
+<body>
     <div class="glow bg-[#F5FF82] top-0 left-0"></div>
     <div class="glow bg-[#F5FF82] bottom-0 right-0"></div>
 
@@ -144,7 +145,7 @@
         </div>
     </div>
 
-    <nav class="sticky top-0 z-50 backdrop-blur-sm border-b border-white/5 bg-[#0f0f0f]/30">
+    <nav class="sticky top-0 z-50 border-b border-white/5 bg-black">
         <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <a href="/" class="flex items-center gap-3">
@@ -351,7 +352,12 @@
         const mobileMenu = document.getElementById('mobileMenu');
 
         let selectedServerId = null;
-        let userCache = new Map(); 
+        let userCache = new Map();
+        let discordToken = null;
+
+        function getDiscordToken() {
+            return document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
+        }
 
         menuBtn.addEventListener('click', () => {
             mobileMenu.classList.add('active');
@@ -422,16 +428,12 @@
                 return userCache.get(userId);
             }
             
-            const token = document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
-            
-            if (!token) {
-                return userId; 
+            if (!discordToken) {
+                return userId;
             }
             
             try {
-                const response = await fetch(`https://api.duckybot.xyz/user/${userId}`, {
-                    headers: { "Discord-Code": token }
-                });
+                const response = await fetch(`https://api.duckybot.xyz/link/${userId}`);
                 
                 if (!response.ok) {
                     return userId;
@@ -440,7 +442,7 @@
                 const data = await response.json();
                 
                 if (data.code === 200 && data.data) {
-                    const username = data.data.username || userId;
+                    const username = data.data.discordUser.username || userId;
                     userCache.set(userId, username);
                     return username;
                 }
@@ -465,9 +467,9 @@
         }
 
         async function loadServers() {
-            const token = document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
+            discordToken = getDiscordToken();
             
-            if (!token) {
+            if (!discordToken) {
                 window.location.href = "/login?redirect=modpanel";
                 return;
             }
@@ -475,10 +477,10 @@
             try {
                 const [userResponse, serversResponse] = await Promise.all([
                     fetch('https://discord.com/api/users/@me', {
-                        headers: { authorization: `Bearer ${token}` }
+                        headers: { authorization: `Bearer ${discordToken}` }
                     }),
                     fetch("https://api.duckybot.xyz/servers/", {
-                        headers: { "Discord-Code": token }
+                        headers: { "Discord-Code": discordToken }
                     })
                 ]);
 
@@ -539,16 +541,14 @@
                 </div>
             `;
             
-            const token = document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
-            
-            if (!token) {
+            if (!discordToken) {
                 punishmentHistory.innerHTML = '<p class="text-center text-red-400 py-4">Authentication error. Please log in again.</p>';
                 return;
             }
             
             try {
                 const response = await fetch(`https://api.duckybot.xyz/punishments/${serverId}`, {
-                    headers: { "Discord-Code": token }
+                    headers: { "Discord-Code": discordToken }
                 });
                 
                 if (!response.ok) {
@@ -566,9 +566,11 @@
                 
                 punishments.sort((a, b) => b.timestamp - a.timestamp);
                 
-                for (const punishment of punishments.slice(0, 10)) { 
+                const fragment = document.createDocumentFragment();
+                
+                for (const punishment of punishments.slice(0, 10)) {
                     const item = document.createElement('div');
-                    item.className = 'p-3 pl-4 bg-black/20 rounded-md border-l-2 border-[#F5FF82] hover:bg-black/30 transition-colors';
+                    item.className = 'p-3 pl-4 bg-black/30 rounded-md border-l-2 border-[#F5FF82] hover:bg-black/40 transition-colors';
                     
                     const typeColors = {
                         warn: 'text-yellow-400',
@@ -599,8 +601,10 @@
                         </div>
                     `;
                     
-                    punishmentHistory.appendChild(item);
+                    fragment.appendChild(item);
                 }
+                
+                punishmentHistory.appendChild(fragment);
                 
             } catch (error) {
                 console.error('Error fetching punishments:', error);
@@ -623,9 +627,7 @@
                 </div>
             `;
             
-            const token = document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
-            
-            if (!token) {
+            if (!discordToken) {
                 activeShifts.innerHTML = '<p class="text-center text-red-400 py-4 col-span-full">Authentication error. Please log in again.</p>';
                 recentShifts.innerHTML = '<p class="text-center text-red-400 py-4">Authentication error. Please log in again.</p>';
                 return;
@@ -633,7 +635,7 @@
             
             try {
                 const response = await fetch(`https://api.duckybot.xyz/shifts/${serverId}`, {
-                    headers: { "Discord-Code": token }
+                    headers: { "Discord-Code": discordToken }
                 });
                 
                 if (!response.ok) {
@@ -646,6 +648,8 @@
                     activeShifts.innerHTML = '<p class="text-center text-gray-400 py-4 col-span-full">No active shifts found.</p>';
                 } else {
                     activeShifts.innerHTML = '';
+                    
+                    const fragment = document.createDocumentFragment();
                     
                     for (const shift of data.activeshifts) {
                         const card = document.createElement('div');
@@ -670,8 +674,10 @@
                             </div>
                         `;
                         
-                        activeShifts.appendChild(card);
+                        fragment.appendChild(card);
                     }
+                    
+                    activeShifts.appendChild(fragment);
                 }
                 
                 if (!data.shifts || data.shifts.length === 0) {
@@ -679,13 +685,15 @@
                 } else {
                     recentShifts.innerHTML = '';
                     
+                    const fragment = document.createDocumentFragment();
+                    
                     const sortedShifts = data.shifts
                         .sort((a, b) => b.ended - a.ended)
                         .slice(0, 5);
                     
                     for (const shift of sortedShifts) {
                         const item = document.createElement('div');
-                        item.className = 'p-3 pl-4 bg-black/20 rounded-md border-l-2 border-[#F5FF82] hover:bg-black/30 transition-colors';
+                        item.className = 'p-3 pl-4 bg-black/30 rounded-md border-l-2 border-[#F5FF82] hover:bg-black/40 transition-colors';
                         
                         const username = await fetchDiscordUsername(shift.user);
                         
@@ -708,8 +716,10 @@
                             </div>
                         `;
                         
-                        recentShifts.appendChild(item);
+                        fragment.appendChild(item);
                     }
+                    
+                    recentShifts.appendChild(fragment);
                 }
                 
             } catch (error) {
@@ -720,9 +730,7 @@
         }
 
         async function issuePunishment() {
-            const token = document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
-            
-            if (!token) {
+            if (!discordToken) {
                 showToast('Authentication error. Please log in again.', 'error');
                 return;
             }
@@ -756,7 +764,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Discord-Code': token
+                        'Discord-Code': discordToken
                     },
                     body: JSON.stringify({
                         username: robloxUsername,
