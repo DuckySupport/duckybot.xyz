@@ -533,7 +533,7 @@
                     fetch('https://discord.com/api/users/@me', {
                         headers: { authorization: `Bearer ${discordToken}` }
                     }),
-                    fetch("https://api.duckybot.xyz/servers/", {
+                    fetch("https://api.duckybot.xyz/guilds", {
                         headers: { "Discord-Code": discordToken }
                     })
                 ]);
