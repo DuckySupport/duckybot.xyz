@@ -730,14 +730,23 @@
                         
                         const duration = Math.floor(Date.now() / 1000 - shift.started);
                         
-                        const hours = Math.floor(duration / 3600);
-                        const minutes = Math.floor((duration % 3600) / 60);
-                        const seconds = duration % 60;
+                        const months = Math.floor(duration / (30 * 24 * 3600));
+                        const remainingAfterMonths = duration % (30 * 24 * 3600);
+                        const weeks = Math.floor(remainingAfterMonths / (7 * 24 * 3600));
+                        const remainingAfterWeeks = remainingAfterMonths % (7 * 24 * 3600);
+                        const hours = Math.floor(remainingAfterWeeks / 3600);
+                        const remainingAfterHours = remainingAfterWeeks % 3600;
+                        const minutes = Math.floor(remainingAfterHours / 60);
+                        const seconds = remainingAfterHours % 60;
                         
                         let durationString = '';
-                        if (hours > 0) durationString += `${hours}h `;
-                        if (minutes > 0) durationString += `${minutes}m `;
-                        if (seconds > 0 || (hours === 0 && minutes === 0)) durationString += `${seconds}s`;
+                        if (months > 0) durationString += `${months} month${months !== 1 ? 's' : ''}, `;
+                        if (weeks > 0) durationString += `${weeks} week${weeks !== 1 ? 's' : ''}, `;
+                        if (hours > 0) durationString += `${hours} hour${hours !== 1 ? 's' : ''}, `;
+                        if (minutes > 0) durationString += `${minutes} minute${minutes !== 1 ? 's' : ''}, `;
+                        if (seconds > 0 || (months === 0 && weeks === 0 && hours === 0 && minutes === 0)) {
+                            durationString += `${seconds} second${seconds !== 1 ? 's' : ''}`;
+                        }
                         
                         const username = await fetchDiscordUsername(shift.user);
                         
