@@ -9,7 +9,14 @@ document.addEventListener("DOMContentLoaded", () => {
   
     const hash = window.location.hash.substring(1); 
     const [guildId, ticketId] = hash.split("-");
-  
+
+    const token = document.cookie.match(/discord=([^;]+)/)?.[1];
+    
+    if (!token) {
+        window.location.href = `/login?redirect=${window.location.pathname}/${window.location.hash}`;
+        return;
+    }
+    
     if (!guildId || !ticketId) {
         loadingElement.style.display = "none";
         errorElement.style.display = "block";
@@ -18,6 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
   
     fetch(`https://api.duckybot.xyz/guilds/${guildId}/transcripts/${ticketId}`, {
         method: "GET",
+        headers: {
+            "Discord-Code": token
+        }
     })
         .then((response) => {
             if (!response.ok) {
