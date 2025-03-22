@@ -639,6 +639,7 @@
     let shiftElapsedTime = 0;
     let shiftTimerInterval = null;
     let currentPunishmentToDelete = null;
+    let currentUserShift = null;
 
     function getDiscordToken() {
         return document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
@@ -937,7 +938,7 @@
             for (const punishment of punishments.slice(0, 10)) {
                 const item = document.createElement('div');
                 item.className = 'punishment-item p-3 pl-4 bg-black/30 rounded-md border-l-2 border-[#F5FF82] hover:bg-black/40 transition-colors';
-                item.dataset.punishmentId = punishment.id;
+                item.dataset.punishmentId = punishment.punishmentid || punishment.id;
                 
                 const typeColors = {
                     warn: 'text-yellow-400',
@@ -979,7 +980,7 @@
                 const deleteBtn = item.querySelector('.delete-btn');
                 deleteBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    showDeleteConfirmation(punishment.id, punishment.robloxUser.name, punishment.type);
+                    showDeleteConfirmation(punishment.punishmentid || punishment.id, punishment.robloxUser.name, punishment.type);
                 });
                 
                 fragment.appendChild(item);
@@ -1180,6 +1181,34 @@
                 recentShifts.appendChild(fragment);
             }
             
+            for (const shift of data.activeshifts || []) {
+                const userResponse = await fetch('https://discord.com/api/users/@me', {
+                    headers: { authorization: `Bearer ${discordToken}` }
+                });
+                
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    if (shift.user === userData.id) {
+                        currentUserShift = shift;
+                        shiftStatus = shift.paused ? 'paused' : 'active';
+                        shiftStartTime = shift.started;
+                        shiftElapsedTime = shift.elapsed || 0;
+                        
+                        if (shift.type && shiftType) {
+                            shiftType.value = shift.type;
+                        }
+                        
+                        updateShiftUI();
+                        
+                        if (shiftStatus === 'active') {
+                            startShiftTimer();
+                        }
+                        
+                        break;
+                    }
+                }
+            }
+            
             loadUserRecentShifts(serverId);
             
         } catch (error) {
@@ -1193,7 +1222,7 @@
         if (!discordToken) return;
         
         try {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/shifts/user`, {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/shifts`, {
                 headers: { "Discord-Code": discordToken }
             });
             
@@ -1203,7 +1232,7 @@
             
             const { data } = await response.json();
             
-            if (!data || data.length === 0) {
+            if (!data || !data.shifts || data.shifts.length === 0) {
                 recentUserShifts.innerHTML = '<p class="text-center text-gray-400 py-4">No shift history found.</p>';
                 return;
             }
@@ -1212,11 +1241,29 @@
             
             const fragment = document.createDocumentFragment();
             
-            const sortedShifts = data
-                .sort((a, b) => b.ended - a.ended)
-                .slice(0, 3);
+            const userResponse = await fetch('https://discord.com/api/users/@me', {
+                headers: { authorization: `Bearer ${discordToken}` }
+            });
             
-            for (const shift of sortedShifts) {
+            if (!userResponse.ok) {
+                throw new Error('Failed to fetch user data');
+            }
+            
+            const userData = await userResponse.json();
+            const userId = userData.id;
+            
+            const userShifts = data.shifts.filter(shift => shift.user === userId);
+            
+            if (userShifts.length === 0) {
+                recentUserShifts.innerHTML = '<p class="text-center text-gray-400 py-4">No shift history found.</p>';
+                return;
+            }
+            
+            userShifts.sort((a, b) => b.ended - a.ended);
+            
+            const recentUserShiftsList = userShifts.slice(0, 3);
+            
+            for (const shift of recentUserShiftsList) {
                 const item = document.createElement('div');
                 item.className = 'moderation-log-item flex justify-between items-center';
                 
@@ -1340,11 +1387,27 @@
             
             const { data } = await response.json();
             
+            const userResponse = await fetch('https://discord.com/api/users/@me', {
+                headers: { authorization: `Bearer ${discordToken}` }
+            });
+            
+            if (!userResponse.ok) {
+                throw new Error('Failed to fetch user data');
+            }
+            
+            const userData = await userResponse.json();
+            const userId = userData.id;
+            
+            let userActiveShift = null;
             if (data.activeshifts && data.activeshifts.length > 0) {
-                const activeShift = data.activeshifts[0];
-                shiftStatus = activeShift.paused ? 'paused' : 'active';
-                shiftStartTime = activeShift.started;
-                shiftElapsedTime = activeShift.elapsed || 0;
+                userActiveShift = data.activeshifts.find(shift => shift.user === userId);
+            }
+            
+            if (userActiveShift) {
+                currentUserShift = userActiveShift;
+                shiftStatus = userActiveShift.paused ? 'paused' : 'active';
+                shiftStartTime = userActiveShift.started;
+                shiftElapsedTime = userActiveShift.elapsed || 0;
                 
                 updateShiftUI();
                 
@@ -1352,8 +1415,8 @@
                     startShiftTimer();
                 }
                 
-                if (activeShift.type) {
-                    shiftType.value = activeShift.type;
+                if (userActiveShift.type && shiftType) {
+                    shiftType.value = userActiveShift.type;
                 }
             } else {
                 shiftStatus = 'inactive';
@@ -1427,16 +1490,18 @@
                 throw new Error('Failed to start shift');
             }
             
-            const { data } = await response.json();
+            const data = await response.json();
             
             shiftStatus = 'active';
-            shiftStartTime = data.started || Math.floor(Date.now() / 1000);
-            shiftElapsedTime = data.elapsed || 0;
+            shiftStartTime = Math.floor(Date.now() / 1000);
+            shiftElapsedTime = 0;
             
             updateShiftUI();
             startShiftTimer();
             
             showToast('Shift started successfully');
+            
+            loadShifts(selectedServerId);
             
         } catch (error) {
             console.error('Error starting shift:', error);
@@ -1478,6 +1543,8 @@
             
             showToast('Shift paused successfully');
             
+            loadShifts(selectedServerId);
+            
         } catch (error) {
             console.error('Error pausing shift:', error);
             showToast('Failed to pause shift: ' + error.message, 'error');
@@ -1505,7 +1572,8 @@
             });
             
             if (!response.ok) {
-                throw new Error('Failed to end shift');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to end shift');
             }
             
             if (shiftTimerInterval) {
@@ -1516,12 +1584,13 @@
             shiftStatus = 'inactive';
             shiftStartTime = 0;
             shiftElapsedTime = 0;
+            currentUserShift = null;
             
             updateShiftUI();
             
             showToast('Shift ended successfully');
             
-            loadUserRecentShifts(selectedServerId);
+            loadShifts(selectedServerId);
             
         } catch (error) {
             console.error('Error ending shift:', error);
