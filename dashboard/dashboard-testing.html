@@ -1828,7 +1828,7 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="text-gray-400">Join Key:</span>
-                                <a href="https://policeroleplay.community/join/${serverData.JoinKey}" class="text-blue-400 hover:underline">${serverData.JoinKey || 'None'}</a>
+                                <a href="https://policeroleplay.community/join/${serverData.JoinKey}" class="text-white hover:underline">${serverData.JoinKey || 'None'}</a>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="text-gray-400">Status:</span>
@@ -1839,12 +1839,30 @@
                     <div>
                         <h4 class="text-md font-semibold mb-2">Team Stats</h4>
                         <div class="grid grid-cols-2 gap-2">
-                            ${Object.entries(data.data.lastTeamPlayerCounts || {}).map(([team, count]) => `
-                                <div class="flex items-center gap-2">
-                                    <span class="text-gray-400">${team}:</span>
-                                    <span>${count}</span>
-                                </div>
-                            `).join('')}
+                            ${(() => {
+                                const counts = data.data.lastTeamPlayerCounts || {};
+                                const combinedCounts = {
+                                    'Law Enforcement': (counts['Sheriff'] || 0) + (counts['Police'] || 0),
+                                    'Jail/Civilian': (counts['Jail'] || 0) + (counts['Civilian'] || 0)
+                                };
+                                return Object.entries(combinedCounts).map(([team, count]) => `
+                                    <div class="flex items-center gap-2 relative group">
+                                        <span class="text-gray-400">${team}:</span>
+                                        <span>${count}</span>
+                                        ${team === 'Law Enforcement' ? `
+                                            <div class="absolute left-0 -bottom-16 bg-black/90 p-2 rounded-md hidden group-hover:block z-10">
+                                                <div class="text-sm">Sheriff: ${counts['Sheriff'] || 0}</div>
+                                                <div class="text-sm">Police: ${counts['Police'] || 0}</div>
+                                            </div>
+                                        ` : team === 'Jail/Civilian' ? `
+                                            <div class="absolute left-0 -bottom-16 bg-black/90 p-2 rounded-md hidden group-hover:block z-10">
+                                                <div class="text-sm">Jail: ${counts['Jail'] || 0}</div>
+                                                <div class="text-sm">Civilian: ${counts['Civilian'] || 0}</div>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                `).join('')
+                            })()}
                             <div class="flex items-center gap-2 col-span-2 mt-2">
                                 <span class="text-gray-400">Last Updated:</span>
                                 <span>${new Date().toLocaleString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}</span>
@@ -1911,7 +1929,10 @@
             erlcServerInfo.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load ER:LC data. Please try again.</p></div>';
             erlcPlayersList.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-exclamation-triangle"></i><p>Failed to load players. Please try again.</p></div>';
         }
-    }    async function loadBOLOs(serverId) {
+    }    
+    
+    
+    async function loadBOLOs(serverId) {
         if (!discordToken) {
             activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Authentication error. Please log in again.</p></div>';
             return;
