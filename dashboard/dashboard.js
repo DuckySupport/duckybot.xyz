@@ -1219,23 +1219,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (code !== 200 || !guilds) {
           throw new Error("Invalid response from server")
         }
-  
-        for (const guild of guilds) {
-          if (guild.ducky && guild.manage_server) {
-            const userResponse = await fetch(`https://api.duckybot.xyz/user/${discordUser?.id}`, {
-              headers: { "Discord-Code": discordToken },
-            })
-  
-            if (userResponse.ok) {
-              const userData = await userResponse.json()
-              if (userData.code === 200 && userData.data) {
-                discordUser = userData.data
-                document.getElementById("username").textContent = discordUser.username || discordUser.name
-                document.getElementById("profilePicture").src =
-                  discordUser.avatar || "https://duckybot.xyz/images/Ducky.svg"
-                break
-              }
-            }
+
+        const userResponse = await fetch("https://api.duckybot.xyz/user/@me", {
+          headers: { "Discord-Code": discordToken },
+        })
+
+        if (userResponse.ok) {
+          const userData = await userResponse.json()
+          if (userData.code === 200 && userData.data) {
+            discordUser = userData.data
+            document.getElementById("username").textContent = discordUser.username || discordUser.name
+            document.getElementById("profilePicture").src =
+              discordUser.avatar || "https://duckybot.xyz/images/Ducky.svg"
           }
         }
   
@@ -1311,5 +1306,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     initDropdowns()
     loadServers()
   })
-  
   
