@@ -1217,12 +1217,12 @@ function showAutomationDetails(automation) {
                 option.classList.add('selected');
                 shiftTypeSelected.querySelector('span').textContent = option.textContent;
                 shiftType.value = type.name.toLowerCase();
-                checkActiveShift();
+                checkActiveShift(selectedServerId);
             }
             
             option.addEventListener('click', () => {
                 shiftType.value = type.name.toLowerCase();
-                checkActiveShift();
+                checkActiveShift(selectedServerId);
                 shiftTypeSelected.querySelector('span').textContent = option.textContent;
                 
                 document.querySelectorAll('#shiftTypeOptions .dropdown-option').forEach(opt => {
