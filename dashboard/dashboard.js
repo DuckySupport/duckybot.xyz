@@ -1220,7 +1220,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           throw new Error("Invalid response from server")
         }
 
-        const userResponse = await fetch("https://api.duckybot.xyz/user/@me", {
+        const userResponse = await fetch(`https://api.duckybot.xyz/user/${discordUser.id}`, {
           headers: { "Discord-Code": discordToken },
         })
 
@@ -1232,8 +1232,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById("profilePicture").src =
               discordUser.avatar || "https://duckybot.xyz/images/Ducky.svg"
           }
-        }
-  
+        }  
         serverGrid.innerHTML = ""
   
         const moderationGuilds = guilds.filter((guild) => guild.ducky && guild.manage_server)
