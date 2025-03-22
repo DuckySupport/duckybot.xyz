@@ -113,6 +113,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         ?.split("=")[1]
     }
   
+    async function getDiscordUserInfo(token) {
+      if (!token) return null
+  
+      try {
+        const response = await fetch("https://discord.com/api/users/@me", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+  
+        if (!response.ok) {
+          console.error("Failed to fetch Discord user info:", await response.text())
+          return null
+        }
+  
+        return await response.json()
+      } catch (error) {
+        console.error("Error fetching Discord user info:", error)
+        return null
+      }
+    }
+  
     function formatDuration(seconds) {
       if (seconds < 60) return `${seconds} second${seconds !== 1 ? "s" : ""}`
   
@@ -169,7 +189,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         const response = await fetch(`https://api.duckybot.xyz/user/${userId}`)
   
         if (!response.ok) {
-          return { id: userId, name: userId, username: userId }
+          // Create a default user object when the API returns an error
+          const defaultUser = {
+            id: userId,
+            name: userId.substring(0, 8),
+            username: `User_${userId.substring(0, 4)}`,
+            avatar: "https://duckybot.xyz/images/Ducky.svg",
+          }
+          userCache.set(userId, defaultUser)
+          return defaultUser
         }
   
         const data = await response.json()
@@ -179,10 +207,26 @@ document.addEventListener("DOMContentLoaded", async () => {
           return data.data
         }
   
-        return { id: userId, name: userId, username: userId }
+        // Create a default user object when the API returns invalid data
+        const defaultUser = {
+          id: userId,
+          name: userId.substring(0, 8),
+          username: `User_${userId.substring(0, 4)}`,
+          avatar: "https://duckybot.xyz/images/Ducky.svg",
+        }
+        userCache.set(userId, defaultUser)
+        return defaultUser
       } catch (error) {
         console.error("Error fetching user data:", error)
-        return { id: userId, name: userId, username: userId }
+        // Create a default user object when an error occurs
+        const defaultUser = {
+          id: userId,
+          name: userId.substring(0, 8),
+          username: `User_${userId.substring(0, 4)}`,
+          avatar: "https://duckybot.xyz/images/Ducky.svg",
+        }
+        userCache.set(userId, defaultUser)
+        return defaultUser
       }
     }
   
@@ -337,11 +381,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   
     async function loadPunishments(serverId) {
       punishmentHistory.innerHTML = `
-              <div class="text-center py-4">
-                  <div class="spinner mx-auto mb-2"></div>
-                  <p class="text-gray-400">Loading punishment history...</p>
-              </div>
-          `
+            <div class="text-center py-4">
+                <div class="spinner mx-auto mb-2"></div>
+                <p class="text-gray-400">Loading punishment history...</p>
+            </div>
+        `
   
       discordToken = getDiscordToken()
   
@@ -357,10 +401,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         })
   
         if (!response.ok) {
-          throw new Error("Failed to fetch punishments")
+          if (response.status === 404) {
+            punishmentHistory.innerHTML =
+              '<div class="empty-state"><i class="fas fa-ban"></i><p>No punishment history found.</p></div>'
+          } else {
+            throw new Error(`Failed to fetch punishments: ${response.status} ${response.statusText}`)
+          }
+          return
         }
   
-        const { data: punishments } = await response.json()
+        const responseData = await response.json()
+        const punishments = responseData.data || []
   
         if (!punishments || punishments.length === 0) {
           punishmentHistory.innerHTML =
@@ -402,26 +453,26 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
   
           item.innerHTML = `
-                      <div class="flex flex-col md:flex-row justify-between items-start gap-2">
-                          <div class="flex items-start gap-3">
-                              <div class="avatar-circle hidden sm:flex">
-                                  ${avatarUrl ? `<img src="${avatarUrl}" alt="${punishment.robloxUser.name}">` : punishment.robloxUser.name.charAt(0)}
-                              </div>
-                              <div>
-                                  <h4 class="font-medium"><span class="roblox-displayname">${punishment.robloxUser.displayName || punishment.robloxUser.name}</span> <span class="text-sm text-gray-400">(<span class="roblox-username">${punishment.robloxUser.name}</span>)</span></h4>
-                                  <p class="text-sm ${typeColor} mt-1">${punishment.type.toUpperCase()}</p>
-                                  <p class="text-sm text-gray-400 mt-1">${punishment.reason}</p>
-                              </div>
-                          </div>
-                          <div class="text-right text-xs">
-                              <p class="text-gray-500">${formatDate(punishment.timestamp)}</p>
-                              <p class="text-gray-400 mt-1">By: ${moderatorName}</p>
-                          </div>
-                      </div>
-                      <div class="delete-btn" title="Delete punishment">
-                          <i class="fas fa-trash-alt"></i>
-                      </div>
-                  `
+                        <div class="flex flex-col md:flex-row justify-between items-start gap-2">
+                            <div class="flex items-start gap-3">
+                                <div class="avatar-circle hidden sm:flex">
+                                    ${avatarUrl ? `<img src="${avatarUrl}" alt="${punishment.robloxUser.name}">` : punishment.robloxUser.name.charAt(0)}
+                                </div>
+                                <div>
+                                    <h4 class="font-medium"><span class="roblox-displayname">${punishment.robloxUser.displayName || punishment.robloxUser.name}</span> <span class="text-sm text-gray-400">(<span class="roblox-username">${punishment.robloxUser.name}</span>)</span></h4>
+                                    <p class="text-sm ${typeColor} mt-1">${punishment.type.toUpperCase()}</p>
+                                    <p class="text-sm text-gray-400 mt-1">${punishment.reason}</p>
+                                </div>
+                            </div>
+                            <div class="text-right text-xs">
+                                <p class="text-gray-500">${formatDate(punishment.timestamp)}</p>
+                                <p class="text-gray-400 mt-1">By: ${moderatorName}</p>
+                            </div>
+                        </div>
+                        <div class="delete-btn" title="Delete punishment">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                    `
   
           const deleteBtn = item.querySelector(".delete-btn")
           deleteBtn.addEventListener("click", (e) => {
@@ -570,18 +621,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   
     async function loadShifts(serverId) {
       activeShifts.innerHTML = `
-              <div class="text-center py-4 col-span-full">
-                  <div class="spinner mx-auto mb-2"></div>
-                  <p class="text-gray-400">Loading active shifts...</p>
-              </div>
-          `
+                <div class="text-center py-4 col-span-full">
+                    <div class="spinner mx-auto mb-2"></div>
+                    <p class="text-gray-400">Loading active shifts...</p>
+                </div>
+            `
   
       recentShifts.innerHTML = `
-              <div class="text-center py-4">
-                  <div class="spinner mx-auto mb-2"></div>
-                  <p class="text-gray-400">Loading recent shifts...</p>
-              </div>
-          `
+                <div class="text-center py-4">
+                    <div class="spinner mx-auto mb-2"></div>
+                    <p class="text-gray-400">Loading recent shifts...</p>
+                </div>
+            `
   
       discordToken = getDiscordToken()
   
@@ -622,23 +673,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             const avatarUrl = userData.avatar
   
             card.innerHTML = `
-                          <div class="avatar-circle">
-                              ${avatarUrl ? `<img src="${avatarUrl}" alt="${userData.username || userData.name || shift.user}">` : (userData.username || userData.name || shift.user).charAt(0)}
-                          </div>
-                          <div class="flex-1">
-                              <div class="flex justify-between items-start">
-                                  <div>
-                                      <h4 class="font-medium">${userData.username || userData.name || shift.user}</h4>
-                                      <p class="text-sm text-[#F5FF82] mt-1">Active for <span class="active-duration">${formatDuration(duration)}</span></p>
-                                      <p class="text-xs text-gray-400 mt-1">Type: ${shift.type || "Default"}</p>
-                                  </div>
-                                  <div class="text-right">
-                                      <p class="text-xs text-gray-500">Started: <span data-started-time="${shift.started}">${formatDate(shift.started)}</span></p>
-                                      <p class="text-xs text-gray-400 mt-1">Punishments: ${shift.punishments}</p>
-                                  </div>
-                              </div>
-                          </div>
-                      `
+                            <div class="avatar-circle">
+                                ${avatarUrl ? `<img src="${avatarUrl}" alt="${userData.username || userData.name || shift.user}">` : (userData.username || userData.name || shift.user).charAt(0)}
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-medium">${userData.username || userData.name || shift.user}</h4>
+                                        <p class="text-sm text-[#F5FF82] mt-1">Active for <span class="active-duration">${formatDuration(duration)}</span></p>
+                                        <p class="text-xs text-gray-400 mt-1">Type: ${shift.type || "Default"}</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-xs text-gray-500">Started: <span data-started-time="${shift.started}">${formatDate(shift.started)}</span></p>
+                                        <p class="text-xs text-gray-400 mt-1">Punishments: ${shift.punishments}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `
   
             fragment.appendChild(card)
           }
@@ -672,23 +723,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             const actualDuration = shift.elapsed > 0 ? shift.elapsed * 60 : 0
   
             item.innerHTML = `
-                          <div class="avatar-circle">
-                              ${avatarUrl ? `<img src="${avatarUrl}" alt="${userData.username || userData.name || shift.user}">` : (userData.username || userData.name || shift.user).charAt(0)}
-                          </div>
-                          <div class="flex-1">
-                              <div class="flex justify-between items-start">
-                                  <div>
-                                      <h4 class="font-medium">${userData.username || userData.name || shift.user}</h4>
-                                      <p class="text-sm text-gray-400 mt-1">Duration: ${formatDuration(actualDuration)}</p>
-                                      <p class="text-xs text-gray-400 mt-1">Type: ${shift.type || "Default"}</p>
-                                  </div>
-                                  <div class="text-right">
-                                      <p class="text-xs text-gray-500">Ended: ${formatDate(shift.ended)}</p>
-                                      <p class="text-xs text-gray-400 mt-1">Punishments: ${shift.punishments}</p>
-                                  </div>
-                              </div>
-                          </div>
-                      `
+                            <div class="avatar-circle">
+                                ${avatarUrl ? `<img src="${avatarUrl}" alt="${userData.username || userData.name || shift.user}">` : (userData.username || userData.name || shift.user).charAt(0)}
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-medium">${userData.username || userData.name || shift.user}</h4>
+                                        <p class="text-sm text-gray-400 mt-1">Duration: ${formatDuration(actualDuration)}</p>
+                                        <p class="text-xs text-gray-400 mt-1">Type: ${shift.type || "Default"}</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-xs text-gray-500">Ended: ${formatDate(shift.ended)}</p>
+                                        <p class="text-xs text-gray-400 mt-1">Punishments: ${shift.punishments}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `
   
             fragment.appendChild(item)
           }
@@ -779,16 +830,16 @@ document.addEventListener("DOMContentLoaded", async () => {
           const actualDuration = shift.elapsed > 0 ? shift.elapsed * 60 : 0
   
           item.innerHTML = `
-                      <div>
-                          <div class="flex items-center gap-2">
-                              <span class="px-2 py-1 bg-[#F5FF82]/10 text-[#F5FF82] rounded-md text-xs font-medium">${shift.type || "default"}</span>
-                              <span class="text-sm text-gray-400">${shift.breaks || 0} breaks</span>
-                          </div>
-                      </div>
-                      <div class="text-right">
-                          <div class="text-sm font-semibold">${formatDuration(actualDuration)}</div>
-                      </div>
-                  `
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-1 bg-[#F5FF82]/10 text-[#F5FF82] rounded-md text-xs font-medium">${shift.type || "default"}</span>
+                                <span class="text-sm text-gray-400">${shift.breaks || 0} breaks</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold">${formatDuration(actualDuration)}</div>
+                        </div>
+                    `
   
           fragment.appendChild(item)
         }
@@ -1206,6 +1257,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
   
       try {
+        // Get Discord user info first
+        discordUser = await getDiscordUserInfo(discordToken)
+  
+        if (discordUser) {
+          document.getElementById("username").textContent = discordUser.username || discordUser.global_name || "User"
+          document.getElementById("profilePicture").src = discordUser.avatar
+            ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
+            : "https://duckybot.xyz/images/Ducky.svg"
+        } else {
+          document.getElementById("username").textContent = "User"
+          document.getElementById("profilePicture").src = "https://duckybot.xyz/images/Ducky.svg"
+        }
+  
         const response = await fetch("https://api.duckybot.xyz/guilds", {
           headers: { "Discord-Code": discordToken },
         })
@@ -1219,40 +1283,27 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (code !== 200 || !guilds) {
           throw new Error("Invalid response from server")
         }
-
-        const userResponse = await fetch(`https://api.duckybot.xyz/user/${discordUser.id}`, {
-          headers: { "Discord-Code": discordToken },
-        })
-
-        if (userResponse.ok) {
-          const userData = await userResponse.json()
-          if (userData.code === 200 && userData.data) {
-            discordUser = userData.data
-            document.getElementById("username").textContent = discordUser.username || discordUser.name
-            document.getElementById("profilePicture").src =
-              discordUser.avatar || "https://duckybot.xyz/images/Ducky.svg"
-          }
-        }  
+  
         serverGrid.innerHTML = ""
   
         const moderationGuilds = guilds.filter((guild) => guild.ducky && guild.manage_server)
   
         if (moderationGuilds.length === 0) {
           serverGrid.innerHTML = `
-                      <div class="col-span-full text-center py-8">
-                          <i class="fas fa-server text-4xl text-gray-500 mb-4"></i>
-                          <p class="text-gray-400">No servers found with Ducky and moderation permissions.</p>
-                          <a href="/invite" class="mt-4 inline-block px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:opacity-90 transition">Invite Ducky to your server</a>
-                      </div>
-                  `
+                        <div class="col-span-full text-center py-8">
+                            <i class="fas fa-server text-4xl text-gray-500 mb-4"></i>
+                            <p class="text-gray-400">No servers found with Ducky and moderation permissions.</p>
+                            <a href="/invite" class="mt-4 inline-block px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:opacity-90 transition">Invite Ducky to your server</a>
+                        </div>
+                    `
         } else {
           moderationGuilds.forEach((guild) => {
             const serverCard = document.createElement("div")
             serverCard.className = "server-card glass-card"
             serverCard.innerHTML = `
-                          <img src="${guild.icon || "https://duckybot.xyz/images/Ducky.svg"}" alt="${guild.name}">
-                          <span class="text-center text-sm font-medium truncate w-full">${guild.name}</span>
-                      `
+                            <img src="${guild.icon || "https://duckybot.xyz/images/Ducky.svg"}" alt="${guild.name}">
+                            <span class="text-center text-sm font-medium truncate w-full">${guild.name}</span>
+                        `
   
             serverCard.addEventListener("click", () => {
               selectServer(guild.id, guild.name, guild.icon, guild.config)
@@ -1282,12 +1333,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         loadingOverlay.style.display = "none"
         serverSelectionView.style.opacity = "1"
         serverGrid.innerHTML = `
-                  <div class="col-span-full text-center py-8">
-                      <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i>
-                      <p class="text-gray-400">Failed to load servers. Please try again.</p>
-                      <button id="retryBtn" class="mt-4 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition">Retry</button>
-                  </div>
-              `
+                    <div class="col-span-full text-center py-8">
+                        <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i>
+                        <p class="text-gray-400">Failed to load servers. Please try again.</p>
+                        <button id="retryBtn" class="mt-4 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition">Retry</button>
+                    </div>
+                `
   
         document.getElementById("retryBtn")?.addEventListener("click", loadServers)
       }
@@ -1305,4 +1356,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     initDropdowns()
     loadServers()
   })
+  
   
