@@ -78,6 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .replace(/^(?:- |\* )(.*)/gm, '<li>$1</li>')
         .replace(/^(?:  - |  \* )(.*)/gm, '<li class="indent">$1</li>')
         .replace(/^(?:\d+\. )(.*)/gm, '<li class="numbered">$1</li>')
+        .replace(/>>>([\s\S]*)/g, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
         .replace(/^> (.+)/gm, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
         .replace(/<:([^:]+):\d+>/g, '$1')
         .replace(/\n/g, '<br>');
