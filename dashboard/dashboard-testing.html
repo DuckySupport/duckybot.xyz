@@ -1388,7 +1388,7 @@
     }    
     if (!discordToken) {
         punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Authentication error. Please log in again.</p></div>';
-        return;
+        throw new Error('Authentication error');
     }
     
     try {
