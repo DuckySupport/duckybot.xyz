@@ -463,6 +463,42 @@
             grid-column: span 8;
         }
 
+        .dashboard-grid > .col-span-3 {
+            grid-column: span 3;
+        }
+
+        .dashboard-grid > .col-span-9 {
+            grid-column: span 9;
+        }
+
+        .mod-panel-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 1rem;
+            height: calc(100vh - 200px);
+        }
+
+        .mod-panel-section {
+            background: rgba(30, 30, 30, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mod-panel-header {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+        }
+
+        .mod-panel-content {
+            padding: 1rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
         @media (max-width: 1024px) {
             .dashboard-grid > .lg\:col-span-6 {
                 grid-column: span 12;
@@ -472,6 +508,11 @@
             }
             .dashboard-grid > .lg\:col-span-8 {
                 grid-column: span 12;
+            }
+            .mod-panel-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+                height: auto;
             }
         }
 
@@ -745,82 +786,90 @@
                 </div>
             </div>
 
-            <div id="erlcTab" class="hidden">
-                <div class="dashboard-grid">
-                    <div class="col-span-12 lg:col-span-8">
-                        <div class="glass-card p-4 mb-6">
-                            <h3 class="text-lg font-bold mb-4">Server Information</h3>
-                            <div id="erlcServerInfo" class="p-4 bg-black/20 rounded-lg">
-                                <div class="text-center py-4">
-                                    <div class="spinner mx-auto mb-2"></div>
-                                    <p class="text-gray-400">Loading server information...</p>
-                                </div>
+            
+    <div id="erlcTab" class="hidden">
+        <div class="mod-panel-grid">
+            <div class="mod-panel-section">
+                <div class="mod-panel-header">
+                    <h3 class="text-lg font-bold">Server Controls</h3>
+                </div>
+                <div class="mod-panel-content">
+                    <div class="glass-card p-4 mb-6">
+                        <h3 class="text-md font-semibold mb-4">BOLO Management</h3>
+                        <form id="boloForm" class="space-y-4">
+                            <div>
+                                <label for="boloUsername" class="block text-sm font-medium text-gray-400 mb-1">Roblox Username</label>
+                                <input type="text" id="boloUsername" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter username" required>
                             </div>
-                        </div>
-                        
-                        <div class="glass-card p-4 mb-6">
-                            <h3 class="text-lg font-bold mb-4">In-Game Players</h3>
-                            <div id="erlcPlayersList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                <div class="text-center py-4 col-span-full">
-                                    <div class="spinner mx-auto mb-2"></div>
-                                    <p class="text-gray-400">Loading players...</p>
-                                </div>
+                            <div>
+                                <label for="boloReason" class="block text-sm font-medium text-gray-400 mb-1">Reason</label>
+                                <textarea id="boloReason" rows="2" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter reason" required></textarea>
                             </div>
-                        </div>
+                            <div class="flex justify-end">
+                                <button type="submit" id="submitBoloBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:opacity-90 transition">
+                                    Create BOLO
+                                </button>
+                            </div>
+                        </form>
                     </div>
                     
-                    <div class="col-span-12 lg:col-span-4">
-                        <div class="glass-card p-4 mb-6">
-                            <h3 class="text-lg font-bold mb-4">BOLO Management</h3>
-                            <form id="boloForm" class="space-y-4">
-                                <div>
-                                    <label for="boloUsername" class="block text-sm font-medium text-gray-400 mb-1">Roblox Username</label>
-                                    <input type="text" id="boloUsername" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter username" required>
-                                </div>
-                                <div>
-                                    <label for="boloReason" class="block text-sm font-medium text-gray-400 mb-1">Reason</label>
-                                    <textarea id="boloReason" rows="2" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter reason" required></textarea>
-                                </div>
-                                <div class="flex justify-end">
-                                    <button type="submit" id="submitBoloBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:opacity-90 transition">
-                                        Create BOLO
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        
-                        <div class="glass-card p-4">
-                            <h3 class="text-lg font-bold mb-4">Active BOLOs</h3>
-                            <div id="activeBOLOs" class="space-y-3">
-                                <div class="text-center py-4">
-                                    <div class="spinner mx-auto mb-2"></div>
-                                    <p class="text-gray-400">Loading BOLOs...</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-span-12">
-                        <div class="glass-card p-4">
-                            <h3 class="text-lg font-bold mb-4">Discord Checks</h3>
-                            <p class="text-gray-400 mb-4">Check which players in-game are connected to Discord and view their voice channel status.</p>
-                            <button id="runDiscordCheckBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:opacity-90 transition">
-                                Run Discord Check
-                            </button>
-                            <div id="discordCheckCooldown" class="mt-2 text-sm text-gray-400 hidden">
-                                <i class="fas fa-clock mr-1"></i> <span id="discordCheckCooldownTime"></span> until next check
-                            </div>
-                            
-                            <div id="discordCheckResults" class="mt-6 space-y-3 hidden">
-                                <h4 class="text-md font-semibold mb-3">Results</h4>
-                                <div id="discordCheckList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    
-                                </div>
-                            </div>
+                    <div class="glass-card p-4">
+                        <h3 class="text-md font-semibold mb-4">Discord Check</h3>
+                        <p class="text-gray-400 mb-4">Check which players in-game are connected to Discord.</p>
+                        <button id="runDiscordCheckBtn" class="w-full px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:opacity-90 transition">
+                            Run Discord Check
+                        </button>
+                        <div id="discordCheckCooldown" class="mt-2 text-sm text-gray-400 hidden">
+                            <i class="fas fa-clock mr-1"></i> <span id="discordCheckCooldownTime"></span> until next check
                         </div>
                     </div>
                 </div>
             </div>
+            
+            <div class="mod-panel-section">
+                <div class="mod-panel-header">
+                    <h3 class="text-lg font-bold">Server Information</h3>
+                </div>
+                <div class="mod-panel-content">
+                    <div id="erlcServerInfo" class="p-4 bg-black/20 rounded-lg mb-6">
+                        <div class="text-center py-4">
+                            <div class="spinner mx-auto mb-2"></div>
+                            <p class="text-gray-400">Loading server information...</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-md font-semibold mb-4">In-Game Players</h3>
+                    <div id="erlcPlayersList" class="grid grid-cols-1 gap-4">
+                        <div class="text-center py-4 col-span-full">
+                            <div class="spinner mx-auto mb-2"></div>
+                            <p class="text-gray-400">Loading players...</p>
+                        </div>
+                    </div>
+                    
+                    <div id="discordCheckResults" class="mt-6 space-y-3 hidden">
+                        <h4 class="text-md font-semibold mb-3">Discord Check Results</h4>
+                        <div id="discordCheckList" class="grid grid-cols-1 gap-4">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mod-panel-section">
+                <div class="mod-panel-header">
+                    <h3 class="text-lg font-bold">Active BOLOs</h3>
+                </div>
+                <div class="mod-panel-content">
+                    <div id="activeBOLOs" class="space-y-3">
+                        <div class="text-center py-4">
+                            <div class="spinner mx-auto mb-2"></div>
+                            <p class="text-gray-400">Loading BOLOs...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
         </main>
 
         <footer class="border-t border-[#F5FF82]/10 mt-8">
@@ -1069,7 +1118,7 @@
             
             return { id: userId, name: userId, username: userId };
         } catch (error) {
-            return { id: userId, name: userId, username: userId };
+            return { id: userId, name: userId, username: username };
         }
     }
 
@@ -1809,12 +1858,16 @@ function filterPunishmentHistory() {
                         <h4 class="text-md font-semibold mb-2">Server Details</h4>
                         <div class="space-y-2">
                             <div class="flex items-center gap-2">
-                                <span class="text-gray-400">Server ID:</span>
-                                <span>${serverData.ID || 'Unknown'}</span>
+                                <span class="text-gray-400">Server Name:</span>
+                                <span>${serverData.server?.Name || 'Unknown'}</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="text-gray-400">Players:</span>
-                                <span>${serverData.players ? serverData.players.length : 0} / ${serverData.maxPlayers || '?'}</span>
+                                <span>${serverData.server?.CurrentPlayers || 0} / ${serverData.server?.MaxPlayers || '?'}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-gray-400">Join Key:</span>
+                                <span>${serverData.server?.JoinKey || 'None'}</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="text-gray-400">Status:</span>
@@ -1823,731 +1876,292 @@ function filterPunishmentHistory() {
                         </div>
                     </div>
                     <div>
-                        <h4 class="text-md font-semibold mb-2">Game Stats</h4>
+                        <h4 class="text-md font-semibold mb-2">Team Distribution</h4>
                         <div class="space-y-2">
-                            <div class="flex items-center gap-2">
-                                <span class="text-gray-400">Time:</span>
-                                <span>${serverData.time || 'Unknown'}</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-gray-400">Weather:</span>
-                                <span>${serverData.weather || 'Unknown'}</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-gray-400">Last Updated:</span>
-                                <span>${new Date().toLocaleTimeString()}</span>
+                            ${serverData.lastTeamPlayerCounts ? Object.entries(serverData.lastTeamPlayerCounts).map(([team, count]) => `
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-400">${team}:</span>
+                                    <span>${count}</span>
+                                </div>
+                            `).join('') : '<p class="text-gray-400">No team data available</p>'}
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        if (!serverData.players || serverData.players.length === 0) {
+            erlcPlayersList.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-users"></i><p>No players found.</p></div>';
+            return;
+        }
+        
+        erlcPlayersList.innerHTML = '';
+        
+        const fragment = document.createDocumentFragment();
+        
+        const bolosResponse = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/bolos`, {
+            headers: { "Discord-Code": discordToken }
+        }).catch(() => ({ ok: false }));
+        
+        let bolos = [];
+        if (bolosResponse && bolosResponse.ok) {
+            const bolosData = await bolosResponse.json();
+            bolos = bolosData.data || [];
+        }
+        
+        for (const player of serverData.players) {
+            const playerCard = document.createElement('div');
+            playerCard.className = 'p-3 bg-black/30 rounded-lg border-l-2 border-[#F5FF82]';
+            
+            const robloxUser = await fetchUserData(player.ID);
+            const avatarUrl = robloxUser.avatar;
+            
+            const hasBOLO = bolos.some(bolo => bolo.user === parseInt(player.ID));
+            
+            playerCard.innerHTML = `
+                <div class="flex items-start gap-3">
+                    <div class="avatar-circle">
+                        ${avatarUrl ? `<img src="${avatarUrl}" alt="${player.Name}">` : player.Name.charAt(0)}
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-medium flex items-center gap-2">
+                                    ${player.Name}
+                                    ${hasBOLO ? '<span class="bolo-tag"><i class="fas fa-exclamation-triangle"></i>BOLO</span>' : ''}
+                                </h4>
+                                <p class="text-sm text-gray-400 mt-1">Team: ${player.Team || 'Civilian'}</p>
+                                <p class="text-xs text-gray-400 mt-1">Permission: ${player.Permission || 'None'}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
             
-            if (!serverData.players || serverData.players.length === 0) {
-                erlcPlayersList.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-users"></i><p>No players found.</p></div>';
-                return;
-            }
+            fragment.appendChild(playerCard);
+        }
+        
+        erlcPlayersList.appendChild(fragment);
+        
+    } catch (error) {
+        erlcServerInfo.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load ER:LC data. Please try again.</p></div>';
+        erlcPlayersList.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-exclamation-triangle"></i><p>Failed to load players. Please try again.</p></div>';
+    }
+}
+
+async function loadBOLOs(serverId) {
+    if (!discordToken) {
+        activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Authentication error. Please log in again.</p></div>';
+        return;
+    }
+    
+    try {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/bolos`, {
+            headers: { "Discord-Code": discordToken }
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch BOLOs');
+        }
+        
+        const data = await response.json();
+        
+        if (!data.data || data.data.length === 0) {
+            activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><p>No active BOLOs found.</p></div>';
+            return;
+        }
+        
+        activeBOLOs.innerHTML = '';
+        
+        const fragment = document.createDocumentFragment();
+        
+        for (const bolo of data.data) {
+            const boloCard = document.createElement('div');
+            boloCard.className = 'p-3 bg-black/30 rounded-lg border-l-2 border-red-500 mb-3';
+            boloCard.dataset.robloxId = bolo.user;
             
-            erlcPlayersList.innerHTML = '';
+            const robloxUser = await fetchUserData(bolo.user);
+            const avatarUrl = robloxUser.avatar;
+            const moderatorData = await fetchUserData(bolo.moderator);
             
-            const fragment = document.createDocumentFragment();
-            
-            const bolosResponse = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/bolos`, {
-                headers: { "Discord-Code": discordToken }
-            }).catch(() => ({ ok: false }));
-            
-            let bolos = [];
-            if (bolosResponse && bolosResponse.ok) {
-                const bolosData = await bolosResponse.json();
-                bolos = bolosData.data || [];
-            }
-            
-            for (const player of serverData.players) {
-                const playerCard = document.createElement('div');
-                playerCard.className = 'p-3 bg-black/30 rounded-lg border-l-2 border-[#F5FF82]';
-                
-                const robloxUser = await fetchUserData(player.ID);
-                const avatarUrl = robloxUser.avatar || player.avatar;
-                
-                const hasBOLO = bolos.some(bolo => bolo.robloxId === player.ID);
-                
-                playerCard.innerHTML = `
-                    <div class="flex items-start gap-3">
-                        <div class="avatar-circle">
-                            ${avatarUrl ? `<img src="${avatarUrl}" alt="${player.Name}">` : player.Name.charAt(0)}
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h4 class="font-medium flex items-center gap-2">
-                                        ${player.Name}
-                                        ${hasBOLO ? '<span class="bolo-tag"><i class="fas fa-exclamation-triangle"></i>BOLO</span>' : ''}
-                                    </h4>
-                                    <p class="text-sm text-gray-400 mt-1">Team: ${player.Team || 'Civilian'}</p>
-                                </div>
+            boloCard.innerHTML = `
+                <div class="flex items-start gap-3">
+                    <div class="avatar-circle">
+                        ${avatarUrl ? `<img src="${avatarUrl}" alt="${robloxUser.name}">` : (robloxUser.name || 'User').charAt(0)}
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-medium">${robloxUser.name || 'Unknown User'}</h4>
+                                <p class="text-sm text-gray-400 mt-1">${bolo.reason}</p>
+                                <p class="text-xs text-gray-500 mt-2">Created: ${formatDate(bolo.created)}</p>
+                                <p class="text-xs text-gray-500">By: ${moderatorData.username || moderatorData.name || bolo.moderator}</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="approve-bolo-btn px-2 py-1 bg-green-500/10 text-green-500 rounded-md text-xs font-medium hover:bg-green-500/20 transition">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="delete-bolo-btn px-2 py-1 bg-red-500/10 text-red-500 rounded-md text-xs font-medium hover:bg-red-500/20 transition">
+                                    <i class="fas fa-times"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
-                `;
-                
-                fragment.appendChild(playerCard);
-            }
+                </div>
+            `;
             
-            erlcPlayersList.appendChild(fragment);
+            const approveBtn = boloCard.querySelector('.approve-bolo-btn');
+            const deleteBtn = boloCard.querySelector('.delete-bolo-btn');
             
-        } catch (error) {
-            erlcServerInfo.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load ER:LC data. Please try again.</p></div>';
-            erlcPlayersList.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-exclamation-triangle"></i><p>Failed to load players. Please try again.</p></div>';
-        }
-    }
-    
-    async function loadBOLOs(serverId) {
-        if (!discordToken) {
-            activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Authentication error. Please log in again.</p></div>';
-            return;
+            approveBtn.addEventListener('click', () => approveBOLO(bolo.user));
+            deleteBtn.addEventListener('click', () => deleteBOLO(bolo.user));
+            
+            fragment.appendChild(boloCard);
         }
         
-        try {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/bolos`, {
-                headers: { "Discord-Code": discordToken }
-            });
-            
-            if (!response.ok) {
-                throw new Error('Failed to fetch BOLOs');
-            }
-            
-            const data = await response.json();
-            
-            if (!data.data || data.data.length === 0) {
-                activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><p>No active BOLOs found.</p></div>';
-                return;
-            }
-            
-            activeBOLOs.innerHTML = '';
-            
+        activeBOLOs.appendChild(fragment);
+        
+    } catch (error) {
+        activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load BOLOs. Please try again.</p></div>';
+    }
+}
+
+function updateShiftUI() {
+    if (shiftStatus === 'paused') {
+        startShiftBtn.disabled = false;
+        pauseShiftBtn.disabled = true;
+        endShiftBtn.disabled = false;
+        
+        startShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Resume</span>';
+    } else if (shiftStatus === 'active') {
+        startShiftBtn.disabled = true;
+        pauseShiftBtn.disabled = false;
+        endShiftBtn.disabled = false;
+        
+        startShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Start</span>';
+    } else {
+        startShiftBtn.disabled = false;
+        pauseShiftBtn.disabled = true;
+        endShiftBtn.disabled = true;
+        
+        startShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Start</span>';
+    }
+    
+    shiftStatusIndicator.className = `shift-status ${shiftStatus}`;
+    const pulse = shiftStatusIndicator.querySelector('.pulse');
+    pulse.className = `pulse ${shiftStatus}`;
+    
+    if (shiftStatus === 'active') {
+        shiftStatusText.textContent = 'On Duty';
+    } else if (shiftStatus === 'paused') {
+        shiftStatusText.textContent = 'Paused';
+    } else {
+        shiftStatusText.textContent = 'Off Duty';
+    }
+    
+    if (shiftStatus === 'inactive') {
+        shiftTimer.textContent = '00:00:00';
+    }
+}
+
+async function runDiscordCheck() {
+    if (!discordToken || !selectedServerId) {
+        showToast('Authentication error. Please log in again.', 'error');
+        return;
+    }
+    
+    if (discordCheckCooldowns[selectedServerId] && discordCheckCooldowns[selectedServerId] > Date.now()) {
+        showToast('Discord check is on cooldown. Please wait before trying again.', 'error');
+        return;
+    }
+    
+    try {
+        runDiscordCheckBtn.disabled = true;
+        runDiscordCheckBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Running check...';
+    
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/erlc/check`, {
+            headers: { "Discord-Code": discordToken }
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to run Discord check');
+        }
+        
+        const { data } = await response.json();
+        
+        discordCheckList.innerHTML = '';
+        
+        if (!data || data.length === 0) {
+            discordCheckList.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-users"></i><p>No players found in-game.</p></div>';
+        } else {
             const fragment = document.createDocumentFragment();
             
-            for (const bolo of data.data) {
-                const boloCard = document.createElement('div');
-                boloCard.className = 'p-3 bg-black/30 rounded-lg border-l-2 border-red-500 mb-3';
-                boloCard.dataset.robloxId = bolo.robloxId;
+            for (const player of data) {
+                const item = document.createElement('div');
+                item.className = 'p-4 bg-black/30 rounded-lg border-l-2 border-[#F5FF82]';
                 
-                const robloxUser = await fetchUserData(bolo.robloxId);
-                const avatarUrl = robloxUser.avatar;
-                
-                boloCard.innerHTML = `
-                    <div class="flex items-start gap-3">
-                        <div class="avatar-circle">
-                            ${avatarUrl ? `<img src="${avatarUrl}" alt="${bolo.username}">` : bolo.username.charAt(0)}
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h4 class="font-medium">${bolo.username}</h4>
-                                    <p class="text-sm text-gray-400 mt-1">${bolo.reason}</p>
-                                    <p class="text-xs text-gray-500 mt-2">Created: ${formatDate(bolo.timestamp)}</p>
-                                </div>
-                                <div class="flex gap-2">
-                                    <button class="approve-bolo-btn px-2 py-1 bg-green-500/10 text-green-500 rounded-md text-xs font-medium hover:bg-green-500/20 transition">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button class="delete-bolo-btn px-2 py-1 bg-red-500/10 text-red-500 rounded-md text-xs font-medium hover:bg-red-500/20 transition">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
+                if (player.discord) {
+                    item.innerHTML = `
+                        <div class="flex items-start gap-3">
+                            <div class="avatar-circle">
+                                ${player.roblox.avatar ? `<img src="${player.roblox.avatar}" alt="${player.roblox.name}">` : player.roblox.name.charAt(0)}
                             </div>
-                        </div>
-                    </div>
-                `;
-                
-                const approveBtn = boloCard.querySelector('.approve-bolo-btn');
-                const deleteBtn = boloCard.querySelector('.delete-bolo-btn');
-                
-                approveBtn.addEventListener('click', () => approveBOLO(bolo.robloxId));
-                deleteBtn.addEventListener('click', () => deleteBOLO(bolo.robloxId));
-                
-                fragment.appendChild(boloCard);
-            }
-            
-            activeBOLOs.appendChild(fragment);
-            
-        } catch (error) {
-            activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load BOLOs. Please try again.</p></div>';
-        }
-    }
-    
-    async function createBOLO() {
-        if (!discordToken || !selectedServerId) {
-            showToast('Authentication error. Please log in again.', 'error');
-            return;
-        }
-        
-        const username = document.getElementById('boloUsername').value;
-        const reason = document.getElementById('boloReason').value;
-        
-        if (!username || !reason) {
-            showToast('Please fill in all fields', 'error');
-            return;
-        }
-        
-        const submitBtn = document.getElementById('submitBoloBtn');
-        const originalBtnText = submitBtn.innerHTML;
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
-        
-        try {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/bolos`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Discord-Code': discordToken
-                },
-                body: JSON.stringify({
-                    username: username,
-                    reason: reason
-                })
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to create BOLO');
-            }
-            
-            boloForm.reset();
-            showToast(`Successfully created BOLO for ${username}`);
-            
-            loadBOLOs(selectedServerId);
-            loadERLCData(selectedServerId);
-            
-        } catch (error) {
-            showToast(error.message || 'Failed to create BOLO. Please try again.', 'error');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalBtnText;
-        }
-    }
-    
-    async function approveBOLO(robloxId) {
-        if (!discordToken || !selectedServerId) {
-            showToast('Authentication error. Please log in again.', 'error');
-            return;
-        }
-        
-        try {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/bolos/${robloxId}`, {
-                method: 'POST',
-                headers: {
-                    'Discord-Code': discordToken
-                }
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to approve BOLO');
-            }
-            
-            showToast('BOLO approved successfully');
-            
-            const boloCard = document.querySelector(`[data-roblox-id="${robloxId}"]`);
-            if (boloCard) {
-                boloCard.remove();
-                
-                if (activeBOLOs.children.length === 0) {
-                    activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><p>No active BOLOs found.</p></div>';
-                }
-            }
-            
-            loadERLCData(selectedServerId);
-            
-        } catch (error) {
-            showToast(error.message || 'Failed to approve BOLO. Please try again.', 'error');
-        }
-    }
-    
-    async function deleteBOLO(robloxId) {
-        if (!discordToken || !selectedServerId) {
-            showToast('Authentication error. Please log in again.', 'error');
-            return;
-        }
-        
-        try {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/bolos/${robloxId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Discord-Code': discordToken
-                }
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to delete BOLO');
-            }
-            
-            showToast('BOLO deleted successfully');
-            
-            const boloCard = document.querySelector(`[data-roblox-id="${robloxId}"]`);
-            if (boloCard) {
-                boloCard.remove();
-                
-                if (activeBOLOs.children.length === 0) {
-                    activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><p>No active BOLOs found.</p></div>';
-                }
-            }
-            
-            loadERLCData(selectedServerId);
-            
-        } catch (error) {
-            showToast(error.message || 'Failed to delete BOLO. Please try again.', 'error');
-        }
-    }
-
-    async function issuePunishment() {
-        const now = Date.now();
-        if (now - lastPunishmentTime < PUNISHMENT_COOLDOWN) {
-            showToast('Please wait 5 seconds between punishments', 'error');
-            return;
-        }
-
-        if (!discordToken) {
-            showToast('Authentication error. Please log in again.', 'error');
-            return;
-        }
-        
-        const robloxUsername = document.getElementById('robloxUsername').value;
-        const type = document.getElementById('punishmentType').value;
-        const reason = document.getElementById('reason').value;
-        
-        if (!type) {
-            showToast('Please select a punishment type', 'error');
-            return;
-        }
-        
-        let expires = null;
-        if (type === 'tempban') {
-            const durationValue = document.getElementById('durationValue').value;
-            const durationUnit = document.getElementById('durationUnit').value;
-            
-            if (!durationValue || durationValue <= 0) {
-                showToast('Please enter a valid duration', 'error');
-                return;
-            }
-            
-            const multipliers = {
-                minutes: 60,
-                hours: 3600,
-                days: 86400,
-                weeks: 604800
-            };
-            
-            const duration = durationValue * multipliers[durationUnit];
-            expires = Math.floor(Date.now() / 1000) + duration;
-        }
-        
-        const submitBtn = document.getElementById('submitBtn');
-        const originalBtnText = submitBtn.innerHTML;
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
-        
-        try {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Discord-Code': discordToken
-                },
-                body: JSON.stringify({
-                    username: robloxUsername,
-                    type,
-                    reason,
-                    expires
-                })
-            });
-            
-            const data = await response.json();
-            
-            if (!response.ok) {
-                throw new Error(data.message || 'Failed to issue punishment');
-            }
-            
-            punishmentForm.reset();
-            durationContainer.classList.add('hidden');
-            punishmentTypeSelected.querySelector('span').textContent = 'Select type...';
-            document.querySelectorAll('#punishmentTypeOptions .dropdown-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            
-            showToast(`Successfully issued ${type} to ${robloxUsername}`);
-            lastPunishmentTime = now;
-            
-            loadPunishments(selectedServerId);
-            
-        } catch (error) {
-            showToast(error.message || 'Failed to issue punishment. Please try again.', 'error');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalBtnText;
-        }
-    }
-    
-    async function checkActiveShift(serverId) {
-        if (!discordToken || !discordUser) return;
-        
-        try {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/shifts`, {
-                headers: { "Discord-Code": discordToken }
-            });
-            
-            if (!response.ok) {
-                throw new Error('Failed to check active shift');
-            }
-            
-            const { data } = await response.json();
-            
-            const userId = discordUser.id;
-            let userActiveShift = null;
-            
-            if (data.activeshifts && data.activeshifts.length > 0) {
-                userActiveShift = data.activeshifts.find(shift => shift.user === userId && shift.type === shiftType.value);
-            }
-            
-            if (userActiveShift) {
-                currentUserShift = userActiveShift;
-                shiftStatus = userActiveShift.paused ? 'paused' : 'active';
-                shiftStartTime = userActiveShift.started;
-                shiftElapsedTime = userActiveShift.elapsed || 0;
-                
-                updateShiftUI();
-                
-                if (shiftStatus === 'active') {
-                    startShiftTimer();
-                }
-            } else {
-                shiftStatus = 'inactive';
-                updateShiftUI();
-            }
-            
-        } catch (error) {
-            showToast('Failed to check active shift status', 'error');
-        }
-    }
-    
-    function updateShiftUI() {
-        if (shiftStatus === 'paused') {
-            startShiftBtn.disabled = false;
-            pauseShiftBtn.disabled = true;
-            endShiftBtn.disabled = false;
-            
-            startShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Resume</span>';
-        } else if (shiftStatus === 'active') {
-            startShiftBtn.disabled = true;
-            pauseShiftBtn.disabled = false;
-            endShiftBtn.disabled = false;
-            
-            startShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Start</span>';
-        } else {
-            startShiftBtn.disabled = false;
-            pauseShiftBtn.disabled = true;
-            endShiftBtn.disabled = true;
-            
-            startShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Start</span>';
-        }
-        
-        shiftStatusIndicator.className = `shift-status ${shiftStatus}`;
-        const pulse = shiftStatusIndicator.querySelector('.pulse');
-        pulse.className = `pulse ${shiftStatus}`;
-        
-        if (shiftStatus === 'active') {
-            shiftStatusText.textContent = 'On Duty';
-        } else if (shiftStatus === 'paused') {
-            shiftStatusText.textContent = 'Paused';
-        } else {
-            shiftStatusText.textContent = 'Off Duty';
-        }
-        
-        if (shiftStatus === 'inactive') {
-            shiftTimer.textContent = '00:00:00';
-        }
-    }
-    
-    function startShiftTimer() {
-        if (shiftTimerInterval) {
-            clearInterval(shiftTimerInterval);
-        }
-        
-        shiftTimerInterval = setInterval(() => {
-            if (shiftStatus === 'active') {
-                const now = Math.floor(Date.now() / 1000);
-                const elapsed = now - shiftStartTime + shiftElapsedTime;
-                shiftTimer.textContent = formatShiftTime(elapsed);
-            }
-        }, 1000);
-    }
-    
-    async function startShift() {
-        if (!discordToken || !selectedServerId) {
-            showToast('Authentication error. Please log in again.', 'error');
-            return;
-        }
-        
-        const type = shiftType.value;
-        
-        try {
-            startShiftBtn.disabled = true;
-            startShiftBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            
-            if (shiftStatus === 'paused' && currentUserShift) {
-                const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/start`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Discord-Code': discordToken
-                    },
-                    body: JSON.stringify({ type })
-                });
-                
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Failed to resume shift');
-                }
-                
-                shiftStatus = 'active';
-                startShiftTimer();
-                
-                showToast('Shift resumed successfully');
-            } else {
-                const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/start`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Discord-Code': discordToken
-                    },
-                    body: JSON.stringify({ type })
-                });
-                
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Failed to start shift');
-                }
-                
-                shiftStatus = 'active';
-                shiftStartTime = Math.floor(Date.now() / 1000);
-                shiftElapsedTime = 0;
-                
-                startShiftTimer();
-                
-                showToast('Shift started successfully');
-            }
-            
-            updateShiftUI();
-            loadShifts(selectedServerId);
-            
-        } catch (error) {
-            showToast('Failed to start shift: ' + error.message, 'error');
-        } finally {
-            startShiftBtn.disabled = false;
-            if (shiftStatus === 'paused') {
-                startShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Resume</span>';
-            } else {
-                startShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Start</span>';
-            }
-        }
-    }
-    
-    async function pauseShift() {
-        if (!discordToken || !selectedServerId) {
-            showToast('Authentication error. Please log in again.', 'error');
-            return;
-        }
-
-        const type = shiftType.value;
-        
-        try {
-            pauseShiftBtn.disabled = true;
-            pauseShiftBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/pause`, {
-                method: 'POST',
-                headers: {
-                    'Discord-Code': discordToken
-                },
-                body: JSON.stringify({ type })
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to pause shift');
-            }
-            
-            if (shiftTimerInterval) {
-                clearInterval(shiftTimerInterval);
-                shiftTimerInterval = null;
-            }
-            
-            shiftStatus = 'paused';
-            updateShiftUI();
-            
-            showToast('Shift paused successfully');
-            
-            loadShifts(selectedServerId);
-            
-        } catch (error) {
-            showToast('Failed to pause shift: ' + error.message, 'error');
-        } finally {
-            pauseShiftBtn.disabled = false;
-            pauseShiftBtn.innerHTML = '<i class="fas fa-pause"></i><span>Pause</span>';
-        }
-    }
-    
-    async function endShift() {
-        if (!discordToken || !selectedServerId) {
-            showToast('Authentication error. Please log in again.', 'error');
-            return;
-        }
-
-        const type = shiftType.value;
-        
-        try {
-            endShiftBtn.disabled = true;
-            endShiftBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/end`, {
-                method: 'POST',
-                headers: {
-                    'Discord-Code': discordToken
-                },
-                body: JSON.stringify({ type })
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to end shift');
-            }
-            
-            if (shiftTimerInterval) {
-                clearInterval(shiftTimerInterval);
-                shiftTimerInterval = null;
-            }
-            
-            shiftStatus = 'inactive';
-            shiftStartTime = 0;
-            shiftElapsedTime = 0;
-            currentUserShift = null;
-            
-            updateShiftUI();
-            
-            showToast('Shift ended successfully');
-            
-            loadShifts(selectedServerId);
-            
-        } catch (error) {
-            showToast('Failed to end shift: ' + error.message, 'error');
-        } finally {
-            endShiftBtn.disabled = false;
-            endShiftBtn.innerHTML = '<i class="fas fa-stop"></i><span>End</span>';
-        }
-    }
-
-    async function runDiscordCheck() {
-        if (!discordToken || !selectedServerId) {
-            showToast('Authentication error. Please log in again.', 'error');
-            return;
-        }
-        
-        if (discordCheckCooldowns[selectedServerId] && discordCheckCooldowns[selectedServerId] > Date.now()) {
-            showToast('Discord check is on cooldown. Please wait before trying again.', 'error');
-            return;
-        }
-        
-        try {
-            runDiscordCheckBtn.disabled = true;
-            runDiscordCheckBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Running check...';
-        
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/erlc/check`, {
-                headers: { "Discord-Code": discordToken }
-            });
-            
-            if (!response.ok) {
-                throw new Error('Failed to run Discord check');
-            }
-            
-            const { data } = await response.json();
-            
-            discordCheckList.innerHTML = '';
-            
-            if (!data || data.length === 0) {
-                discordCheckList.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-users"></i><p>No players found in-game.</p></div>';
-            } else {
-                const fragment = document.createDocumentFragment();
-                
-                for (const player of data) {
-                    const item = document.createElement('div');
-                    item.className = 'p-4 bg-black/30 rounded-lg border-l-2 border-[#F5FF82]';
-                    
-                    if (player.discord) {
-                        item.innerHTML = `
-                            <div class="flex items-start gap-3">
-                                <div class="avatar-circle">
-                                    ${player.roblox.avatar ? `<img src="${player.roblox.avatar}" alt="${player.roblox.name}">` : player.roblox.name.charAt(0)}
-                                </div>
-                                <div class="flex-1">
-                                    <div class="flex justify-between items-start">
-                                        <div>
-                                            <h4 class="font-medium">${player.roblox.displayName || player.roblox.name} <span class="text-sm text-gray-400">(${player.roblox.name})</span></h4>
-                                            <div class="flex items-center gap-2 mt-1">
-                                                <span class="px-2 py-1 bg-green-500/10 text-green-500 rounded-md text-xs font-medium">Discord Linked</span>
-                                                <span class="text-sm text-gray-400">@${player.discord.username}</span>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-medium">${player.roblox.displayName || player.roblox.name} <span class="text-sm text-gray-400">(${player.roblox.name})</span></h4>
+                                        <div class="flex items-center gap-2 mt-1">
+                                            <span class="px-2 py-1 bg-green-500/10 text-green-500 rounded-md text-xs font-medium">Discord Linked</span>
+                                            <span class="text-sm text-gray-400">@${player.discord.username}</span>
+                                        </div>
+                                        ${player.discord.vc ? `
+                                            <div class="mt-2">
+                                                <span class="flex items-center gap-1 text-sm text-[#F5FF82]">
+                                                    <i class="fas fa-headset"></i> ${player.discord.vc.name}
+                                                </span>
                                             </div>
-                                            ${player.discord.vc ? `
-                                                <div class="mt-2">
-                                                    <span class="flex items-center gap-1 text-sm text-[#F5FF82]">
-                                                        <i class="fas fa-headset"></i> ${player.discord.vc.name}
-                                                    </span>
-                                                </div>
-                                            ` : ''}
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    item.innerHTML = `
+                        <div class="flex items-start gap-3">
+                            <div class="avatar-circle">
+                                ${player.roblox.avatar ? `<img src="${player.roblox.avatar}" alt="${player.roblox.name}">` : player.roblox.name.charAt(0)}
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-medium">${player.roblox.displayName || player.roblox.name} <span class="text-sm text-gray-400">(${player.roblox.name})</span></h4>
+                                        <div class="flex items-center gap-2 mt-1">
+                                            <span class="px-2 py-1 bg-red-500/10 text-red-500 rounded-md text-xs font-medium">Not Linked</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        `;
-                    } else {
-                        item.innerHTML = `
-                            <div class="flex items-start gap-3">
-                                <div class="avatar-circle">
-                                    ${player.roblox.avatar ? `<img src="${player.roblox.avatar}" alt="${player.roblox.name}">` : player.roblox.name.charAt(0)}
-                                </div>
-                                <div class="flex-1">
-                                    <div class="flex justify-between items-start">
-                                        <div>
-                                            <h4 class="font-medium">${player.roblox.displayName || player.roblox.name} <span class="text-sm text-gray-400">(${player.roblox.name})</span></h4>
-                                            <div class="flex items-center gap-2 mt-1">
-                                                <span class="px-2 py-1 bg-red-500/10 text-red-500 rounded-md text-xs font-medium">Not Linked</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    }
-                    
-                    fragment.appendChild(item);
+                        </div>
+                    `;
                 }
                 
-                discordCheckList.appendChild(fragment);
+                fragment.appendChild(item);
             }
             
-            discordCheckResults.classList.remove('hidden');
-            
-            discordCheckCooldowns[selectedServerId] = Date.now() + DISCORD_CHECK_COOLDOWN;
-            updateDiscordCheckCooldown();
-            
-        } catch (error) {
-            showToast('Failed to run Discord check: ' + error.message, 'error');
-        } finally {
-            if (!discordCheckCooldowns[selectedServerId] || discordCheckCooldowns[selectedServerId] <= Date.now()) {
-                runDiscordCheckBtn.disabled = false;
-                runDiscordCheckBtn.innerHTML = 'Run Discord Check';
-            }
+            discordCheckList.appendChild(fragment);
         }
+        
+        discordCheckResults.classList.remove('hidden');
+        
+        discordCheckCooldowns[selectedServerId] = Date.now() + DISCORD_CHECK_COOLDOWN;
+        updateDiscordCheckCooldown();
+        
+    } catch (error) {
+        showToast('Failed to run Discord check: ' + error.message, 'error');
+    } finally {
+        runDiscordCheckBtn.innerHTML = 'Run Discord Check';
     }
+}
 
     runDiscordCheckBtn.addEventListener('click', runDiscordCheck);
 
