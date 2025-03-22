@@ -1179,7 +1179,7 @@ function showAutomationDetails(automation) {
             const option = document.createElement('div');
             option.className = 'dropdown-option';
             option.dataset.value = type.toLowerCase();
-            option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+            option.textContent = type
             
             option.addEventListener('click', () => {
                 punishmentType.value = type.toLowerCase();
@@ -1211,7 +1211,7 @@ function showAutomationDetails(automation) {
             const option = document.createElement('div');
             option.className = 'dropdown-option';
             option.dataset.value = type.name.toLowerCase();
-            option.textContent = type.name.charAt(0).toUpperCase() + type.name.slice(1);
+            option.textContent = type
             
             if (index === 0) {
                 option.classList.add('selected');
@@ -1773,7 +1773,7 @@ function filterPunishmentHistory() {
                     
                     if (userActiveShift.type && shiftType) {
                         shiftType.value = userActiveShift.type;
-                        shiftTypeSelected.querySelector('span').textContent = userActiveShift.type.charAt(0).toUpperCase() + userActiveShift.type.slice(1);
+                        shiftTypeSelected.querySelector('span').textContent = userActiveShift.type;
                         
                         const option = document.querySelector(`#shiftTypeOptions .dropdown-option[data-value="${userActiveShift.type.toLowerCase()}"]`);
                         if (option) {
@@ -1974,7 +1974,7 @@ function filterPunishmentHistory() {
                 
                 if (userActiveShift.type && shiftType) {
                     shiftType.value = userActiveShift.type;
-                    shiftTypeSelected.querySelector('span').textContent = userActiveShift.type.charAt(0).toUpperCase() + userActiveShift.type.slice(1);
+                    shiftTypeSelected.querySelector('span').textContent = userActiveShift.type;
                     
                     const option = document.querySelector(`#shiftTypeOptions .dropdown-option[data-value="${userActiveShift.type.toLowerCase()}"]`);
                     if (option) {
