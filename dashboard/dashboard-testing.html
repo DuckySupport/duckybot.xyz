@@ -1228,6 +1228,62 @@
         }
     }
 
+    function showDeleteConfirmation(punishmentId, username, type) {
+        currentPunishmentToDelete = punishmentId;
+        confirmationMessage.textContent = `Are you sure you want to delete the ${type.toUpperCase()} punishment for ${username}?`;
+        confirmationModal.classList.add('active');
+    }
+    
+    async function confirmDeletePunishment() {
+        if (!currentPunishmentToDelete || !selectedServerId || !discordToken) {
+            showToast('Error: Missing information for deletion', 'error');
+            confirmationModal.classList.remove('active');
+            return;
+        }
+        
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments/${currentPunishmentToDelete}`, {
+                method: 'DELETE',
+                headers: {
+                    'Discord-Code': discordToken
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to delete punishment');
+            }
+            
+            showToast('Punishment deleted successfully');
+            
+            const punishmentElement = document.querySelector(`.punishment-item[data-punishment-id="${currentPunishmentToDelete}"]`);
+            if (punishmentElement) {
+                punishmentElement.style.height = punishmentElement.offsetHeight + 'px';
+                punishmentElement.style.overflow = 'hidden';
+                
+                setTimeout(() => {
+                    punishmentElement.style.height = '0';
+                    punishmentElement.style.padding = '0';
+                    punishmentElement.style.margin = '0';
+                    punishmentElement.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        punishmentElement.remove();
+                        
+                        if (punishmentHistory.children.length === 0) {
+                            punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-ban"></i><p>No punishment history found.</p></div>';
+                        }
+                    }, 300);
+                }, 10);
+            }
+            
+        } catch (error) {
+            showToast('Failed to delete punishment: ' + error.message, 'error');
+        } finally {
+            confirmationModal.classList.remove('active');
+            currentPunishmentToDelete = null;
+        }
+    }
+
 
 async function loadPunishments(serverId) {
     punishmentHistory.innerHTML = `
