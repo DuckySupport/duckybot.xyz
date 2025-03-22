@@ -60,7 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   
     function formatDiscordMarkdown(text) {
-        if (!text) return text ? text.replace(/\u00A0/g, ' ').replace(/&nbsp;/g, ' ').trim()
+        if (!text) return ''
+
+        return text
             .replace(/(\w+)?\n([\s\S]*?)/g, '<pre><code class="language-$1 break-words whitespace-pre-wrap">$2</code></pre>')
             .replace(/`([^`]+)`/g, '<code class="break-words whitespace-pre-wrap">$1</code>')
             .replace(/\*\*\*([^*]+)\*\*\*/g, '<strong><em>$1</em></strong>')
