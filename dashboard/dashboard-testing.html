@@ -1098,6 +1098,119 @@
         loadPunishments(serverId);
         checkActiveShift(serverId);
     }
+    
+    async function loadServers() {
+        discordToken = getDiscordToken();
+        
+        if (!discordToken) {
+            window.location.href = "/login?redirect=modpanel";
+            return;
+        }
+        
+        const savedServer = localStorage.getItem('selectedServerId');
+        if (savedServer) {
+            try {
+                const serverData = JSON.parse(savedServer);
+                if (serverData && serverData.id) {
+                    selectedServerId = serverData.id;
+                }
+            } catch (e) {
+                localStorage.removeItem('selectedServerId');
+            }
+        }
+
+        try {
+            const response = await fetch("https://api.duckybot.xyz/guilds", {
+                headers: { "Discord-Code": discordToken }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch data');
+            }
+
+            const { data: servers, code } = await response.json();
+            
+            if (code !== 200 || !servers) {
+                throw new Error('Invalid response from server');
+            }
+            
+            const userResponse = await fetch('https://discord.com/api/users/@me', {
+                headers: { authorization: `Bearer ${discordToken}` }
+            });
+            
+            if (userResponse.ok) {
+                discordUser = await userResponse.json();
+                document.getElementById('username').textContent = discordUser.global_name || discordUser.username;
+                const avatarUrl = `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`;
+                document.getElementById('profilePicture').src = avatarUrl;
+            }
+            
+            const filteredServers = servers.filter(server => server.manage_server && server.ducky);
+            
+            if (filteredServers.length === 0) {
+                serverGrid.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-server"></i><p>No servers with Ducky found. Make sure you have the right permissions.</p></div>';
+            } else {
+                serverGrid.innerHTML = '';
+                
+                const fragment = document.createDocumentFragment();
+                
+                let savedServerValid = false;
+                let savedServerData = null;
+                
+                if (selectedServerId) {
+                    savedServerData = filteredServers.find(server => server.id === selectedServerId);
+                    if (savedServerData) {
+                        savedServerValid = true;
+                    }
+                }
+                
+                filteredServers.forEach(server => {
+                    const serverCard = document.createElement('div');
+                    serverCard.className = 'server-card glass-card';
+                    
+                    const img = document.createElement('img');
+                    img.src = server.icon || 'https://duckybot.xyz/images/Ducky.svg';
+                    img.alt = server.name;
+                    img.loading = 'lazy';
+
+                    const name = document.createElement('p');
+                    name.className = 'text-center font-medium text-xs';
+                    name.textContent = server.name;
+                    
+                    serverCard.appendChild(img);
+                    serverCard.appendChild(name);
+                    
+                    serverCard.addEventListener('click', () => {
+                        selectServer(server.id, server.name, server.icon, server.config);
+                    });
+                    
+                    fragment.appendChild(serverCard);
+                });
+                
+                serverGrid.appendChild(fragment);
+                
+                if (savedServerValid && savedServerData) {
+                    selectServer(savedServerData.id, savedServerData.name, savedServerData.icon, savedServerData.config);
+                }
+            }
+            
+            loadingOverlay.classList.add('fade-out');
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+                serverSelectionView.style.opacity = '1';
+            }, 500);
+            
+        } catch (error) {
+            serverGrid.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-exclamation-triangle"></i><p>Failed to load servers. Please try again later.</p></div>';
+            loadingOverlay.classList.add('fade-out');
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+                serverSelectionView.style.opacity = '1';
+            }, 500);
+        }
+    }
+
+
 async function loadPunishments(serverId) {
     punishmentHistory.innerHTML = `
         <div class="text-center py-4">
@@ -1878,7 +1991,6 @@ async function filterPunishmentHistory() {
                 
                 showToast('Shift resumed successfully');
             } else {
-                // Starting a new shift
                 const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/start`, {
                     method: 'POST',
                     headers: {
