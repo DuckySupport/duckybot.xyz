@@ -1479,7 +1479,7 @@ function showAutomationDetails(automation) {
             item.dataset.punishmentId = punishment.punishmentid || punishment.id;
             item.dataset.username = (punishment.robloxUser.name || '').toLowerCase();
             item.dataset.displayname = (punishment.robloxUser.displayName || '').toLowerCase();
-            item.dataset.robloxid = toString(punishment.robloxUser.id || 0);
+            item.dataset.robloxid = (punishment.robloxUser.id || 0).toString();
             
             const typeColors = {
                 warn: 'text-yellow-400',
@@ -1559,7 +1559,7 @@ function filterPunishmentHistory() {
         const itemDisplayName = item.dataset.displayname || '';
         const itemRobloxId = item.dataset.robloxid || '';
         
-        if (itemUsername.includes(username) || itemDisplayName.includes(username) || toString(itemRobloxId) === username) {
+        if (itemUsername.includes(username) || itemDisplayName.includes(username) || itemRobloxId === username) {
             item.style.display = '';
             matchFound = true;
         } else {
