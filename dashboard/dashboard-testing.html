@@ -952,7 +952,8 @@ function showAutomationDetails(automation) {
         }
         
         if (automation.role) {
-            automationRole.textContent = automation.roleName || 'Unknown Role';
+            const roleName = automation.role.name || automation.roleName || 'Unknown Role';
+            automationRole.textContent = roleName;
             automationRoleContainer.classList.remove('hidden');
         } else {
             automationRoleContainer.classList.add('hidden');
@@ -962,9 +963,6 @@ function showAutomationDetails(automation) {
             fetchUserData(automation.author).then(userData => {
                 const authorContainer = document.createElement('div');
                 authorContainer.className = 'flex items-center gap-2';
-                
-                const authorText = document.createElement('span');
-                authorText.textContent = userData.username || userData.name || automation.author;
                 
                 const authorAvatar = document.createElement('div');
                 authorAvatar.className = 'w-6 h-6 rounded-full overflow-hidden bg-gray-700 flex-shrink-0';
@@ -979,8 +977,11 @@ function showAutomationDetails(automation) {
                     authorAvatar.className += ' flex items-center justify-center text-xs text-white';
                 }
                 
-                authorContainer.appendChild(authorText);
+                const authorText = document.createElement('span');
+                authorText.textContent = userData.username || userData.name || automation.author;
+                
                 authorContainer.appendChild(authorAvatar);
+                authorContainer.appendChild(authorText);
                 automationAuthor.innerHTML = '';
                 automationAuthor.appendChild(authorContainer);
             });
@@ -989,8 +990,7 @@ function showAutomationDetails(automation) {
         }
         
         automationDetails.classList.remove('hidden');
-    }
-    
+    }    
     async function runAutomation() {
     if (!discordToken || !selectedServerId || selectedAutomationId.value === '') {
         showToast('Please select an automation to run', 'error');
