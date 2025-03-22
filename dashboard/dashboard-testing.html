@@ -152,13 +152,10 @@
             opacity: 0;
             transition: all 0.2s ease;
             cursor: pointer;
+            z-index: 10;
         }
-        .punishment-item:hover .delete-btn {
-            opacity: 1;
-        }
-        .delete-btn:hover {
-            background-color: rgba(239, 68, 68, 0.2);
-            transform: scale(1.1);
+        .punishment-item.filtered {
+            display: none;
         }
         .shift-controls {
             display: flex;
@@ -191,6 +188,12 @@
         .shift-btn-pause {
             background-color: #f59e0b;
             color: white;
+        }
+        .shift-btn-pause.resume {
+            background-color: #10b981;
+        }
+        .shift-btn-pause.resume:hover:not(:disabled) {
+            background-color: #059669;
         }
         .shift-btn-pause:hover:not(:disabled) {
             background-color: #d97706;
@@ -396,6 +399,11 @@
         }
         .dropdown-selected.active {
             border-color: #F5FF82;
+        }
+        .dropdown-selected.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
         }
         .dropdown-options {
             position: absolute;
@@ -1203,7 +1211,7 @@
                                 ${avatarUrl ? `<img src="${avatarUrl}" alt="${punishment.robloxUser.name}">` : punishment.robloxUser.name.charAt(0)}
                             </div>
                             <div>
-                                <h4 class="font-medium">${punishment.robloxUser.displayName || punishment.robloxUser.name} <span class="text-sm text-gray-400">(${punishment.robloxUser.name})</span></h4>
+                                <h4 class="font-medium"><span class="roblox-displayname">${punishment.robloxUser.displayName || punishment.robloxUser.name}</span> <span class="text-sm text-gray-400">(<span class="roblox-username">${punishment.robloxUser.name}</span>)</span></h4>
                                 <p class="text-sm ${typeColor} mt-1">${punishment.type.toUpperCase()}</p>
                                 <p class="text-sm text-gray-400 mt-1">${punishment.reason}</p>
                             </div>
@@ -1229,9 +1237,41 @@
             
             punishmentHistory.appendChild(fragment);
             
-        } catch (error) {
-            punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load punishment history. Please try again.</p></div>';
+            filterPunishmentHistory();
+        
+    } catch (error) {
+        punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load punishment history. Please try again.</p></div>';
+    }
+}
+    
+    const robloxUsername = document.getElementById('robloxUsername');
+    robloxUsername.addEventListener('input', filterPunishmentHistory);
+
+    async function filterPunishmentHistory() {
+        const username = robloxUsername.value.trim().toLowerCase();
+        
+        if (!username) {
+            document.querySelectorAll('#punishmentHistory .punishment-item').forEach(item => {
+                item.classList.remove('filtered');
+            });
+            return;
         }
+        
+        document.querySelectorAll('#punishmentHistory .punishment-item').forEach(item => {
+            const usernameElement = item.querySelector('.roblox-username');
+            const displayNameElement = item.querySelector('.roblox-displayname');
+            
+            if (usernameElement) {
+                const itemUsername = usernameElement.textContent.toLowerCase();
+                const itemDisplayName = displayNameElement ? displayNameElement.textContent.toLowerCase() : '';
+                
+                if (itemUsername.includes(username) || itemDisplayName.includes(username)) {
+                    item.classList.remove('filtered');
+                } else {
+                    item.classList.add('filtered');
+                }
+            }
+        });
     }
     
     function showDeleteConfirmation(punishmentId, username, type) {
@@ -1346,11 +1386,11 @@
                             <div class="flex justify-between items-start">
                                 <div>
                                     <h4 class="font-medium">${userData.username || userData.name || shift.user}</h4>
-                                    <p class="text-sm text-[#F5FF82] mt-1">Active for ${formatDuration(duration)}</p>
+                                    <p class="text-sm text-[#F5FF82] mt-1">Active for <span class="active-duration">${formatDuration(duration)}</span></p>
                                     <p class="text-xs text-gray-400 mt-1">Type: ${shift.type || 'Default'}</p>
                                 </div>
                                 <div class="text-right">
-                                    <p class="text-xs text-gray-500">Started: ${formatDate(shift.started)}</p>
+                                    <p class="text-xs text-gray-500">Started: <span data-started-time="${shift.started}">${formatDate(shift.started)}</span></p>
                                     <p class="text-xs text-gray-400 mt-1">Punishments: ${shift.punishments}</p>
                                 </div>
                             </div>
@@ -1361,6 +1401,10 @@
                 }
                 
                 activeShifts.appendChild(fragment);
+                
+                if (!window.activeShiftsInterval) {
+                    window.activeShiftsInterval = setInterval(updateActiveShifts, 10000); 
+                }
             }
             
             if (!data.shifts || data.shifts.length === 0) {
@@ -1649,8 +1693,22 @@
     
     function updateShiftUI() {
         startShiftBtn.disabled = shiftStatus !== 'inactive';
-        pauseShiftBtn.disabled = shiftStatus !== 'active';
+        pauseShiftBtn.disabled = shiftStatus === 'inactive';
         endShiftBtn.disabled = shiftStatus === 'inactive';
+        
+        if (shiftStatus !== 'inactive') {
+            shiftTypeSelected.classList.add('disabled');
+        } else {
+            shiftTypeSelected.classList.remove('disabled');
+        }
+        
+        if (shiftStatus === 'paused') {
+            pauseShiftBtn.classList.add('resume');
+            pauseShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Resume</span>';
+        } else {
+            pauseShiftBtn.classList.remove('resume');
+            pauseShiftBtn.innerHTML = '<i class="fas fa-pause"></i><span>Pause</span>';
+        }
         
         shiftStatusIndicator.className = `shift-status ${shiftStatus}`;
         const pulse = shiftStatusIndicator.querySelector('.pulse');
@@ -1750,18 +1808,22 @@
                 throw new Error(errorData.message || 'Failed to pause shift');
             }
             
-            if (shiftTimerInterval) {
-                clearInterval(shiftTimerInterval);
-                shiftTimerInterval = null;
-            }
-            
             if (shiftStatus === 'paused') {
+                // Resuming shift
                 shiftStatus = 'active';
                 startShiftTimer();
                 showToast('Shift resumed successfully');
+                pauseShiftBtn.classList.remove('resume');
+                pauseShiftBtn.innerHTML = '<i class="fas fa-pause"></i><span>Pause</span>';
             } else {
+                if (shiftTimerInterval) {
+                    clearInterval(shiftTimerInterval);
+                    shiftTimerInterval = null;
+                }
                 shiftStatus = 'paused';
                 showToast('Shift paused successfully');
+                pauseShiftBtn.classList.add('resume');
+                pauseShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Resume</span>';
             }
             
             updateShiftUI();
@@ -1771,9 +1833,6 @@
             showToast('Failed to pause/resume shift: ' + error.message, 'error');
         } finally {
             pauseShiftBtn.disabled = false;
-            pauseShiftBtn.innerHTML = shiftStatus === 'paused' ? 
-                '<i class="fas fa-play"></i><span>Resume</span>' : 
-                '<i class="fas fa-pause"></i><span>Pause</span>';
         }
     }    
     async function endShift() {
@@ -1821,6 +1880,31 @@
             endShiftBtn.innerHTML = '<i class="fas fa-stop"></i><span>End</span>';
         }
     }
+
+    function updateActiveShifts() {
+        document.querySelectorAll('#activeShifts .shift-card').forEach(card => {
+            const startTimeElement = card.querySelector('[data-started-time]');
+            if (startTimeElement) {
+                const startTime = parseInt(startTimeElement.dataset.startedTime);
+                const now = Math.floor(Date.now() / 1000);
+                const duration = now - startTime;
+                
+                const durationElement = card.querySelector('.active-duration');
+                if (durationElement) {
+                    durationElement.textContent = formatDuration(duration);
+                }
+            }
+        });
+    }
+
+    window.addEventListener('beforeunload', () => {
+        if (window.activeShiftsInterval) {
+            clearInterval(window.activeShiftsInterval);
+        }
+        if (shiftTimerInterval) {
+            clearInterval(shiftTimerInterval);
+        }
+    });
 
     window.addEventListener('load', () => {
         initDropdowns();
