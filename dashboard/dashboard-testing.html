@@ -1154,12 +1154,25 @@
                     const username = await fetchDiscordUsername(shift.user);
                     
                     const actualDuration = shift.elapsed > 0 ? shift.elapsed : 0;
-                    const hours = Math.floor(actualDuration / 60);
-                    const minutes = actualDuration % 60;
+                    const totalSeconds = actualDuration * 60;
+                    
+                    const months = Math.floor(totalSeconds / (30 * 24 * 3600));
+                    const remainingAfterMonths = totalSeconds % (30 * 24 * 3600);
+                    const weeks = Math.floor(remainingAfterMonths / (7 * 24 * 3600));
+                    const remainingAfterWeeks = remainingAfterMonths % (7 * 24 * 3600);
+                    const hours = Math.floor(remainingAfterWeeks / 3600);
+                    const remainingAfterHours = remainingAfterWeeks % 3600;
+                    const minutes = Math.floor(remainingAfterHours / 60);
+                    const seconds = remainingAfterHours % 60;
                     
                     let durationString = '';
-                    if (hours > 0) durationString += `${hours}h `;
-                    if (minutes > 0 || hours === 0) durationString += `${minutes}m`;
+                    if (months > 0) durationString += `${months} month${months !== 1 ? 's' : ''}, `;
+                    if (weeks > 0) durationString += `${weeks} week${weeks !== 1 ? 's' : ''}, `;
+                    if (hours > 0) durationString += `${hours} hour${hours !== 1 ? 's' : ''}, `;
+                    if (minutes > 0) durationString += `${minutes} minute${minutes !== 1 ? 's' : ''}, `;
+                    if (seconds > 0 || (months === 0 && weeks === 0 && hours === 0 && minutes === 0)) {
+                        durationString += `${seconds} second${seconds !== 1 ? 's' : ''}`;
+                    }
                     
                     item.innerHTML = `
                         <div class="flex justify-between items-start">
@@ -1268,12 +1281,25 @@
                 item.className = 'moderation-log-item flex justify-between items-center';
                 
                 const actualDuration = shift.elapsed > 0 ? shift.elapsed : 0;
-                const hours = Math.floor(actualDuration / 60);
-                const minutes = actualDuration % 60;
+                const totalSeconds = actualDuration * 60;
+                
+                const months = Math.floor(totalSeconds / (30 * 24 * 3600));
+                const remainingAfterMonths = totalSeconds % (30 * 24 * 3600);
+                const weeks = Math.floor(remainingAfterMonths / (7 * 24 * 3600));
+                const remainingAfterWeeks = remainingAfterMonths % (7 * 24 * 3600);
+                const hours = Math.floor(remainingAfterWeeks / 3600);
+                const remainingAfterHours = remainingAfterWeeks % 3600;
+                const minutes = Math.floor(remainingAfterHours / 60);
+                const seconds = remainingAfterHours % 60;
                 
                 let durationString = '';
-                if (hours > 0) durationString += `${hours}h `;
-                if (minutes > 0 || hours === 0) durationString += `${minutes}m`;
+                if (months > 0) durationString += `${months} month${months !== 1 ? 's' : ''}, `;
+                if (weeks > 0) durationString += `${weeks} week${weeks !== 1 ? 's' : ''}, `;
+                if (hours > 0) durationString += `${hours} hour${hours !== 1 ? 's' : ''}, `;
+                if (minutes > 0) durationString += `${minutes} minute${minutes !== 1 ? 's' : ''}, `;
+                if (seconds > 0 || (months === 0 && weeks === 0 && hours === 0 && minutes === 0)) {
+                    durationString += `${seconds} second${seconds !== 1 ? 's' : ''}`;
+                }
                 
                 item.innerHTML = `
                     <div>
@@ -1297,7 +1323,6 @@
             recentUserShifts.innerHTML = '<p class="text-center text-red-400 py-4">Failed to load your shift history.</p>';
         }
     }
-
     async function issuePunishment() {
         const now = Date.now();
         if (now - lastPunishmentTime < PUNISHMENT_COOLDOWN) {
