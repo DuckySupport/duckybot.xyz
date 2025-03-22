@@ -395,7 +395,7 @@
             border-color: #F5FF82;
         }
         .dropdown-selected span {
-            margin-right: 1rem; 
+            margin-right: 1rem;
         }
         .dropdown-options {
             position: absolute;
@@ -496,7 +496,6 @@
         .bolo-tag i {
             margin-right: 0.25rem;
         }
-
     </style>
 </head>
 <body>
@@ -591,6 +590,7 @@
                 <button id="punishmentsTabBtn" class="tab-button active px-4 py-2 font-medium">Punishments</button>
                 <button id="shiftsTabBtn" class="tab-button px-4 py-2 text-gray-400 hover:text-white font-medium">Shifts</button>
                 <button id="erlcTabBtn" class="tab-button px-4 py-2 text-gray-400 hover:text-white font-medium">ER:LC Integration</button>
+                <button id="automationsTabBtn" class="tab-button px-4 py-2 text-gray-400 hover:text-white font-medium">Automations</button>
             </div>
 
             <div id="punishmentsTab">
@@ -644,11 +644,40 @@
                                 </div>
                                 
                                 <div class="flex justify-end">
-                                    <button type="submit" id="submitBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:opacity-90 transition">
+                                    <button type="submit" id="submitBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:bg-[#e6ff4d] transition">
                                         Issue Punishment
                                     </button>
                                 </div>
                             </form>
+                        </div>
+
+                        <div class="glass-card p-4 mb-6">
+                            <h3 class="text-lg font-bold mb-4">BOLO Management</h3>
+                            <form id="boloForm" class="space-y-4">
+                                <div>
+                                    <label for="boloUsername" class="block text-sm font-medium text-gray-400 mb-1">Roblox Username</label>
+                                    <input type="text" id="boloUsername" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter username" required>
+                                </div>
+                                <div>
+                                    <label for="boloReason" class="block text-sm font-medium text-gray-400 mb-1">Reason</label>
+                                    <textarea id="boloReason" rows="2" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter reason" required></textarea>
+                                </div>
+                                <div class="flex justify-end">
+                                    <button type="submit" id="submitBoloBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:bg-[#e6ff4d] transition">
+                                        Create BOLO
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="glass-card p-4">
+                            <h3 class="text-lg font-bold mb-4">Active BOLOs</h3>
+                            <div id="activeBOLOs" class="space-y-3">
+                                <div class="text-center py-4">
+                                    <div class="spinner mx-auto mb-2"></div>
+                                    <p class="text-gray-400">Loading BOLOs...</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -687,7 +716,7 @@
                                                 <i class="fas fa-chevron-down"></i>
                                             </div>
                                             <div class="dropdown-options" id="shiftTypeOptions">
-                                                <!-- Options will be populated dynamically -->
+
                                             </div>
                                         </div>
                                         <input type="hidden" id="shiftType" value="patrol">
@@ -768,44 +797,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="col-span-12 lg:col-span-4">
-                        <div class="glass-card p-4 mb-6">
-                            <h3 class="text-lg font-bold mb-4">BOLO Management</h3>
-                            <form id="boloForm" class="space-y-4">
-                                <div>
-                                    <label for="boloUsername" class="block text-sm font-medium text-gray-400 mb-1">Roblox Username</label>
-                                    <input type="text" id="boloUsername" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter username" required>
-                                </div>
-                                <div>
-                                    <label for="boloReason" class="block text-sm font-medium text-gray-400 mb-1">Reason</label>
-                                    <textarea id="boloReason" rows="2" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter reason" required></textarea>
-                                </div>
-                                <div class="flex justify-end">
-                                    <button type="submit" id="submitBoloBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:opacity-90 transition">
-                                        Create BOLO
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
                         
-                        <div class="glass-card p-4">
-                            <h3 class="text-lg font-bold mb-4">Active BOLOs</h3>
-                            <div id="activeBOLOs" class="space-y-3">
-                                <div class="text-center py-4">
-                                    <div class="spinner mx-auto mb-2"></div>
-                                    <p class="text-gray-400">Loading BOLOs...</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-span-12">
                         <div class="glass-card p-4">
                             <h3 class="text-lg font-bold mb-4">Discord Checks</h3>
                             <p class="text-gray-400 mb-4">Check which players in-game are connected to Discord and view their voice channel status.</p>
-                            <button id="runDiscordCheckBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:opacity-90 transition">
+                            <button id="runDiscordCheckBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:bg-[#e6ff4d] transition">
                                 Run Discord Check
                             </button>
                             <div id="discordCheckCooldown" class="mt-2 text-sm text-gray-400 hidden">
@@ -815,7 +811,78 @@
                             <div id="discordCheckResults" class="mt-6 space-y-3 hidden">
                                 <h4 class="text-md font-semibold mb-3">Results</h4>
                                 <div id="discordCheckList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    <!-- Results will be populated here -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-span-12 lg:col-span-4">
+                        <div class="glass-card p-4 mb-6">
+                            <h3 class="text-lg font-bold mb-4">Execute Command</h3>
+                            <form id="commandForm" class="space-y-4">
+                                <div>
+                                    <label for="command" class="block text-sm font-medium text-gray-400 mb-1">Command</label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 py-2 bg-black/50 border border-r-0 border-white/10 rounded-l-md text-gray-400">:</span>
+                                        <input type="text" id="command" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-r-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter command" required>
+                                    </div>
+                                </div>
+                                <div class="flex justify-end">
+                                    <button type="submit" id="executeCommandBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:bg-[#e6ff4d] transition">
+                                        Execute
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="automationsTab" class="hidden">
+                <div class="dashboard-grid">
+                    <div class="col-span-12">
+                        <div class="glass-card p-4">
+                            <h3 class="text-lg font-bold mb-4">Custom Automations</h3>
+                            <p class="text-gray-400 mb-4">Run your server's custom automations manually.</p>
+                            
+                            <div class="mb-4">
+                                <label for="automationSelector" class="block text-sm font-medium text-gray-400 mb-1">Select Automation</label>
+                                <div class="custom-dropdown">
+                                    <div class="dropdown-selected" id="automationSelected">
+                                        <span>Select automation...</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="dropdown-options" id="automationOptions">
+
+                                    </div>
+                                </div>
+                                <input type="hidden" id="selectedAutomationId">
+                            </div>
+                            
+                            <button id="runAutomationBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:bg-[#e6ff4d] transition" disabled>
+                                Run Automation
+                            </button>
+                            
+                            <div id="automationDetails" class="mt-4 p-3 bg-black/20 rounded-lg hidden">
+                                <h4 class="font-medium mb-2">Automation Details</h4>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex">
+                                        <span class="text-gray-400 w-24">Trigger:</span>
+                                        <span id="automationTrigger"></span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="text-gray-400 w-24">Actions:</span>
+                                        <div id="automationActions" class="flex-1"></div>
+                                    </div>
+                                    <div class="flex" id="automationRoleContainer">
+                                        <span class="text-gray-400 w-24">Required Role:</span>
+                                        <span id="automationRole"></span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="text-gray-400 w-24">Created by:</span>
+                                        <span id="automationAuthor"></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -865,9 +932,11 @@
     const punishmentsTabBtn = document.getElementById('punishmentsTabBtn');
     const shiftsTabBtn = document.getElementById('shiftsTabBtn');
     const erlcTabBtn = document.getElementById('erlcTabBtn');
+    const automationsTabBtn = document.getElementById('automationsTabBtn');
     const punishmentsTab = document.getElementById('punishmentsTab');
     const shiftsTab = document.getElementById('shiftsTab');
     const erlcTab = document.getElementById('erlcTab');
+    const automationsTab = document.getElementById('automationsTab');
     const punishmentForm = document.getElementById('punishmentForm');
     const punishmentType = document.getElementById('punishmentType');
     const durationContainer = document.getElementById('durationContainer');
@@ -898,6 +967,7 @@
     const erlcPlayersList = document.getElementById('erlcPlayersList');
     const boloForm = document.getElementById('boloForm');
     const activeBOLOs = document.getElementById('activeBOLOs');
+    const commandForm = document.getElementById('commandForm');
     
     const punishmentTypeSelected = document.getElementById('punishmentTypeSelected');
     const punishmentTypeOptions = document.getElementById('punishmentTypeOptions');
@@ -909,6 +979,16 @@
 
     const discordCheckCooldown = document.getElementById('discordCheckCooldown');
     const discordCheckCooldownTime = document.getElementById('discordCheckCooldownTime');
+    const automationSelected = document.getElementById('automationSelected');
+    const automationOptions = document.getElementById('automationOptions');
+    const selectedAutomationId = document.getElementById('selectedAutomationId');
+    const runAutomationBtn = document.getElementById('runAutomationBtn');
+    const automationDetails = document.getElementById('automationDetails');
+    const automationTrigger = document.getElementById('automationTrigger');
+    const automationActions = document.getElementById('automationActions');
+    const automationRole = document.getElementById('automationRole');
+    const automationRoleContainer = document.getElementById('automationRoleContainer');
+    const automationAuthor = document.getElementById('automationAuthor');
 
     let selectedServerId = null;
     let selectedServerConfig = null;
@@ -927,7 +1007,9 @@
     let currentUserShift = null;
 
     let discordCheckCooldowns = {};
-    const DISCORD_CHECK_COOLDOWN = 5 * 60 * 1000;
+    const DISCORD_CHECK_COOLDOWN = 5 * 60 * 1000; 
+
+    let serverAutomations = [];
 
     function updateDiscordCheckCooldown() {
         if (!selectedServerId || !discordCheckCooldowns[selectedServerId]) {
@@ -952,6 +1034,140 @@
         runDiscordCheckBtn.disabled = true;
         
         setTimeout(updateDiscordCheckCooldown, 1000);
+    }
+
+    function setupAutomationsDropdown(automations) {
+        serverAutomations = automations || [];
+        automationOptions.innerHTML = '';
+        
+        if (!automations || automations.length === 0) {
+            const option = document.createElement('div');
+            option.className = 'dropdown-option';
+            option.textContent = 'No automations available';
+            automationOptions.appendChild(option);
+            runAutomationBtn.disabled = true;
+            return;
+        }
+        
+        const manualAutomations = automations.filter(automation => 
+            automation.trigger && automation.trigger.value === 'manual'
+        );
+        
+        if (manualAutomations.length === 0) {
+            const option = document.createElement('div');
+            option.className = 'dropdown-option';
+            option.textContent = 'No manual automations available';
+            automationOptions.appendChild(option);
+            runAutomationBtn.disabled = true;
+            return;
+        }
+        
+        manualAutomations.forEach((automation, index) => {
+            const option = document.createElement('div');
+            option.className = 'dropdown-option';
+            const originalIndex = automations.findIndex(a => a.name === automation.name);
+            option.dataset.index = originalIndex;
+            option.textContent = automation.name;
+            
+            option.addEventListener('click', () => {
+                selectedAutomationId.value = originalIndex;
+                automationSelected.querySelector('span').textContent = automation.name;
+                
+                document.querySelectorAll('#automationOptions .dropdown-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                option.classList.add('selected');
+                
+                automationSelected.classList.remove('active');
+                automationOptions.classList.remove('active');
+                
+                showAutomationDetails(automation);
+                runAutomationBtn.disabled = false;
+            });
+            
+            automationOptions.appendChild(option);
+        });
+    }
+
+    function showAutomationDetails(automation) {
+        automationTrigger.textContent = automation.trigger ? automation.trigger.name : 'Unknown';
+        
+        automationActions.innerHTML = '';
+        if (automation.actions && automation.actions.length > 0) {
+            const actionsList = document.createElement('ul');
+            actionsList.className = 'list-disc pl-5';
+            
+            automation.actions.forEach(action => {
+                const actionItem = document.createElement('li');
+                actionItem.textContent = action.name;
+                actionsList.appendChild(actionItem);
+            });
+            
+            automationActions.appendChild(actionsList);
+        } else {
+            automationActions.textContent = 'No actions defined';
+        }
+        
+        if (automation.role) {
+            automationRole.textContent = `<@&${automation.role}>`;
+            automationRoleContainer.classList.remove('hidden');
+        } else {
+            automationRoleContainer.classList.add('hidden');
+        }
+        
+        if (automation.author) {
+            fetchUserData(automation.author).then(userData => {
+                automationAuthor.textContent = userData.username || userData.name || automation.author;
+            });
+        } else {
+            automationAuthor.textContent = 'Unknown';
+        }
+        
+        automationDetails.classList.remove('hidden');
+    }
+
+    async function runAutomation() {
+        if (!discordToken || !selectedServerId || selectedAutomationId.value === '') {
+            showToast('Please select an automation to run', 'error');
+            return;
+        }
+        
+        const automationIndex = parseInt(selectedAutomationId.value);
+        if (isNaN(automationIndex) || automationIndex < 0 || automationIndex >= serverAutomations.length) {
+            showToast('Invalid automation selected', 'error');
+            return;
+        }
+        
+        const automation = serverAutomations[automationIndex];
+        if (!automation) {
+            showToast('Invalid automation selected', 'error');
+            return;
+        }
+        
+        try {
+            runAutomationBtn.disabled = true;
+            runAutomationBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Running...';
+            
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/automations/${automationIndex}`, {
+                method: 'POST',
+                headers: {
+                    'Discord-Code': discordToken
+                }
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to run automation');
+            }
+            
+            showToast(`Successfully ran automation: ${automation.name}`);
+            
+        } catch (error) {
+            showToast('Failed to run automation: ' + error.message, 'error');
+        } finally {
+            runAutomationBtn.disabled = false;
+            runAutomationBtn.innerHTML = 'Run Automation';
+        }
     }
 
     function initDropdowns() {
@@ -984,6 +1200,11 @@
         shiftTypeSelected.addEventListener('click', () => {
             shiftTypeSelected.classList.toggle('active');
             shiftTypeOptions.classList.toggle('active');
+        });
+        
+        automationSelected.addEventListener('click', () => {
+            automationSelected.classList.toggle('active');
+            automationOptions.classList.toggle('active');
         });
         
         document.addEventListener('click', (e) => {
@@ -1091,7 +1312,7 @@
             const option = document.createElement('div');
             option.className = 'dropdown-option';
             option.dataset.value = type.toLowerCase();
-            option.textContent = type
+            option.textContent = type;
             
             option.addEventListener('click', () => {
                 punishmentType.value = type.toLowerCase();
@@ -1123,7 +1344,7 @@
             const option = document.createElement('div');
             option.className = 'dropdown-option';
             option.dataset.value = type.name.toLowerCase();
-            option.textContent = type.name
+            option.textContent = type.name;
             
             if (index === 0) {
                 option.classList.add('selected');
@@ -1144,7 +1365,6 @@
                 shiftTypeSelected.classList.remove('active');
                 shiftTypeOptions.classList.remove('active');
                 
-                // Reset shift UI when changing shift type if there's an active shift
                 if (shiftStatus !== 'inactive' && oldType !== shiftType.value) {
                     resetShiftUI();
                     checkActiveShift(selectedServerId);
@@ -1179,18 +1399,22 @@
         punishmentsTabBtn.classList.add('active');
         shiftsTabBtn.classList.remove('active');
         erlcTabBtn.classList.remove('active');
+        automationsTabBtn.classList.remove('active');
         punishmentsTab.classList.remove('hidden');
         shiftsTab.classList.add('hidden');
         erlcTab.classList.add('hidden');
+        automationsTab.classList.add('hidden');
     });
 
     shiftsTabBtn.addEventListener('click', () => {
         shiftsTabBtn.classList.add('active');
         punishmentsTabBtn.classList.remove('active');
         erlcTabBtn.classList.remove('active');
+        automationsTabBtn.classList.remove('active');
         shiftsTab.classList.remove('hidden');
         punishmentsTab.classList.add('hidden');
         erlcTab.classList.add('hidden');
+        automationsTab.classList.add('hidden');
         
         if (activeShifts.innerHTML.includes('Loading')) {
             loadShifts(selectedServerId);
@@ -1201,12 +1425,25 @@
         erlcTabBtn.classList.add('active');
         punishmentsTabBtn.classList.remove('active');
         shiftsTabBtn.classList.remove('active');
+        automationsTabBtn.classList.remove('active');
         erlcTab.classList.remove('hidden');
         punishmentsTab.classList.add('hidden');
         shiftsTab.classList.add('hidden');
+        automationsTab.classList.add('hidden');
         
         loadERLCData(selectedServerId);
         loadBOLOs(selectedServerId);
+    });
+
+    automationsTabBtn.addEventListener('click', () => {
+        automationsTabBtn.classList.add('active');
+        punishmentsTabBtn.classList.remove('active');
+        shiftsTabBtn.classList.remove('active');
+        erlcTabBtn.classList.remove('active');
+        automationsTab.classList.remove('hidden');
+        punishmentsTab.classList.add('hidden');
+        shiftsTab.classList.add('hidden');
+        erlcTab.classList.add('hidden');
     });
 
     punishmentForm.addEventListener('submit', function(e) {
@@ -1221,9 +1458,17 @@
         });
     }
     
+    if (commandForm) {
+        commandForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            executeCommand();
+        });
+    }
+    
     startShiftBtn.addEventListener('click', startShift);
     pauseShiftBtn.addEventListener('click', pauseShift);
     endShiftBtn.addEventListener('click', endShift);
+    runAutomationBtn.addEventListener('click', runAutomation);
     
     confirmDeleteBtn.addEventListener('click', confirmDeletePunishment);
     cancelDeleteBtn.addEventListener('click', () => {
@@ -1262,7 +1507,14 @@
         }
         setupShiftTypeDropdown(shiftTypes);
         
+        if (serverConfig && serverConfig.automations) {
+            setupAutomationsDropdown(serverConfig.automations);
+        } else {
+            setupAutomationsDropdown([]);
+        }
+        
         loadPunishments(serverId);
+        loadBOLOs(serverId);
         checkActiveShift(serverId);
         updateDiscordCheckCooldown();
     }
@@ -1286,7 +1538,7 @@
                 localStorage.removeItem('selectedServerId');
             }
         }
-        
+
         try {
             const response = await fetch("https://api.duckybot.xyz/guilds", {
                 headers: { "Discord-Code": discordToken }
@@ -1388,7 +1640,7 @@
         
         if (!discordToken) {
             punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Authentication error. Please log in again.</p></div>';
-            throw new Error('Authentication error');
+            return;
         }
         
         try {
@@ -1480,50 +1732,50 @@
             punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load punishment history. Please try again.</p></div>';
         }
     }
-    
-    
-    
+
     function filterPunishmentHistory() {
-    const username = document.getElementById('robloxUsername').value.trim().toLowerCase();
-    const punishmentItems = document.querySelectorAll('#punishmentHistory .punishment-item');
-    
-    if (!username) {
-        punishmentItems.forEach(item => {
-            item.style.display = '';
-        });
-        return;
-    }
-    
-    let matchFound = false;
-    
-    punishmentItems.forEach(item => {
-        const itemUsername = item.dataset.username || '';
-        const itemDisplayName = item.dataset.displayname || '';
-        const itemRobloxId = item.dataset.robloxid || '';
+        const username = document.getElementById('robloxUsername').value.trim().toLowerCase();
+        const punishmentItems = document.querySelectorAll('#punishmentHistory .punishment-item');
         
-        if (itemUsername.includes(username) || itemDisplayName.includes(username) || itemRobloxId === username) {
-            item.style.display = '';
-            matchFound = true;
+        if (!username) {
+            punishmentItems.forEach(item => {
+                item.style.display = '';
+            });
+            return;
+        }
+        
+        let matchFound = false;
+        
+        punishmentItems.forEach(item => {
+            const itemUsername = item.dataset.username || '';
+            const itemDisplayName = item.dataset.displayname || '';
+            const itemRobloxId = item.dataset.robloxid || '';
+            
+            if (itemUsername.includes(username) || itemDisplayName.includes(username) || itemRobloxId === username) {
+                item.style.display = '';
+                matchFound = true;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+        
+        if (!matchFound) {
+            // If no matches, show a message
+            if (!document.getElementById('no-matches-message')) {
+                const noMatches = document.createElement('div');
+                noMatches.id = 'no-matches-message';
+                noMatches.className = 'empty-state';
+                noMatches.innerHTML = '<i class="fas fa-search"></i><p>No matching punishments found.</p>';
+                punishmentHistory.appendChild(noMatches);
+            }
         } else {
-            item.style.display = 'none';
-        }
-    });
-    
-    if (!matchFound) {
-        if (!document.getElementById('no-matches-message')) {
-            const noMatches = document.createElement('div');
-            noMatches.id = 'no-matches-message';
-            noMatches.className = 'empty-state';
-            noMatches.innerHTML = '<i class="fas fa-search"></i><p>No matching punishments found.</p>';
-            punishmentHistory.appendChild(noMatches);
-        }
-    } else {
-        const noMatches = document.getElementById('no-matches-message');
-        if (noMatches) {
-            noMatches.remove();
+            // Remove the no matches message if it exists
+            const noMatches = document.getElementById('no-matches-message');
+            if (noMatches) {
+                noMatches.remove();
+            }
         }
     }
-}
     
     function showDeleteConfirmation(punishmentId, username, type) {
         currentPunishmentToDelete = punishmentId;
@@ -1931,8 +2183,9 @@
         }
     }    
     
-    
     async function loadBOLOs(serverId) {
+        if (!activeBOLOs) return;
+        
         if (!discordToken) {
             activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Authentication error. Please log in again.</p></div>';
             return;
@@ -2132,6 +2385,53 @@
         }
     }
 
+    async function executeCommand() {
+        if (!discordToken || !selectedServerId) {
+            showToast('Authentication error. Please log in again.', 'error');
+            return;
+        }
+        
+        const commandInput = document.getElementById('command');
+        const command = commandInput.value.trim();
+        
+        if (!command) {
+            showToast('Please enter a command', 'error');
+            return;
+        }
+        
+        const executeBtn = document.getElementById('executeCommandBtn');
+        const originalBtnText = executeBtn.innerHTML;
+        executeBtn.disabled = true;
+        executeBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Executing...';
+        
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/erlc/execute`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Discord-Code': discordToken
+                },
+                body: JSON.stringify({
+                    command: command
+                })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to execute command');
+            }
+            
+            commandInput.value = '';
+            showToast(`Command executed successfully`);
+            
+        } catch (error) {
+            showToast(error.message || 'Failed to execute command. Please try again.', 'error');
+        } finally {
+            executeBtn.disabled = false;
+            executeBtn.innerHTML = originalBtnText;
+        }
+    }
+
     async function issuePunishment() {
         const now = Date.now();
         if (now - lastPunishmentTime < PUNISHMENT_COOLDOWN) {
@@ -2224,7 +2524,7 @@
         if (!discordToken || !discordUser) return;
         
         try {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/shifts`, {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts`, {
                 headers: { "Discord-Code": discordToken }
             });
             
@@ -2590,3 +2890,4 @@
     </script>
 </body>
 </html>
+
