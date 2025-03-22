@@ -1755,21 +1755,27 @@
                 shiftTimerInterval = null;
             }
             
-            shiftStatus = 'paused';
+            if (shiftStatus === 'paused') {
+                shiftStatus = 'active';
+                startShiftTimer();
+                showToast('Shift resumed successfully');
+            } else {
+                shiftStatus = 'paused';
+                showToast('Shift paused successfully');
+            }
+            
             updateShiftUI();
-            
-            showToast('Shift paused successfully');
-            
             loadShifts(selectedServerId);
             
         } catch (error) {
-            showToast('Failed to pause shift: ' + error.message, 'error');
+            showToast('Failed to pause/resume shift: ' + error.message, 'error');
         } finally {
             pauseShiftBtn.disabled = false;
-            pauseShiftBtn.innerHTML = '<i class="fas fa-pause"></i><span>Pause</span>';
+            pauseShiftBtn.innerHTML = shiftStatus === 'paused' ? 
+                '<i class="fas fa-play"></i><span>Resume</span>' : 
+                '<i class="fas fa-pause"></i><span>Pause</span>';
         }
-    }
-    
+    }    
     async function endShift() {
         if (!discordToken || !selectedServerId) {
             showToast('Authentication error. Please log in again.', 'error');
