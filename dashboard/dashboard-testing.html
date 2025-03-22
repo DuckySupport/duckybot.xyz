@@ -1385,101 +1385,101 @@
                 <p class="text-gray-400">Loading punishment history...</p>
             </div>
         `;
-    }    
-    if (!discordToken) {
-        punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Authentication error. Please log in again.</p></div>';
-        throw new Error('Authentication error');
-    }
-    
-    try {
-        const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/punishments`, {
-            headers: { "Discord-Code": discordToken }
-        });
         
-        if (!response.ok) {
-            throw new Error('Failed to fetch punishments');
+        if (!discordToken) {
+            punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Authentication error. Please log in again.</p></div>';
+            throw new Error('Authentication error');
         }
         
-        const { data: punishments } = await response.json();
-        
-        if (!punishments || punishments.length === 0) {
-            punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-ban"></i><p>No punishment history found.</p></div>';
-            return;
-        }
-        
-        punishmentHistory.innerHTML = '';
-        
-        punishments.sort((a, b) => b.timestamp - a.timestamp);
-        
-        const fragment = document.createDocumentFragment();
-        
-        for (const punishment of punishments) {
-            const item = document.createElement('div');
-            item.className = 'punishment-item p-3 pl-4 bg-black/30 rounded-md border-l-2 border-[#F5FF82] hover:bg-black/40 transition-colors';
-            item.dataset.punishmentId = punishment.punishmentid || punishment.id;
-            item.dataset.username = (punishment.robloxUser.name || '').toLowerCase();
-            item.dataset.displayname = (punishment.robloxUser.displayName || '').toLowerCase();
-            item.dataset.robloxid = (punishment.robloxUser.id || 0).toString();
-            
-            const typeColors = {
-                warn: 'text-yellow-400',
-                warning: 'text-yellow-400',
-                kick: 'text-orange-400',
-                ban: 'text-red-500',
-                tempban: 'text-red-400'
-            };
-            
-            const typeColor = typeColors[punishment.type.toLowerCase()] || 'text-gray-400';
-            
-            const moderatorData = await fetchUserData(punishment.moderator);
-            const moderatorName = moderatorData.username || moderatorData.name || punishment.moderator;
-            
-            let avatarUrl = punishment.robloxUser.pfpURL || punishment.robloxUser.avatar;
-            if (!avatarUrl && punishment.robloxUser.id) {
-                const robloxData = await fetchUserData(punishment.robloxUser.id);
-                avatarUrl = robloxData.avatar;
-            }
-            
-            item.innerHTML = `
-                <div class="flex flex-col md:flex-row justify-between items-start gap-2">
-                    <div class="flex items-start gap-3">
-                        <div class="avatar-circle hidden sm:flex">
-                            ${avatarUrl ? `<img src="${avatarUrl}" alt="${punishment.robloxUser.name}">` : punishment.robloxUser.name.charAt(0)}
-                        </div>
-                        <div>
-                            <h4 class="font-medium"><span class="roblox-displayname">${punishment.robloxUser.displayName || punishment.robloxUser.name}</span> <span class="text-sm text-gray-400">(<span class="roblox-username">${punishment.robloxUser.name}</span>)</span></h4>
-                            <p class="text-sm ${typeColor} mt-1">${punishment.type.toUpperCase()}</p>
-                            <p class="text-sm text-gray-400 mt-1">${punishment.reason}</p>
-                        </div>
-                    </div>
-                    <div class="text-right text-xs">
-                        <p class="text-gray-500">${formatDate(punishment.timestamp)}</p>
-                        <p class="text-gray-400 mt-1">By: ${moderatorName}</p>
-                        <div class="delete-btn" title="Delete punishment">
-                            <i class="fas fa-trash-alt"></i>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            const deleteBtn = item.querySelector('.delete-btn');
-            deleteBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                showDeleteConfirmation(punishment.punishmentid || punishment.id, punishment.robloxUser.name, punishment.type);
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/punishments`, {
+                headers: { "Discord-Code": discordToken }
             });
             
-            fragment.appendChild(item);
+            if (!response.ok) {
+                throw new Error('Failed to fetch punishments');
+            }
+            
+            const { data: punishments } = await response.json();
+            
+            if (!punishments || punishments.length === 0) {
+                punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-ban"></i><p>No punishment history found.</p></div>';
+                return;
+            }
+            
+            punishmentHistory.innerHTML = '';
+            
+            punishments.sort((a, b) => b.timestamp - a.timestamp);
+            
+            const fragment = document.createDocumentFragment();
+            
+            for (const punishment of punishments) {
+                const item = document.createElement('div');
+                item.className = 'punishment-item p-3 pl-4 bg-black/30 rounded-md border-l-2 border-[#F5FF82] hover:bg-black/40 transition-colors';
+                item.dataset.punishmentId = punishment.punishmentid || punishment.id;
+                item.dataset.username = (punishment.robloxUser.name || '').toLowerCase();
+                item.dataset.displayname = (punishment.robloxUser.displayName || '').toLowerCase();
+                item.dataset.robloxid = (punishment.robloxUser.id || 0).toString();
+                
+                const typeColors = {
+                    warn: 'text-yellow-400',
+                    warning: 'text-yellow-400',
+                    kick: 'text-orange-400',
+                    ban: 'text-red-500',
+                    tempban: 'text-red-400'
+                };
+                
+                const typeColor = typeColors[punishment.type.toLowerCase()] || 'text-gray-400';
+                
+                const moderatorData = await fetchUserData(punishment.moderator);
+                const moderatorName = moderatorData.username || moderatorData.name || punishment.moderator;
+                
+                let avatarUrl = punishment.robloxUser.pfpURL || punishment.robloxUser.avatar;
+                if (!avatarUrl && punishment.robloxUser.id) {
+                    const robloxData = await fetchUserData(punishment.robloxUser.id);
+                    avatarUrl = robloxData.avatar;
+                }
+                
+                item.innerHTML = `
+                    <div class="flex flex-col md:flex-row justify-between items-start gap-2">
+                        <div class="flex items-start gap-3">
+                            <div class="avatar-circle hidden sm:flex">
+                                ${avatarUrl ? `<img src="${avatarUrl}" alt="${punishment.robloxUser.name}">` : punishment.robloxUser.name.charAt(0)}
+                            </div>
+                            <div>
+                                <h4 class="font-medium"><span class="roblox-displayname">${punishment.robloxUser.displayName || punishment.robloxUser.name}</span> <span class="text-sm text-gray-400">(<span class="roblox-username">${punishment.robloxUser.name}</span>)</span></h4>
+                                <p class="text-sm ${typeColor} mt-1">${punishment.type.toUpperCase()}</p>
+                                <p class="text-sm text-gray-400 mt-1">${punishment.reason}</p>
+                            </div>
+                        </div>
+                        <div class="text-right text-xs">
+                            <p class="text-gray-500">${formatDate(punishment.timestamp)}</p>
+                            <p class="text-gray-400 mt-1">By: ${moderatorName}</p>
+                            <div class="delete-btn" title="Delete punishment">
+                                <i class="fas fa-trash-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                const deleteBtn = item.querySelector('.delete-btn');
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showDeleteConfirmation(punishment.punishmentid || punishment.id, punishment.robloxUser.name, punishment.type);
+                });
+                
+                fragment.appendChild(item);
+            }
+            
+            punishmentHistory.appendChild(fragment);
+            
+            const robloxUsername = document.getElementById('robloxUsername');
+            robloxUsername.addEventListener('input', filterPunishmentHistory);
+            
+        } catch (error) {
+            punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load punishment history. Please try again.</p></div>';
         }
-        
-        punishmentHistory.appendChild(fragment);
-        
-        const robloxUsername = document.getElementById('robloxUsername');
-        robloxUsername.addEventListener('input', filterPunishmentHistory);
-        
-    } catch (error) {
-        punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load punishment history. Please try again.</p></div>';
     }
-
 function filterPunishmentHistory() {
     const username = document.getElementById('robloxUsername').value.trim().toLowerCase();
     const punishmentItems = document.querySelectorAll('#punishmentHistory .punishment-item');
