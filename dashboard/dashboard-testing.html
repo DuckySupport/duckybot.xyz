@@ -14,7 +14,427 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: white;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .glass-card {
+            background: rgba(245, 255, 130, 0.03);
+            border: 1px solid rgba(245, 255, 130, 0.1);
+            border-radius: 12px;
+            transition: border 0.2s ease;
+        }
+        .glass-card:hover {
+            border: 1px solid rgba(245, 255, 130, 0.3);
+        }
+        .glow {
+            position: absolute;
+            width: 100%;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.05;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 40;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .mobile-menu.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .server-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+        .server-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            cursor: pointer;
+        }
+        .server-card img {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .tab-button {
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        .tab-button.active {
+            color: #F5FF82;
+        }
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #F5FF82;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 8px;
+            z-index: 100;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .toast.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .toast.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .spinner {
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid rgba(245, 255, 130, 0.2);
+            border-top-color: #F5FF82;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+        .fade-out {
+            animation: fadeOut 0.5s forwards;
+        }
+        .punishment-item {
+            position: relative;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .punishment-item:hover .delete-btn {
+            opacity: 1;
+        }
+        .delete-btn:hover {
+            background-color: rgba(239, 68, 68, 0.2);
+            transform: scale(1.1);
+        }
+        .shift-controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .shift-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .shift-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .shift-btn-start {
+            background-color: #10b981;
+            color: white;
+        }
+        .shift-btn-start:hover:not(:disabled) {
+            background-color: #059669;
+        }
+        .shift-btn-pause {
+            background-color: #f59e0b;
+            color: white;
+        }
+        .shift-btn-pause:hover:not(:disabled) {
+            background-color: #d97706;
+        }
+        .shift-btn-end {
+            background-color: #ef4444;
+            color: white;
+        }
+        .shift-btn-end:hover:not(:disabled) {
+            background-color: #dc2626;
+        }
+        .confirmation-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .confirmation-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: #1a1a1a;
+            border: 1px solid rgba(245, 255, 130, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            width: 90%;
+            max-width: 400px;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+        .confirmation-modal.active .modal-content {
+            transform: translateY(0);
+        }
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .shift-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .shift-status.active {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+        .shift-status.paused {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+        .shift-status.inactive {
+            background-color: rgba(156, 163, 175, 0.1);
+            color: #9ca3af;
+        }
+        .pulse {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        .pulse.active {
+            background-color: #10b981;
+        }
+        .pulse.paused {
+            background-color: #f59e0b;
+        }
+        .pulse.inactive {
+            background-color: #9ca3af;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+            
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+        .pulse.paused {
+            animation: pulse-paused 2s infinite;
+        }
+        @keyframes pulse-paused {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+            }
+            
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+            }
+            
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+            }
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+        .breadcrumb a {
+            color: #f5ff82;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+        .breadcrumb a:hover {
+            opacity: 0.8;
+        }
+        .breadcrumb-separator {
+            color: #4b5563;
+        }
+        .avatar-circle {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: #2d2d2d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #f5ff82;
+        }
+        .avatar-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .shift-card {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: rgba(30, 30, 30, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+        .shift-card:hover {
+            border-color: rgba(245, 255, 130, 0.2);
+            background-color: rgba(30, 30, 30, 0.7);
+        }
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            text-align: center;
+            color: #9ca3af;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #4b5563;
+        }
+        
+        /* Custom dropdown styles */
+        .custom-dropdown {
+            position: relative;
+            width: 100%;
+        }
+        .dropdown-selected {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.375rem;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        .dropdown-selected:hover {
+            border-color: rgba(245, 255, 130, 0.3);
+        }
+        .dropdown-selected.active {
+            border-color: #F5FF82;
+        }
+        .dropdown-options {
+            position: absolute;
+            top: calc(100% + 0.25rem);
+            left: 0;
+            right: 0;
+            background-color: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.375rem;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+        .dropdown-options.active {
+            max-height: 200px;
+            opacity: 1;
+            overflow-y: auto;
+        }
+        .dropdown-option {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .dropdown-option:hover {
+            background-color: rgba(245, 255, 130, 0.1);
+        }
+        .dropdown-option.selected {
+            background-color: rgba(245, 255, 130, 0.2);
+            color: #F5FF82;
+        }
+        
+        @media (max-width: 768px) {
+            .server-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="glow bg-[#F5FF82] top-0 left-0"></div>
@@ -126,6 +546,7 @@
                                         <i class="fas fa-chevron-down"></i>
                                     </div>
                                     <div class="dropdown-options" id="punishmentTypeOptions">
+                                        <!-- Options will be populated dynamically -->
                                     </div>
                                 </div>
                                 <input type="hidden" id="punishmentType" required>
@@ -166,20 +587,10 @@
                 
                 <div class="glass-card p-4">
                     <h3 class="text-lg font-bold mb-4">Punishment History</h3>
-                    <div class="punishment-history-container">
-                        <div id="punishmentHistory" class="punishment-list space-y-3">
-                            <div class="text-center py-4">
-                                <div class="spinner mx-auto mb-2"></div>
-                                <p class="text-gray-400">Loading punishment history...</p>
-                            </div>
-                        </div>
-                        <div id="filteredPunishments" class="filtered-punishments hidden">
-                            <div class="filtered-punishments-header">
-                                <h4>Filtered Results</h4>
-                                <span class="clear-filter" id="clearFilter">Clear Filter</span>
-                            </div>
-                            <div id="filteredPunishmentsList" class="space-y-3">
-                            </div>
+                    <div id="punishmentHistory" class="space-y-3">
+                        <div class="text-center py-4">
+                            <div class="spinner mx-auto mb-2"></div>
+                            <p class="text-gray-400">Loading punishment history...</p>
                         </div>
                     </div>
                 </div>
@@ -207,7 +618,7 @@
                                         <!-- Options will be populated dynamically -->
                                     </div>
                                 </div>
-                                <input type="hidden" id="shiftType" value="quacking">
+                                <input type="hidden" id="shiftType" value="patrol">
                             </div>
                         </div>
                         
@@ -292,7 +703,1124 @@
         <p id="toastMessage"></p>
     </div>
 
-    <script src="dashboard.js"></script>
+    <script>
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const serverGrid = document.getElementById('serverGrid');
+    const serverSelectionView = document.getElementById('serverSelectionView');
+    const moderationPanelView = document.getElementById('moderationPanelView');
+    const backToServersBtn = document.getElementById('backToServersBtn');
+    const punishmentsTabBtn = document.getElementById('punishmentsTabBtn');
+    const shiftsTabBtn = document.getElementById('shiftsTabBtn');
+    const punishmentsTab = document.getElementById('punishmentsTab');
+    const shiftsTab = document.getElementById('shiftsTab');
+    const punishmentForm = document.getElementById('punishmentForm');
+    const punishmentType = document.getElementById('punishmentType');
+    const durationContainer = document.getElementById('durationContainer');
+    const punishmentHistory = document.getElementById('punishmentHistory');
+    const activeShifts = document.getElementById('activeShifts');
+    const recentShifts = document.getElementById('recentShifts');
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    const menuBtn = document.getElementById('menuBtn');
+    const closeMenuBtn = document.getElementById('closeMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const confirmationModal = document.getElementById('confirmationModal');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+    const confirmationMessage = document.getElementById('confirmationMessage');
+    const startShiftBtn = document.getElementById('startShiftBtn');
+    const pauseShiftBtn = document.getElementById('pauseShiftBtn');
+    const endShiftBtn = document.getElementById('endShiftBtn');
+    const shiftType = document.getElementById('shiftType');
+    const shiftStatusIndicator = document.getElementById('shiftStatusIndicator');
+    const shiftStatusText = document.getElementById('shiftStatusText');
+    const shiftTimer = document.getElementById('shiftTimer');
+    const recentUserShifts = document.getElementById('recentUserShifts');
+    
+    const punishmentTypeSelected = document.getElementById('punishmentTypeSelected');
+    const punishmentTypeOptions = document.getElementById('punishmentTypeOptions');
+    const durationUnitSelected = document.getElementById('durationUnitSelected');
+    const durationUnitOptions = document.getElementById('durationUnitOptions');
+    const durationUnit = document.getElementById('durationUnit');
+    const shiftTypeSelected = document.getElementById('shiftTypeSelected');
+    const shiftTypeOptions = document.getElementById('shiftTypeOptions');
+
+    let selectedServerId = null;
+    let selectedServerConfig = null;
+    let userCache = new Map();
+    let avatarCache = new Map();
+    let discordToken = null;
+    let discordUser = null;
+    let lastPunishmentTime = 0;
+    const PUNISHMENT_COOLDOWN = 5000;
+    
+    let shiftStatus = 'inactive';
+    let shiftStartTime = 0;
+    let shiftElapsedTime = 0;
+    let shiftTimerInterval = null;
+    let currentPunishmentToDelete = null;
+    let currentUserShift = null;
+
+    function initDropdowns() {
+        punishmentTypeSelected.addEventListener('click', () => {
+            punishmentTypeSelected.classList.toggle('active');
+            punishmentTypeOptions.classList.toggle('active');
+        });
+        
+        durationUnitSelected.addEventListener('click', () => {
+            durationUnitSelected.classList.toggle('active');
+            durationUnitOptions.classList.toggle('active');
+        });
+        
+        document.querySelectorAll('#durationUnitOptions .dropdown-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.dataset.value;
+                durationUnit.value = value;
+                durationUnitSelected.querySelector('span').textContent = option.textContent;
+                
+                document.querySelectorAll('#durationUnitOptions .dropdown-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                option.classList.add('selected');
+                
+                durationUnitSelected.classList.remove('active');
+                durationUnitOptions.classList.remove('active');
+            });
+        });
+        
+        shiftTypeSelected.addEventListener('click', () => {
+            shiftTypeSelected.classList.toggle('active');
+            shiftTypeOptions.classList.toggle('active');
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.custom-dropdown')) {
+                document.querySelectorAll('.dropdown-options').forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+                document.querySelectorAll('.dropdown-selected').forEach(selected => {
+                    selected.classList.remove('active');
+                });
+            }
+        });
+    }
+
+    function getDiscordToken() {
+        return document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
+    }
+
+    function formatDuration(seconds) {
+        if (seconds < 60) return `${seconds} second${seconds !== 1 ? 's' : ''}`;
+        
+        const months = Math.floor(seconds / (30 * 24 * 3600));
+        const remainingAfterMonths = seconds % (30 * 24 * 3600);
+        const weeks = Math.floor(remainingAfterMonths / (7 * 24 * 3600));
+        const remainingAfterWeeks = remainingAfterMonths % (7 * 24 * 3600);
+        const hours = Math.floor(remainingAfterWeeks / 3600);
+        const remainingAfterHours = remainingAfterWeeks % 3600;
+        const minutes = Math.floor(remainingAfterHours / 60);
+        const secs = remainingAfterHours % 60;
+        
+        let durationString = '';
+        if (months > 0) durationString += `${months} month${months !== 1 ? 's' : ''}`;
+        if (weeks > 0) durationString += `${durationString ? ', ' : ''}${weeks} week${weeks !== 1 ? 's' : ''}`;
+        if (hours > 0) durationString += `${durationString ? ', ' : ''}${hours} hour${hours !== 1 ? 's' : ''}`;
+        if (minutes > 0) durationString += `${durationString ? ', ' : ''}${minutes} minute${minutes !== 1 ? 's' : ''}`;
+        if (secs > 0 || (months === 0 && weeks === 0 && hours === 0 && minutes === 0)) {
+            durationString += `${durationString ? ', ' : ''}${secs} second${secs !== 1 ? 's' : ''}`;
+        }
+        
+        return durationString;
+    }
+    
+    function formatShiftTime(seconds) {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const secs = seconds % 60;
+        
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function formatDate(timestamp) {
+        const date = new Date(timestamp * 1000);
+        return date.toLocaleString();
+    }
+
+    function showToast(message, type = 'success') {
+        toastMessage.textContent = message;
+        toast.className = `toast ${type}`;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    async function fetchUserData(userId, forceRefresh = false) {
+        if (!forceRefresh && userCache.has(userId)) {
+            return userCache.get(userId);
+        }
+        
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/user/${userId}`);
+            
+            if (!response.ok) {
+                return { id: userId, name: userId, username: userId };
+            }
+            
+            const data = await response.json();
+            
+            if (data.code === 200 && data.data) {
+                userCache.set(userId, data.data);
+                return data.data;
+            }
+            
+            return { id: userId, name: userId, username: userId };
+        } catch (error) {
+            return { id: userId, name: userId, username: userId };
+        }
+    }
+
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+
+    closeMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+
+    function setupPunishmentTypeDropdown(types) {
+        punishmentTypeOptions.innerHTML = '';
+        
+        types.forEach((type, index) => {
+            const option = document.createElement('div');
+            option.className = 'dropdown-option';
+            option.dataset.value = type.toLowerCase();
+            option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+            
+            option.addEventListener('click', () => {
+                punishmentType.value = type.toLowerCase();
+                punishmentTypeSelected.querySelector('span').textContent = option.textContent;
+                
+                document.querySelectorAll('#punishmentTypeOptions .dropdown-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                option.classList.add('selected');
+                
+                punishmentTypeSelected.classList.remove('active');
+                punishmentTypeOptions.classList.remove('active');
+                
+                durationContainer.classList.toggle('hidden', punishmentType.value !== 'tempban');
+            });
+            
+            punishmentTypeOptions.appendChild(option);
+        });
+    }
+
+    function setupShiftTypeDropdown(types) {
+        shiftTypeOptions.innerHTML = '';
+        
+        if (!types || types.length === 0) {
+            types = [];
+        }
+        
+        types.forEach((type, index) => {
+            const option = document.createElement('div');
+            option.className = 'dropdown-option';
+            option.dataset.value = type.name.toLowerCase();
+            option.textContent = type.name.charAt(0).toUpperCase() + type.name.slice(1);
+            
+            if (index === 0) {
+                option.classList.add('selected');
+                shiftTypeSelected.querySelector('span').textContent = option.textContent;
+                shiftType.value = type.name.toLowerCase();
+            }
+            
+            option.addEventListener('click', () => {
+                shiftType.value = type.name.toLowerCase();
+                shiftTypeSelected.querySelector('span').textContent = option.textContent;
+                
+                document.querySelectorAll('#shiftTypeOptions .dropdown-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                option.classList.add('selected');
+                
+                shiftTypeSelected.classList.remove('active');
+                shiftTypeOptions.classList.remove('active');
+            });
+            
+            shiftTypeOptions.appendChild(option);
+        });
+    }
+    
+    backToServersBtn.addEventListener('click', () => {
+        moderationPanelView.classList.add('hidden');
+        serverSelectionView.classList.remove('hidden');
+        localStorage.removeItem('selectedServerId');
+    });
+
+    punishmentsTabBtn.addEventListener('click', () => {
+        punishmentsTabBtn.classList.add('active');
+        shiftsTabBtn.classList.remove('active');
+        punishmentsTab.classList.remove('hidden');
+        shiftsTab.classList.add('hidden');
+    });
+
+    shiftsTabBtn.addEventListener('click', () => {
+        shiftsTabBtn.classList.add('active');
+        punishmentsTabBtn.classList.remove('active');
+        shiftsTab.classList.remove('hidden');
+        punishmentsTab.classList.add('hidden');
+        
+        if (activeShifts.innerHTML.includes('Loading')) {
+            loadShifts(selectedServerId);
+        }
+    });
+
+    punishmentForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        issuePunishment();
+    });
+    
+    startShiftBtn.addEventListener('click', startShift);
+    pauseShiftBtn.addEventListener('click', pauseShift);
+    endShiftBtn.addEventListener('click', endShift);
+    
+    confirmDeleteBtn.addEventListener('click', confirmDeletePunishment);
+    cancelDeleteBtn.addEventListener('click', () => {
+        confirmationModal.classList.remove('active');
+        currentPunishmentToDelete = null;
+    });
+
+    function selectServer(serverId, serverName, serverIcon, serverConfig) {
+        selectedServerId = serverId;
+        selectedServerConfig = serverConfig;
+        
+        document.getElementById('serverName').textContent = serverName;
+        document.getElementById('serverIcon').src = serverIcon || 'https://duckybot.xyz/images/Ducky.svg';
+        
+        serverSelectionView.classList.add('hidden');
+        moderationPanelView.classList.remove('hidden');
+        
+        localStorage.setItem('selectedServerId', JSON.stringify({
+            id: serverId,
+            name: serverName,
+            icon: serverIcon,
+            config: serverConfig
+        }));
+        
+        let punishmentTypes = [];
+        if (serverConfig && serverConfig.punishmenttypes && serverConfig.punishmenttypes.length > 0) {
+            punishmentTypes = serverConfig.punishmenttypes;
+        }
+        setupPunishmentTypeDropdown(punishmentTypes);
+        
+        let shiftTypes = [];
+        if (serverConfig && serverConfig.shifttypes && serverConfig.shifttypes.length > 0) {
+            shiftTypes = serverConfig.shifttypes;
+        }
+        setupShiftTypeDropdown(shiftTypes);
+        
+        loadPunishments(serverId);
+        checkActiveShift(serverId);
+    }
+    async function loadServers() {
+        discordToken = getDiscordToken();
+        
+        if (!discordToken) {
+            window.location.href = "/login?redirect=modpanel";
+            return;
+        }
+        
+        const savedServer = localStorage.getItem('selectedServerId');
+        if (savedServer) {
+            try {
+                const serverData = JSON.parse(savedServer);
+                if (serverData && serverData.id) {
+                    selectedServerId = serverData.id;
+                }
+            } catch (e) {
+                localStorage.removeItem('selectedServerId');
+            }
+        }
+
+        try {
+            const response = await fetch("https://api.duckybot.xyz/guilds", {
+                headers: { "Discord-Code": discordToken }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch data');
+            }
+
+            const { data: servers, code } = await response.json();
+            
+            if (code !== 200 || !servers) {
+                throw new Error('Invalid response from server');
+            }
+            
+            const userResponse = await fetch('https://discord.com/api/users/@me', {
+                headers: { authorization: `Bearer ${discordToken}` }
+            });
+            
+            if (userResponse.ok) {
+                discordUser = await userResponse.json();
+                document.getElementById('username').textContent = discordUser.global_name || discordUser.username;
+                const avatarUrl = `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`;
+                document.getElementById('profilePicture').src = avatarUrl;
+            }
+            
+            const filteredServers = servers.filter(server => server.manage_server && server.ducky);
+            
+            if (filteredServers.length === 0) {
+                serverGrid.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-server"></i><p>No servers with Ducky found. Make sure you have the right permissions.</p></div>';
+            } else {
+                serverGrid.innerHTML = '';
+                
+                const fragment = document.createDocumentFragment();
+                
+                let savedServerValid = false;
+                let savedServerData = null;
+                
+                if (selectedServerId) {
+                    savedServerData = filteredServers.find(server => server.id === selectedServerId);
+                    if (savedServerData) {
+                        savedServerValid = true;
+                    }
+                }
+                
+                filteredServers.forEach(server => {
+                    const serverCard = document.createElement('div');
+                    serverCard.className = 'server-card glass-card';
+                    
+                    const img = document.createElement('img');
+                    img.src = server.icon || 'https://duckybot.xyz/images/Ducky.svg';
+                    img.alt = server.name;
+                    img.loading = 'lazy';
+
+                    const name = document.createElement('p');
+                    name.className = 'text-center font-medium text-xs';
+                    name.textContent = server.name;
+                    
+                    serverCard.appendChild(img);
+                    serverCard.appendChild(name);
+                    
+                    serverCard.addEventListener('click', () => {
+                        selectServer(server.id, server.name, server.icon, server.config);
+                    });
+                    
+                    fragment.appendChild(serverCard);
+                });
+                
+                serverGrid.appendChild(fragment);
+                
+                if (savedServerValid && savedServerData) {
+                    selectServer(savedServerData.id, savedServerData.name, savedServerData.icon, savedServerData.config);
+                }
+            }
+            
+            loadingOverlay.classList.add('fade-out');
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+                serverSelectionView.style.opacity = '1';
+            }, 500);
+            
+        } catch (error) {
+            serverGrid.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-exclamation-triangle"></i><p>Failed to load servers. Please try again later.</p></div>';
+            loadingOverlay.classList.add('fade-out');
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+                serverSelectionView.style.opacity = '1';
+            }, 500);
+        }
+    }
+
+    async function loadPunishments(serverId) {
+        punishmentHistory.innerHTML = `
+            <div class="text-center py-4">
+                <div class="spinner mx-auto mb-2"></div>
+                <p class="text-gray-400">Loading punishment history...</p>
+            </div>
+        `;
+        
+        if (!discordToken) {
+            punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Authentication error. Please log in again.</p></div>';
+            return;
+        }
+        
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/punishments`, {
+                headers: { "Discord-Code": discordToken }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch punishments');
+            }
+            
+            const { data: punishments } = await response.json();
+            
+            if (!punishments || punishments.length === 0) {
+                punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-ban"></i><p>No punishment history found.</p></div>';
+                return;
+            }
+            
+            punishmentHistory.innerHTML = '';
+            
+            punishments.sort((a, b) => b.timestamp - a.timestamp);
+            
+            const fragment = document.createDocumentFragment();
+            
+            for (const punishment of punishments.slice(0, 10)) {
+                const item = document.createElement('div');
+                item.className = 'punishment-item p-3 pl-4 bg-black/30 rounded-md border-l-2 border-[#F5FF82] hover:bg-black/40 transition-colors';
+                item.dataset.punishmentId = punishment.punishmentid || punishment.id;
+                
+                const typeColors = {
+                    warn: 'text-yellow-400',
+                    warning: 'text-yellow-400',
+                    kick: 'text-orange-400',
+                    ban: 'text-red-500',
+                    tempban: 'text-red-400'
+                };
+                
+                const typeColor = typeColors[punishment.type.toLowerCase()] || 'text-gray-400';
+                
+                const moderatorData = await fetchUserData(punishment.moderator);
+                const moderatorName = moderatorData.username || moderatorData.name || punishment.moderator;
+                
+                let avatarUrl = punishment.robloxUser.pfpURL || punishment.robloxUser.avatar;
+                if (!avatarUrl && punishment.robloxUser.id) {
+                    const robloxData = await fetchUserData(punishment.robloxUser.id);
+                    avatarUrl = robloxData.avatar;
+                }
+                
+                item.innerHTML = `
+                    <div class="flex flex-col md:flex-row justify-between items-start gap-2">
+                        <div class="flex items-start gap-3">
+                            <div class="avatar-circle hidden sm:flex">
+                                ${avatarUrl ? `<img src="${avatarUrl}" alt="${punishment.robloxUser.name}">` : punishment.robloxUser.name.charAt(0)}
+                            </div>
+                            <div>
+                                <h4 class="font-medium">${punishment.robloxUser.displayName || punishment.robloxUser.name} <span class="text-sm text-gray-400">(${punishment.robloxUser.name})</span></h4>
+                                <p class="text-sm ${typeColor} mt-1">${punishment.type.toUpperCase()}</p>
+                                <p class="text-sm text-gray-400 mt-1">${punishment.reason}</p>
+                            </div>
+                        </div>
+                        <div class="text-right text-xs">
+                            <p class="text-gray-500">${formatDate(punishment.timestamp)}</p>
+                            <p class="text-gray-400 mt-1">By: ${moderatorName}</p>
+                        </div>
+                    </div>
+                    <div class="delete-btn" title="Delete punishment">
+                        <i class="fas fa-trash-alt"></i>
+                    </div>
+                `;
+                
+                const deleteBtn = item.querySelector('.delete-btn');
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showDeleteConfirmation(punishment.punishmentid || punishment.id, punishment.robloxUser.name, punishment.type);
+                });
+                
+                fragment.appendChild(item);
+            }
+            
+            punishmentHistory.appendChild(fragment);
+            
+        } catch (error) {
+            punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load punishment history. Please try again.</p></div>';
+        }
+    }
+    
+    function showDeleteConfirmation(punishmentId, username, type) {
+        currentPunishmentToDelete = punishmentId;
+        confirmationMessage.textContent = `Are you sure you want to delete the ${type.toUpperCase()} punishment for ${username}?`;
+        confirmationModal.classList.add('active');
+    }
+    
+    async function confirmDeletePunishment() {
+        if (!currentPunishmentToDelete || !selectedServerId || !discordToken) {
+            showToast('Error: Missing information for deletion', 'error');
+            confirmationModal.classList.remove('active');
+            return;
+        }
+        
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments/${currentPunishmentToDelete}`, {
+                method: 'DELETE',
+                headers: {
+                    'Discord-Code': discordToken
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to delete punishment');
+            }
+            
+            showToast('Punishment deleted successfully');
+            
+            const punishmentElement = document.querySelector(`.punishment-item[data-punishment-id="${currentPunishmentToDelete}"]`);
+            if (punishmentElement) {
+                punishmentElement.style.height = punishmentElement.offsetHeight + 'px';
+                punishmentElement.style.overflow = 'hidden';
+                
+                setTimeout(() => {
+                    punishmentElement.style.height = '0';
+                    punishmentElement.style.padding = '0';
+                    punishmentElement.style.margin = '0';
+                    punishmentElement.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        punishmentElement.remove();
+                        
+                        if (punishmentHistory.children.length === 0) {
+                            punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-ban"></i><p>No punishment history found.</p></div>';
+                        }
+                    }, 300);
+                }, 10);
+            }
+            
+        } catch (error) {
+            showToast('Failed to delete punishment: ' + error.message, 'error');
+        } finally {
+            confirmationModal.classList.remove('active');
+            currentPunishmentToDelete = null;
+        }
+    }
+
+    async function loadShifts(serverId) {
+        activeShifts.innerHTML = `
+            <div class="text-center py-4 col-span-full">
+                <div class="spinner mx-auto mb-2"></div>
+                <p class="text-gray-400">Loading active shifts...</p>
+            </div>
+        `;
+        
+        recentShifts.innerHTML = `
+            <div class="text-center py-4">
+                <div class="spinner mx-auto mb-2"></div>
+                <p class="text-gray-400">Loading recent shifts...</p>
+            </div>
+        `;
+        
+        if (!discordToken) {
+            activeShifts.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-exclamation-triangle"></i><p>Authentication error. Please log in again.</p></div>';
+            recentShifts.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Authentication error. Please log in again.</p></div>';
+            return;
+        }
+        
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/shifts`, {
+                headers: { "Discord-Code": discordToken }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch shifts');
+            }
+            
+            const { data } = await response.json();
+            
+            if (!data.activeshifts || data.activeshifts.length === 0) {
+                activeShifts.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-user-clock"></i><p>No active shifts found.</p></div>';
+            } else {
+                activeShifts.innerHTML = '';
+                
+                const fragment = document.createDocumentFragment();
+                
+                for (const shift of data.activeshifts) {
+                    const duration = Math.floor(Date.now() / 1000 - shift.started);
+                    const userData = await fetchUserData(shift.user);
+                    
+                    const card = document.createElement('div');
+                    card.className = 'shift-card';
+                    
+                    const avatarUrl = userData.avatar;
+                    
+                    card.innerHTML = `
+                        <div class="avatar-circle">
+                            ${avatarUrl ? `<img src="${avatarUrl}" alt="${userData.username || userData.name || shift.user}">` : (userData.username || userData.name || shift.user).charAt(0)}
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-medium">${userData.username || userData.name || shift.user}</h4>
+                                    <p class="text-sm text-[#F5FF82] mt-1">Active for ${formatDuration(duration)}</p>
+                                    <p class="text-xs text-gray-400 mt-1">Type: ${shift.type || 'Default'}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xs text-gray-500">Started: ${formatDate(shift.started)}</p>
+                                    <p class="text-xs text-gray-400 mt-1">Punishments: ${shift.punishments}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    fragment.appendChild(card);
+                }
+                
+                activeShifts.appendChild(fragment);
+            }
+            
+            if (!data.shifts || data.shifts.length === 0) {
+                recentShifts.innerHTML = '<div class="empty-state"><i class="fas fa-history"></i><p>No recent shifts found.</p></div>';
+            } else {
+                recentShifts.innerHTML = '';
+                
+                const fragment = document.createDocumentFragment();
+                
+                const sortedShifts = data.shifts
+                    .sort((a, b) => b.ended - a.ended)
+                    .slice(0, 5);
+                
+                for (const shift of sortedShifts) {
+                    const userData = await fetchUserData(shift.user);
+                    
+                    const item = document.createElement('div');
+                    item.className = 'shift-card';
+                    
+                    const avatarUrl = userData.avatar;
+                    const actualDuration = shift.elapsed > 0 ? shift.elapsed * 60 : 0;
+                    
+                    item.innerHTML = `
+                        <div class="avatar-circle">
+                            ${avatarUrl ? `<img src="${avatarUrl}" alt="${userData.username || userData.name || shift.user}">` : (userData.username || userData.name || shift.user).charAt(0)}
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-medium">${userData.username || userData.name || shift.user}</h4>
+                                    <p class="text-sm text-gray-400 mt-1">Duration: ${formatDuration(actualDuration)}</p>
+                                    <p class="text-xs text-gray-400 mt-1">Type: ${shift.type || 'Default'}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xs text-gray-500">Ended: ${formatDate(shift.ended)}</p>
+                                    <p class="text-xs text-gray-400 mt-1">Punishments: ${shift.punishments}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    fragment.appendChild(item);
+                }
+                
+                recentShifts.appendChild(fragment);
+            }
+            
+            if (discordUser) {
+                const userId = discordUser.id;
+                const userActiveShift = data.activeshifts?.find(shift => shift.user === userId);
+                
+                if (userActiveShift) {
+                    currentUserShift = userActiveShift;
+                    shiftStatus = userActiveShift.paused ? 'paused' : 'active';
+                    shiftStartTime = userActiveShift.started;
+                    shiftElapsedTime = userActiveShift.elapsed || 0;
+                    
+                    updateShiftUI();
+                    
+                    if (shiftStatus === 'active') {
+                        startShiftTimer();
+                    }
+                    
+                    if (userActiveShift.type && shiftType) {
+                        shiftType.value = userActiveShift.type;
+                        shiftTypeSelected.querySelector('span').textContent = userActiveShift.type.charAt(0).toUpperCase() + userActiveShift.type.slice(1);
+                        
+                        const option = document.querySelector(`#shiftTypeOptions .dropdown-option[data-value="${userActiveShift.type.toLowerCase()}"]`);
+                        if (option) {
+                            document.querySelectorAll('#shiftTypeOptions .dropdown-option').forEach(opt => {
+                                opt.classList.remove('selected');
+                            });
+                            option.classList.add('selected');
+                        }
+                    }
+                }
+            }
+            
+            loadUserRecentShifts(serverId, data);
+            
+        } catch (error) {
+            activeShifts.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-exclamation-triangle"></i><p>Failed to load active shifts. Please try again.</p></div>';
+            recentShifts.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load recent shifts. Please try again.</p></div>';
+        }
+    }
+    
+    async function loadUserRecentShifts(serverId, shiftData) {
+        if (!discordToken || !discordUser) {
+            recentUserShifts.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Authentication error. Please log in again.</p></div>';
+            return;
+        }
+        
+        try {
+            const userId = discordUser.id;
+            
+            if (!shiftData || !shiftData.shifts || shiftData.shifts.length === 0) {
+                recentUserShifts.innerHTML = '<div class="empty-state"><i class="fas fa-history"></i><p>No shift history found.</p></div>';
+                return;
+            }
+            
+            const userShifts = shiftData.shifts.filter(shift => shift.user === userId);
+            
+            if (userShifts.length === 0) {
+                recentUserShifts.innerHTML = '<div class="empty-state"><i class="fas fa-history"></i><p>No shift history found.</p></div>';
+                return;
+            }
+            
+            recentUserShifts.innerHTML = '';
+            
+            const fragment = document.createDocumentFragment();
+            
+            userShifts.sort((a, b) => b.ended - a.ended);
+            
+            const recentUserShiftsList = userShifts.slice(0, 3);
+            
+            for (const shift of recentUserShiftsList) {
+                const item = document.createElement('div');
+                item.className = 'p-3 bg-black/20 rounded-lg flex justify-between items-center';
+                
+                const actualDuration = shift.elapsed > 0 ? shift.elapsed * 60 : 0;
+                
+                item.innerHTML = `
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 bg-[#F5FF82]/10 text-[#F5FF82] rounded-md text-xs font-medium">${shift.type || 'default'}</span>
+                            <span class="text-sm text-gray-400">${shift.breaks || 0} breaks</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-semibold">${formatDuration(actualDuration)}</div>
+                    </div>
+                `;
+                
+                fragment.appendChild(item);
+            }
+            
+            recentUserShifts.appendChild(fragment);
+            
+        } catch (error) {
+            recentUserShifts.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load your shift history.</p></div>';
+        }
+    }
+
+    async function issuePunishment() {
+        const now = Date.now();
+        if (now - lastPunishmentTime < PUNISHMENT_COOLDOWN) {
+            showToast('Please wait 5 seconds between punishments', 'error');
+            return;
+        }
+
+        if (!discordToken) {
+            showToast('Authentication error. Please log in again.', 'error');
+            return;
+        }
+        
+        const robloxUsername = document.getElementById('robloxUsername').value;
+        const type = document.getElementById('punishmentType').value;
+        const reason = document.getElementById('reason').value;
+        
+        if (!type) {
+            showToast('Please select a punishment type', 'error');
+            return;
+        }
+        
+        let expires = null;
+        if (type === 'tempban') {
+            const durationValue = document.getElementById('durationValue').value;
+            const durationUnit = document.getElementById('durationUnit').value;
+            
+            if (!durationValue || durationValue <= 0) {
+                showToast('Please enter a valid duration', 'error');
+                return;
+            }
+            
+            const multipliers = {
+                minutes: 60,
+                hours: 3600,
+                days: 86400,
+                weeks: 604800
+            };
+            
+            const duration = durationValue * multipliers[durationUnit];
+            expires = Math.floor(Date.now() / 1000) + duration;
+        }
+        
+        const submitBtn = document.getElementById('submitBtn');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+        
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Discord-Code': discordToken
+                },
+                body: JSON.stringify({
+                    username: robloxUsername,
+                    type,
+                    reason,
+                    expires
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to issue punishment');
+            }
+            
+            punishmentForm.reset();
+            durationContainer.classList.add('hidden');
+            punishmentTypeSelected.querySelector('span').textContent = 'Select type...';
+            document.querySelectorAll('#punishmentTypeOptions .dropdown-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            showToast(`Successfully issued ${type} to ${robloxUsername}`);
+            lastPunishmentTime = now;
+            
+            loadPunishments(selectedServerId);
+            
+        } catch (error) {
+            showToast(error.message || 'Failed to issue punishment. Please try again.', 'error');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+        }
+    }
+    
+    async function checkActiveShift(serverId) {
+        if (!discordToken || !discordUser) return;
+        
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/shifts`, {
+                headers: { "Discord-Code": discordToken }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to check active shift');
+            }
+            
+            const { data } = await response.json();
+            
+            const userId = discordUser.id;
+            let userActiveShift = null;
+            
+            if (data.activeshifts && data.activeshifts.length > 0) {
+                userActiveShift = data.activeshifts.find(shift => shift.user === userId);
+            }
+            
+            if (userActiveShift) {
+                currentUserShift = userActiveShift;
+                shiftStatus = userActiveShift.paused ? 'paused' : 'active';
+                shiftStartTime = userActiveShift.started;
+                shiftElapsedTime = userActiveShift.elapsed || 0;
+                
+                updateShiftUI();
+                
+                if (shiftStatus === 'active') {
+                    startShiftTimer();
+                }
+                
+                if (userActiveShift.type && shiftType) {
+                    shiftType.value = userActiveShift.type;
+                    shiftTypeSelected.querySelector('span').textContent = userActiveShift.type.charAt(0).toUpperCase() + userActiveShift.type.slice(1);
+                    
+                    const option = document.querySelector(`#shiftTypeOptions .dropdown-option[data-value="${userActiveShift.type.toLowerCase()}"]`);
+                    if (option) {
+                        document.querySelectorAll('#shiftTypeOptions .dropdown-option').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        option.classList.add('selected');
+                    }
+                }
+            } else {
+                shiftStatus = 'inactive';
+                updateShiftUI();
+            }
+            
+        } catch (error) {
+            showToast('Failed to check active shift status', 'error');
+        }
+    }
+    
+    function updateShiftUI() {
+        startShiftBtn.disabled = shiftStatus !== 'inactive';
+        pauseShiftBtn.disabled = shiftStatus !== 'active';
+        endShiftBtn.disabled = shiftStatus === 'inactive';
+        
+        shiftStatusIndicator.className = `shift-status ${shiftStatus}`;
+        const pulse = shiftStatusIndicator.querySelector('.pulse');
+        pulse.className = `pulse ${shiftStatus}`;
+        
+        if (shiftStatus === 'active') {
+            shiftStatusText.textContent = 'On Duty';
+        } else if (shiftStatus === 'paused') {
+            shiftStatusText.textContent = 'Paused';
+        } else {
+            shiftStatusText.textContent = 'Off Duty';
+        }
+        
+        if (shiftStatus === 'inactive') {
+            shiftTimer.textContent = '00:00:00';
+        }
+    }
+    
+    function startShiftTimer() {
+        if (shiftTimerInterval) {
+            clearInterval(shiftTimerInterval);
+        }
+        
+        shiftTimerInterval = setInterval(() => {
+            if (shiftStatus === 'active') {
+                const now = Math.floor(Date.now() / 1000);
+                const elapsed = now - shiftStartTime + shiftElapsedTime;
+                shiftTimer.textContent = formatShiftTime(elapsed);
+            }
+        }, 1000);
+    }
+    
+    async function startShift() {
+        if (!discordToken || !selectedServerId) {
+            showToast('Authentication error. Please log in again.', 'error');
+            return;
+        }
+        
+        const type = shiftType.value;
+        
+        try {
+            startShiftBtn.disabled = true;
+            startShiftBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/start`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Discord-Code': discordToken
+                },
+                body: JSON.stringify({ type })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to start shift');
+            }
+            
+            shiftStatus = 'active';
+            shiftStartTime = Math.floor(Date.now() / 1000);
+            shiftElapsedTime = 0;
+            
+            updateShiftUI();
+            startShiftTimer();
+            
+            showToast('Shift started successfully');
+            
+            loadShifts(selectedServerId);
+            
+        } catch (error) {
+            showToast('Failed to start shift: ' + error.message, 'error');
+        } finally {
+            startShiftBtn.disabled = false;
+            startShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Start</span>';
+        }
+    }
+    
+    async function pauseShift() {
+        if (!discordToken || !selectedServerId) {
+            showToast('Authentication error. Please log in again.', 'error');
+            return;
+        }
+        
+        try {
+            pauseShiftBtn.disabled = true;
+            pauseShiftBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/pause`, {
+                method: 'POST',
+                headers: {
+                    'Discord-Code': discordToken
+                }
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to pause shift');
+            }
+            
+            if (shiftTimerInterval) {
+                clearInterval(shiftTimerInterval);
+                shiftTimerInterval = null;
+            }
+            
+            shiftStatus = 'paused';
+            updateShiftUI();
+            
+            showToast('Shift paused successfully');
+            
+            loadShifts(selectedServerId);
+            
+        } catch (error) {
+            showToast('Failed to pause shift: ' + error.message, 'error');
+        } finally {
+            pauseShiftBtn.disabled = false;
+            pauseShiftBtn.innerHTML = '<i class="fas fa-pause"></i><span>Pause</span>';
+        }
+    }
+    
+    async function endShift() {
+        if (!discordToken || !selectedServerId) {
+            showToast('Authentication error. Please log in again.', 'error');
+            return;
+        }
+        
+        try {
+            endShiftBtn.disabled = true;
+            endShiftBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/end`, {
+                method: 'POST',
+                headers: {
+                    'Discord-Code': discordToken
+                }
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to end shift');
+            }
+            
+            if (shiftTimerInterval) {
+                clearInterval(shiftTimerInterval);
+                shiftTimerInterval = null;
+            }
+            
+            shiftStatus = 'inactive';
+            shiftStartTime = 0;
+            shiftElapsedTime = 0;
+            currentUserShift = null;
+            
+            updateShiftUI();
+            
+            showToast('Shift ended successfully');
+            
+            loadShifts(selectedServerId);
+            
+        } catch (error) {
+            showToast('Failed to end shift: ' + error.message, 'error');
+        } finally {
+            endShiftBtn.disabled = false;
+            endShiftBtn.innerHTML = '<i class="fas fa-stop"></i><span>End</span>';
+        }
+    }
+
+    window.addEventListener('load', () => {
+        initDropdowns();
+        loadServers();
+    });
+    </script>
 </body>
 </html>
 
