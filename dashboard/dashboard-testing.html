@@ -2488,7 +2488,7 @@
                 const robloxUser = await fetchUserData(player.ID);
                 const avatarUrl = robloxUser.avatar;
                 
-                const hasBOLO = bolos.some(bolo => bolo.robloxId === player.ID);
+                const hasBOLO = bolos.some(bolo => bolo.user === player.ID);
                 
                 playerCard.innerHTML = `
                     <div class="flex items-start gap-3">
@@ -2552,9 +2552,9 @@
             for (const bolo of data.data) {
                 const boloCard = document.createElement('div');
                 boloCard.className = 'p-3 bg-black/30 rounded-lg border-l-2 border-red-500 mb-3';
-                boloCard.dataset.robloxId = bolo.robloxId;
+                boloCard.dataset.robloxId = bolo.user;
                 
-                const robloxUser = await fetchUserData(bolo.robloxId);
+                const robloxUser = await fetchUserData(bolo.user);
                 const avatarUrl = robloxUser.avatar;
                 
                 boloCard.innerHTML = `
@@ -2585,8 +2585,8 @@
                 const approveBtn = boloCard.querySelector('.approve-bolo-btn');
                 const deleteBtn = boloCard.querySelector('.delete-bolo-btn');
                 
-                approveBtn.addEventListener('click', () => approveBOLO(bolo.robloxId));
-                deleteBtn.addEventListener('click', () => deleteBOLO(bolo.robloxId));
+                approveBtn.addEventListener('click', () => approveBOLO(bolo.user));
+                deleteBtn.addEventListener('click', () => deleteBOLO(bolo.user));
                 
                 fragment.appendChild(boloCard);
             }
