@@ -1,712 +1,665 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="description" content="Ducky Moderation Panel - Manage your ER:LC server">
-<meta content="Ducky ・ Moderation Panel" property="og:title">
-<meta content="Manage your ER:LC server with Ducky's powerful moderation tools" property="og:description">
-<meta content="https://duckybot.xyz/modpanel" property="og:url">
-<meta content="https://duckybot.xyz/images/Ducky.svg" property="og:image">
-<meta content="#F5FF82" name="theme-color">
-<link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
-<title>Ducky ・ Moderation Panel</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-<style>
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: #0a0a0a;
-        color: white;
-        -webkit-tap-highlight-color: transparent;
-    }
-    .glass-card {
-        background: rgba(245, 255, 130, 0.03);
-        border: 1px solid rgba(245, 255, 130, 0.1);
-        border-radius: 12px;
-        transition: border 0.2s ease;
-    }
-    .glass-card:hover {
-        border: 1px solid rgba(245, 255, 130, 0.3);
-    }
-    .glow {
-        position: absolute;
-        width: 100%;
-        height: 300px;
-        border-radius: 50%;
-        filter: blur(120px);
-        opacity: 0.05;
-        z-index: -1;
-        pointer-events: none;
-    }
-    .mobile-menu {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.95);
-        z-index: 40;
-        opacity: 0;
-        transform: translateY(-100%);
-        transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-    .mobile-menu.active {
-        display: flex;
-        opacity: 1;
-        transform: translateY(0);
-    }
-    .server-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 1rem;
-    }
-    .server-card {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 1rem;
-        cursor: pointer;
-    }
-    .server-card img {
-        width: 3rem;
-        height: 3rem;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-    .tab-button {
-        position: relative;
-        transition: all 0.2s ease;
-    }
-    .tab-button.active {
-        color: #F5FF82;
-    }
-    .tab-button.active::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: #F5FF82;
-    }
-    .toast {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        padding: 1rem;
-        border-radius: 8px;
-        z-index: 100;
-        transform: translateY(100px);
-        opacity: 0;
-        transition: all 0.3s ease;
-    }
-    .toast.show {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    .toast.success {
-        background: rgba(16, 185, 129, 0.1);
-        border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-    .toast.error {
-        background: rgba(239, 68, 68, 0.1);
-        border: 1px solid rgba(239, 68, 68, 0.3);
-    }
-    .spinner {
-        width: 1.5rem;
-        height: 1.5rem;
-        border: 2px solid rgba(245, 255, 130, 0.2);
-        border-top-color: #F5FF82;
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin {
-        to { transform: rotate(360deg); }
-    }
-    @keyframes fadeOut {
-        from { opacity: 1; }
-        to { opacity: 0; visibility: hidden; }
-    }
-    .fade-out {
-        animation: fadeOut 0.5s forwards;
-    }
-    .punishment-item {
-        position: relative;
-    }
-    .delete-btn {
-        position: static;
-        margin-top: 0.5rem;
-        margin-left: auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: rgba(239, 68, 68, 0.1);
-        color: #ef4444;
-        width: 2rem;
-        height: 2rem;
-        border-radius: 50%;
-        opacity: 0;
-        transition: all 0.2s ease;
-        cursor: pointer;
-    }
-
-    .punishment-item:hover .delete-btn {
-        opacity: 1;
-    }
-    .shift-controls {
-        display: flex;
-        gap: 0.5rem;
-        margin-top: 1rem;
-    }
-    .shift-btn {
-        flex: 1;
-        padding: 0.75rem;
-        border-radius: 6px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        transition: all 0.2s ease;
-        cursor: pointer;
-    }
-    .shift-btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-    .shift-btn-start {
-        background-color: #10b981;
-        color: white;
-    }
-    .shift-btn-start:hover:not(:disabled) {
-        background-color: #059669;
-    }
-    .shift-btn-pause {
-        background-color: #f59e0b;
-        color: white;
-    }
-    .shift-btn-pause:hover:not(:disabled) {
-        background-color: #d97706;
-    }
-    .shift-btn-end {
-        background-color: #ef4444;
-        color: white;
-    }
-    .shift-btn-end:hover:not(:disabled) {
-        background-color: #dc2626;
-    }
-    .confirmation-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.7);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 100;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-    }
-    .confirmation-modal.active {
-        opacity: 1;
-        visibility: visible;
-    }
-    .modal-content {
-        background-color: #1a1a1a;
-        border: 1px solid rgba(245, 255, 130, 0.1);
-        border-radius: 12px;
-        padding: 1.5rem;
-        width: 90%;
-        max-width: 400px;
-        transform: translateY(-20px);
-        transition: all 0.3s ease;
-    }
-    .confirmation-modal.active .modal-content {
-        transform: translateY(0);
-    }
-    .modal-actions {
-        display: flex;
-        gap: 1rem;
-        margin-top: 1.5rem;
-    }
-    .shift-status {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.25rem 0.75rem;
-        border-radius: 9999px;
-        font-size: 0.875rem;
-        font-weight: 600;
-    }
-    .shift-status.active {
-        background-color: rgba(16, 185, 129, 0.1);
-        color: #10b981;
-    }
-    .shift-status.paused {
-        background-color: rgba(245, 158, 11, 0.1);
-        color: #f59e0b;
-    }
-    .shift-status.inactive {
-        background-color: rgba(156, 163, 175, 0.1);
-        color: #9ca3af;
-    }
-    .pulse {
-        width: 0.5rem;
-        height: 0.5rem;
-        border-radius: 50%;
-        animation: pulse 2s infinite;
-    }
-    .pulse.active {
-        background-color: #10b981;
-    }
-    .pulse.paused {
-        background-color: #f59e0b;
-    }
-    .pulse.inactive {
-        animation: none;
-        background-color: #9ca3af;
-    }
-    @keyframes pulse {
-        0% {
-            transform: scale(0.95);
-            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Ducky Moderation Panel - Manage your ER:LC server">
+    <meta content="Ducky ・ Moderation Panel" property="og:title">
+    <meta content="Manage your ER:LC server with Ducky's powerful moderation tools" property="og:description">
+    <meta content="https://duckybot.xyz/modpanel" property="og:url">
+    <meta content="https://duckybot.xyz/images/Ducky.svg" property="og:image">
+    <meta content="#F5FF82" name="theme-color">
+    <link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
+    <title>Ducky ・ Moderation Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: white;
+            -webkit-tap-highlight-color: transparent;
         }
-        
-        70% {
-            transform: scale(1);
-            box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+        .glass-card {
+            background: rgba(245, 255, 130, 0.03);
+            border: 1px solid rgba(245, 255, 130, 0.1);
+            border-radius: 12px;
+            transition: border 0.2s ease;
         }
-        
-        100% {
-            transform: scale(0.95);
-            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+        .glass-card:hover {
+            border: 1px solid rgba(245, 255, 130, 0.3);
         }
-    }
-    .pulse.paused {
-        animation: pulse-paused 2s infinite;
-    }
-    @keyframes pulse-paused {
-        0% {
-            transform: scale(0.95);
-            box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+        .glow {
+            position: absolute;
+            width: 100%;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.05;
+            z-index: -1;
+            pointer-events: none;
         }
-        
-        70% {
-            transform: scale(1);
-            box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 40;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
-        
-        100% {
-            transform: scale(0.95);
-            box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+        .mobile-menu.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
         }
-    }
-    .breadcrumb {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.875rem;
-        color: #9ca3af;
-    }
-    .breadcrumb a {
-        color: #f5ff82;
-        text-decoration: none;
-        transition: opacity 0.2s ease;
-    }
-    .breadcrumb a:hover {
-        opacity: 0.8;
-    }
-    .breadcrumb-separator {
-        color: #4b5563;
-    }
-    .avatar-circle {
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 50%;
-        overflow: hidden;
-        background-color: #2d2d2d;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 600;
-        color: #f5ff82;
-    }
-    .avatar-circle img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    .shift-card {
-        display: flex;
-        gap: 1rem;
-        padding: 1rem;
-        border-radius: 8px;
-        background-color: rgba(30, 30, 30, 0.5);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        transition: all 0.2s ease;
-    }
-    .shift-card:hover {
-        border-color: rgba(245, 255, 130, 0.2);
-        background-color: rgba(30, 30, 30, 0.7);
-    }
-    .empty-state {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 3rem;
-        text-align: center;
-        color: #9ca3af;
-    }
-    .empty-state i {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        color: #4b5563;
-    }
-    
-    .custom-dropdown {
-        position: relative;
-        width: 100%;
-    }
-    .dropdown-selected {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        background-color: rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 0.375rem;
-        color: white;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: all 0.2s ease;
-    }
-    .dropdown-selected:hover {
-        border-color: rgba(245, 255, 130, 0.3);
-    }
-    .dropdown-selected.active {
-        border-color: #F5FF82;
-    }
-    .dropdown-selected span {
-        margin-right: 1rem;
-    }
-    .dropdown-options {
-        position: absolute;
-        top: calc(100% + 0.25rem);
-        left: 0;
-        right: 0;
-        background-color: #1a1a1a;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 0.375rem;
-        max-height: 0;
-        overflow: hidden;
-        opacity: 0;
-        transition: all 0.2s ease;
-        z-index: 10;
-    }
-    .dropdown-options.active {
-        max-height: 200px;
-        opacity: 1;
-        overflow-y: auto;
-    }
-    .dropdown-option {
-        padding: 0.5rem 1rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-    .dropdown-option:hover {
-        background-color: rgba(245, 255, 130, 0.1);
-    }
-    .dropdown-option.selected {
-        background-color: rgba(245, 255, 130, 0.2);
-        color: #F5FF82;
-    }
-    
-    @media (max-width: 768px) {
         .server-grid {
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
         }
-    }
+        .server-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            cursor: pointer;
+        }
+        .server-card img {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .tab-button {
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        .tab-button.active {
+            color: #F5FF82;
+        }
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #F5FF82;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 8px;
+            z-index: 100;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .toast.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .toast.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .spinner {
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid rgba(245, 255, 130, 0.2);
+            border-top-color: #F5FF82;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+        .fade-out {
+            animation: fadeOut 0.5s forwards;
+        }
+        .punishment-item {
+            position: relative;
+        }
+        .delete-btn {
+            position: static;
+            margin-top: 0.5rem;
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
 
-    .punishment-list {
-        max-height: 600px;
-        overflow-y: auto;
-        padding-right: 0.5rem;
-    }
+        .punishment-item:hover .delete-btn {
+            opacity: 1;
+        }
+        .shift-controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .shift-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .shift-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .shift-btn-start {
+            background-color: #10b981;
+            color: white;
+        }
+        .shift-btn-start:hover:not(:disabled) {
+            background-color: #059669;
+        }
+        .shift-btn-pause {
+            background-color: #f59e0b;
+            color: white;
+        }
+        .shift-btn-pause:hover:not(:disabled) {
+            background-color: #d97706;
+        }
+        .shift-btn-end {
+            background-color: #ef4444;
+            color: white;
+        }
+        .shift-btn-end:hover:not(:disabled) {
+            background-color: #dc2626;
+        }
+        .confirmation-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .confirmation-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: #1a1a1a;
+            border: 1px solid rgba(245, 255, 130, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            width: 90%;
+            max-width: 400px;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+        .confirmation-modal.active .modal-content {
+            transform: translateY(0);
+        }
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .shift-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .shift-status.active {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+        .shift-status.paused {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+        .shift-status.inactive {
+            background-color: rgba(156, 163, 175, 0.1);
+            color: #9ca3af;
+        }
+        .pulse {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        .pulse.active {
+            background-color: #10b981;
+        }
+        .pulse.paused {
+            background-color: #f59e0b;
+        }
+        .pulse.inactive {
+            animation: none;
+            background-color: #9ca3af;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+            
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+        .pulse.paused {
+            animation: pulse-paused 2s infinite;
+        }
+        @keyframes pulse-paused {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+            }
+            
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+            }
+            
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+            }
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+        .breadcrumb a {
+            color: #f5ff82;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+        .breadcrumb a:hover {
+            opacity: 0.8;
+        }
+        .breadcrumb-separator {
+            color: #4b5563;
+        }
+        .avatar-circle {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: #2d2d2d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #f5ff82;
+        }
+        .avatar-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .shift-card {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: rgba(30, 30, 30, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+        .shift-card:hover {
+            border-color: rgba(245, 255, 130, 0.2);
+            background-color: rgba(30, 30, 30, 0.7);
+        }
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            text-align: center;
+            color: #9ca3af;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #4b5563;
+        }
+        
+        .custom-dropdown {
+            position: relative;
+            width: 100%;
+        }
+        .dropdown-selected {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.375rem;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        .dropdown-selected:hover {
+            border-color: rgba(245, 255, 130, 0.3);
+        }
+        .dropdown-selected.active {
+            border-color: #F5FF82;
+        }
+        .dropdown-selected span {
+            margin-right: 1rem; 
+        }
+        .dropdown-options {
+            position: absolute;
+            top: calc(100% + 0.25rem);
+            left: 0;
+            right: 0;
+            background-color: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.375rem;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+        .dropdown-options.active {
+            max-height: 200px;
+            opacity: 1;
+            overflow-y: auto;
+        }
+        .dropdown-option {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .dropdown-option:hover {
+            background-color: rgba(245, 255, 130, 0.1);
+        }
+        .dropdown-option.selected {
+            background-color: rgba(245, 255, 130, 0.2);
+            color: #F5FF82;
+        }
+        
+        @media (max-width: 768px) {
+            .server-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+        }
 
-    .dashboard-grid {
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        gap: 1rem;
-    }
+        .punishment-list {
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
 
-    .dashboard-grid > .col-span-12 {
-        grid-column: span 12;
-    }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1rem;
+        }
 
-    .dashboard-grid > .col-span-6 {
-        grid-column: span 6;
-    }
-
-    .dashboard-grid > .col-span-4 {
-        grid-column: span 4;
-    }
-
-    .dashboard-grid > .col-span-8 {
-        grid-column: span 8;
-    }
-
-    @media (max-width: 1024px) {
-        .dashboard-grid > .lg\:col-span-6 {
+        .dashboard-grid > .col-span-12 {
             grid-column: span 12;
         }
-        .dashboard-grid > .lg\:col-span-4 {
+
+        .dashboard-grid > .col-span-6 {
             grid-column: span 6;
         }
-        .dashboard-grid > .lg\:col-span-8 {
-            grid-column: span 12;
-        }
-    }
 
-    @media (max-width: 768px) {
-        .dashboard-grid > .md\:col-span-6,
-        .dashboard-grid > .lg\:col-span-4 {
-            grid-column: span 12;
+        .dashboard-grid > .col-span-4 {
+            grid-column: span 4;
         }
-    }
 
-    .bolo-tag {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.25rem 0.5rem;
-        border-radius: 9999px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        background-color: rgba(239, 68, 68, 0.1);
-        color: #ef4444;
-    }
-
-    .bolo-tag i {
-        margin-right: 0.25rem;
-    }
-    
-    .mod-panel-grid {
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        gap: 1rem;
-    }
-    
-    .mod-panel-grid > .panel {
-        background: rgba(30, 30, 30, 0.5);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-        padding: 1rem;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .mod-panel-grid > .panel-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        margin-bottom: 0.75rem;
-    }
-    
-    .mod-panel-grid > .panel-content {
-        flex: 1;
-        overflow-y: auto;
-        max-height: 400px;
-    }
-    
-    .mod-panel-grid > .col-span-4 {
-        grid-column: span 4;
-    }
-    
-    .mod-panel-grid > .col-span-8 {
-        grid-column: span 8;
-    }
-    
-    .mod-panel-grid > .col-span-12 {
-        grid-column: span 12;
-    }
-    
-    @media (max-width: 1024px) {
-        .mod-panel-grid > .col-span-4,
-        .mod-panel-grid > .col-span-8 {
-            grid-column: span 12;
+        .dashboard-grid > .col-span-8 {
+            grid-column: span 8;
         }
-    }
-</style>
+
+        @media (max-width: 1024px) {
+            .dashboard-grid > .lg\:col-span-6 {
+                grid-column: span 12;
+            }
+            .dashboard-grid > .lg\:col-span-4 {
+                grid-column: span 6;
+            }
+            .dashboard-grid > .lg\:col-span-8 {
+                grid-column: span 12;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid > .md\:col-span-6,
+            .dashboard-grid > .lg\:col-span-4 {
+                grid-column: span 12;
+            }
+        }
+
+        .bolo-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .bolo-tag i {
+            margin-right: 0.25rem;
+        }
+
+    </style>
 </head>
 <body>
-<div class="glow bg-[#F5FF82] top-0 left-0"></div>
-<div class="glow bg-[#F5FF82] bottom-0 right-0"></div>
+    <div class="glow bg-[#F5FF82] top-0 left-0"></div>
+    <div class="glow bg-[#F5FF82] bottom-0 right-0"></div>
 
-<div id="loadingOverlay" class="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-    <div class="flex flex-col items-center">
-        <div class="w-12 h-12 border-4 border-[#F5FF82]/20 border-t-[#F5FF82] rounded-full animate-spin mb-4"></div>
-        <p class="text-gray-400">Loading...</p>
+    <div id="loadingOverlay" class="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+        <div class="flex flex-col items-center">
+            <div class="w-12 h-12 border-4 border-[#F5FF82]/20 border-t-[#F5FF82] rounded-full animate-spin mb-4"></div>
+            <p class="text-gray-400">Loading...</p>
+        </div>
     </div>
-</div>
 
-<nav class="sticky top-0 z-50 backdrop-blur-sm border-b border-white/5 bg-[#0f0f0f]/30">
-    <div class="max-w-7xl mx-auto px-4 py-4">
-        <div class="flex items-center justify-between">
-            <a href="/" class="flex items-center gap-3">
-                <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
-                <span class="text-2xl font-bold text-[#F5FF82]">Ducky</span>
-            </a>
-            <div class="hidden md:flex items-center gap-6">
-                <a href="/team" class="text-gray-300 hover:text-[#F5FF82] transition">Team</a>
-                <a href="/docs" class="text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
-                <a href="/invite" class="text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
-                <a href="/status" class="text-gray-300 hover:text-[#F5FF82] transition">Status</a>
-                <a href="/support" class="text-gray-300 hover:text-[#F5FF82] transition">Support</a>
-                <a href="/plus"
-                    class="px-4 py-2 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
-                    Get Ducky Plus+
+    <nav class="sticky top-0 z-50 backdrop-blur-sm border-b border-white/5 bg-[#0f0f0f]/30">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <a href="/" class="flex items-center gap-3">
+                    <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
+                    <span class="text-2xl font-bold text-[#F5FF82]">Ducky</span>
                 </a>
-            </div>
-            <button id="menuBtn" class="md:hidden text-2xl text-[#F5FF82] hover:opacity-80 transition">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-    </div>
-</nav>
-
-<div id="mobileMenu" class="mobile-menu flex-col items-center justify-center gap-8">
-    <button class="absolute top-6 right-6 text-2xl" id="closeMenuBtn">
-        <i class="fas fa-times"></i>
-    </button>
-    <a href="/team" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Team</a>
-    <a href="/docs" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
-    <a href="/invite" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
-    <a href="/status" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Status</a>
-    <a href="/support" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Support</a>
-    <a href="/plus" class="px-6 py-3 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
-        Get Ducky Plus+
-    </a>
-</div>
-
-<main class="max-w-7xl mx-auto px-4 py-8">
-    <div id="serverSelectionView" class="mt-4 opacity-0 transition-opacity duration-500">
-        <div class="glass-card p-4 mb-6 flex items-center gap-3">
-            <img id="profilePicture" alt="Profile" class="w-12 h-12 rounded-full">
-            <div>
-                <h2 class="text-lg font-bold">Welcome, <span id="username" class="text-[#F5FF82]"></span></h2>
-                <p class="text-gray-400 mt-0.5 text-sm">Select a server to moderate</p>
-            </div>
-        </div>
-
-        <div class="glass-card p-4">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
-                <h2 class="text-lg font-bold">Your Servers</h2>
-                <span class="text-sm text-gray-400">Only servers with Ducky and moderation permissions are shown</span>
-            </div>
-            <div id="serverGrid" class="server-grid p-2">
-                <div class="col-span-full text-center py-4">
-                    <div class="spinner mx-auto mb-2"></div>
-                    <p class="text-gray-400">Loading servers...</p>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="/team" class="text-gray-300 hover:text-[#F5FF82] transition">Team</a>
+                    <a href="/docs" class="text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
+                    <a href="/invite" class="text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
+                    <a href="/status" class="text-gray-300 hover:text-[#F5FF82] transition">Status</a>
+                    <a href="/support" class="text-gray-300 hover:text-[#F5FF82] transition">Support</a>
+                    <a href="/plus"
+                        class="px-4 py-2 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
+                        Get Ducky Plus+
+                    </a>
                 </div>
+                <button id="menuBtn" class="md:hidden text-2xl text-[#F5FF82] hover:opacity-80 transition">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
         </div>
+    </nav>
+
+    <div id="mobileMenu" class="mobile-menu flex-col items-center justify-center gap-8">
+        <button class="absolute top-6 right-6 text-2xl" id="closeMenuBtn">
+            <i class="fas fa-times"></i>
+        </button>
+        <a href="/team" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Team</a>
+        <a href="/docs" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
+        <a href="/invite" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
+        <a href="/status" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Status</a>
+        <a href="/support" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Support</a>
+        <a href="/plus" class="px-6 py-3 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
+            Get Ducky Plus+
+        </a>
     </div>
 
-    <div id="moderationPanelView" class="hidden mt-4">
-        <div class="glass-card p-4 mb-6 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <img id="serverIcon" alt="Server Icon" class="w-12 h-12 rounded-full">
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div id="serverSelectionView" class="mt-4 opacity-0 transition-opacity duration-500">
+            <div class="glass-card p-4 mb-6 flex items-center gap-3">
+                <img id="profilePicture" alt="Profile" class="w-12 h-12 rounded-full">
                 <div>
-                    <h2 class="text-lg font-bold"><span id="serverName" class="text-[#F5FF82]"></span></h2>
-                    <p class="text-gray-400 mt-0.5 text-sm">Moderation Panel</p>
+                    <h2 class="text-lg font-bold">Welcome, <span id="username" class="text-[#F5FF82]"></span></h2>
+                    <p class="text-gray-400 mt-0.5 text-sm">Select a server to moderate</p>
                 </div>
             </div>
-            <button id="backToServersBtn" class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition text-sm">
-                <i class="fas fa-arrow-left mr-2"></i>Back
-            </button>
-        </div>
 
-        <div class="flex gap-4 mb-4 border-b border-white/10 pb-2">
-            <button id="punishmentsTabBtn" class="tab-button active px-4 py-2 font-medium">Punishments</button>
-            <button id="shiftsTabBtn" class="tab-button px-4 py-2 text-gray-400 hover:text-white font-medium">Shifts</button>
-            <button id="erlcTabBtn" class="tab-button px-4 py-2 text-gray-400 hover:text-white font-medium">ER:LC Integration</button>
-        </div>
-
-        <div id="punishmentsTab">
-            <div class="dashboard-grid">
-                <div class="col-span-12 lg:col-span-6">
-                    <div class="glass-card p-4 mb-6">
-                        <h3 class="text-lg font-bold mb-4">Issue Punishment</h3>
-                        <form id="punishmentForm" class="space-y-4">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label for="robloxUsername" class="block text-sm font-medium text-gray-400 mb-1">Roblox Username</label>
-                                    <input type="text" id="robloxUsername" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter username" required>
-                                </div>
-                                <div>
-                                    <label for="punishmentTypeContainer" class="block text-sm font-medium text-gray-400 mb-1">Punishment Type</label>
-                                    <div id="punishmentTypeContainer" class="custom-dropdown">
-                                        <div class="dropdown-selected" id="punishmentTypeSelected">
-                                            <span>Select type...</span>
-                                            <i class="fas fa-chevron-down"></i>
-                                        </div>
-                                        <div class="dropdown-options" id="punishmentTypeOptions">
-
-                                        </div>
-                                    </div>
-                                    <input type="hidden" id="punishmentType" required>
-                                </div>
-                            </div>                        
-                            <div id="durationContainer" class="hidden">
-                                <label for="duration" class="block text-sm font-medium text-gray-400 mb-1">Duration</label>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <input type="number" id="durationValue" min="1" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Duration">
-                                    <div class="custom-dropdown">
-                                        <div class="dropdown-selected" id="durationUnitSelected">
-                                            <span>Minutes</span>
-                                            <i class="fas fa-chevron-down"></i>
-                                        </div>
-                                        <div class="dropdown-options" id="durationUnitOptions">
-                                            <div class="dropdown-option selected" data-value="minutes">Minutes</div>
-                                            <div class="dropdown-option" data-value="hours">Hours</div>
-                                            <div class="dropdown-option" data-value="days">Days</div>
-                                            <div class="dropdown-option" data-value="weeks">Weeks</div>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" id="durationUnit" value="minutes">
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <label for="reason" class="block text-sm font-medium text-gray-400 mb-1">Reason</label>
-                                <textarea id="reason" rows="2" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter reason" required></textarea>
-                            </div>
-                            
-                            <div class="flex justify-end">
-                                <button type="submit" id="submitBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:opacity-90 transition">
-                                    Issue Punishment
-                                </button>
-                            </div>
-                        </form>
+            <div class="glass-card p-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                    <h2 class="text-lg font-bold">Your Servers</h2>
+                    <span class="text-sm text-gray-400">Only servers with Ducky and moderation permissions are shown</span>
+                </div>
+                <div id="serverGrid" class="server-grid p-2">
+                    <div class="col-span-full text-center py-4">
+                        <div class="spinner mx-auto mb-2"></div>
+                        <p class="text-gray-400">Loading servers...</p>
                     </div>
                 </div>
-                
-                <div class="col-span-12 lg:col-span-6">
-                    <div class="glass-card p-4">
-                        <h3 class="text-lg font-bold mb-4">Punishment History</h3>
-                        <div id="punishmentHistory" class="punishment-list space-y-3">
-                            <div class="text-center py-4">
-                                <div class="spinner mx-auto mb-2"></div>
-                                <p class="text-gray-400">Loading punishment history...</p>
+            </div>
+        </div>
+
+        <div id="moderationPanelView" class="hidden mt-4">
+            <div class="glass-card p-4 mb-6 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <img id="serverIcon" alt="Server Icon" class="w-12 h-12 rounded-full">
+                    <div>
+                        <h2 class="text-lg font-bold"><span id="serverName" class="text-[#F5FF82]"></span></h2>
+                        <p class="text-gray-400 mt-0.5 text-sm">Moderation Panel</p>
+                    </div>
+                </div>
+                <button id="backToServersBtn" class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition text-sm">
+                    <i class="fas fa-arrow-left mr-2"></i>Back
+                </button>
+            </div>
+
+            <div class="flex gap-4 mb-4 border-b border-white/10 pb-2">
+                <button id="punishmentsTabBtn" class="tab-button active px-4 py-2 font-medium">Punishments</button>
+                <button id="shiftsTabBtn" class="tab-button px-4 py-2 text-gray-400 hover:text-white font-medium">Shifts</button>
+                <button id="erlcTabBtn" class="tab-button px-4 py-2 text-gray-400 hover:text-white font-medium">ER:LC Integration</button>
+            </div>
+
+            <div id="punishmentsTab">
+                <div class="dashboard-grid">
+                    <div class="col-span-12 lg:col-span-6">
+                        <div class="glass-card p-4 mb-6">
+                            <h3 class="text-lg font-bold mb-4">Issue Punishment</h3>
+                            <form id="punishmentForm" class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="robloxUsername" class="block text-sm font-medium text-gray-400 mb-1">Roblox Username</label>
+                                        <input type="text" id="robloxUsername" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter username" required>
+                                    </div>
+                                    <div>
+                                        <label for="punishmentTypeContainer" class="block text-sm font-medium text-gray-400 mb-1">Punishment Type</label>
+                                        <div id="punishmentTypeContainer" class="custom-dropdown">
+                                            <div class="dropdown-selected" id="punishmentTypeSelected">
+                                                <span>Select type...</span>
+                                                <i class="fas fa-chevron-down"></i>
+                                            </div>
+                                            <div class="dropdown-options" id="punishmentTypeOptions">
+
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="punishmentType" required>
+                                    </div>
+                                </div>                        
+                                <div id="durationContainer" class="hidden">
+                                    <label for="duration" class="block text-sm font-medium text-gray-400 mb-1">Duration</label>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <input type="number" id="durationValue" min="1" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Duration">
+                                        <div class="custom-dropdown">
+                                            <div class="dropdown-selected" id="durationUnitSelected">
+                                                <span>Minutes</span>
+                                                <i class="fas fa-chevron-down"></i>
+                                            </div>
+                                            <div class="dropdown-options" id="durationUnitOptions">
+                                                <div class="dropdown-option selected" data-value="minutes">Minutes</div>
+                                                <div class="dropdown-option" data-value="hours">Hours</div>
+                                                <div class="dropdown-option" data-value="days">Days</div>
+                                                <div class="dropdown-option" data-value="weeks">Weeks</div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="durationUnit" value="minutes">
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label for="reason" class="block text-sm font-medium text-gray-400 mb-1">Reason</label>
+                                    <textarea id="reason" rows="2" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter reason" required></textarea>
+                                </div>
+                                
+                                <div class="flex justify-end">
+                                    <button type="submit" id="submitBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:opacity-90 transition">
+                                        Issue Punishment
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="col-span-12 lg:col-span-6">
+                        <div class="glass-card p-4">
+                            <h3 class="text-lg font-bold mb-4">Punishment History</h3>
+                            <div id="punishmentHistory" class="punishment-list space-y-3">
+                                <div class="text-center py-4">
+                                    <div class="spinner mx-auto mb-2"></div>
+                                    <p class="text-gray-400">Loading punishment history...</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -734,7 +687,7 @@
                                                 <i class="fas fa-chevron-down"></i>
                                             </div>
                                             <div class="dropdown-options" id="shiftTypeOptions">
-
+                                                <!-- Options will be populated dynamically -->
                                             </div>
                                         </div>
                                         <input type="hidden" id="shiftType" value="patrol">
@@ -794,25 +747,33 @@
             </div>
 
             <div id="erlcTab" class="hidden">
-                <div class="mod-panel-grid">
-                    <div class="panel col-span-8">
-                        <div class="panel-header">
-                            <h3 class="text-lg font-bold">Server Information</h3>
+                <div class="dashboard-grid">
+                    <div class="col-span-12 lg:col-span-8">
+                        <div class="glass-card p-4 mb-6">
+                            <h3 class="text-lg font-bold mb-4">Server Information</h3>
+                            <div id="erlcServerInfo" class="p-4 bg-black/20 rounded-lg">
+                                <div class="text-center py-4">
+                                    <div class="spinner mx-auto mb-2"></div>
+                                    <p class="text-gray-400">Loading server information...</p>
+                                </div>
+                            </div>
                         </div>
-                        <div id="erlcServerInfo" class="panel-content p-4 bg-black/20 rounded-lg">
-                            <div class="text-center py-4">
-                                <div class="spinner mx-auto mb-2"></div>
-                                <p class="text-gray-400">Loading server information...</p>
+                        
+                        <div class="glass-card p-4 mb-6">
+                            <h3 class="text-lg font-bold mb-4">In-Game Players</h3>
+                            <div id="erlcPlayersList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div class="text-center py-4 col-span-full">
+                                    <div class="spinner mx-auto mb-2"></div>
+                                    <p class="text-gray-400">Loading players...</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="panel col-span-4">
-                        <div class="panel-header">
-                            <h3 class="text-lg font-bold">BOLO Management</h3>
-                        </div>
-                        <div class="panel-content">
-                            <form id="boloForm" class="space-y-4 mb-4">
+                    <div class="col-span-12 lg:col-span-4">
+                        <div class="glass-card p-4 mb-6">
+                            <h3 class="text-lg font-bold mb-4">BOLO Management</h3>
+                            <form id="boloForm" class="space-y-4">
                                 <div>
                                     <label for="boloUsername" class="block text-sm font-medium text-gray-400 mb-1">Roblox Username</label>
                                     <input type="text" id="boloUsername" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter username" required>
@@ -827,9 +788,11 @@
                                     </button>
                                 </div>
                             </form>
-                            
-                            <h4 class="text-md font-semibold mb-3">Active BOLOs</h4>
-                            <div id="activeBOLOs" class="space-y-3 max-h-[300px] overflow-y-auto">
+                        </div>
+                        
+                        <div class="glass-card p-4">
+                            <h3 class="text-lg font-bold mb-4">Active BOLOs</h3>
+                            <div id="activeBOLOs" class="space-y-3">
                                 <div class="text-center py-4">
                                     <div class="spinner mx-auto mb-2"></div>
                                     <p class="text-gray-400">Loading BOLOs...</p>
@@ -838,23 +801,9 @@
                         </div>
                     </div>
                     
-                    <div class="panel col-span-8">
-                        <div class="panel-header">
-                            <h3 class="text-lg font-bold">In-Game Players</h3>
-                        </div>
-                        <div id="erlcPlayersList" class="panel-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div class="text-center py-4 col-span-full">
-                                <div class="spinner mx-auto mb-2"></div>
-                                <p class="text-gray-400">Loading players...</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="panel col-span-4">
-                        <div class="panel-header">
-                            <h3 class="text-lg font-bold">Discord Checks</h3>
-                        </div>
-                        <div class="panel-content">
+                    <div class="col-span-12">
+                        <div class="glass-card p-4">
+                            <h3 class="text-lg font-bold mb-4">Discord Checks</h3>
                             <p class="text-gray-400 mb-4">Check which players in-game are connected to Discord and view their voice channel status.</p>
                             <button id="runDiscordCheckBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:opacity-90 transition">
                                 Run Discord Check
@@ -865,8 +814,8 @@
                             
                             <div id="discordCheckResults" class="mt-6 space-y-3 hidden">
                                 <h4 class="text-md font-semibold mb-3">Results</h4>
-                                <div id="discordCheckList" class="grid grid-cols-1 gap-4 max-h-[300px] overflow-y-auto">
-                                    
+                                <div id="discordCheckList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    <!-- Results will be populated here -->
                                 </div>
                             </div>
                         </div>
@@ -993,7 +942,6 @@
         if (timeLeft <= 0) {
             discordCheckCooldown.classList.add('hidden');
             runDiscordCheckBtn.disabled = false;
-            runDiscordCheckBtn.innerHTML = 'Run Discord Check';
             return;
         }
         
@@ -1196,6 +1144,7 @@
                 shiftTypeSelected.classList.remove('active');
                 shiftTypeOptions.classList.remove('active');
                 
+                // Reset shift UI when changing shift type if there's an active shift
                 if (shiftStatus !== 'inactive' && oldType !== shiftType.value) {
                     resetShiftUI();
                     checkActiveShift(selectedServerId);
@@ -1431,11 +1380,12 @@
 
     async function loadPunishments(serverId) {
         punishmentHistory.innerHTML = `
-        <div class="text-center py-4">
-            <div class="spinner mx-auto mb-2"></div>
-            <p class="text-gray-400">Loading punishment history...</p>
-        </div>
-    `;    
+            <div class="text-center py-4">
+                <div class="spinner mx-auto mb-2"></div>
+                <p class="text-gray-400">Loading punishment history...</p>
+            </div>
+        `;
+    }    
     if (!discordToken) {
         punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Authentication error. Please log in again.</p></div>';
         return;
@@ -1529,7 +1479,6 @@
     } catch (error) {
         punishmentHistory.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load punishment history. Please try again.</p></div>';
     }
-}
 
 function filterPunishmentHistory() {
     const username = document.getElementById('robloxUsername').value.trim().toLowerCase();
@@ -1862,28 +1811,30 @@ function filterPunishmentHistory() {
                         <h4 class="text-md font-semibold mb-2">Server Details</h4>
                         <div class="space-y-2">
                             <div class="flex items-center gap-2">
-                                <span class="text-gray-400">Server Name:</span>
-                                <span>${serverData.server?.Name || 'Unknown'}</span>
+                                <span class="text-gray-400">Server ID:</span>
+                                <span>${serverData.ID || 'Unknown'}</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="text-gray-400">Players:</span>
-                                <span>${serverData.players?.length || 0} / ${serverData.server?.MaxPlayers || '?'}</span>
+                                <span>${serverData.players ? serverData.players.length : 0} / ${serverData.maxPlayers || '?'}</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="text-gray-400">Join Key:</span>
-                                <span>${serverData.server?.JoinKey || 'None'}</span>
+                                <span class="text-gray-400">Status:</span>
+                                <span class="px-2 py-1 bg-green-500/10 text-green-500 rounded-md text-xs font-medium">Online</span>
                             </div>
                         </div>
                     </div>
                     <div>
-                        <h4 class="text-md font-semibold mb-2">Team Distribution</h4>
+                        <h4 class="text-md font-semibold mb-2">Game Stats</h4>
                         <div class="space-y-2">
-                            ${Object.entries(serverData.lastTeamPlayerCounts || {}).map(([team, count]) => `
-                                <div class="flex items-center gap-2">
-                                    <span class="text-gray-400">${team}:</span>
-                                    <span>${count}</span>
-                                </div>
-                            `).join('')}
+                            <div class="flex items-center gap-2">
+                                <span class="text-gray-400">Time:</span>
+                                <span>${serverData.time || 'Unknown'}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-gray-400">Weather:</span>
+                                <span>${serverData.weather || 'Unknown'}</span>
+                            </div>
                             <div class="flex items-center gap-2">
                                 <span class="text-gray-400">Last Updated:</span>
                                 <span>${new Date().toLocaleTimeString()}</span>
@@ -1919,7 +1870,7 @@ function filterPunishmentHistory() {
                 const robloxUser = await fetchUserData(player.ID);
                 const avatarUrl = robloxUser.avatar || player.avatar;
                 
-                const hasBOLO = bolos.some(bolo => bolo.user === parseInt(player.ID));
+                const hasBOLO = bolos.some(bolo => bolo.robloxId === player.ID);
                 
                 playerCard.innerHTML = `
                     <div class="flex items-start gap-3">
@@ -1980,26 +1931,22 @@ function filterPunishmentHistory() {
             for (const bolo of data.data) {
                 const boloCard = document.createElement('div');
                 boloCard.className = 'p-3 bg-black/30 rounded-lg border-l-2 border-red-500 mb-3';
-                boloCard.dataset.robloxId = bolo.user;
+                boloCard.dataset.robloxId = bolo.robloxId;
                 
-                const robloxUser = await fetchUserData(bolo.user);
+                const robloxUser = await fetchUserData(bolo.robloxId);
                 const avatarUrl = robloxUser.avatar;
-                
-                const moderatorData = await fetchUserData(bolo.moderator);
-                const moderatorName = moderatorData.username || moderatorData.name || bolo.moderator;
                 
                 boloCard.innerHTML = `
                     <div class="flex items-start gap-3">
                         <div class="avatar-circle">
-                            ${avatarUrl ? `<img src="${avatarUrl}" alt="${robloxUser.name}">` : robloxUser.name.charAt(0)}
+                            ${avatarUrl ? `<img src="${avatarUrl}" alt="${bolo.username}">` : bolo.username.charAt(0)}
                         </div>
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <div>
-                                    <h4 class="font-medium">${robloxUser.name}</h4>
+                                    <h4 class="font-medium">${bolo.username}</h4>
                                     <p class="text-sm text-gray-400 mt-1">${bolo.reason}</p>
-                                    <p class="text-xs text-gray-500 mt-2">Created: ${formatDate(bolo.created)}</p>
-                                    <p class="text-xs text-gray-500">By: ${moderatorName}</p>
+                                    <p class="text-xs text-gray-500 mt-2">Created: ${formatDate(bolo.timestamp)}</p>
                                 </div>
                                 <div class="flex gap-2">
                                     <button class="approve-bolo-btn px-2 py-1 bg-green-500/10 text-green-500 rounded-md text-xs font-medium hover:bg-green-500/20 transition">
@@ -2017,8 +1964,8 @@ function filterPunishmentHistory() {
                 const approveBtn = boloCard.querySelector('.approve-bolo-btn');
                 const deleteBtn = boloCard.querySelector('.delete-bolo-btn');
                 
-                approveBtn.addEventListener('click', () => approveBOLO(bolo.user));
-                deleteBtn.addEventListener('click', () => deleteBOLO(bolo.user));
+                approveBtn.addEventListener('click', () => approveBOLO(bolo.robloxId));
+                deleteBtn.addEventListener('click', () => deleteBOLO(bolo.robloxId));
                 
                 fragment.appendChild(boloCard);
             }
@@ -2597,8 +2544,10 @@ function filterPunishmentHistory() {
         } catch (error) {
             showToast('Failed to run Discord check: ' + error.message, 'error');
         } finally {
-            runDiscordCheckBtn.innerHTML = 'Run Discord Check';
-            updateDiscordCheckCooldown();
+            if (!discordCheckCooldowns[selectedServerId] || discordCheckCooldowns[selectedServerId] <= Date.now()) {
+                runDiscordCheckBtn.disabled = false;
+                runDiscordCheckBtn.innerHTML = 'Run Discord Check';
+            }
         }
     }
 
@@ -2607,22 +2556,6 @@ function filterPunishmentHistory() {
     window.addEventListener('load', () => {
         initDropdowns();
         loadServers();
-        
-        // Check for existing cooldown in localStorage
-        const savedCooldowns = localStorage.getItem('discordCheckCooldowns');
-        if (savedCooldowns) {
-            try {
-                discordCheckCooldowns = JSON.parse(savedCooldowns);
-                updateDiscordCheckCooldown();
-            } catch (e) {
-                localStorage.removeItem('discordCheckCooldowns');
-            }
-        }
-        
-        // Save cooldowns to localStorage when they change
-        window.addEventListener('beforeunload', () => {
-            localStorage.setItem('discordCheckCooldowns', JSON.stringify(discordCheckCooldowns));
-        });
     });
     </script>
 </body>
