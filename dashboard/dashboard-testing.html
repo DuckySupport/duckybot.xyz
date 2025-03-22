@@ -1807,6 +1807,7 @@
             }
             
             const serverData = data.data.server;
+            const isOnline = serverData.CurrentPlayers > 0;
             
             erlcServerInfo.innerHTML = `
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1822,27 +1823,31 @@
                                 <span>${serverData.CurrentPlayers || 0} / ${serverData.MaxPlayers || '?'}</span>
                             </div>
                             <div class="flex items-center gap-2">
+                                <span class="text-gray-400">Queue:</span>
+                                <span>${data.data.lastQueueCount || 0}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
                                 <span class="text-gray-400">Join Key:</span>
-                                <span>${serverData.JoinKey || 'None'}</span>
+                                <a href="https://policeroleplay.community/join/${serverData.JoinKey}" class="text-blue-400 hover:underline">${serverData.JoinKey || 'None'}</a>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="text-gray-400">Status:</span>
-                                <span class="px-2 py-1 bg-green-500/10 text-green-500 rounded-md text-xs font-medium">Online</span>
+                                <span class="px-2 py-1 ${isOnline ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'} rounded-md text-xs font-medium">${isOnline ? 'Online' : 'Offline'}</span>
                             </div>
                         </div>
                     </div>
                     <div>
                         <h4 class="text-md font-semibold mb-2">Team Stats</h4>
-                        <div class="space-y-2">
+                        <div class="grid grid-cols-2 gap-2">
                             ${Object.entries(data.data.lastTeamPlayerCounts || {}).map(([team, count]) => `
                                 <div class="flex items-center gap-2">
                                     <span class="text-gray-400">${team}:</span>
                                     <span>${count}</span>
                                 </div>
                             `).join('')}
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-2 col-span-2 mt-2">
                                 <span class="text-gray-400">Last Updated:</span>
-                                <span>${new Date().toLocaleTimeString()}</span>
+                                <span>${new Date().toLocaleString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}</span>
                             </div>
                         </div>
                     </div>
@@ -1906,8 +1911,7 @@
             erlcServerInfo.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load ER:LC data. Please try again.</p></div>';
             erlcPlayersList.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-exclamation-triangle"></i><p>Failed to load players. Please try again.</p></div>';
         }
-    }    
-    async function loadBOLOs(serverId) {
+    }    async function loadBOLOs(serverId) {
         if (!discordToken) {
             activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Authentication error. Please log in again.</p></div>';
             return;
