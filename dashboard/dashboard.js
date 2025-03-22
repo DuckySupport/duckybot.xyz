@@ -1222,7 +1222,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   
         for (const guild of guilds) {
           if (guild.ducky && guild.manage_server) {
-            const userResponse = await fetch(`https://api.duckybot.xyz/user/${guild.id}`, {
+            const userResponse = await fetch(`https://api.duckybot.xyz/user/${discordUser?.id}`, {
               headers: { "Discord-Code": discordToken },
             })
   
