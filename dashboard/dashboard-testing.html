@@ -328,42 +328,6 @@
         .breadcrumb-separator {
             color: #4b5563;
         }
-        .sidebar {
-            background-color: #111111;
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-            width: 64px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            z-index: 50;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 1rem;
-        }
-        .sidebar-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #9ca3af;
-            margin-bottom: 1rem;
-            transition: all 0.2s ease;
-        }
-        .sidebar-icon:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-        .sidebar-icon.active {
-            background-color: rgba(245, 255, 130, 0.1);
-            color: #f5ff82;
-        }
-        .main-content {
-            margin-left: 64px;
-        }
         .avatar-circle {
             width: 2.5rem;
             height: 2.5rem;
@@ -408,13 +372,64 @@
             margin-bottom: 1rem;
             color: #4b5563;
         }
+        
+        /* Custom dropdown styles */
+        .custom-dropdown {
+            position: relative;
+            width: 100%;
+        }
+        .dropdown-selected {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.375rem;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        .dropdown-selected:hover {
+            border-color: rgba(245, 255, 130, 0.3);
+        }
+        .dropdown-selected.active {
+            border-color: #F5FF82;
+        }
+        .dropdown-options {
+            position: absolute;
+            top: calc(100% + 0.25rem);
+            left: 0;
+            right: 0;
+            background-color: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.375rem;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+        .dropdown-options.active {
+            max-height: 200px;
+            opacity: 1;
+            overflow-y: auto;
+        }
+        .dropdown-option {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .dropdown-option:hover {
+            background-color: rgba(245, 255, 130, 0.1);
+        }
+        .dropdown-option.selected {
+            background-color: rgba(245, 255, 130, 0.2);
+            color: #F5FF82;
+        }
+        
         @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-            .main-content {
-                margin-left: 0;
-            }
             .server-grid {
                 grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             }
@@ -432,235 +447,224 @@
         </div>
     </div>
 
-    <div class="sidebar hidden md:flex">
-        <a href="/" class="sidebar-icon">
-            <i class="fas fa-home"></i>
-        </a>
-        <a href="/dashboard" class="sidebar-icon active">
-            <i class="fas fa-tachometer-alt"></i>
-        </a>
-        <a href="/team" class="sidebar-icon">
-            <i class="fas fa-users"></i>
-        </a>
-        <a href="/docs" class="sidebar-icon">
-            <i class="fas fa-book"></i>
-        </a>
-        <a href="/support" class="sidebar-icon">
-            <i class="fas fa-headset"></i>
-        </a>
-        <div class="mt-auto mb-4">
-            <a href="/settings" class="sidebar-icon">
-                <i class="fas fa-cog"></i>
-            </a>
+    <nav class="sticky top-0 z-50 backdrop-blur-sm border-b border-white/5 bg-[#0f0f0f]/30">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <a href="/" class="flex items-center gap-3">
+                    <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
+                    <span class="text-2xl font-bold text-[#F5FF82]">Ducky</span>
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="/team" class="text-gray-300 hover:text-[#F5FF82] transition">Team</a>
+                    <a href="/docs" class="text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
+                    <a href="/invite" class="text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
+                    <a href="/status" class="text-gray-300 hover:text-[#F5FF82] transition">Status</a>
+                    <a href="/support" class="text-gray-300 hover:text-[#F5FF82] transition">Support</a>
+                    <a href="/plus"
+                        class="px-4 py-2 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
+                        Get Ducky Plus+
+                    </a>
+                </div>
+                <button id="menuBtn" class="md:hidden text-2xl text-[#F5FF82] hover:opacity-80 transition">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
         </div>
+    </nav>
+
+    <div id="mobileMenu" class="mobile-menu flex-col items-center justify-center gap-8">
+        <button class="absolute top-6 right-6 text-2xl" id="closeMenuBtn">
+            <i class="fas fa-times"></i>
+        </button>
+        <a href="/team" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Team</a>
+        <a href="/docs" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
+        <a href="/invite" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
+        <a href="/status" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Status</a>
+        <a href="/support" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Support</a>
+        <a href="/plus" class="px-6 py-3 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
+            Get Ducky Plus+
+        </a>
     </div>
 
-    <div class="main-content">
-        <nav class="sticky top-0 z-50 border-b border-white/5 bg-[#0a0a0a]">
-            <div class="max-w-7xl mx-auto px-4 py-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <a href="/" class="md:hidden flex items-center gap-3">
-                            <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
-                            <span class="text-2xl font-bold text-[#F5FF82]">Ducky</span>
-                        </a>
-                        <div class="hidden md:flex breadcrumb">
-                            <a href="/">Home</a>
-                            <span class="breadcrumb-separator">/</span>
-                            <a href="/dashboard">Dashboard</a>
-                            <span class="breadcrumb-separator">/</span>
-                            <span>Moderation Panel</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <a href="/plus" class="hidden md:block px-4 py-2 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
-                            Get Ducky Plus+
-                        </a>
-                        <button id="menuBtn" class="md:hidden text-2xl text-[#F5FF82] hover:opacity-80 transition">
-                            <i class="fas fa-bars"></i>
-                        </button>
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div id="serverSelectionView" class="mt-4 opacity-0 transition-opacity duration-500">
+            <div class="glass-card p-4 mb-6 flex items-center gap-3">
+                <img id="profilePicture" alt="Profile" class="w-12 h-12 rounded-full">
+                <div>
+                    <h2 class="text-lg font-bold">Welcome, <span id="username" class="text-[#F5FF82]"></span></h2>
+                    <p class="text-gray-400 mt-0.5 text-sm">Select a server to moderate</p>
+                </div>
+            </div>
+
+            <div class="glass-card p-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                    <h2 class="text-lg font-bold">Your Servers</h2>
+                    <span class="text-sm text-gray-400">Only servers with Ducky and moderation permissions are shown</span>
+                </div>
+                <div id="serverGrid" class="server-grid p-2">
+                    <div class="col-span-full text-center py-4">
+                        <div class="spinner mx-auto mb-2"></div>
+                        <p class="text-gray-400">Loading servers...</p>
                     </div>
                 </div>
             </div>
-        </nav>
-
-        <div id="mobileMenu" class="mobile-menu flex-col items-center justify-center gap-8">
-            <button class="absolute top-6 right-6 text-2xl" id="closeMenuBtn">
-                <i class="fas fa-times"></i>
-            </button>
-            <a href="/" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Home</a>
-            <a href="/team" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Team</a>
-            <a href="/docs" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
-            <a href="/invite" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
-            <a href="/status" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Status</a>
-            <a href="/support" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Support</a>
-            <a href="/plus" class="px-6 py-3 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
-                Get Ducky Plus+
-            </a>
         </div>
 
-        <main class="max-w-7xl mx-auto px-4 py-8">
-            <div id="serverSelectionView" class="mt-4 opacity-0 transition-opacity duration-500">
-                <div class="glass-card p-4 mb-6 flex items-center gap-3">
-                    <img id="profilePicture" alt="Profile" class="w-12 h-12 rounded-full">
+        <div id="moderationPanelView" class="hidden mt-4">
+            <div class="glass-card p-4 mb-6 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <img id="serverIcon" alt="Server Icon" class="w-12 h-12 rounded-full">
                     <div>
-                        <h2 class="text-lg font-bold">Welcome, <span id="username" class="text-[#F5FF82]"></span></h2>
-                        <p class="text-gray-400 mt-0.5 text-sm">Select a server to moderate</p>
+                        <h2 class="text-lg font-bold"><span id="serverName" class="text-[#F5FF82]"></span></h2>
+                        <p class="text-gray-400 mt-0.5 text-sm">Moderation Panel</p>
                     </div>
                 </div>
+                <button id="backToServersBtn" class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition text-sm">
+                    <i class="fas fa-arrow-left mr-2"></i>Back
+                </button>
+            </div>
 
+            <div class="flex gap-4 mb-4 border-b border-white/10 pb-2">
+                <button id="punishmentsTabBtn" class="tab-button active px-4 py-2 font-medium">Punishments</button>
+                <button id="shiftsTabBtn" class="tab-button px-4 py-2 text-gray-400 hover:text-white font-medium">Shifts</button>
+            </div>
+
+            <div id="punishmentsTab">
+                <div class="glass-card p-4 mb-6">
+                    <h3 class="text-lg font-bold mb-4">Issue Punishment</h3>
+                    <form id="punishmentForm" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="robloxUsername" class="block text-sm font-medium text-gray-400 mb-1">Roblox Username</label>
+                                <input type="text" id="robloxUsername" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter username" required>
+                            </div>
+                            <div>
+                                <label for="punishmentTypeContainer" class="block text-sm font-medium text-gray-400 mb-1">Punishment Type</label>
+                                <div id="punishmentTypeContainer" class="custom-dropdown">
+                                    <div class="dropdown-selected" id="punishmentTypeSelected">
+                                        <span>Select type...</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="dropdown-options" id="punishmentTypeOptions">
+                                        <!-- Options will be populated dynamically -->
+                                    </div>
+                                </div>
+                                <input type="hidden" id="punishmentType" required>
+                            </div>
+                        </div>                        
+                        <div id="durationContainer" class="hidden">
+                            <label for="duration" class="block text-sm font-medium text-gray-400 mb-1">Duration</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="number" id="durationValue" min="1" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Duration">
+                                <div class="custom-dropdown">
+                                    <div class="dropdown-selected" id="durationUnitSelected">
+                                        <span>Minutes</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="dropdown-options" id="durationUnitOptions">
+                                        <div class="dropdown-option selected" data-value="minutes">Minutes</div>
+                                        <div class="dropdown-option" data-value="hours">Hours</div>
+                                        <div class="dropdown-option" data-value="days">Days</div>
+                                        <div class="dropdown-option" data-value="weeks">Weeks</div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="durationUnit" value="minutes">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="reason" class="block text-sm font-medium text-gray-400 mb-1">Reason</label>
+                            <textarea id="reason" rows="2" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter reason" required></textarea>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button type="submit" id="submitBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:bg-[#e6ff4d] transition">
+                                Issue Punishment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
                 <div class="glass-card p-4">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
-                        <h2 class="text-lg font-bold">Your Servers</h2>
-                        <span class="text-sm text-gray-400">Only servers with Ducky and moderation permissions are shown</span>
-                    </div>
-                    <div id="serverGrid" class="server-grid p-2">
-                        <div class="col-span-full text-center py-4">
+                    <h3 class="text-lg font-bold mb-4">Punishment History</h3>
+                    <div id="punishmentHistory" class="space-y-3">
+                        <div class="text-center py-4">
                             <div class="spinner mx-auto mb-2"></div>
-                            <p class="text-gray-400">Loading servers...</p>
+                            <p class="text-gray-400">Loading punishment history...</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="moderationPanelView" class="hidden mt-4">
-                <div class="glass-card p-4 mb-6 flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img id="serverIcon" alt="Server Icon" class="w-12 h-12 rounded-full">
-                        <div>
-                            <h2 class="text-lg font-bold"><span id="serverName" class="text-[#F5FF82]"></span></h2>
-                            <p class="text-gray-400 mt-0.5 text-sm">Moderation Panel</p>
-                        </div>
-                    </div>
-                    <button id="backToServersBtn" class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition text-sm">
-                        <i class="fas fa-arrow-left mr-2"></i>Back
-                    </button>
-                </div>
-
-                <div class="flex gap-4 mb-4 border-b border-white/10 pb-2">
-                    <button id="punishmentsTabBtn" class="tab-button active px-4 py-2 font-medium">Punishments</button>
-                    <button id="shiftsTabBtn" class="tab-button px-4 py-2 text-gray-400 hover:text-white font-medium">Shifts</button>
-                </div>
-
-                <div id="punishmentsTab">
-                    <div class="glass-card p-4 mb-6">
-                        <h3 class="text-lg font-bold mb-4">Issue Punishment</h3>
-                        <form id="punishmentForm" class="space-y-4">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label for="robloxUsername" class="block text-sm font-medium text-gray-400 mb-1">Roblox Username</label>
-                                    <input type="text" id="robloxUsername" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter username" required>
+            <div id="shiftsTab" class="hidden">
+                <div class="glass-card p-4 mb-6">
+                    <h3 class="text-lg font-bold mb-4">Manage Your Shift</h3>
+                    <div class="p-4 bg-black/20 rounded-lg">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                            <div class="flex items-center gap-3 mb-4 md:mb-0">
+                                <div id="shiftStatusIndicator" class="shift-status inactive">
+                                    <div class="pulse inactive"></div>
+                                    <span id="shiftStatusText">Off Duty</span>
                                 </div>
-                                <div>
-                                    <label for="punishmentType" class="block text-sm font-medium text-gray-400 mb-1">Punishment Type</label>
-                                    <select id="punishmentType" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" required>
-                                        <option value="" disabled selected>Select type...</option>
-                                    </select>
-                                </div>
-                            </div>                        
-                            <div id="durationContainer" class="hidden">
-                                <label for="duration" class="block text-sm font-medium text-gray-400 mb-1">Duration</label>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <input type="number" id="durationValue" min="1" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Duration">
-                                    <select id="durationUnit" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white">
-                                        <option value="minutes">Minutes</option>
-                                        <option value="hours">Hours</option>
-                                        <option value="days">Days</option>
-                                        <option value="weeks">Weeks</option>
-                                    </select>
-                                </div>
+                                <div class="text-2xl font-mono" id="shiftTimer">00:00:00</div>
                             </div>
-                            
-                            <div>
-                                <label for="reason" class="block text-sm font-medium text-gray-400 mb-1">Reason</label>
-                                <textarea id="reason" rows="2" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white" placeholder="Enter reason" required></textarea>
-                            </div>
-                            
-                            <div class="flex justify-end">
-                                <button type="submit" id="submitBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:bg-[#e6ff4d] transition">
-                                    Issue Punishment
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                    
-                    <div class="glass-card p-4">
-                        <h3 class="text-lg font-bold mb-4">Punishment History</h3>
-                        <div id="punishmentHistory" class="space-y-3">
-                            <div class="text-center py-4">
-                                <div class="spinner mx-auto mb-2"></div>
-                                <p class="text-gray-400">Loading punishment history...</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="shiftsTab" class="hidden">
-                    <div class="glass-card p-4 mb-6">
-                        <h3 class="text-lg font-bold mb-4">Manage Your Shift</h3>
-                        <div class="p-4 bg-black/20 rounded-lg">
-                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-                                <div class="flex items-center gap-3 mb-4 md:mb-0">
-                                    <div id="shiftStatusIndicator" class="shift-status inactive">
-                                        <div class="pulse inactive"></div>
-                                        <span id="shiftStatusText">Off Duty</span>
+                            <div class="w-full md:w-auto">
+                                <div class="custom-dropdown">
+                                    <div class="dropdown-selected" id="shiftTypeSelected">
+                                        <span>Select type...</span>
+                                        <i class="fas fa-chevron-down"></i>
                                     </div>
-                                    <div class="text-2xl font-mono" id="shiftTimer">00:00:00</div>
-                                </div>
-                                <div class="w-full md:w-auto">
-                                    <select id="shiftType" class="w-full px-3 py-2 bg-black/30 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#F5FF82] text-white">
-                                        <option value="patrol">Patrol</option>
-                                        <option value="supervisor">Supervisor</option>
-                                        <option value="training">Training</option>
-                                        <option value="event">Event</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="shift-controls">
-                                <button id="startShiftBtn" class="shift-btn shift-btn-start">
-                                    <i class="fas fa-play"></i>
-                                    <span>Start</span>
-                                </button>
-                                <button id="pauseShiftBtn" class="shift-btn shift-btn-pause" disabled>
-                                    <i class="fas fa-pause"></i>
-                                    <span>Pause</span>
-                                </button>
-                                <button id="endShiftBtn" class="shift-btn shift-btn-end" disabled>
-                                    <i class="fas fa-stop"></i>
-                                    <span>End</span>
-                                </button>
-                            </div>
-                            
-                            <div class="mt-6">
-                                <h4 class="text-md font-semibold mb-3">Your Recent Shifts</h4>
-                                <div id="recentUserShifts" class="space-y-3">
-                                    <div class="text-center py-4">
-                                        <div class="spinner mx-auto mb-2"></div>
-                                        <p class="text-gray-400">Loading your shifts...</p>
+                                    <div class="dropdown-options" id="shiftTypeOptions">
+                                        <!-- Options will be populated dynamically -->
                                     </div>
                                 </div>
+                                <input type="hidden" id="shiftType" value="patrol">
+                            </div>
+                        </div>
+                        
+                        <div class="shift-controls">
+                            <button id="startShiftBtn" class="shift-btn shift-btn-start">
+                                <i class="fas fa-play"></i>
+                                <span>Start</span>
+                            </button>
+                            <button id="pauseShiftBtn" class="shift-btn shift-btn-pause" disabled>
+                                <i class="fas fa-pause"></i>
+                                <span>Pause</span>
+                            </button>
+                            <button id="endShiftBtn" class="shift-btn shift-btn-end" disabled>
+                                <i class="fas fa-stop"></i>
+                                <span>End</span>
+                            </button>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <h4 class="text-md font-semibold mb-3">Your Recent Shifts</h4>
+                            <div id="recentUserShifts" class="space-y-3">
+                                <div class="text-center py-4">
+                                    <div class="spinner mx-auto mb-2"></div>
+                                    <p class="text-gray-400">Loading your shifts...</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="glass-card p-4 mb-6">
-                        <h3 class="text-lg font-bold mb-4">Active Shifts</h3>
-                        <div id="activeShifts" class="grid grid-cols-1 gap-4">
-                            <div class="text-center py-4 col-span-full">
-                                <div class="spinner mx-auto mb-2"></div>
-                                <p class="text-gray-400">Loading active shifts...</p>
-                            </div>
+                </div>
+                
+                <div class="glass-card p-4 mb-6">
+                    <h3 class="text-lg font-bold mb-4">Active Shifts</h3>
+                    <div id="activeShifts" class="grid grid-cols-1 gap-4">
+                        <div class="text-center py-4 col-span-full">
+                            <div class="spinner mx-auto mb-2"></div>
+                            <p class="text-gray-400">Loading active shifts...</p>
                         </div>
                     </div>
-                    
-                    <div class="glass-card p-4">
-                        <h3 class="text-lg font-bold mb-4">Recent Shifts</h3>
-                        <div id="recentShifts" class="space-y-3">
-                            <div class="text-center py-4">
-                                <div class="spinner mx-auto mb-2"></div>
-                                <p class="text-gray-400">Loading recent shifts...</p>
-                            </div>
+                </div>
+                
+                <div class="glass-card p-4">
+                    <h3 class="text-lg font-bold mb-4">Recent Shifts</h3>
+                    <div id="recentShifts" class="space-y-3">
+                        <div class="text-center py-4">
+                            <div class="spinner mx-auto mb-2"></div>
+                            <p class="text-gray-400">Loading recent shifts...</p>
                         </div>
                     </div>
                 </div>
@@ -683,7 +687,6 @@
                 <p class="text-center text-gray-400 mt-8">© 2025 Ducky Bot. All rights reserved.</p>
             </div>
         </footer>
-    </div>
 
     <div id="confirmationModal" class="confirmation-modal">
         <div class="modal-content">
@@ -733,6 +736,14 @@
     const shiftStatusText = document.getElementById('shiftStatusText');
     const shiftTimer = document.getElementById('shiftTimer');
     const recentUserShifts = document.getElementById('recentUserShifts');
+    
+    const punishmentTypeSelected = document.getElementById('punishmentTypeSelected');
+    const punishmentTypeOptions = document.getElementById('punishmentTypeOptions');
+    const durationUnitSelected = document.getElementById('durationUnitSelected');
+    const durationUnitOptions = document.getElementById('durationUnitOptions');
+    const durationUnit = document.getElementById('durationUnit');
+    const shiftTypeSelected = document.getElementById('shiftTypeSelected');
+    const shiftTypeOptions = document.getElementById('shiftTypeOptions');
 
     let selectedServerId = null;
     let selectedServerConfig = null;
@@ -749,6 +760,50 @@
     let shiftTimerInterval = null;
     let currentPunishmentToDelete = null;
     let currentUserShift = null;
+
+    function initDropdowns() {
+        punishmentTypeSelected.addEventListener('click', () => {
+            punishmentTypeSelected.classList.toggle('active');
+            punishmentTypeOptions.classList.toggle('active');
+        });
+        
+        durationUnitSelected.addEventListener('click', () => {
+            durationUnitSelected.classList.toggle('active');
+            durationUnitOptions.classList.toggle('active');
+        });
+        
+        document.querySelectorAll('#durationUnitOptions .dropdown-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.dataset.value;
+                durationUnit.value = value;
+                durationUnitSelected.querySelector('span').textContent = option.textContent;
+                
+                document.querySelectorAll('#durationUnitOptions .dropdown-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                option.classList.add('selected');
+                
+                durationUnitSelected.classList.remove('active');
+                durationUnitOptions.classList.remove('active');
+            });
+        });
+        
+        shiftTypeSelected.addEventListener('click', () => {
+            shiftTypeSelected.classList.toggle('active');
+            shiftTypeOptions.classList.toggle('active');
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.custom-dropdown')) {
+                document.querySelectorAll('.dropdown-options').forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+                document.querySelectorAll('.dropdown-selected').forEach(selected => {
+                    selected.classList.remove('active');
+                });
+            }
+        });
+    }
 
     function getDiscordToken() {
         return document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
@@ -767,12 +822,12 @@
         const secs = remainingAfterHours % 60;
         
         let durationString = '';
-        if (months > 0) durationString += `${months} month${months !== 1 ? 's' : ''}, `;
-        if (weeks > 0) durationString += `${weeks} week${weeks !== 1 ? 's' : ''}, `;
-        if (hours > 0) durationString += `${hours} hour${hours !== 1 ? 's' : ''}, `;
-        if (minutes > 0) durationString += `${minutes} minute${minutes !== 1 ? 's' : ''}, `;
+        if (months > 0) durationString += `${months} month${months !== 1 ? 's' : ''}`;
+        if (weeks > 0) durationString += `${durationString ? ', ' : ''}${weeks} week${weeks !== 1 ? 's' : ''}`;
+        if (hours > 0) durationString += `${durationString ? ', ' : ''}${hours} hour${hours !== 1 ? 's' : ''}`;
+        if (minutes > 0) durationString += `${durationString ? ', ' : ''}${minutes} minute${minutes !== 1 ? 's' : ''}`;
         if (secs > 0 || (months === 0 && weeks === 0 && hours === 0 && minutes === 0)) {
-            durationString += `${secs} second${secs !== 1 ? 's' : ''}`;
+            durationString += `${durationString ? ', ' : ''}${secs} second${secs !== 1 ? 's' : ''}`;
         }
         
         return durationString;
@@ -836,13 +891,74 @@
         document.body.style.overflow = '';
     });
 
-    punishmentType.addEventListener('change', function() {
-        durationContainer.classList.toggle('hidden', this.value !== 'tempban');
-    });
+    function setupPunishmentTypeDropdown(types) {
+        punishmentTypeOptions.innerHTML = '';
+        
+        types.forEach((type, index) => {
+            const option = document.createElement('div');
+            option.className = 'dropdown-option';
+            option.dataset.value = type.toLowerCase();
+            option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+            
+            option.addEventListener('click', () => {
+                punishmentType.value = type.toLowerCase();
+                punishmentTypeSelected.querySelector('span').textContent = option.textContent;
+                
+                document.querySelectorAll('#punishmentTypeOptions .dropdown-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                option.classList.add('selected');
+                
+                punishmentTypeSelected.classList.remove('active');
+                punishmentTypeOptions.classList.remove('active');
+                
+                durationContainer.classList.toggle('hidden', punishmentType.value !== 'tempban');
+            });
+            
+            punishmentTypeOptions.appendChild(option);
+        });
+    }
 
+    function setupShiftTypeDropdown(types) {
+        shiftTypeOptions.innerHTML = '';
+        
+        if (!types || types.length === 0) {
+            types = [];
+        }
+        
+        types.forEach((type, index) => {
+            const option = document.createElement('div');
+            option.className = 'dropdown-option';
+            option.dataset.value = type.name.toLowerCase();
+            option.textContent = type.name.charAt(0).toUpperCase() + type.name.slice(1);
+            
+            if (index === 0) {
+                option.classList.add('selected');
+                shiftTypeSelected.querySelector('span').textContent = option.textContent;
+                shiftType.value = type.name.toLowerCase();
+            }
+            
+            option.addEventListener('click', () => {
+                shiftType.value = type.name.toLowerCase();
+                shiftTypeSelected.querySelector('span').textContent = option.textContent;
+                
+                document.querySelectorAll('#shiftTypeOptions .dropdown-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                option.classList.add('selected');
+                
+                shiftTypeSelected.classList.remove('active');
+                shiftTypeOptions.classList.remove('active');
+            });
+            
+            shiftTypeOptions.appendChild(option);
+        });
+    }
+    
     backToServersBtn.addEventListener('click', () => {
         moderationPanelView.classList.add('hidden');
         serverSelectionView.classList.remove('hidden');
+        localStorage.removeItem('selectedServerId');
     });
 
     punishmentsTabBtn.addEventListener('click', () => {
@@ -888,36 +1004,46 @@
         serverSelectionView.classList.add('hidden');
         moderationPanelView.classList.remove('hidden');
         
-        const punishmentTypeSelect = document.getElementById('punishmentType');
-        punishmentTypeSelect.innerHTML = '<option value="" disabled selected>Select type...</option>';
+        localStorage.setItem('selectedServerId', JSON.stringify({
+            id: serverId,
+            name: serverName,
+            icon: serverIcon,
+            config: serverConfig
+        }));
         
+        let punishmentTypes = [];
         if (serverConfig && serverConfig.punishmenttypes && serverConfig.punishmenttypes.length > 0) {
-            serverConfig.punishmenttypes.forEach(type => {
-                const option = document.createElement('option');
-                option.value = type.toLowerCase();
-                option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
-                punishmentTypeSelect.appendChild(option);
-            });
-        } else {
-            const defaultTypes = ['warn', 'kick', 'ban', 'tempban'];
-            defaultTypes.forEach(type => {
-                const option = document.createElement('option');
-                option.value = type;
-                option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
-                punishmentTypeSelect.appendChild(option);
-            });
+            punishmentTypes = serverConfig.punishmenttypes;
         }
+        setupPunishmentTypeDropdown(punishmentTypes);
+        
+        let shiftTypes = [];
+        if (serverConfig && serverConfig.shifttypes && serverConfig.shifttypes.length > 0) {
+            shiftTypes = serverConfig.shifttypes;
+        }
+        setupShiftTypeDropdown(shiftTypes);
         
         loadPunishments(serverId);
         checkActiveShift(serverId);
     }
-
     async function loadServers() {
         discordToken = getDiscordToken();
         
         if (!discordToken) {
             window.location.href = "/login?redirect=modpanel";
             return;
+        }
+        
+        const savedServer = localStorage.getItem('selectedServerId');
+        if (savedServer) {
+            try {
+                const serverData = JSON.parse(savedServer);
+                if (serverData && serverData.id) {
+                    selectedServerId = serverData.id;
+                }
+            } catch (e) {
+                localStorage.removeItem('selectedServerId');
+            }
         }
 
         try {
@@ -955,6 +1081,16 @@
                 
                 const fragment = document.createDocumentFragment();
                 
+                let savedServerValid = false;
+                let savedServerData = null;
+                
+                if (selectedServerId) {
+                    savedServerData = filteredServers.find(server => server.id === selectedServerId);
+                    if (savedServerData) {
+                        savedServerValid = true;
+                    }
+                }
+                
                 filteredServers.forEach(server => {
                     const serverCard = document.createElement('div');
                     serverCard.className = 'server-card glass-card';
@@ -979,6 +1115,10 @@
                 });
                 
                 serverGrid.appendChild(fragment);
+                
+                if (savedServerValid && savedServerData) {
+                    selectServer(savedServerData.id, savedServerData.name, savedServerData.icon, savedServerData.config);
+                }
             }
             
             loadingOverlay.classList.add('fade-out');
@@ -1286,6 +1426,15 @@
                     
                     if (userActiveShift.type && shiftType) {
                         shiftType.value = userActiveShift.type;
+                        shiftTypeSelected.querySelector('span').textContent = userActiveShift.type.charAt(0).toUpperCase() + userActiveShift.type.slice(1);
+                        
+                        const option = document.querySelector(`#shiftTypeOptions .dropdown-option[data-value="${userActiveShift.type.toLowerCase()}"]`);
+                        if (option) {
+                            document.querySelectorAll('#shiftTypeOptions .dropdown-option').forEach(opt => {
+                                opt.classList.remove('selected');
+                            });
+                            option.classList.add('selected');
+                        }
                     }
                 }
             }
@@ -1371,10 +1520,20 @@
         const type = document.getElementById('punishmentType').value;
         const reason = document.getElementById('reason').value;
         
+        if (!type) {
+            showToast('Please select a punishment type', 'error');
+            return;
+        }
+        
         let expires = null;
         if (type === 'tempban') {
             const durationValue = document.getElementById('durationValue').value;
             const durationUnit = document.getElementById('durationUnit').value;
+            
+            if (!durationValue || durationValue <= 0) {
+                showToast('Please enter a valid duration', 'error');
+                return;
+            }
             
             const multipliers = {
                 minutes: 60,
@@ -1415,6 +1574,10 @@
             
             punishmentForm.reset();
             durationContainer.classList.add('hidden');
+            punishmentTypeSelected.querySelector('span').textContent = 'Select type...';
+            document.querySelectorAll('#punishmentTypeOptions .dropdown-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
             
             showToast(`Successfully issued ${type} to ${robloxUsername}`);
             lastPunishmentTime = now;
@@ -1464,6 +1627,15 @@
                 
                 if (userActiveShift.type && shiftType) {
                     shiftType.value = userActiveShift.type;
+                    shiftTypeSelected.querySelector('span').textContent = userActiveShift.type.charAt(0).toUpperCase() + userActiveShift.type.slice(1);
+                    
+                    const option = document.querySelector(`#shiftTypeOptions .dropdown-option[data-value="${userActiveShift.type.toLowerCase()}"]`);
+                    if (option) {
+                        document.querySelectorAll('#shiftTypeOptions .dropdown-option').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        option.classList.add('selected');
+                    }
                 }
             } else {
                 shiftStatus = 'inactive';
@@ -1533,7 +1705,8 @@
             });
             
             if (!response.ok) {
-                throw new Error('Failed to start shift');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to start shift');
             }
             
             shiftStatus = 'active';
@@ -1573,7 +1746,8 @@
             });
             
             if (!response.ok) {
-                throw new Error('Failed to pause shift');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to pause shift');
             }
             
             if (shiftTimerInterval) {
@@ -1642,7 +1816,10 @@
         }
     }
 
-    window.addEventListener('load', loadServers);
+    window.addEventListener('load', () => {
+        initDropdowns();
+        loadServers();
+    });
     </script>
 </body>
 </html>
