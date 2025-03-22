@@ -16,9 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
   
-    const apiUrl = `https://api.duckybot.xyz/transcripts/${guildId}/${ticketId}`;
-  
-    fetch(apiUrl, {
+    fetch(`https://api.duckybot.xyz/guilds/${guildId}/transcripts/${ticketId}`, {
         method: "GET",
     })
         .then((response) => {
