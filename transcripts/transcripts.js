@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .replace(/^### (.*?)$/gm, '<h3>$1</h3>')
             .replace(/^(?:> |- |) -# (.*?)$/gm, '<span style="opacity: 0.6; font-size: small;">$1</span>')
             .replace(/^(?:- |\* )(.*)/gm, '<li>$1</li>')
-            .replace(/^(?:&nbsp; - |&nbsp; \* )(.*)/gm, '<li class="indent">$1</li>')
+            .replace(/^(?:  - |  \* )(.*)/gm, '<li class="indent">$1</li>')
             .replace(/^(?:\d+\. )(.*)/gm, '<li class="numbered">$1</li>')
             .replace(/^> (.+)/gm, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
             .replace(/<:([^:]+):\d+>/g, '$1')
