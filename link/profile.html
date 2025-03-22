@@ -153,13 +153,12 @@
                 
                 if (response.ok) {
                     showToast('Account unlinked successfully', 'success');
-                    setTimeout(() => window.location.href = '/', 1500);
+                    setTimeout(() => window.location.href = '/link', 1500);
                 } else {
                     throw new Error('Failed to unlink account');
                 }
             } catch (error) {
                 showToast('Failed to unlink account', 'error');
-                window.location.href = "/link";
             } finally {
                 closeConfirmDialog();
             }
