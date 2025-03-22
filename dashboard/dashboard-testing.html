@@ -937,11 +937,11 @@ function showAutomationDetails(automation) {
         
         automationActions.innerHTML = '';
         if (automation.actions && automation.actions.length > 0) {
-            const actionsList = document.createElement('ul');
-            actionsList.className = 'list-disc pl-5';
+            const actionsList = document.createElement('div');
+            actionsList.className = 'space-y-1';
             
             automation.actions.forEach(action => {
-                const actionItem = document.createElement('li');
+                const actionItem = document.createElement('div');
                 actionItem.textContent = action.name;
                 actionsList.appendChild(actionItem);
             });
@@ -952,7 +952,7 @@ function showAutomationDetails(automation) {
         }
         
         if (automation.role) {
-            automationRole.textContent = `<@&${automation.role}>`;
+            automationRole.textContent = automation.roleName || 'Unknown Role';
             automationRoleContainer.classList.remove('hidden');
         } else {
             automationRoleContainer.classList.add('hidden');
@@ -960,7 +960,29 @@ function showAutomationDetails(automation) {
         
         if (automation.author) {
             fetchUserData(automation.author).then(userData => {
-                automationAuthor.textContent = userData.username || userData.name || automation.author;
+                const authorContainer = document.createElement('div');
+                authorContainer.className = 'flex items-center gap-2';
+                
+                const authorText = document.createElement('span');
+                authorText.textContent = userData.username || userData.name || automation.author;
+                
+                const authorAvatar = document.createElement('div');
+                authorAvatar.className = 'w-6 h-6 rounded-full overflow-hidden bg-gray-700 flex-shrink-0';
+                
+                if (userData.avatar) {
+                    const avatarImg = document.createElement('img');
+                    avatarImg.src = userData.avatar;
+                    avatarImg.className = 'w-full h-full object-cover';
+                    authorAvatar.appendChild(avatarImg);
+                } else {
+                    authorAvatar.textContent = (userData.username || userData.name || automation.author).charAt(0);
+                    authorAvatar.className += ' flex items-center justify-center text-xs text-white';
+                }
+                
+                authorContainer.appendChild(authorText);
+                authorContainer.appendChild(authorAvatar);
+                automationAuthor.innerHTML = '';
+                automationAuthor.appendChild(authorContainer);
             });
         } else {
             automationAuthor.textContent = 'Unknown';
@@ -968,8 +990,8 @@ function showAutomationDetails(automation) {
         
         automationDetails.classList.remove('hidden');
     }
-
-async function runAutomation() {
+    
+    async function runAutomation() {
     if (!discordToken || !selectedServerId || selectedAutomationId.value === '') {
         showToast('Please select an automation to run', 'error');
         return;
