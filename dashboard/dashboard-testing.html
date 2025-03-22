@@ -134,6 +134,207 @@
         .fade-out {
             animation: fadeOut 0.5s forwards;
         }
+        .punishment-item {
+    position: relative;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.punishment-item:hover .delete-btn {
+    opacity: 1;
+}
+
+.delete-btn:hover {
+    background-color: rgba(239, 68, 68, 0.2);
+    transform: scale(1.1);
+}
+
+.shift-controls {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.shift-btn {
+    flex: 1;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.shift-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.shift-btn-start {
+    background-color: #10b981;
+    color: white;
+}
+
+.shift-btn-start:hover:not(:disabled) {
+    background-color: #059669;
+}
+
+.shift-btn-pause {
+    background-color: #f59e0b;
+    color: white;
+}
+
+.shift-btn-pause:hover:not(:disabled) {
+    background-color: #d97706;
+}
+
+.shift-btn-end {
+    background-color: #ef4444;
+    color: white;
+}
+
+.shift-btn-end:hover:not(:disabled) {
+    background-color: #dc2626;
+}
+
+.confirmation-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.confirmation-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: #1a1a1a;
+    border: 1px solid rgba(245, 255, 130, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 400px;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+}
+
+.confirmation-modal.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.shift-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.shift-status.active {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.shift-status.paused {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.shift-status.inactive {
+    background-color: rgba(156, 163, 175, 0.1);
+    color: #9ca3af;
+}
+
+.pulse {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.pulse.active {
+    background-color: #10b981;
+}
+
+.pulse.paused {
+    background-color: #f59e0b;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+    
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+    }
+    
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+.pulse.paused {
+    animation: pulse-paused 2s infinite;
+}
+
+@keyframes pulse-paused {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+    }
+    
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+    }
+    
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+    }
+}
+
         @media (max-width: 768px) {
             .server-grid {
                 grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -327,349 +528,600 @@
         </div>
     </footer>
 
+    <div id="confirmationModal" class="confirmation-modal">
+    <div class="modal-content">
+        <h3 class="text-lg font-bold mb-2">Confirm Deletion</h3>
+        <p id="confirmationMessage">Are you sure you want to delete this punishment?</p>
+        <div class="modal-actions">
+            <button id="cancelDeleteBtn" class="btn btn-secondary flex-1">Cancel</button>
+            <button id="confirmDeleteBtn" class="btn btn-primary bg-red-500 hover:bg-red-600 text-white flex-1">Delete</button>
+        </div>
+    </div>
+</div>
+
     <div id="toast" class="toast">
         <p id="toastMessage"></p>
     </div>
 
     <script>
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const serverGrid = document.getElementById('serverGrid');
-        const serverSelectionView = document.getElementById('serverSelectionView');
-        const moderationPanelView = document.getElementById('moderationPanelView');
-        const backToServersBtn = document.getElementById('backToServersBtn');
-        const punishmentsTabBtn = document.getElementById('punishmentsTabBtn');
-        const shiftsTabBtn = document.getElementById('shiftsTabBtn');
-        const punishmentsTab = document.getElementById('punishmentsTab');
-        const shiftsTab = document.getElementById('shiftsTab');
-        const punishmentForm = document.getElementById('punishmentForm');
-        const punishmentType = document.getElementById('punishmentType');
-        const durationContainer = document.getElementById('durationContainer');
-        const punishmentHistory = document.getElementById('punishmentHistory');
-        const activeShifts = document.getElementById('activeShifts');
-        const recentShifts = document.getElementById('recentShifts');
-        const toast = document.getElementById('toast');
-        const toastMessage = document.getElementById('toastMessage');
-        const menuBtn = document.getElementById('menuBtn');
-        const closeMenuBtn = document.getElementById('closeMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const serverGrid = document.getElementById('serverGrid');
+    const serverSelectionView = document.getElementById('serverSelectionView');
+    const moderationPanelView = document.getElementById('moderationPanelView');
+    const backToServersBtn = document.getElementById('backToServersBtn');
+    const punishmentsTabBtn = document.getElementById('punishmentsTabBtn');
+    const shiftsTabBtn = document.getElementById('shiftsTabBtn');
+    const punishmentsTab = document.getElementById('punishmentsTab');
+    const shiftsTab = document.getElementById('shiftsTab');
+    const punishmentForm = document.getElementById('punishmentForm');
+    const punishmentType = document.getElementById('punishmentType');
+    const durationContainer = document.getElementById('durationContainer');
+    const punishmentHistory = document.getElementById('punishmentHistory');
+    const activeShifts = document.getElementById('activeShifts');
+    const recentShifts = document.getElementById('recentShifts');
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    const menuBtn = document.getElementById('menuBtn');
+    const closeMenuBtn = document.getElementById('closeMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const confirmationModal = document.getElementById('confirmationModal');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+    const confirmationMessage = document.getElementById('confirmationMessage');
+    
+    const startShiftBtn = document.getElementById('startShiftBtn');
+    const pauseShiftBtn = document.getElementById('pauseShiftBtn');
+    const endShiftBtn = document.getElementById('endShiftBtn');
+    const shiftType = document.getElementById('shiftType');
+    const shiftStatusIndicator = document.getElementById('shiftStatusIndicator');
+    const shiftStatusText = document.getElementById('shiftStatusText');
+    const shiftTimer = document.getElementById('shiftTimer');
+    const recentUserShifts = document.getElementById('recentUserShifts');
 
-        let selectedServerId = null;
-        let selectedServerConfig = null;
-        let userCache = new Map();
-        let avatarCache = new Map();
-        let discordToken = null;
-        let lastPunishmentTime = 0;
-        const PUNISHMENT_COOLDOWN = 5000;
+    let selectedServerId = null;
+    let selectedServerConfig = null;
+    let userCache = new Map();
+    let avatarCache = new Map();
+    let discordToken = null;
+    let lastPunishmentTime = 0;
+    const PUNISHMENT_COOLDOWN = 5000;
+    
+    let shiftStatus = 'inactive'; // 'inactive', 'active', 'paused'
+    let shiftStartTime = 0;
+    let shiftElapsedTime = 0;
+    let shiftTimerInterval = null;
+    let currentPunishmentToDelete = null;
 
-        function getDiscordToken() {
-            return document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
+    function getDiscordToken() {
+        return document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
+    }
+
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+
+    closeMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+
+    punishmentType.addEventListener('change', function() {
+        durationContainer.classList.toggle('hidden', this.value !== 'tempban');
+    });
+
+    backToServersBtn.addEventListener('click', () => {
+        moderationPanelView.classList.add('hidden');
+        serverSelectionView.classList.remove('hidden');
+    });
+
+    punishmentsTabBtn.addEventListener('click', () => {
+        punishmentsTabBtn.classList.add('active');
+        shiftsTabBtn.classList.remove('active');
+        punishmentsTab.classList.remove('hidden');
+        shiftsTab.classList.add('hidden');
+    });
+
+    shiftsTabBtn.addEventListener('click', () => {
+        shiftsTabBtn.classList.add('active');
+        punishmentsTabBtn.classList.remove('active');
+        shiftsTab.classList.remove('hidden');
+        punishmentsTab.classList.add('hidden');
+        
+        if (activeShifts.innerHTML.includes('Loading')) {
+            loadShifts(selectedServerId);
         }
+    });
 
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
+    punishmentForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        issuePunishment();
+    });
+    
+    startShiftBtn.addEventListener('click', startShift);
+    pauseShiftBtn.addEventListener('click', pauseShift);
+    endShiftBtn.addEventListener('click', endShift);
+    
+    confirmDeleteBtn.addEventListener('click', confirmDeletePunishment);
+    cancelDeleteBtn.addEventListener('click', () => {
+        confirmationModal.classList.remove('active');
+        currentPunishmentToDelete = null;
+    });
 
-        closeMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-            document.body.style.overflow = '';
-        });
+    function formatDate(timestamp) {
+        const date = new Date(timestamp * 1000);
+        return date.toLocaleString();
+    }
 
-        punishmentType.addEventListener('change', function() {
-            durationContainer.classList.toggle('hidden', this.value !== 'tempban');
-        });
+    function formatDuration(seconds) {
+        if (seconds < 60) return `${seconds} seconds`;
+        if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes`;
+        if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours`;
+        return `${Math.floor(seconds / 86400)} days`;
+    }
+    
+    function formatShiftTime(seconds) {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const secs = seconds % 60;
+        
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
 
-        backToServersBtn.addEventListener('click', () => {
-            moderationPanelView.classList.add('hidden');
-            serverSelectionView.classList.remove('hidden');
-        });
+    function showToast(message, type = 'success') {
+        toastMessage.textContent = message;
+        toast.className = `toast ${type}`;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
 
-        punishmentsTabBtn.addEventListener('click', () => {
-            punishmentsTabBtn.classList.add('active');
-            shiftsTabBtn.classList.remove('active');
-            punishmentsTab.classList.remove('hidden');
-            shiftsTab.classList.add('hidden');
-        });
-
-        shiftsTabBtn.addEventListener('click', () => {
-            shiftsTabBtn.classList.add('active');
-            punishmentsTabBtn.classList.remove('active');
-            shiftsTab.classList.remove('hidden');
-            punishmentsTab.classList.add('hidden');
+    async function fetchDiscordUsername(userId) {
+        if (userCache.has(userId)) {
+            return userCache.get(userId);
+        }
+        
+        if (!discordToken) {
+            return userId;
+        }
+        
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/links/${userId}`);
             
-            if (activeShifts.innerHTML.includes('Loading')) {
-                loadShifts(selectedServerId);
-            }
-        });
-
-        punishmentForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            issuePunishment();
-        });
-
-        function formatDate(timestamp) {
-            const date = new Date(timestamp * 1000);
-            return date.toLocaleString();
-        }
-
-        function formatDuration(seconds) {
-            if (seconds < 60) return `${seconds} seconds`;
-            if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes`;
-            if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours`;
-            return `${Math.floor(seconds / 86400)} days`;
-        }
-
-        function showToast(message, type = 'success') {
-            toastMessage.textContent = message;
-            toast.className = `toast ${type}`;
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        async function fetchDiscordUsername(userId) {
-            if (userCache.has(userId)) {
-                return userCache.get(userId);
-            }
-            
-            if (!discordToken) {
+            if (!response.ok) {
                 return userId;
             }
             
-            try {
-                const response = await fetch(`https://api.duckybot.xyz/links/${userId}`);
-                
-                if (!response.ok) {
-                    return userId;
-                }
-                
-                const data = await response.json();
-                
-                if (data.code === 200 && data.data) {
-                    const username = data.data.discordUser.username || userId;
-                    userCache.set(userId, username);
-                    return username;
-                }
-                
-                return userId;
-            } catch (error) {
-                console.error('Error fetching username:', error);
-                return userId;
-            }
-        }
-
-        async function fetchRobloxAvatar(robloxId) {
-            if (avatarCache.has(robloxId)) {
-                return avatarCache.get(robloxId);
+            const data = await response.json();
+            
+            if (data.code === 200 && data.data) {
+                const username = data.data.discordUser.username || userId;
+                userCache.set(userId, username);
+                return username;
             }
             
-            try {
-                const response = await fetch(`https://api.duckybot.xyz/user/${robloxId}`);
-                
-                if (!response.ok) {
-                    return null;
-                }
-                
-                const data = await response.json();
-                
-                if (data.code === 200 && data.data) {
-                    const avatarUrl = data.data.avatar;
-                    avatarCache.set(robloxId, avatarUrl);
-                    return avatarUrl;
-                }
-                
+            return userId;
+        } catch (error) {
+            console.error('Error fetching username:', error);
+            return userId;
+        }
+    }
+
+    async function fetchRobloxAvatar(robloxId) {
+        if (avatarCache.has(robloxId)) {
+            return avatarCache.get(robloxId);
+        }
+        
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/user/${robloxId}`);
+            
+            if (!response.ok) {
                 return null;
-            } catch (error) {
-                console.error('Error fetching Roblox avatar:', error);
-                return null;
             }
+            
+            const data = await response.json();
+            
+            if (data.code === 200 && data.data) {
+                const avatarUrl = data.data.avatar;
+                avatarCache.set(robloxId, avatarUrl);
+                return avatarUrl;
+            }
+            
+            return null;
+        } catch (error) {
+            console.error('Error fetching Roblox avatar:', error);
+            return null;
+        }
+    }
+
+    function selectServer(serverId, serverName, serverIcon, serverConfig) {
+        selectedServerId = serverId;
+        selectedServerConfig = serverConfig;
+        
+        document.getElementById('serverName').textContent = serverName;
+        document.getElementById('serverIcon').src = serverIcon || 'https://duckybot.xyz/images/Ducky.svg';
+        
+        serverSelectionView.classList.add('hidden');
+        moderationPanelView.classList.remove('hidden');
+        
+        const punishmentTypeSelect = document.getElementById('punishmentType');
+        punishmentTypeSelect.innerHTML = '<option value="" disabled selected>Select type...</option>';
+        
+        if (serverConfig && serverConfig.punishmenttypes && serverConfig.punishmenttypes.length > 0) {
+            serverConfig.punishmenttypes.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type.toLowerCase();
+                option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+                punishmentTypeSelect.appendChild(option);
+            });
+        } else {
+            const defaultTypes = ['warn', 'kick', 'ban', 'tempban'];
+            defaultTypes.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type;
+                option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+                punishmentTypeSelect.appendChild(option);
+            });
+        }
+        
+        loadPunishments(serverId);
+        checkActiveShift(serverId);
+    }
+
+    async function loadServers() {
+        discordToken = getDiscordToken();
+        
+        if (!discordToken) {
+            window.location.href = "/login?redirect=modpanel";
+            return;
         }
 
-        function selectServer(serverId, serverName, serverIcon, serverConfig) {
-            selectedServerId = serverId;
-            selectedServerConfig = serverConfig;
-            
-            document.getElementById('serverName').textContent = serverName;
-            document.getElementById('serverIcon').src = serverIcon || 'https://duckybot.xyz/images/Ducky.svg';
-            
-            serverSelectionView.classList.add('hidden');
-            moderationPanelView.classList.remove('hidden');
-            
-            const punishmentTypeSelect = document.getElementById('punishmentType');
-            punishmentTypeSelect.innerHTML = '<option value="" disabled selected>Select type...</option>';
-            
-            if (serverConfig && serverConfig.punishmenttypes && serverConfig.punishmenttypes.length > 0) {
-                serverConfig.punishmenttypes.forEach(type => {
-                    const option = document.createElement('option');
-                    option.value = type.toLowerCase();
-                    option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
-                    punishmentTypeSelect.appendChild(option);
-                });
-            } else {
-                const defaultTypes = ['warn', 'kick', 'ban', 'tempban'];
-                defaultTypes.forEach(type => {
-                    const option = document.createElement('option');
-                    option.value = type;
-                    option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
-                    punishmentTypeSelect.appendChild(option);
-                });
-            }
-            
-            loadPunishments(serverId);
-        }
-
-        async function loadServers() {
-            discordToken = getDiscordToken();
-            
-            if (!discordToken) {
-                window.location.href = "/login?redirect=modpanel";
-                return;
-            }
-
-            try {
-                const [userResponse, serversResponse] = await Promise.all([
-                    fetch('https://discord.com/api/users/@me', {
-                        headers: { authorization: `Bearer ${discordToken}` }
-                    }),
-                    fetch("https://api.duckybot.xyz/guilds", {
-                        headers: { "Discord-Code": discordToken }
-                    })
-                ]);
-
-                if (!userResponse.ok || !serversResponse.ok) {
-                    throw new Error('Failed to fetch data');
-                }
-
-                const userData = await userResponse.json();
-                const { data: servers } = await serversResponse.json();
-                
-                document.getElementById('username').textContent = userData.global_name || userData.username;
-                const avatarUrl = `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png`;
-                document.getElementById('profilePicture').src = avatarUrl;
-                
-                const filteredServers = servers.filter(server => server.manage_server && server.ducky);
-                
-                if (filteredServers.length === 0) {
-                    serverGrid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-4">No servers with Ducky found. Make sure you have the right permissions.</p>';
-                } else {
-                    serverGrid.innerHTML = '';
-                    
-                    const fragment = document.createDocumentFragment();
-                    
-                    filteredServers.forEach(server => {
-                        const serverCard = document.createElement('div');
-                        serverCard.className = 'server-card glass-card';
-                        
-                        const img = document.createElement('img');
-                        img.src = server.icon || 'https://duckybot.xyz/images/Ducky.svg';
-                        img.alt = server.name;
-                        img.loading = 'lazy';
-
-                        const name = document.createElement('p');
-                        name.className = 'text-center font-medium text-xs';
-                        name.textContent = server.name;
-                        
-                        serverCard.appendChild(img);
-                        serverCard.appendChild(name);
-                        
-                        serverCard.addEventListener('click', () => {
-                            selectServer(server.id, server.name, server.icon, server.config);
-                        });
-                        
-                        fragment.appendChild(serverCard);
-                    });
-                    
-                    serverGrid.appendChild(fragment);
-                }
-                
-                loadingOverlay.classList.add('fade-out');
-                setTimeout(() => {
-                    loadingOverlay.style.display = 'none';
-                    serverSelectionView.style.opacity = '1';
-                }, 500);
-                
-            } catch (error) {
-                console.error('Error:', error);
-                serverGrid.innerHTML = '<p class="col-span-full text-center text-red-400 py-4">Failed to load servers. Please try again later.</p>';
-                loadingOverlay.classList.add('fade-out');
-                setTimeout(() => {
-                    loadingOverlay.style.display = 'none';
-                    serverSelectionView.style.opacity = '1';
-                }, 500);
-            }
-        }
-
-        async function loadPunishments(serverId) {
-            punishmentHistory.innerHTML = `
-                <div class="text-center py-4">
-                    <div class="spinner mx-auto mb-2"></div>
-                    <p class="text-gray-400">Loading punishment history...</p>
-                </div>
-            `;
-            
-            if (!discordToken) {
-                punishmentHistory.innerHTML = '<p class="text-center text-red-400 py-4">Authentication error. Please log in again.</p>';
-                return;
-            }
-            
-            try {
-                const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/punishments`, {
+        try {
+            const [userResponse, serversResponse] = await Promise.all([
+                fetch('https://discord.com/api/users/@me', {
+                    headers: { authorization: `Bearer ${discordToken}` }
+                }),
+                fetch("https://api.duckybot.xyz/guilds", {
                     headers: { "Discord-Code": discordToken }
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Failed to fetch punishments');
-                }
-                
-                const { data: punishments } = await response.json();
-                
-                if (!punishments || punishments.length === 0) {
-                    punishmentHistory.innerHTML = '<p class="text-center text-gray-400 py-4">No punishment history found.</p>';
-                    return;
-                }
-                
-                punishmentHistory.innerHTML = '';
-                
-                punishments.sort((a, b) => b.timestamp - a.timestamp);
+                })
+            ]);
+
+            if (!userResponse.ok || !serversResponse.ok) {
+                throw new Error('Failed to fetch data');
+            }
+
+            const userData = await userResponse.json();
+            const { data: servers } = await serversResponse.json();
+            
+            document.getElementById('username').textContent = userData.global_name || userData.username;
+            const avatarUrl = `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png`;
+            document.getElementById('profilePicture').src = avatarUrl;
+            
+            const filteredServers = servers.filter(server => server.manage_server && server.ducky);
+            
+            if (filteredServers.length === 0) {
+                serverGrid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-4">No servers with Ducky found. Make sure you have the right permissions.</p>';
+            } else {
+                serverGrid.innerHTML = '';
                 
                 const fragment = document.createDocumentFragment();
                 
-                for (const punishment of punishments.slice(0, 10)) {
+                filteredServers.forEach(server => {
+                    const serverCard = document.createElement('div');
+                    serverCard.className = 'server-card glass-card';
+                    
+                    const img = document.createElement('img');
+                    img.src = server.icon || 'https://duckybot.xyz/images/Ducky.svg';
+                    img.alt = server.name;
+                    img.loading = 'lazy';
+
+                    const name = document.createElement('p');
+                    name.className = 'text-center font-medium text-xs';
+                    name.textContent = server.name;
+                    
+                    serverCard.appendChild(img);
+                    serverCard.appendChild(name);
+                    
+                    serverCard.addEventListener('click', () => {
+                        selectServer(server.id, server.name, server.icon, server.config);
+                    });
+                    
+                    fragment.appendChild(serverCard);
+                });
+                
+                serverGrid.appendChild(fragment);
+            }
+            
+            loadingOverlay.classList.add('fade-out');
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+                serverSelectionView.style.opacity = '1';
+            }, 500);
+            
+        } catch (error) {
+            console.error('Error:', error);
+            serverGrid.innerHTML = '<p class="col-span-full text-center text-red-400 py-4">Failed to load servers. Please try again later.</p>';
+            loadingOverlay.classList.add('fade-out');
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+                serverSelectionView.style.opacity = '1';
+            }, 500);
+        }
+    }
+
+    async function loadPunishments(serverId) {
+        punishmentHistory.innerHTML = `
+            <div class="text-center py-4">
+                <div class="spinner mx-auto mb-2"></div>
+                <p class="text-gray-400">Loading punishment history...</p>
+            </div>
+        `;
+        
+        if (!discordToken) {
+            punishmentHistory.innerHTML = '<p class="text-center text-red-400 py-4">Authentication error. Please log in again.</p>';
+            return;
+        }
+        
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/punishments`, {
+                headers: { "Discord-Code": discordToken }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch punishments');
+            }
+            
+            const { data: punishments } = await response.json();
+            
+            if (!punishments || punishments.length === 0) {
+                punishmentHistory.innerHTML = '<p class="text-center text-gray-400 py-4">No punishment history found.</p>';
+                return;
+            }
+            
+            punishmentHistory.innerHTML = '';
+            
+            punishments.sort((a, b) => b.timestamp - a.timestamp);
+            
+            const fragment = document.createDocumentFragment();
+            
+            for (const punishment of punishments.slice(0, 10)) {
+                const item = document.createElement('div');
+                item.className = 'punishment-item p-3 pl-4 bg-black/30 rounded-md border-l-2 border-[#F5FF82] hover:bg-black/40 transition-colors';
+                item.dataset.punishmentId = punishment.id;
+                
+                const typeColors = {
+                    warn: 'text-yellow-400',
+                    warning: 'text-yellow-400',
+                    kick: 'text-orange-400',
+                    ban: 'text-red-500',
+                    tempban: 'text-red-400'
+                };
+                
+                const typeColor = typeColors[punishment.type.toLowerCase()] || 'text-gray-400';
+                
+                const moderatorName = await fetchDiscordUsername(punishment.moderator);
+                
+                let avatarUrl = punishment.robloxUser.pfpURL;
+                if (!avatarUrl && punishment.robloxUser.id) {
+                    avatarUrl = await fetchRobloxAvatar(punishment.robloxUser.id);
+                }
+                
+                item.innerHTML = `
+                    <div class="flex flex-col md:flex-row justify-between items-start gap-2">
+                        <div class="flex items-start gap-3">
+                            <img src="${avatarUrl || 'https://duckybot.xyz/images/Ducky.svg'}" alt="${punishment.robloxUser.name}" class="w-10 h-10 rounded-full hidden sm:block">
+                            <div>
+                                <h4 class="font-medium">${punishment.robloxUser.displayName} <span class="text-sm text-gray-400">(${punishment.robloxUser.name})</span></h4>
+                                <p class="text-sm ${typeColor} mt-1">${punishment.type.toUpperCase()}</p>
+                                <p class="text-sm text-gray-400 mt-1">${punishment.reason}</p>
+                            </div>
+                        </div>
+                        <div class="text-right text-xs">
+                            <p class="text-gray-500">${formatDate(punishment.timestamp)}</p>
+                            <p class="text-gray-400 mt-1">By: ${moderatorName}</p>
+                        </div>
+                    </div>
+                    <div class="delete-btn" title="Delete punishment">
+                        <i class="fas fa-trash-alt"></i>
+                    </div>
+                `;
+                
+                const deleteBtn = item.querySelector('.delete-btn');
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showDeleteConfirmation(punishment.id, punishment.robloxUser.name, punishment.type);
+                });
+                
+                fragment.appendChild(item);
+            }
+            
+            punishmentHistory.appendChild(fragment);
+            
+        } catch (error) {
+            console.error('Error fetching punishments:', error);
+            punishmentHistory.innerHTML = '<p class="text-center text-red-400 py-4">Failed to load punishment history. Please try again.</p>';
+        }
+    }
+    
+    function showDeleteConfirmation(punishmentId, username, type) {
+        currentPunishmentToDelete = punishmentId;
+        confirmationMessage.textContent = `Are you sure you want to delete the ${type.toUpperCase()} punishment for ${username}?`;
+        confirmationModal.classList.add('active');
+    }
+    
+    async function confirmDeletePunishment() {
+        if (!currentPunishmentToDelete || !selectedServerId || !discordToken) {
+            showToast('Error: Missing information for deletion', 'error');
+            confirmationModal.classList.remove('active');
+            return;
+        }
+        
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments/${currentPunishmentToDelete}`, {
+                method: 'DELETE',
+                headers: {
+                    'Discord-Code': discordToken
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to delete punishment');
+            }
+            
+            showToast('Punishment deleted successfully');
+            
+            const punishmentElement = document.querySelector(`.punishment-item[data-punishment-id="${currentPunishmentToDelete}"]`);
+            if (punishmentElement) {
+                punishmentElement.style.height = punishmentElement.offsetHeight + 'px';
+                punishmentElement.style.overflow = 'hidden';
+                
+                setTimeout(() => {
+                    punishmentElement.style.height = '0';
+                    punishmentElement.style.padding = '0';
+                    punishmentElement.style.margin = '0';
+                    punishmentElement.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        punishmentElement.remove();
+                        
+                        if (punishmentHistory.children.length === 0) {
+                            punishmentHistory.innerHTML = '<p class="text-center text-gray-400 py-4">No punishment history found.</p>';
+                        }
+                    }, 300);
+                }, 10);
+            }
+            
+        } catch (error) {
+            console.error('Error deleting punishment:', error);
+            showToast('Failed to delete punishment: ' + error.message, 'error');
+        } finally {
+            confirmationModal.classList.remove('active');
+            currentPunishmentToDelete = null;
+        }
+    }
+
+    async function loadShifts(serverId) {
+        activeShifts.innerHTML = `
+            <div class="text-center py-4 col-span-full">
+                <div class="spinner mx-auto mb-2"></div>
+                <p class="text-gray-400">Loading active shifts...</p>
+            </div>
+        `;
+        
+        recentShifts.innerHTML = `
+            <div class="text-center py-4">
+                <div class="spinner mx-auto mb-2"></div>
+                <p class="text-gray-400">Loading recent shifts...</p>
+            </div>
+        `;
+        
+        if (!discordToken) {
+            activeShifts.innerHTML = '<p class="text-center text-red-400 py-4 col-span-full">Authentication error. Please log in again.</p>';
+            recentShifts.innerHTML = '<p class="text-center text-red-400 py-4">Authentication error. Please log in again.</p>';
+            return;
+        }
+        
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/shifts`, {
+                headers: { "Discord-Code": discordToken }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch shifts');
+            }
+            
+            const { data } = await response.json();
+            
+            if (!data.activeshifts || data.activeshifts.length === 0) {
+                activeShifts.innerHTML = '<p class="text-center text-gray-400 py-4 col-span-full">No active shifts found.</p>';
+            } else {
+                activeShifts.innerHTML = '';
+                
+                const fragment = document.createDocumentFragment();
+                
+                for (const shift of data.activeshifts) {
+                    const card = document.createElement('div');
+                    card.className = 'glass-card p-4';
+                    
+                    const duration = Math.floor(Date.now() / 1000 - shift.started);
+                    
+                    const months = Math.floor(duration / (30 * 24 * 3600));
+                    const remainingAfterMonths = duration % (30 * 24 * 3600);
+                    const weeks = Math.floor(remainingAfterMonths / (7 * 24 * 3600));
+                    const remainingAfterWeeks = remainingAfterMonths % (7 * 24 * 3600);
+                    const hours = Math.floor(remainingAfterWeeks / 3600);
+                    const remainingAfterHours = remainingAfterWeeks % 3600;
+                    const minutes = Math.floor(remainingAfterHours / 60);
+                    const seconds = remainingAfterHours % 60;
+                    
+                    let durationString = '';
+                    if (months > 0) durationString += `${months} month${months !== 1 ? 's' : ''}, `;
+                    if (weeks > 0) durationString += `${weeks} week${weeks !== 1 ? 's' : ''}, `;
+                    if (hours > 0) durationString += `${hours} hour${hours !== 1 ? 's' : ''}, `;
+                    if (minutes > 0) durationString += `${minutes} minute${minutes !== 1 ? 's' : ''}, `;
+                    if (seconds > 0 || (months === 0 && weeks === 0 && hours === 0 && minutes === 0)) {
+                        durationString += `${seconds} second${seconds !== 1 ? 's' : ''}`;
+                    }
+                    
+                    const username = await fetchDiscordUsername(shift.user);
+                    
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-medium">${username}</h4>
+                                <p class="text-sm text-[#F5FF82] mt-1">Active for ${durationString}</p>
+                                <p class="text-xs text-gray-400 mt-1">Type: ${shift.type || 'Default'}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-500">Started: ${formatDate(shift.started)}</p>
+                                <p class="text-xs text-gray-400 mt-1">Punishments: ${shift.punishments}</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    fragment.appendChild(card);
+                }
+                
+                activeShifts.appendChild(fragment);
+            }
+            
+            if (!data.shifts || data.shifts.length === 0) {
+                recentShifts.innerHTML = '<p class="text-center text-gray-400 py-4">No recent shifts found.</p>';
+            } else {
+                recentShifts.innerHTML = '';
+                
+                const fragment = document.createDocumentFragment();
+                
+                const sortedShifts = data.shifts
+                    .sort((a, b) => b.ended - a.ended)
+                    .slice(0, 5);
+                
+                for (const shift of sortedShifts) {
                     const item = document.createElement('div');
                     item.className = 'p-3 pl-4 bg-black/30 rounded-md border-l-2 border-[#F5FF82] hover:bg-black/40 transition-colors';
                     
-                    const typeColors = {
-                        warn: 'text-yellow-400',
-                        warning: 'text-yellow-400',
-                        kick: 'text-orange-400',
-                        ban: 'text-red-500',
-                        tempban: 'text-red-400'
-                    };
+                    const username = await fetchDiscordUsername(shift.user);
                     
-                    const typeColor = typeColors[punishment.type.toLowerCase()] || 'text-gray-400';
+                    const actualDuration = shift.elapsed > 0 ? shift.elapsed : 0;
+                    const hours = Math.floor(actualDuration / 60);
+                    const minutes = actualDuration % 60;
                     
-                    const moderatorName = await fetchDiscordUsername(punishment.moderator);
-                    
-                    let avatarUrl = punishment.robloxUser.pfpURL;
-                    if (!avatarUrl && punishment.robloxUser.id) {
-                        avatarUrl = await fetchRobloxAvatar(punishment.robloxUser.id);
-                    }
+                    let durationString = '';
+                    if (hours > 0) durationString += `${hours}h `;
+                    if (minutes > 0 || hours === 0) durationString += `${minutes}m`;
                     
                     item.innerHTML = `
-                        <div class="flex flex-col md:flex-row justify-between items-start gap-2">
-                            <div class="flex items-start gap-3">
-                                <img src="${avatarUrl || 'https://duckybot.xyz/images/Ducky.svg'}" alt="${punishment.robloxUser.name}" class="w-10 h-10 rounded-full hidden sm:block">
-                                <div>
-                                    <h4 class="font-medium">${punishment.robloxUser.displayName} <span class="text-sm text-gray-400">(${punishment.robloxUser.name})</span></h4>
-                                    <p class="text-sm ${typeColor} mt-1">${punishment.type.toUpperCase()}</p>
-                                    <p class="text-sm text-gray-400 mt-1">${punishment.reason}</p>
-                                </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-medium">${username}</h4>
+                                <p class="text-sm text-gray-400 mt-1">Duration: ${durationString}</p>
+                                <p class="text-xs text-gray-400 mt-1">Type: ${shift.type || 'Default'}</p>
                             </div>
-                            <div class="text-right text-xs">
-                                <p class="text-gray-500">${formatDate(punishment.timestamp)}</p>
-                                <p class="text-gray-400 mt-1">By: ${moderatorName}</p>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-500">Ended: ${formatDate(shift.ended)}</p>
+                                <p class="text-xs text-gray-400 mt-1">Punishments: ${shift.punishments}</p>
                             </div>
                         </div>
                     `;
@@ -677,228 +1129,361 @@
                     fragment.appendChild(item);
                 }
                 
-                punishmentHistory.appendChild(fragment);
-                
-            } catch (error) {
-                console.error('Error fetching punishments:', error);
-                punishmentHistory.innerHTML = '<p class="text-center text-red-400 py-4">Failed to load punishment history. Please try again.</p>';
+                recentShifts.appendChild(fragment);
             }
+            
+            loadUserRecentShifts(serverId);
+            
+        } catch (error) {
+            console.error('Error fetching shifts:', error);
+            activeShifts.innerHTML = '<p class="text-center text-red-400 py-4 col-span-full">Failed to load active shifts. Please try again.</p>';
+            recentShifts.innerHTML = '<p class="text-center text-red-400 py-4">Failed to load recent shifts. Please try again.</p>';
         }
-
-        async function loadShifts(serverId) {
-            activeShifts.innerHTML = `
-                <div class="text-center py-4 col-span-full">
-                    <div class="spinner mx-auto mb-2"></div>
-                    <p class="text-gray-400">Loading active shifts...</p>
-                </div>
-            `;
+    }
+    
+    async function loadUserRecentShifts(serverId) {
+        if (!discordToken) return;
+        
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/shifts`, {
+                headers: { "Discord-Code": discordToken }
+            });
             
-            recentShifts.innerHTML = `
-                <div class="text-center py-4">
-                    <div class="spinner mx-auto mb-2"></div>
-                    <p class="text-gray-400">Loading recent shifts...</p>
-                </div>
-            `;
+            if (!response.ok) {
+                throw new Error('Failed to fetch user shifts');
+            }
             
-            if (!discordToken) {
-                activeShifts.innerHTML = '<p class="text-center text-red-400 py-4 col-span-full">Authentication error. Please log in again.</p>';
-                recentShifts.innerHTML = '<p class="text-center text-red-400 py-4">Authentication error. Please log in again.</p>';
+            const { data } = await response.json();
+            
+            if (!data.shifts || data.shifts.length === 0) {
+                recentUserShifts.innerHTML = '<p class="text-center text-gray-400 py-4">No shift history found.</p>';
                 return;
             }
             
-            try {
-                const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/shifts`, {
-                    headers: { "Discord-Code": discordToken }
-                });
+            recentUserShifts.innerHTML = '';
+            
+            const fragment = document.createDocumentFragment();
+            
+            const sortedShifts = data.shifts
+                .sort((a, b) => b.ended - a.ended)
+                .slice(0, 3);
+            
+            for (const shift of sortedShifts) {
+                const item = document.createElement('div');
+                item.className = 'moderation-log-item flex justify-between items-center';
                 
-                if (!response.ok) {
-                    throw new Error('Failed to fetch shifts');
-                }
+                const actualDuration = shift.elapsed > 0 ? shift.elapsed : 0;
+                const hours = Math.floor(actualDuration / 60);
+                const minutes = actualDuration % 60;
                 
-                const { data } = await response.json();
+                let durationString = '';
+                if (hours > 0) durationString += `${hours}h `;
+                if (minutes > 0 || hours === 0) durationString += `${minutes}m`;
                 
-                if (!data.activeshifts || data.activeshifts.length === 0) {
-                    activeShifts.innerHTML = '<p class="text-center text-gray-400 py-4 col-span-full">No active shifts found.</p>';
-                } else {
-                    activeShifts.innerHTML = '';
-                    
-                    const fragment = document.createDocumentFragment();
-                    
-                    for (const shift of data.activeshifts) {
-                        const card = document.createElement('div');
-                        card.className = 'glass-card p-4';
-                        
-                        const duration = Math.floor(Date.now() / 1000 - shift.started);
-                        
-                        const months = Math.floor(duration / (30 * 24 * 3600));
-                        const remainingAfterMonths = duration % (30 * 24 * 3600);
-                        const weeks = Math.floor(remainingAfterMonths / (7 * 24 * 3600));
-                        const remainingAfterWeeks = remainingAfterMonths % (7 * 24 * 3600);
-                        const hours = Math.floor(remainingAfterWeeks / 3600);
-                        const remainingAfterHours = remainingAfterWeeks % 3600;
-                        const minutes = Math.floor(remainingAfterHours / 60);
-                        const seconds = remainingAfterHours % 60;
-                        
-                        let durationString = '';
-                        if (months > 0) durationString += `${months} month${months !== 1 ? 's' : ''}, `;
-                        if (weeks > 0) durationString += `${weeks} week${weeks !== 1 ? 's' : ''}, `;
-                        if (hours > 0) durationString += `${hours} hour${hours !== 1 ? 's' : ''}, `;
-                        if (minutes > 0) durationString += `${minutes} minute${minutes !== 1 ? 's' : ''}, `;
-                        if (seconds > 0 || (months === 0 && weeks === 0 && hours === 0 && minutes === 0)) {
-                            durationString += `${seconds} second${seconds !== 1 ? 's' : ''}`;
-                        }
-                        
-                        const username = await fetchDiscordUsername(shift.user);
-                        
-                        card.innerHTML = `
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h4 class="font-medium">${username}</h4>
-                                    <p class="text-sm text-[#F5FF82] mt-1">Active for ${durationString}</p>
-                                    <p class="text-xs text-gray-400 mt-1">Type: ${shift.type || 'Default'}</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-xs text-gray-500">Started: ${formatDate(shift.started)}</p>
-                                    <p class="text-xs text-gray-400 mt-1">Punishments: ${shift.punishments}</p>
-                                </div>
-                            </div>
-                        `;
-                        
-                        fragment.appendChild(card);
-                    }
-                    
-                    activeShifts.appendChild(fragment);
-                }
+                item.innerHTML = `
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="badge badge-info">${shift.type || 'default'}</span>
+                            <span class="text-sm text-gray-400">${shift.breaks || 0} breaks</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-semibold">${durationString}</div>
+                    </div>
+                `;
                 
-                if (!data.shifts || data.shifts.length === 0) {
-                    recentShifts.innerHTML = '<p class="text-center text-gray-400 py-4">No recent shifts found.</p>';
-                } else {
-                    recentShifts.innerHTML = '';
-                    
-                    const fragment = document.createDocumentFragment();
-                    
-                    const sortedShifts = data.shifts
-                        .sort((a, b) => b.ended - a.ended)
-                        .slice(0, 5);
-                    
-                    for (const shift of sortedShifts) {
-                        const item = document.createElement('div');
-                        item.className = 'p-3 pl-4 bg-black/30 rounded-md border-l-2 border-[#F5FF82] hover:bg-black/40 transition-colors';
-                        
-                        const username = await fetchDiscordUsername(shift.user);
-                        
-                        const actualDuration = shift.elapsed > 0 ? shift.elapsed : 0;
-                        const hours = Math.floor(actualDuration / 60);
-                        const minutes = actualDuration % 60;
-                        
-                        let durationString = '';
-                        if (hours > 0) durationString += `${hours}h `;
-                        if (minutes > 0 || hours === 0) durationString += `${minutes}m`;
-                        
-                        item.innerHTML = `
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h4 class="font-medium">${username}</h4>
-                                    <p class="text-sm text-gray-400 mt-1">Duration: ${durationString}</p>
-                                    <p class="text-xs text-gray-400 mt-1">Type: ${shift.type || 'Default'}</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-xs text-gray-500">Ended: ${formatDate(shift.ended)}</p>
-                                    <p class="text-xs text-gray-400 mt-1">Punishments: ${shift.punishments}</p>
-                                </div>
-                            </div>
-                        `;
-                        
-                        fragment.appendChild(item);
-                    }
-                    
-                    recentShifts.appendChild(fragment);
-                }
-                
-            } catch (error) {
-                console.error('Error fetching shifts:', error);
-                activeShifts.innerHTML = '<p class="text-center text-red-400 py-4 col-span-full">Failed to load active shifts. Please try again.</p>';
-                recentShifts.innerHTML = '<p class="text-center text-red-400 py-4">Failed to load recent shifts. Please try again.</p>';
+                fragment.appendChild(item);
             }
+            
+            recentUserShifts.appendChild(fragment);
+            
+        } catch (error) {
+            console.error('Error fetching user shifts:', error);
+            recentUserShifts.innerHTML = '<p class="text-center text-red-400 py-4">Failed to load your shift history.</p>';
+        }
+    }
+    async function issuePunishment() {
+        const now = Date.now();
+        if (now - lastPunishmentTime < PUNISHMENT_COOLDOWN) {
+            showToast('Please wait 5 seconds between punishments', 'error');
+            return;
         }
 
-        async function issuePunishment() {
-            const now = Date.now();
-            if (now - lastPunishmentTime < PUNISHMENT_COOLDOWN) {
-                showToast('Please wait 5 seconds between punishments', 'error');
-                return;
+        if (!discordToken) {
+            showToast('Authentication error. Please log in again.', 'error');
+            return;
+        }
+        
+        const robloxUsername = document.getElementById('robloxUsername').value;
+        const type = document.getElementById('punishmentType').value;
+        const reason = document.getElementById('reason').value;
+        
+        let expires = null;
+        if (type === 'tempban') {
+            const durationValue = document.getElementById('durationValue').value;
+            const durationUnit = document.getElementById('durationUnit').value;
+            
+            const multipliers = {
+                minutes: 60,
+                hours: 3600,
+                days: 86400,
+                weeks: 604800
+            };
+            
+            const duration = durationValue * multipliers[durationUnit];
+            expires = Math.floor(Date.now() / 1000) + duration;
+        }
+        
+        const submitBtn = document.getElementById('submitBtn');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+        
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Discord-Code': discordToken
+                },
+                body: JSON.stringify({
+                    username: robloxUsername,
+                    type,
+                    reason,
+                    expires
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to issue punishment');
             }
-
-            if (!discordToken) {
-                showToast('Authentication error. Please log in again.', 'error');
-                return;
+            
+            punishmentForm.reset();
+            durationContainer.classList.add('hidden');
+            
+            showToast(`Successfully issued ${type} to ${robloxUsername}`);
+            lastPunishmentTime = now;
+            
+            loadPunishments(selectedServerId);
+            
+        } catch (error) {
+            console.error('Error issuing punishment:', error);
+            showToast(error.message || 'Failed to issue punishment. Please try again.', 'error');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+        }
+    }
+    
+    async function checkActiveShift(serverId) {
+        if (!discordToken) return;
+        
+        try {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/shifts/active`, {
+                headers: { "Discord-Code": discordToken }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to check active shift');
             }
             
-            const robloxUsername = document.getElementById('robloxUsername').value;
-            const type = document.getElementById('punishmentType').value;
-            const reason = document.getElementById('reason').value;
+            const { data } = await response.json();
             
-            let expires = null;
-            if (type === 'tempban') {
-                const durationValue = document.getElementById('durationValue').value;
-                const durationUnit = document.getElementById('durationUnit').value;
+            if (data && data.active) {
+                shiftStatus = data.paused ? 'paused' : 'active';
+                shiftStartTime = data.started;
+                shiftElapsedTime = data.elapsed || 0;
                 
-                const multipliers = {
-                    minutes: 60,
-                    hours: 3600,
-                    days: 86400,
-                    weeks: 604800
-                };
+                updateShiftUI();
                 
-                const duration = durationValue * multipliers[durationUnit];
-                expires = Math.floor(Date.now() / 1000) + duration;
-            }
-            
-            const submitBtn = document.getElementById('submitBtn');
-            const originalBtnText = submitBtn.innerHTML;
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
-            
-            try {
-                const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Discord-Code': discordToken
-                    },
-                    body: JSON.stringify({
-                        username: robloxUsername,
-                        type,
-                        reason,
-                        expires
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    throw new Error(data.message || 'Failed to issue punishment');
+                if (shiftStatus === 'active') {
+                    startShiftTimer();
                 }
                 
-                punishmentForm.reset();
-                durationContainer.classList.add('hidden');
-                
-                showToast(`Successfully issued ${type} to ${robloxUsername}`);
-                lastPunishmentTime = now;
-                
-                loadPunishments(selectedServerId);
-                
-            } catch (error) {
-                console.error('Error issuing punishment:', error);
-                showToast(error.message || 'Failed to issue punishment. Please try again.', 'error');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnText;
+                if (data.type) {
+                    shiftType.value = data.type;
+                }
+            } else {
+                shiftStatus = 'inactive';
+                updateShiftUI();
             }
+            
+        } catch (error) {
+            console.error('Error checking active shift:', error);
+            showToast('Failed to check active shift status', 'error');
         }
+    }
+    
+    function updateShiftUI() {
+        startShiftBtn.disabled = shiftStatus !== 'inactive';
+        pauseShiftBtn.disabled = shiftStatus !== 'active';
+        endShiftBtn.disabled = shiftStatus === 'inactive';
+        
+        shiftStatusIndicator.className = `shift-status ${shiftStatus}`;
+        const pulse = shiftStatusIndicator.querySelector('.pulse');
+        pulse.className = `pulse ${shiftStatus}`;
+        
+        if (shiftStatus === 'active') {
+            shiftStatusText.textContent = 'On Duty';
+        } else if (shiftStatus === 'paused') {
+            shiftStatusText.textContent = 'Paused';
+        } else {
+            shiftStatusText.textContent = 'Off Duty';
+        }
+        
+        if (shiftStatus === 'inactive') {
+            shiftTimer.textContent = '00:00:00';
+        }
+    }
+    
+    function startShiftTimer() {
+        if (shiftTimerInterval) {
+            clearInterval(shiftTimerInterval);
+        }
+        
+        shiftTimerInterval = setInterval(() => {
+            if (shiftStatus === 'active') {
+                const now = Math.floor(Date.now() / 1000);
+                const elapsed = now - shiftStartTime + shiftElapsedTime;
+                shiftTimer.textContent = formatShiftTime(elapsed);
+            }
+        }, 1000);
+    }
+    
+    async function startShift() {
+        if (!discordToken || !selectedServerId) {
+            showToast('Authentication error. Please log in again.', 'error');
+            return;
+        }
+        
+        const type = shiftType.value;
+        
+        try {
+            startShiftBtn.disabled = true;
+            startShiftBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/start`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Discord-Code': discordToken
+                },
+                body: JSON.stringify({ type })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to start shift');
+            }
+            
+            const { data } = await response.json();
+            
+            shiftStatus = 'active';
+            shiftStartTime = data.started || Math.floor(Date.now() / 1000);
+            shiftElapsedTime = data.elapsed || 0;
+            
+            updateShiftUI();
+            startShiftTimer();
+            
+            showToast('Shift started successfully');
+            
+        } catch (error) {
+            console.error('Error starting shift:', error);
+            showToast('Failed to start shift: ' + error.message, 'error');
+        } finally {
+            startShiftBtn.disabled = false;
+            startShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Start</span>';
+        }
+    }
+    
+    async function pauseShift() {
+        if (!discordToken || !selectedServerId) {
+            showToast('Authentication error. Please log in again.', 'error');
+            return;
+        }
+        
+        try {
+            pauseShiftBtn.disabled = true;
+            pauseShiftBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/pause`, {
+                method: 'POST',
+                headers: {
+                    'Discord-Code': discordToken
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to pause shift');
+            }
+            
+            if (shiftTimerInterval) {
+                clearInterval(shiftTimerInterval);
+                shiftTimerInterval = null;
+            }
+            
+            shiftStatus = 'paused';
+            updateShiftUI();
+            
+            showToast('Shift paused successfully');
+            
+        } catch (error) {
+            console.error('Error pausing shift:', error);
+            showToast('Failed to pause shift: ' + error.message, 'error');
+        } finally {
+            pauseShiftBtn.disabled = false;
+            pauseShiftBtn.innerHTML = '<i class="fas fa-pause"></i><span>Pause</span>';
+        }
+    }
+    
+    async function endShift() {
+        if (!discordToken || !selectedServerId) {
+            showToast('Authentication error. Please log in again.', 'error');
+            return;
+        }
+        
+        try {
+            endShiftBtn.disabled = true;
+            endShiftBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/end`, {
+                method: 'POST',
+                headers: {
+                    'Discord-Code': discordToken
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to end shift');
+            }
+            
+            if (shiftTimerInterval) {
+                clearInterval(shiftTimerInterval);
+                shiftTimerInterval = null;
+            }
+            
+            shiftStatus = 'inactive';
+            shiftStartTime = 0;
+            shiftElapsedTime = 0;
+            
+            updateShiftUI();
+            
+            showToast('Shift ended successfully');
+            
+            loadUserRecentShifts(selectedServerId);
+            
+        } catch (error) {
+            console.error('Error ending shift:', error);
+            showToast('Failed to end shift: ' + error.message, 'error');
+        } finally {
+            endShiftBtn.disabled = false;
+            endShiftBtn.innerHTML = '<i class="fas fa-stop"></i><span>End</span>';
+        }
+    }
 
-        window.addEventListener('load', loadServers);
-    </script>
+    window.addEventListener('load', loadServers);
+</script>
 </body>
 </html>
 
