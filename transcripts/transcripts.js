@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .replace(/^(?:&nbsp; - |&nbsp; \* )(.*)/gm, '<li class="indent">$1</li>')
             .replace(/^(?:\d+\. )(.*)/gm, '<li class="numbered">$1</li>')
             .replace(/^> (.+)/gm, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
-            .replace(/\n/g, '<br>') : "";
+            .replace(/\n/g, '<br>')
     }
   
     function renderMessage(msg) {
