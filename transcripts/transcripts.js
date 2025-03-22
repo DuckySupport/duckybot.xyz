@@ -62,27 +62,42 @@ document.addEventListener("DOMContentLoaded", () => {
     function formatDiscordMarkdown(text) {
         if (!text) return "";
         return text
-        .replace(/(\w+)?\n([\s\S]*?)/g, '<pre><code class="language-$1 break-words whitespace-pre-wrap">$2</code></pre>')
-        .replace(/`([^`]+)`/g, '<code class="break-words whitespace-pre-wrap">$1</code>')
-        .replace(/\*\*\*([^*]+)\*\*\*/g, '<strong><em>$1</em></strong>')
-        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-        .replace(/_([^_]+)_/g, '<em>$1</em>')
-        .replace(/__(.*?)__/g, '<u>$1</u>')
-        .replace(/~~(.*?)~~/, '<s>$1</s>')
-        .replace(/\|\|(.*?)\|\|/g, '<span class="spoiler">$1</span>')
-        .replace(/^# (.*?)$/gm, '<h1>$1</h1>')
-        .replace(/^## (.*?)$/gm, '<h2>$1</h2>')
-        .replace(/^### (.*?)$/gm, '<h3>$1</h3>')
-        .replace(/^-# (.*?)$/gm, '<div class="subtext">$1</div>')
-        .replace(/^(?:- |\* )(.*)/gm, '<li>$1</li>')
-        .replace(/^(?:  - |  \* )(.*)/gm, '<li class="indent">$1</li>')
-        .replace(/^(?:\d+\. )(.*)/gm, '<li class="numbered">$1</li>')
-        .replace(/>>>([\s\S]*)/g, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
-        .replace(/^> (.+)/gm, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
-        .replace(/<:([^:]+):\d+>/g, '$1')
-        .replace(/\n/g, '<br>');
-    }
+            // Code blocks with optional language
+            .replace(/```(\w+)?\n([\s\S]+?)```/g, '<pre><code class="language-$1 break-words whitespace-pre-wrap">$2</code></pre>')
+            // Inline code
+            .replace(/`([^`]+)`/g, '<code class="break-words whitespace-pre-wrap">$1</code>')
+            // Bold + Italic
+            .replace(/\*\*\*([^*]+)\*\*\*/g, '<strong><em>$1</em></strong>')
+            // Bold
+            .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+            // Italic (both * and _ styles)
+            .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+            .replace(/_([^_]+)_/g, '<em>$1</em>')
+            // Underline
+            .replace(/__(.*?)__/g, '<u>$1</u>')
+            // Strikethrough (global flag added)
+            .replace(/~~(.*?)~~/g, '<s>$1</s>')
+            // Spoiler
+            .replace(/\|\|(.*?)\|\|/g, '<span class="spoiler">$1</span>')
+            // Headings
+            .replace(/^# (.*?)$/gm, '<h1>$1</h1>')
+            .replace(/^## (.*?)$/gm, '<h2>$1</h2>')
+            .replace(/^### (.*?)$/gm, '<h3>$1</h3>')
+            // Subtext
+            .replace(/^-# (.*?)$/gm, '<div class="subtext">$1</div>')
+            // Unordered Lists
+            .replace(/^(?:- |\* )(.*)/gm, '<li>$1</li>')
+            .replace(/^(?:  -|  \*) (.*)/gm, '<li class="indent">$1</li>')
+            // Ordered Lists
+            .replace(/^\d+\.(.*)/gm, '<li class="numbered">$1</li>')
+            // Blockquotes
+            .replace(/^>>> ([\s\S]*)/gm, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
+            .replace(/^> (.+)/gm, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
+            // Emoji shortcodes (Discord format)
+            .replace(/<:([^:]+):\d+>/g, '$1')
+            // Line breaks (outside of <pre> and <blockquote>)
+            .replace(/(?<!<\/pre>|<\/blockquote>)\n/g, '<br>');
+    }    
   
     function renderMessage(msg) {
         const { author, content, pfp, embeds = [], stickers = [], attachments = [] } = msg;
