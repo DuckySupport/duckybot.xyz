@@ -6,7 +6,7 @@
     <meta name="description" content="Ducky Moderation Panel - Manage your ER:LC server">
     <meta content="Ducky Moderation Panel" property="og:title">
     <meta content="Manage your ER:LC server with Ducky's powerful moderation tools" property="og:description">
-    <meta content="https://duckybot.xyz/dashboard/dashboard-testing" property="og:url">
+    <meta content="https://duckybot.xyz/modpanel" property="og:url">
     <meta content="https://duckybot.xyz/images/Ducky.svg" property="og:image">
     <meta content="#F5FF82" name="theme-color">
     <link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
@@ -682,11 +682,59 @@
                     <button id="runDiscordCheckBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:bg-[#e6ff4d] transition">
                         Run Discord Check
                     </button>
+                    <div id="discordCheckCooldown" class="mt-2 text-sm text-gray-400 hidden">
+                        <i class="fas fa-clock mr-1"></i> <span id="discordCheckCooldownTime"></span> until next check
+                    </div>
                     
                     <div id="discordCheckResults" class="mt-6 space-y-3 hidden">
                         <h4 class="text-md font-semibold mb-3">Results</h4>
                         <div id="discordCheckList" class="space-y-3">
-                            <!-- Results will be populated here -->
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-4">
+                    <h3 class="text-lg font-bold mb-4">Custom Automations</h3>
+                    <p class="text-gray-400 mb-4">Run your server's custom automations manually.</p>
+                    
+                    <div class="mb-4">
+                        <label for="automationSelector" class="block text-sm font-medium text-gray-400 mb-1">Select Automation</label>
+                        <div class="custom-dropdown">
+                            <div class="dropdown-selected" id="automationSelected">
+                                <span>Select automation...</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="dropdown-options" id="automationOptions">
+
+                            </div>
+                        </div>
+                        <input type="hidden" id="selectedAutomationId">
+                    </div>
+                    
+                    <button id="runAutomationBtn" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:bg-[#e6ff4d] transition" disabled>
+                        Run Automation
+                    </button>
+                    
+                    <div id="automationDetails" class="mt-4 p-3 bg-black/20 rounded-lg hidden">
+                        <h4 class="font-medium mb-2">Automation Details</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex">
+                                <span class="text-gray-400 w-24">Trigger:</span>
+                                <span id="automationTrigger"></span>
+                            </div>
+                            <div class="flex">
+                                <span class="text-gray-400 w-24">Actions:</span>
+                                <div id="automationActions" class="flex-1"></div>
+                            </div>
+                            <div class="flex" id="automationRoleContainer">
+                                <span class="text-gray-400 w-24">Required Role:</span>
+                                <span id="automationRole"></span>
+                            </div>
+                            <div class="flex">
+                                <span class="text-gray-400 w-24">Created by:</span>
+                                <span id="automationAuthor"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -772,6 +820,19 @@
     const shiftTypeSelected = document.getElementById('shiftTypeSelected');
     const shiftTypeOptions = document.getElementById('shiftTypeOptions');
 
+    const discordCheckCooldown = document.getElementById('discordCheckCooldown');
+    const discordCheckCooldownTime = document.getElementById('discordCheckCooldownTime');
+    const automationSelected = document.getElementById('automationSelected');
+    const automationOptions = document.getElementById('automationOptions');
+    const selectedAutomationId = document.getElementById('selectedAutomationId');
+    const runAutomationBtn = document.getElementById('runAutomationBtn');
+    const automationDetails = document.getElementById('automationDetails');
+    const automationTrigger = document.getElementById('automationTrigger');
+    const automationActions = document.getElementById('automationActions');
+    const automationRole = document.getElementById('automationRole');
+    const automationRoleContainer = document.getElementById('automationRoleContainer');
+    const automationAuthor = document.getElementById('automationAuthor');
+
     let selectedServerId = null;
     let selectedServerConfig = null;
     let userCache = new Map();
@@ -787,6 +848,169 @@
     let shiftTimerInterval = null;
     let currentPunishmentToDelete = null;
     let currentUserShift = null;
+
+    let discordCheckCooldowns = {};
+    const DISCORD_CHECK_COOLDOWN = 5 * 60 * 1000; 
+
+    function updateDiscordCheckCooldown() {
+        if (!selectedServerId || !discordCheckCooldowns[selectedServerId]) {
+            discordCheckCooldown.classList.add('hidden');
+            return;
+        }
+        
+        const cooldownEnd = discordCheckCooldowns[selectedServerId];
+        const now = Date.now();
+        const timeLeft = cooldownEnd - now;
+        
+        if (timeLeft <= 0) {
+            discordCheckCooldown.classList.add('hidden');
+            runDiscordCheckBtn.disabled = false;
+            return;
+        }
+        
+        const minutes = Math.floor(timeLeft / 60000);
+        const seconds = Math.floor((timeLeft % 60000) / 1000);
+        discordCheckCooldownTime.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        discordCheckCooldown.classList.remove('hidden');
+        runDiscordCheckBtn.disabled = true;
+        
+        setTimeout(updateDiscordCheckCooldown, 1000);
+    }
+
+    let serverAutomations = [];
+
+    function setupAutomationsDropdown(automations) {
+        serverAutomations = automations || [];
+        automationOptions.innerHTML = '';
+        
+        if (!automations || automations.length === 0) {
+            const option = document.createElement('div');
+            option.className = 'dropdown-option';
+            option.textContent = 'No automations available';
+            automationOptions.appendChild(option);
+            runAutomationBtn.disabled = true;
+            return;
+        }
+        
+        automations.forEach((automation, index) => {
+            if (automation.trigger && automation.trigger.value === 'manual') {
+                const option = document.createElement('div');
+                option.className = 'dropdown-option';
+                option.dataset.index = index;
+                option.textContent = automation.name;
+                
+                option.addEventListener('click', () => {
+                    selectedAutomationId.value = index;
+                    automationSelected.querySelector('span').textContent = automation.name;
+                    
+                    document.querySelectorAll('#automationOptions .dropdown-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    option.classList.add('selected');
+                    
+                    automationSelected.classList.remove('active');
+                    automationOptions.classList.remove('active');
+                    
+                    showAutomationDetails(automation);
+                    runAutomationBtn.disabled = false;
+                });
+                
+                automationOptions.appendChild(option);
+            }
+        });
+        
+        if (automationOptions.children.length === 0) {
+            const option = document.createElement('div');
+            option.className = 'dropdown-option';
+            option.textContent = 'No manual automations available';
+            automationOptions.appendChild(option);
+            runAutomationBtn.disabled = true;
+        }
+    }
+
+    function showAutomationDetails(automation) {
+        automationTrigger.textContent = automation.trigger ? automation.trigger.name : 'Unknown';
+        
+        automationActions.innerHTML = '';
+        if (automation.actions && automation.actions.length > 0) {
+            const actionsList = document.createElement('ul');
+            actionsList.className = 'list-disc pl-5';
+            
+            automation.actions.forEach(action => {
+                const actionItem = document.createElement('li');
+                actionItem.textContent = action.name;
+                actionsList.appendChild(actionItem);
+            });
+            
+            automationActions.appendChild(actionsList);
+        } else {
+            automationActions.textContent = 'No actions defined';
+        }
+        
+        if (automation.role) {
+            automationRole.textContent = `<@&${automation.role}>`;
+            automationRoleContainer.classList.remove('hidden');
+        } else {
+            automationRoleContainer.classList.add('hidden');
+        }
+        
+        if (automation.author) {
+            fetchUserData(automation.author).then(userData => {
+                automationAuthor.textContent = userData.username || userData.name || automation.author;
+            });
+        } else {
+            automationAuthor.textContent = 'Unknown';
+        }
+        
+        automationDetails.classList.remove('hidden');
+    }
+
+    async function runAutomation() {
+        if (!discordToken || !selectedServerId || !selectedAutomationId.value) {
+            showToast('Please select an automation to run', 'error');
+            return;
+        }
+        
+        const automationIndex = selectedAutomationId.value;
+        const automation = serverAutomations[automationIndex];
+        
+        if (!automation) {
+            showToast('Invalid automation selected', 'error');
+            return;
+        }
+        
+        try {
+            runAutomationBtn.disabled = true;
+            runAutomationBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Running...';
+            
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/automations/${automationIndex}`, {
+                method: 'POST',
+                headers: {
+                    'Discord-Code': discordToken
+                }
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to run automation');
+            }
+            
+            showToast(`Successfully ran automation: ${automation.name}`);
+            
+        } catch (error) {
+            showToast('Failed to run automation: ' + error.message, 'error');
+        } finally {
+            runAutomationBtn.disabled = false;
+            runAutomationBtn.innerHTML = 'Run Automation';
+        }
+    }
+
+    automationSelected.addEventListener('click', () => {
+        automationSelected.classList.toggle('active');
+        automationOptions.classList.toggle('active');
+    });
+
+    runAutomationBtn.addEventListener('click', runAutomation);
 
     function initDropdowns() {
         punishmentTypeSelected.addEventListener('click', () => {
@@ -1063,14 +1287,22 @@
         }
         setupShiftTypeDropdown(shiftTypes);
         
+        // Setup automations dropdown
+        if (serverConfig && serverConfig.automations) {
+            setupAutomationsDropdown(serverConfig.automations);
+        } else {
+            setupAutomationsDropdown([]);
+        }
+        
         loadPunishments(serverId);
         checkActiveShift(serverId);
+        updateDiscordCheckCooldown();
     }
     async function loadServers() {
         discordToken = getDiscordToken();
         
         if (!discordToken) {
-            window.location.href = "/login?redirect=dashboard/dashboard-testing";
+            window.location.href = "/login?redirect=modpanel";
             return;
         }
         
@@ -1271,7 +1503,6 @@
         
         punishmentHistory.appendChild(fragment);
         
-        // Add event listener for filtering
         const robloxUsername = document.getElementById('robloxUsername');
         robloxUsername.addEventListener('input', filterPunishmentHistory);
         
@@ -1280,13 +1511,11 @@
     }
 }
 
-// Add a new function for filtering punishment history
 function filterPunishmentHistory() {
     const username = document.getElementById('robloxUsername').value.trim().toLowerCase();
     const punishmentItems = document.querySelectorAll('#punishmentHistory .punishment-item');
     
     if (!username) {
-        // Show all punishments
         punishmentItems.forEach(item => {
             item.style.display = '';
         });
@@ -1308,7 +1537,6 @@ function filterPunishmentHistory() {
     });
     
     if (!matchFound) {
-        // If no matches, show a message
         if (!document.getElementById('no-matches-message')) {
             const noMatches = document.createElement('div');
             noMatches.id = 'no-matches-message';
@@ -1317,7 +1545,6 @@ function filterPunishmentHistory() {
             punishmentHistory.appendChild(noMatches);
         }
     } else {
-        // Remove the no matches message if it exists
         const noMatches = document.getElementById('no-matches-message');
         if (noMatches) {
             noMatches.remove();
@@ -1744,7 +1971,6 @@ function filterPunishmentHistory() {
         pauseShiftBtn.disabled = true;
         endShiftBtn.disabled = false;
         
-        // Add a visual indicator that the start button will resume
         startShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Resume</span>';
     } else if (shiftStatus === 'active') {
         startShiftBtn.disabled = true;
@@ -1804,7 +2030,6 @@ function filterPunishmentHistory() {
         startShiftBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
         
         if (shiftStatus === 'paused' && currentUserShift) {
-            // Resume the paused shift
             const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/start`, {
                 method: 'POST',
                 headers: {
@@ -1824,7 +2049,6 @@ function filterPunishmentHistory() {
             
             showToast('Shift resumed successfully');
         } else {
-            // Start a new shift
             const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/start`, {
                 method: 'POST',
                 headers: {
@@ -1957,6 +2181,11 @@ function filterPunishmentHistory() {
             return;
         }
         
+        if (discordCheckCooldowns[selectedServerId] && discordCheckCooldowns[selectedServerId] > Date.now()) {
+            showToast('Discord check is on cooldown. Please wait before trying again.', 'error');
+            return;
+        }
+        
         try {
             runDiscordCheckBtn.disabled = true;
             runDiscordCheckBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Running check...';
@@ -1983,7 +2212,6 @@ function filterPunishmentHistory() {
                 item.className = 'p-4 bg-black/30 rounded-lg border-l-2 border-[#F5FF82]';
                 
                 if (player.discord) {
-                    // Player has Discord linked
                     item.innerHTML = `
                         <div class="flex items-start gap-3">
                             <div class="avatar-circle">
@@ -2010,7 +2238,6 @@ function filterPunishmentHistory() {
                         </div>
                     `;
                 } else {
-                    // Player does not have Discord linked
                     item.innerHTML = `
                         <div class="flex items-start gap-3">
                             <div class="avatar-circle">
@@ -2038,11 +2265,16 @@ function filterPunishmentHistory() {
         
         discordCheckResults.classList.remove('hidden');
         
+        discordCheckCooldowns[selectedServerId] = Date.now() + DISCORD_CHECK_COOLDOWN;
+        updateDiscordCheckCooldown();
+        
     } catch (error) {
         showToast('Failed to run Discord check: ' + error.message, 'error');
     } finally {
-        runDiscordCheckBtn.disabled = false;
-        runDiscordCheckBtn.innerHTML = 'Run Discord Check';
+        if (!discordCheckCooldowns[selectedServerId] || discordCheckCooldowns[selectedServerId] <= Date.now()) {
+            runDiscordCheckBtn.disabled = false;
+            runDiscordCheckBtn.innerHTML = 'Run Discord Check';
+        }
     }
 }
 
