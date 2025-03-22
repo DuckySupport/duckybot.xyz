@@ -62,10 +62,14 @@ document.addEventListener("DOMContentLoaded", () => {
     function formatDiscordMarkdown(text) {
         if (!text) return "";
     
-        return text
-            .replace(/\u00A0/g, ' ')
-            .replace(/&nbsp;/g, ' ')
-            .trim()
+        console.log("Raw Input:", text);
+    
+        
+        text = text.replace(/\u00A0/g, ' ').replace(/&nbsp;/g, ' ').trim();
+    
+        console.log("After space normalization:", text);
+    
+        text = text
             .replace(/(\w+)?\n([\s\S]*?)/g, '<pre><code class="language-$1 break-words whitespace-pre-wrap">$2</code></pre>')
             .replace(/`([^`]+)`/g, '<code class="break-words whitespace-pre-wrap">$1</code>')
             .replace(/\*\*\*([^*]+)\*\*\*/g, '<strong><em>$1</em></strong>')
@@ -77,14 +81,25 @@ document.addEventListener("DOMContentLoaded", () => {
             .replace(/\|\|(.*?)\|\|/g, '<span class="spoiler">$1</span>')
             .replace(/^# (.*?)$/gm, '<h1>$1</h1>')
             .replace(/^## (.*?)$/gm, '<h2>$1</h2>')
-            .replace(/^### (.*?)$/gm, '<h3>$1</h3>')
-            .replace(/^(?:>|- |)-# (.*?)$/gm, '<span style="opacity: 0.6; font-size: small;">$1</span>')
+            .replace(/^### (.*?)$/gm, '<h3>$1</h3>');
+    
+        console.log("After headings:", text);
+    
+        text = text.replace(/^(?:>|- |)-# (.*?)$/gm, '<span style="opacity: 0.6; font-size: small;">$1</span>');
+    
+        console.log("After subtext:", text);
+    
+        text = text
             .replace(/^(?:- |\* )(.*)/gm, '<li>$1</li>')
             .replace(/^(?:&nbsp; - |&nbsp; \* )(.*)/gm, '<li class="indent">$1</li>')
             .replace(/^(?:\d+\. )(.*)/gm, '<li class="numbered">$1</li>')
             .replace(/^> (.+)/gm, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
             .replace(/<:([^:]+):\d+>/g, '$1')
             .replace(/\n/g, '<br>');
+    
+        console.log("Final Output:", text);
+    
+        return text;
     }
   
     function renderMessage(msg) {
