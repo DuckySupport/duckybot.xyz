@@ -1,0 +1,3199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Ducky Moderation Panel - Manage your ER:LC server">
+  <meta content="Ducky Moderation Panel" property="og:title">
+  <meta content="Manage your ER:LC server with Ducky's powerful moderation tools" property="og:description">
+  <meta content="https://duckybot.xyz/modpanel" property="og:url">
+  <meta content="https://duckybot.xyz/images/Ducky.svg" property="og:image">
+  <meta content="#F5FF82" name="theme-color">
+  <link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
+  <title>Ducky Moderation Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #F5FF82;
+      --primary-hover: #e6ff4d;
+      --bg-dark: #0f0f0f;
+      --bg-card: #1a1a1a;
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #ffffff;
+      --text-secondary: #9ca3af;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text);
+      -webkit-tap-highlight-color: transparent;
+      min-height: 100vh;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      background-color: rgba(0, 0, 0, 0.3);
+      border-right: 1px solid var(--border);
+      transition: all 0.3s ease;
+      z-index: 30;
+    }
+    
+    .sidebar-collapsed {
+      width: 5rem;
+    }
+    
+    .sidebar-expanded {
+      width: 16rem;
+    }
+    
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+    }
+    
+    .sidebar-link:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+    }
+    
+    .sidebar-link.active {
+      background-color: rgba(245, 255, 130, 0.1);
+      color: var(--primary);
+    }
+    
+    .sidebar-link i {
+      width: 1.5rem;
+      text-align: center;
+    }
+    
+    /* Cards */
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+    
+    .card:hover {
+      border-color: rgba(245, 255, 130, 0.2);
+    }
+    
+    .card-header {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+    }
+    
+    .card-body {
+      padding: 1rem;
+    }
+    
+    /* Forms */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.625rem 0.75rem;
+      background-color: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      color: var(--text);
+      transition: all 0.2s ease;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(245, 255, 130, 0.1);
+    }
+    
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.625rem 1rem;
+      border-radius: 0.375rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: black;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+    
+    .btn-secondary {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    .btn-danger {
+      background-color: var(--danger);
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #dc2626;
+    }
+    
+    .btn-success {
+      background-color: var(--success);
+      color: white;
+    }
+    
+    .btn-success:hover {
+      background-color: #059669;
+    }
+    
+    .btn-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      padding: 0;
+      border-radius: 0.375rem;
+    }
+    
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .badge-success {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+    
+    .badge-warning {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+    }
+    
+    .badge-danger {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+    
+    /* Utilities */
+    .avatar {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      overflow: hidden;
+      background-color: #2d2d2d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .dropdown {
+      position: relative;
+    }
+    
+    .dropdown-toggle {
+      cursor: pointer;
+      user-select: none;
+    }
+    
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 20;
+      min-width: 10rem;
+      padding: 0.5rem 0;
+      margin-top: 0.5rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.2s ease;
+    }
+    
+    .dropdown-menu.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    
+    .dropdown-item {
+      display: block;
+      padding: 0.5rem 1rem;
+      color: var(--text);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .dropdown-item:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .dropdown-item.active {
+      background-color: rgba(245, 255, 130, 0.1);
+      color: var(--primary);
+    }
+    
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 50;
+    }
+    
+    .toast {
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-top: 0.5rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .toast-success {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--success);
+    }
+    
+    .toast-error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: var(--danger);
+    }
+    
+    /* Loading */
+    .spinner {
+      width: 1.5rem;
+      height: 1.5rem;
+      border: 2px solid rgba(245, 255, 130, 0.2);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .modal.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal-content {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      width: 90%;
+      max-width: 28rem;
+      transform: translateY(-20px);
+      transition: all 0.3s ease;
+    }
+    
+    .modal.show .modal-content {
+      transform: translateY(0);
+    }
+    
+    .modal-header {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .modal-body {
+      padding: 1rem;
+    }
+    
+    .modal-footer {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    
+    .tabs::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .tab {
+      padding: 0.75rem 1rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    
+    .tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+    
+    /* Server selection */
+    .server-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 1rem;
+    }
+    
+    .server-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem;
+      cursor: pointer;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+    }
+    
+    .server-card:hover {
+      border-color: rgba(245, 255, 130, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    .server-card img {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    /* Punishment list */
+    .punishment-list {
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    
+    .punishment-item {
+      position: relative;
+      padding: 1rem;
+      border-radius: 0.375rem;
+      background-color: rgba(0, 0, 0, 0.2);
+      border-left: 3px solid var(--danger);
+      margin-bottom: 0.5rem;
+      transition: all 0.2s ease;
+    }
+    
+    .punishment-item:hover {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+    
+    .delete-btn {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background-color: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      opacity: 0;
+      transition: all 0.2s ease;
+    }
+    
+    .punishment-item:hover .delete-btn {
+      opacity: 1;
+    }
+    
+    /* Shift status */
+    .shift-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.375rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+    
+    .shift-status.active {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+    
+    .shift-status.paused {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+    }
+    
+    .shift-status.inactive {
+      background-color: rgba(156, 163, 175, 0.1);
+      color: var(--text-secondary);
+    }
+    
+    .pulse {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+    }
+    
+    .pulse.active {
+      background-color: var(--success);
+      animation: pulse 2s infinite;
+    }
+    
+    .pulse.paused {
+      background-color: var(--warning);
+      animation: pulse-paused 2s infinite;
+    }
+    
+    .pulse.inactive {
+      background-color: var(--text-secondary);
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      }
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+      }
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+      }
+    }
+    
+    @keyframes pulse-paused {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+      }
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+      }
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+      }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar-expanded {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        transform: translateX(-100%);
+      }
+      
+      .sidebar-expanded.show {
+        transform: translateX(0);
+      }
+      
+      .delete-btn {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+    <div class="flex flex-col items-center">
+      <div class="w-12 h-12 border-4 border-[#F5FF82]/20 border-t-[#F5FF82] rounded-full animate-spin mb-4"></div>
+      <p class="text-gray-400">Loading...</p>
+    </div>
+  </div>
+
+  <!-- Server Selection View -->
+  <div id="serverSelectionView" class="min-h-screen flex flex-col opacity-0 transition-opacity duration-500">
+    <header class="bg-black/30 backdrop-blur-sm border-b border-white/5 sticky top-0 z-10">
+      <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-3">
+          <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
+          <span class="text-2xl font-bold text-[#F5FF82]">Ducky</span>
+        </a>
+        <button id="mobileMenuBtn" class="md:hidden text-2xl text-[#F5FF82]">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="hidden md:flex items-center gap-6">
+          <a href="/team" class="text-gray-300 hover:text-[#F5FF82] transition">Team</a>
+          <a href="/docs" class="text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
+          <a href="/invite" class="text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
+          <a href="/status" class="text-gray-300 hover:text-[#F5FF82] transition">Status</a>
+          <a href="/support" class="text-gray-300 hover:text-[#F5FF82] transition">Support</a>
+          <a href="/plus" class="btn btn-primary">Get Ducky Plus+</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-1 container mx-auto px-4 py-8">
+      <div class="card mb-6">
+        <div class="p-4 flex items-center gap-3">
+          <img id="profilePicture" alt="Profile" class="w-12 h-12 rounded-full">
+          <div>
+            <h2 class="text-lg font-bold">Welcome, <span id="username" class="text-[#F5FF82]"></span></h2>
+            <p class="text-gray-400 mt-0.5 text-sm">Select a server to moderate</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header flex flex-col sm:flex-row justify-between items-start sm:items-center">
+          <h2 class="text-lg font-bold">Your Servers</h2>
+          <span class="text-sm text-gray-400">Only servers with Ducky and moderation permissions are shown</span>
+        </div>
+        <div class="card-body">
+          <div id="serverGrid" class="server-grid">
+            <div class="col-span-full text-center py-4">
+              <div class="spinner mx-auto mb-2"></div>
+              <p class="text-gray-400">Loading servers...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="border-t border-[#F5FF82]/10 py-8">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+          <div class="flex items-center gap-3">
+            <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
+            <span class="text-xl font-bold text-[#F5FF82]">Ducky</span>
+          </div>
+          <div class="flex gap-6">
+            <a href="/legal/privacy/" class="text-gray-400 hover:text-[#F5FF82] transition">Privacy</a>
+            <a href="/legal/terms/" class="text-gray-400 hover:text-[#F5FF82] transition">Terms</a>
+            <a href="/support" class="text-gray-400 hover:text-[#F5FF82] transition">Support</a>
+          </div>
+        </div>
+        <p class="text-center text-gray-400 mt-8">© 2025 Ducky Bot. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="fixed inset-0 bg-black/95 z-40 flex flex-col items-center justify-center gap-8 opacity-0 pointer-events-none transition-opacity duration-300">
+    <button id="closeMobileMenuBtn" class="absolute top-6 right-6 text-2xl">
+      <i class="fas fa-times"></i>
+    </button>
+    <a href="/team" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Team</a>
+    <a href="/docs" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
+    <a href="/invite" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
+    <a href="/status" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Status</a>
+    <a href="/support" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Support</a>
+    <a href="/plus" class="btn btn-primary px-6 py-3">Get Ducky Plus+</a>
+  </div>
+
+  <!-- Dashboard View -->
+  <div id="dashboardView" class="hidden min-h-screen flex">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar sidebar-expanded hidden md:block">
+      <div class="p-4 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-3">
+          <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
+          <span class="text-xl font-bold text-[#F5FF82] sidebar-text">Ducky</span>
+        </a>
+        <button id="toggleSidebarBtn" class="text-gray-400 hover:text-white">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+      
+      <div class="p-4 border-b border-white/5">
+        <div class="flex items-center gap-3">
+          <img id="sidebarServerIcon" alt="Server Icon" class="w-10 h-10 rounded-full">
+          <div class="sidebar-text">
+            <h2 class="font-bold text-[#F5FF82]" id="sidebarServerName"></h2>
+            <p class="text-xs text-gray-400">Moderation Panel</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="p-4">
+        <nav class="space-y-1">
+          <a href="#punishments" class="sidebar-link active" data-tab="punishments">
+            <i class="fas fa-gavel mr-3"></i>
+            <span class="sidebar-text">Punishments</span>
+          </a>
+          <a href="#shifts" class="sidebar-link" data-tab="shifts">
+            <i class="fas fa-clock mr-3"></i>
+            <span class="sidebar-text">Shifts</span>
+          </a>
+          <a href="#erlc" class="sidebar-link" data-tab="erlc">
+            <i class="fas fa-car mr-3"></i>
+            <span class="sidebar-text">ER:LC Integration</span>
+          </a>
+          <a href="#automations" class="sidebar-link" data-tab="automations">
+            <i class="fas fa-robot mr-3"></i>
+            <span class="sidebar-text">Automations</span>
+          </a>
+        </nav>
+      </div>
+      
+      <div class="mt-auto p-4 border-t border-white/5">
+        <button id="backToServersBtn" class="sidebar-link w-full justify-center">
+          <i class="fas fa-arrow-left mr-3"></i>
+          <span class="sidebar-text">Back to Servers</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col">
+      <!-- Mobile Header -->
+      <header class="md:hidden bg-black/30 backdrop-blur-sm border-b border-white/5 sticky top-0 z-10">
+        <div class="px-4 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <button id="mobileSidebarBtn" class="text-[#F5FF82]">
+              <i class="fas fa-bars"></i>
+            </button>
+            <div>
+              <h2 class="font-bold text-[#F5FF82]" id="mobileServerName"></h2>
+              <p class="text-xs text-gray-400">Moderation Panel</p>
+            </div>
+          </div>
+          <img id="mobileServerIcon" alt="Server Icon" class="w-8 h-8 rounded-full">
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <main class="flex-1 p-4 md:p-6 overflow-auto">
+        <!-- Punishments Tab -->
+        <div id="punishmentsTab" class="tab-content">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Left Column -->
+            <div class="space-y-6">
+              <!-- Issue Punishment -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="text-lg font-medium">Issue Punishment</h3>
+                </div>
+                <div class="card-body">
+                  <form id="punishmentForm" class="space-y-4">
+                    <div class="form-group">
+                      <label for="robloxUsername" class="form-label">Roblox Username</label>
+                      <input type="text" id="robloxUsername" class="form-control" placeholder="Enter username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="punishmentTypeContainer" class="form-label">Punishment Type</label>
+                      <div id="punishmentTypeContainer" class="dropdown">
+                        <div id="punishmentTypeToggle" class="dropdown-toggle form-control flex justify-between items-center">
+                          <span>Select type...</span>
+                          <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div id="punishmentTypeMenu" class="dropdown-menu w-full">
+                          <!-- Populated by JS -->
+                        </div>
+                        <input type="hidden" id="punishmentType" required>
+                      </div>
+                    </div>
+                    
+                    <div id="durationContainer" class="form-group hidden">
+                      <label for="duration" class="form-label">Duration</label>
+                      <div class="grid grid-cols-2 gap-4">
+                        <input type="number" id="durationValue" min="1" class="form-control" placeholder="Duration">
+                        <div class="dropdown">
+                            placeholder="Duration">
+                        <div class="dropdown">
+                          <div id="durationUnitToggle" class="dropdown-toggle form-control flex justify-between items-center">
+                            <span>Minutes</span>
+                            <i class="fas fa-chevron-down"></i>
+                          </div>
+                          <div id="durationUnitMenu" class="dropdown-menu w-full">
+                            <div class="dropdown-item active" data-value="minutes">Minutes</div>
+                            <div class="dropdown-item" data-value="hours">Hours</div>
+                            <div class="dropdown-item" data-value="days">Days</div>
+                            <div class="dropdown-item" data-value="weeks">Weeks</div>
+                          </div>
+                          <input type="hidden" id="durationUnit" value="minutes">
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="reason" class="form-label">Reason</label>
+                      <textarea id="reason" rows="2" class="form-control" placeholder="Enter reason" required></textarea>
+                    </div>
+                    
+                    <div class="flex justify-end">
+                      <button type="submit" id="submitBtn" class="btn btn-primary">
+                        Issue Punishment
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              
+              <!-- BOLO Management -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="text-lg font-medium">BOLO Management</h3>
+                </div>
+                <div class="card-body">
+                  <form id="boloForm" class="space-y-4">
+                    <div class="form-group">
+                      <label for="boloUsername" class="form-label">Roblox Username</label>
+                      <input type="text" id="boloUsername" class="form-control" placeholder="Enter username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="boloReason" class="form-label">Reason</label>
+                      <textarea id="boloReason" rows="2" class="form-control" placeholder="Enter reason" required></textarea>
+                    </div>
+                    
+                    <div class="flex justify-end">
+                      <button type="submit" id="submitBoloBtn" class="btn btn-primary">
+                        Create BOLO
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              
+              <!-- Active BOLOs -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="text-lg font-medium">Active BOLOs</h3>
+                </div>
+                <div class="card-body">
+                  <div id="activeBOLOs" class="space-y-3">
+                    <div class="text-center py-4">
+                      <div class="spinner mx-auto mb-2"></div>
+                      <p class="text-gray-400">Loading BOLOs...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Right Column -->
+            <div>
+              <div class="card h-full">
+                <div class="card-header">
+                  <h3 class="text-lg font-medium">Punishment History</h3>
+                </div>
+                <div class="card-body p-0">
+                  <div class="p-4 bg-black/20 border-b border-white/5 grid grid-cols-4 text-sm font-medium text-gray-400 hidden md:grid">
+                    <div>Username</div>
+                    <div>Type</div>
+                    <div>Reason</div>
+                    <div>Date</div>
+                  </div>
+                  <div id="punishmentHistory" class="punishment-list p-4">
+                    <div class="text-center py-4">
+                      <div class="spinner mx-auto mb-2"></div>
+                      <p class="text-gray-400">Loading punishment history...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Shifts Tab -->
+        <div id="shiftsTab" class="tab-content hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Left Column -->
+            <div class="space-y-6">
+              <!-- Manage Shift -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="text-lg font-medium">Manage Shift</h3>
+                </div>
+                <div class="card-body">
+                  <div class="bg-black/20 rounded-lg p-4">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                      <div class="flex items-center gap-3 mb-4 md:mb-0">
+                        <div id="shiftStatusIndicator" class="shift-status inactive">
+                          <div class="pulse inactive"></div>
+                          <span id="shiftStatusText">Off Duty</span>
+                        </div>
+                        <div class="text-2xl font-mono" id="shiftTimer">00:00:00</div>
+                      </div>
+                      <div class="w-full md:w-auto">
+                        <div class="dropdown">
+                          <div id="shiftTypeToggle" class="dropdown-toggle form-control flex justify-between items-center">
+                            <span>Select type...</span>
+                            <i class="fas fa-chevron-down"></i>
+                          </div>
+                          <div id="shiftTypeMenu" class="dropdown-menu w-full">
+                            <!-- Populated by JS -->
+                          </div>
+                          <input type="hidden" id="shiftType" value="patrol">
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-3">
+                      <button id="startShiftBtn" class="btn btn-success">
+                        <i class="fas fa-play mr-2"></i>
+                        <span>Start</span>
+                      </button>
+                      <button id="pauseShiftBtn" class="btn btn-warning" disabled>
+                        <i class="fas fa-pause mr-2"></i>
+                        <span>Pause</span>
+                      </button>
+                      <button id="endShiftBtn" class="btn btn-danger" disabled>
+                        <i class="fas fa-stop mr-2"></i>
+                        <span>End</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Your Recent Shifts -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="text-lg font-medium">Your Recent Shifts</h3>
+                </div>
+                <div class="card-body">
+                  <div id="recentUserShifts" class="space-y-3">
+                    <div class="text-center py-4">
+                      <div class="spinner mx-auto mb-2"></div>
+                      <p class="text-gray-400">Loading your shifts...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Right Column -->
+            <div class="space-y-6">
+              <!-- Active Staff -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="text-lg font-medium">Active Staff</h3>
+                </div>
+                <div class="card-body">
+                  <div id="activeShifts" class="grid grid-cols-1 gap-4">
+                    <div class="text-center py-4">
+                      <div class="spinner mx-auto mb-2"></div>
+                      <p class="text-gray-400">Loading active shifts...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Recent Shifts -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="text-lg font-medium">Recent Shifts</h3>
+                </div>
+                <div class="card-body">
+                  <div id="recentShifts" class="space-y-3">
+                    <div class="text-center py-4">
+                      <div class="spinner mx-auto mb-2"></div>
+                      <p class="text-gray-400">Loading recent shifts...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- ER:LC Integration Tab -->
+        <div id="erlcTab" class="tab-content hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Server Info -->
+            <div class="lg:col-span-3">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="text-lg font-medium">Server Information</h3>
+                </div>
+                <div class="card-body">
+                  <div id="erlcServerInfo" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="text-center py-4 col-span-full">
+                      <div class="spinner mx-auto mb-2"></div>
+                      <p class="text-gray-400">Loading server information...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Players List -->
+            <div class="lg:col-span-2">
+              <div class="card mb-6">
+                <div class="card-header">
+                  <h3 class="text-lg font-medium">In-Game Players</h3>
+                </div>
+                <div class="card-body">
+                  <div id="erlcPlayersList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="text-center py-4 col-span-full">
+                      <div class="spinner mx-auto mb-2"></div>
+                      <p class="text-gray-400">Loading players...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Discord Checks -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="text-lg font-medium">Discord Checks</h3>
+                </div>
+                <div class="card-body">
+                  <p class="text-gray-400 mb-4">Check which players in-game are connected to Discord and view their voice channel status.</p>
+                  <button id="runDiscordCheckBtn" class="btn btn-primary">
+                    Run Discord Check
+                  </button>
+                  <div id="discordCheckCooldown" class="mt-2 text-sm text-gray-400 hidden">
+                    <i class="fas fa-clock mr-1"></i> <span id="discordCheckCooldownTime"></span> until next check
+                  </div>
+                  
+                  <div id="discordCheckResults" class="mt-6 space-y-3 hidden">
+                    <h4 class="text-md font-semibold mb-3">Results</h4>
+                    <div id="discordCheckList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <!-- Populated by JS -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Command Execution -->
+            <div>
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="text-lg font-medium">Execute Command</h3>
+                </div>
+                <div class="card-body">
+                  <form id="commandForm" class="space-y-4">
+                    <div class="form-group">
+                      <label for="command" class="form-label">Command</label>
+                      <div class="flex">
+                        <span class="inline-flex items-center px-3 py-2 bg-black/50 border border-r-0 border-white/10 rounded-l-md text-gray-400">:</span>
+                        <input type="text" id="command" class="form-control rounded-l-none" placeholder="Enter command" required>
+                      </div>
+                    </div>
+                    <div class="flex justify-end">
+                      <button type="submit" id="executeCommandBtn" class="btn btn-primary">
+                        Execute
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Automations Tab -->
+        <div id="automationsTab" class="tab-content hidden">
+          <div class="max-w-3xl mx-auto">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="text-lg font-medium">Custom Automations</h3>
+              </div>
+              <div class="card-body">
+                <p class="text-gray-400 mb-4">Run your server's custom automations manually.</p>
+                
+                <div class="form-group">
+                  <label for="automationSelector" class="form-label">Select Automation</label>
+                  <div class="dropdown">
+                    <div id="automationToggle" class="dropdown-toggle form-control flex justify-between items-center">
+                      <span>Select automation...</span>
+                      <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div id="automationMenu" class="dropdown-menu w-full">
+                      <!-- Populated by JS -->
+                    </div>
+                    <input type="hidden" id="selectedAutomationId">
+                  </div>
+                </div>
+                
+                <button id="runAutomationBtn" class="btn btn-primary mt-4" disabled>
+                  Run Automation
+                </button>
+                
+                <div id="automationDetails" class="mt-6 p-4 bg-black/20 rounded-lg hidden">
+                  <h4 class="font-medium mb-3">Automation Details</h4>
+                  <div class="space-y-3 text-sm">
+                    <div class="grid grid-cols-4">
+                      <span class="text-gray-400 col-span-1">Trigger:</span>
+                      <span id="automationTrigger" class="col-span-3"></span>
+                    </div>
+                    <div class="grid grid-cols-4">
+                      <span class="text-gray-400 col-span-1">Actions:</span>
+                      <div id="automationActions" class="col-span-3"></div>
+                    </div>
+                    <div class="grid grid-cols-4" id="automationRoleContainer">
+                      <span class="text-gray-400 col-span-1">Required Role:</span>
+                      <span id="automationRole" class="col-span-3"></span>
+                    </div>
+                    <div class="grid grid-cols-4">
+                      <span class="text-gray-400 col-span-1">Created by:</span>
+                      <span id="automationAuthor" class="col-span-3"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmationModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="text-lg font-bold">Confirm Deletion</h3>
+      </div>
+      <div class="modal-body">
+        <p id="confirmationMessage">Are you sure you want to delete this punishment?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="cancelDeleteBtn" class="btn btn-secondary">Cancel</button>
+        <button id="confirmDeleteBtn" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container">
+    <div id="toast" class="toast">
+      <p id="toastMessage"></p>
+    </div>
+  </div>
+
+  <script>
+    // DOM Elements
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const serverSelectionView = document.getElementById('serverSelectionView');
+    const dashboardView = document.getElementById('dashboardView');
+    const serverGrid = document.getElementById('serverGrid');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const closeMobileMenuBtn = document.getElementById('closeMobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const sidebar = document.getElementById('sidebar');
+    const toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
+    const mobileSidebarBtn = document.getElementById('mobileSidebarBtn');
+    const backToServersBtn = document.getElementById('backToServersBtn');
+    const sidebarLinks = document.querySelectorAll('.sidebar-link[data-tab]');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const punishmentForm = document.getElementById('punishmentForm');
+    const boloForm = document.getElementById('boloForm');
+    const commandForm = document.getElementById('commandForm');
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    const confirmationModal = document.getElementById('confirmationModal');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+    const confirmationMessage = document.getElementById('confirmationMessage');
+    
+    // Dropdown elements
+    const punishmentTypeToggle = document.getElementById('punishmentTypeToggle');
+    const punishmentTypeMenu = document.getElementById('punishmentTypeMenu');
+    const punishmentType = document.getElementById('punishmentType');
+    const durationContainer = document.getElementById('durationContainer');
+    const durationUnitToggle = document.getElementById('durationUnitToggle');
+    const durationUnitMenu = document.getElementById('durationUnitMenu');
+    const durationUnit = document.getElementById('durationUnit');
+    const shiftTypeToggle = document.getElementById('shiftTypeToggle');
+    const shiftTypeMenu = document.getElementById('shiftTypeMenu');
+    const shiftType = document.getElementById('shiftType');
+    const automationToggle = document.getElementById('automationToggle');
+    const automationMenu = document.getElementById('automationMenu');
+    const selectedAutomationId = document.getElementById('selectedAutomationId');
+    
+    // Shift elements
+    const startShiftBtn = document.getElementById('startShiftBtn');
+    const pauseShiftBtn = document.getElementById('pauseShiftBtn');
+    const endShiftBtn = document.getElementById('endShiftBtn');
+    const shiftStatusIndicator = document.getElementById('shiftStatusIndicator');
+    const shiftStatusText = document.getElementById('shiftStatusText');
+    const shiftTimer = document.getElementById('shiftTimer');
+    
+    // Other elements
+    const punishmentHistory = document.getElementById('punishmentHistory');
+    const activeBOLOs = document.getElementById('activeBOLOs');
+    const activeShifts = document.getElementById('activeShifts');
+    const recentShifts = document.getElementById('recentShifts');
+    const recentUserShifts = document.getElementById('recentUserShifts');
+    const runDiscordCheckBtn = document.getElementById('runDiscordCheckBtn');
+    const discordCheckResults = document.getElementById('discordCheckResults');
+    const discordCheckList = document.getElementById('discordCheckList');
+    const discordCheckCooldown = document.getElementById('discordCheckCooldown');
+    const discordCheckCooldownTime = document.getElementById('discordCheckCooldownTime');
+    const erlcServerInfo = document.getElementById('erlcServerInfo');
+    const erlcPlayersList = document.getElementById('erlcPlayersList');
+    const runAutomationBtn = document.getElementById('runAutomationBtn');
+    const automationDetails = document.getElementById('automationDetails');
+    
+    // State variables
+    let selectedServerId = null;
+    let selectedServerConfig = null;
+    let userCache = new Map();
+    let avatarCache = new Map();
+    let discordToken = null;
+    let discordUser = null;
+    let lastPunishmentTime = 0;
+    const PUNISHMENT_COOLDOWN = 5000;
+    
+    let shiftStatus = 'inactive';
+    let shiftStartTime = 0;
+    let shiftElapsedTime = 0;
+    let shiftTimerInterval = null;
+    let currentPunishmentToDelete = null;
+    let currentUserShift = null;
+    
+    let discordCheckCooldowns = {};
+    const DISCORD_CHECK_COOLDOWN = 5 * 60 * 1000;
+    
+    let serverAutomations = [];
+    
+    // Helper Functions
+    function getDiscordToken() {
+      return document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
+    }
+    
+    function formatDate(timestamp) {
+      const date = new Date(timestamp * 1000);
+      return date.toLocaleString();
+    }
+    
+    function formatDuration(seconds) {
+      if (seconds < 60) return `${seconds} second${seconds !== 1 ? 's' : ''}`;
+      
+      const months = Math.floor(seconds / (30 * 24 * 3600));
+      const remainingAfterMonths = seconds % (30 * 24 * 3600);
+      const weeks = Math.floor(remainingAfterMonths / (7 * 24 * 3600));
+      const remainingAfterWeeks = remainingAfterMonths % (7 * 24 * 3600);
+      const hours = Math.floor(remainingAfterWeeks / 3600);
+      const remainingAfterHours = remainingAfterWeeks % 3600;
+      const minutes = Math.floor(remainingAfterHours / 60);
+      const secs = remainingAfterHours % 60;
+      
+      let durationString = '';
+      if (months > 0) durationString += `${months} month${months !== 1 ? 's' : ''}`;
+      if (weeks > 0) durationString += `${durationString ? ', ' : ''}${weeks} week${weeks !== 1 ? 's' : ''}`;
+      if (hours > 0) durationString += `${durationString ? ', ' : ''}${hours} hour${hours !== 1 ? 's' : ''}`;
+      if (minutes > 0) durationString += `${durationString ? ', ' : ''}${minutes} minute${minutes !== 1 ? 's' : ''}`;
+      if (secs > 0 || (months === 0 && weeks === 0 && hours === 0 && minutes === 0)) {
+        durationString += `${durationString ? ', ' : ''}${secs} second${secs !== 1 ? 's' : ''}`;
+      }
+      
+      return durationString;
+    }
+    
+    function formatShiftTime(seconds) {
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const secs = seconds % 60;
+      
+      return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    function showToast(message, type = 'success') {
+      toastMessage.textContent = message;
+      toast.className = `toast toast-${type}`;
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+    
+    // Toggle Sidebar
+    function toggleSidebar() {
+      const isExpanded = sidebar.classList.contains('sidebar-expanded');
+      
+      if (isExpanded) {
+        sidebar.classList.remove('sidebar-expanded');
+        sidebar.classList.add('sidebar-collapsed');
+        document.querySelectorAll('.sidebar-text').forEach(el => {
+          el.style.display = 'none';
+        });
+      } else {
+        sidebar.classList.remove('sidebar-collapsed');
+        sidebar.classList.add('sidebar-expanded');
+        document.querySelectorAll('.sidebar-text').forEach(el => {
+          el.style.display = '';
+        });
+      }
+    }
+    
+    // Toggle Mobile Menu
+    function toggleMobileMenu() {
+      mobileMenu.classList.toggle('opacity-0');
+      mobileMenu.classList.toggle('pointer-events-none');
+      document.body.classList.toggle('overflow-hidden');
+    }
+    
+    // Toggle Mobile Sidebar
+    function toggleMobileSidebar() {
+      sidebar.classList.toggle('show');
+    }
+    
+    // Switch Tab
+    function switchTab(tabId) {
+      sidebarLinks.forEach(link => {
+        if (link.dataset.tab === tabId) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+      
+      tabContents.forEach(content => {
+        if (content.id === `${tabId}Tab`) {
+          content.classList.remove('hidden');
+        } else {
+          content.classList.add('hidden');
+        }
+      });
+      
+      // Load tab-specific data if needed
+      if (tabId === 'shifts' && activeShifts.innerHTML.includes('Loading')) {
+        loadShifts(selectedServerId);
+      } else if (tabId === 'erlc') {
+        loadERLCData(selectedServerId);
+        loadBOLOs(selectedServerId);
+      }
+      
+      // Close mobile sidebar after tab switch
+      if (window.innerWidth < 768) {
+        sidebar.classList.remove('show');
+      }
+    }
+    
+    // Toggle Dropdown
+    function toggleDropdown(toggle, menu) {
+      const isOpen = menu.classList.contains('show');
+      
+      // Close all dropdowns first
+      document.querySelectorAll('.dropdown-menu').forEach(el => {
+        el.classList.remove('show');
+      });
+      
+      if (!isOpen) {
+        menu.classList.add('show');
+      }
+    }
+    
+    // Initialize Dropdowns
+    function initDropdowns() {
+      // Punishment Type Dropdown
+      punishmentTypeToggle.addEventListener('click', () => {
+        toggleDropdown(punishmentTypeToggle, punishmentTypeMenu);
+      });
+      
+      // Duration Unit Dropdown
+      durationUnitToggle.addEventListener('click', () => {
+        toggleDropdown(durationUnitToggle, durationUnitMenu);
+      });
+      
+      // Set up duration unit options
+      document.querySelectorAll('#durationUnitMenu .dropdown-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const value = item.dataset.value;
+          durationUnit.value = value;
+          durationUnitToggle.querySelector('span').textContent = item.textContent;
+          
+          document.querySelectorAll('#durationUnitMenu .dropdown-item').forEach(opt => {
+            opt.classList.remove('active');
+          });
+          item.classList.add('active');
+          
+          durationUnitMenu.classList.remove('show');
+        });
+      });
+      
+      // Shift Type Dropdown
+      shiftTypeToggle.addEventListener('click', () => {
+        toggleDropdown(shiftTypeToggle, shiftTypeMenu);
+      });
+      
+      // Automation Dropdown
+      automationToggle.addEventListener('click', () => {
+        toggleDropdown(automationToggle, automationMenu);
+      });
+      
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.dropdown')) {
+          document.querySelectorAll('.dropdown-menu').forEach(el => {
+            el.classList.remove('show');
+          });
+        }
+      });
+    }
+    
+    // Setup Punishment Type Dropdown
+    function setupPunishmentTypeDropdown(types) {
+      punishmentTypeMenu.innerHTML = '';
+      
+      if (!types || types.length === 0) {
+        types = ['warn', 'kick', 'ban', 'tempban'];
+      }
+      
+      types.forEach(type => {
+        const item = document.createElement('div');
+        item.className = 'dropdown-item';
+        item.dataset.value = type.toLowerCase();
+        item.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+        
+        item.addEventListener('click', () => {
+          punishmentType.value = type.toLowerCase();
+          punishmentTypeToggle.querySelector('span').textContent = item.textContent;
+          
+          document.querySelectorAll('#punishmentTypeMenu .dropdown-item').forEach(opt => {
+            opt.classList.remove('active');
+          });
+          item.classList.add('active');
+          
+          punishmentTypeMenu.classList.remove('show');
+          
+          durationContainer.classList.toggle('hidden', punishmentType.value !== 'tempban');
+        });
+        
+        punishmentTypeMenu.appendChild(item);
+      });
+    }
+    
+    // Setup Shift Type Dropdown
+    function setupShiftTypeDropdown(types) {
+      shiftTypeMenu.innerHTML = '';
+      
+      if (!types || types.length === 0) {
+        types = [{ name: 'Patrol' }];
+      }
+      
+      types.forEach((type, index) => {
+        const item = document.createElement('div');
+        item.className = 'dropdown-item';
+        item.dataset.value = type.name.toLowerCase();
+        item.textContent = type.name;
+        
+        if (index === 0) {
+          item.classList.add('active');
+          shiftTypeToggle.querySelector('span').textContent = item.textContent;
+          shiftType.value = type.name.toLowerCase();
+        }
+        
+        item.addEventListener('click', () => {
+          const oldType = shiftType.value;
+          shiftType.value = type.name.toLowerCase();
+          shiftTypeToggle.querySelector('span').textContent = item.textContent;
+          
+          document.querySelectorAll('#shiftTypeMenu .dropdown-item').forEach(opt => {
+            opt.classList.remove('active');
+          });
+          item.classList.add('active');
+          
+          shiftTypeMenu.classList.remove('show');
+          
+          if (shiftStatus !== 'inactive' && oldType !== shiftType.value) {
+            resetShiftUI();
+            checkActiveShift(selectedServerId);
+          }
+        });
+        
+        shiftTypeMenu.appendChild(item);
+      });
+    }
+    
+    // Setup Automations Dropdown
+    function setupAutomationsDropdown(automations) {
+      serverAutomations = automations || [];
+      automationMenu.innerHTML = '';
+      
+      if (!automations || automations.length === 0) {
+        const item = document.createElement('div');
+        item.className = 'dropdown-item';
+        item.textContent = 'No automations available';
+        automationMenu.appendChild(item);
+        runAutomationBtn.disabled = true;
+        return;
+      }
+      
+      const manualAutomations = automations.filter(automation => 
+        automation.trigger && automation.trigger.value === 'manual'
+      );
+      
+      if (manualAutomations.length === 0) {
+        const item = document.createElement('div');
+        item.className = 'dropdown-item';
+        item.textContent = 'No manual automations available';
+        automationMenu.appendChild(item);
+        runAutomationBtn.disabled = true;
+        return;
+      }
+      
+      manualAutomations.forEach((automation, index) => {
+        const item = document.createElement('div');
+        item.className = 'dropdown-item';
+        const originalIndex = automations.findIndex(a => a.name === automation.name);
+        item.dataset.index = originalIndex;
+        item.textContent = automation.name;
+        
+        item.addEventListener('click', () => {
+          selectedAutomationId.value = originalIndex;
+          automationToggle.querySelector('span').textContent = automation.name;
+          
+          document.querySelectorAll('#automationMenu .dropdown-item').forEach(opt => {
+            opt.classList.remove('active');
+          });
+          item.classList.add('active');
+          
+          automationMenu.classList.remove('show');
+          
+          showAutomationDetails(automation);
+          runAutomationBtn.disabled = false;
+        });
+        
+        automationMenu.appendChild(item);
+      });
+    }
+    
+    // Show Automation Details
+    function showAutomationDetails(automation) {
+      const automationTrigger = document.getElementById('automationTrigger');
+      const automationActions = document.getElementById('automationActions');
+      const automationRole = document.getElementById('automationRole');
+      const automationRoleContainer = document.getElementById('automationRoleContainer');
+      const automationAuthor = document.getElementById('automationAuthor');
+      
+      automationTrigger.textContent = automation.trigger ? automation.trigger.name : 'Unknown';
+      
+      automationActions.innerHTML = '';
+      if (automation.actions && automation.actions.length > 0) {
+        const actionsList = document.createElement('ul');
+        actionsList.className = 'list-disc pl-5';
+        
+        automation.actions.forEach(action => {
+          const actionItem = document.createElement('li');
+          actionItem.textContent = action.name;
+          actionsList.appendChild(actionItem);
+        });
+        
+        automationActions.appendChild(actionsList);
+      } else {
+        automationActions.textContent = 'No actions defined';
+      }
+      
+      if (automation.role) {
+        automationRole.textContent = `<@&${automation.role}>`;
+        automationRoleContainer.classList.remove('hidden');
+      } else {
+        automationRoleContainer.classList.add('hidden');
+      }
+      
+      if (automation.author) {
+        fetchUserData(automation.author).then(userData => {
+          automationAuthor.textContent = userData.username || userData.name || automation.author;
+        });
+      } else {
+        automationAuthor.textContent = 'Unknown';
+      }
+      
+      automationDetails.classList.remove('hidden');
+    }
+    
+    // Reset Shift UI
+    function resetShiftUI() {
+      if (shiftTimerInterval) {
+        clearInterval(shiftTimerInterval);
+        shiftTimerInterval = null;
+      }
+      
+      shiftStatus = 'inactive';
+      shiftStartTime = 0;
+      shiftElapsedTime = 0;
+      currentUserShift = null;
+      
+      updateShiftUI();
+    }
+    
+    // Update Shift UI
+    function updateShiftUI() {
+      if (shiftStatus === 'paused') {
+        startShiftBtn.disabled = false;
+        pauseShiftBtn.disabled = true;
+        endShiftBtn.disabled = false;
+        
+        startShiftBtn.innerHTML = '<i class="fas fa-play mr-2"></i><span>Resume</span>';
+      } else if (shiftStatus === 'active') {
+        startShiftBtn.disabled = true;
+        pauseShiftBtn.disabled = false;
+        endShiftBtn.disabled = false;
+        
+        startShiftBtn.innerHTML = '<i class="fas fa-play mr-2"></i><span>Start</span>';
+      } else {
+        startShiftBtn.disabled = false;
+        pauseShiftBtn.disabled = true;
+        endShiftBtn.disabled = true;
+        
+        startShiftBtn.innerHTML = '<i class="fas fa-play mr-2"></i><span>Start</span>';
+      }
+      
+      shiftStatusIndicator.className = `shift-status ${shiftStatus}`;
+      const pulse = shiftStatusIndicator.querySelector('.pulse');
+      pulse.className = `pulse ${shiftStatus}`;
+      
+      if (shiftStatus === 'active') {
+        shiftStatusText.textContent = 'On Duty';
+      } else if (shiftStatus === 'paused') {
+        shiftStatusText.textContent = 'Paused';
+      } else {
+        shiftStatusText.textContent = 'Off Duty';
+      }
+      
+      if (shiftStatus === 'inactive') {
+        shiftTimer.textContent = '00:00:00';
+      }
+    }
+    
+    // Start Shift Timer
+    function startShiftTimer() {
+      if (shiftTimerInterval) {
+        clearInterval(shiftTimerInterval);
+      }
+      
+      shiftTimerInterval = setInterval(() => {
+        if (shiftStatus === 'active') {
+          const now = Math.floor(Date.now() / 1000);
+          const elapsed = now - shiftStartTime + shiftElapsedTime;
+          shiftTimer.textContent = formatShiftTime(elapsed);
+        }
+      }, 1000);
+    }
+    
+    // Update Discord Check Cooldown
+    function updateDiscordCheckCooldown() {
+      if (!selectedServerId || !discordCheckCooldowns[selectedServerId]) {
+        discordCheckCooldown.classList.add('hidden');
+        return;
+      }
+      
+      const cooldownEnd = discordCheckCooldowns[selectedServerId];
+      const now = Date.now();
+      const timeLeft = cooldownEnd - now;
+      
+      if (timeLeft <= 0) {
+        discordCheckCooldown.classList.add('hidden');
+        runDiscordCheckBtn.disabled = false;
+        return;
+      }
+      
+      const minutes = Math.floor(timeLeft / 60000);
+      const seconds = Math.floor((timeLeft % 60000) / 1000);
+      discordCheckCooldownTime.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+      discordCheckCooldown.classList.remove('hidden');
+      runDiscordCheckBtn.disabled = true;
+      
+      setTimeout(updateDiscordCheckCooldown, 1000);
+    }
+    
+    // Fetch User Data
+    async function fetchUserData(userId, forceRefresh = false) {
+      if (!forceRefresh && userCache.has(userId)) {
+        return userCache.get(userId);
+      }
+      
+      try {
+        const response = await fetch(`https://api.duckybot.xyz/user/${userId}`);
+        
+        if (!response.ok) {
+          return { id: userId, name: userId, username: userId };
+        }
+        
+        const data = await response.json();
+        
+        if (data.code === 200 && data.data) {
+          userCache.set(userId, data.data);
+          return data.data;
+        }
+        
+        return { id: userId, name: userId, username: userId };
+      } catch (error) {
+        return { id: userId, name: userId, username: userId };
+      }
+    }
+    
+    // Fetch Roblox Avatar
+    async function fetchRobloxAvatar(robloxId) {
+      if (avatarCache.has(robloxId)) {
+        return avatarCache.get(robloxId);
+      }
+      
+      try {
+        const response = await fetch(`https://api.duckybot.xyz/avatar/roblox/${robloxId}`);
+        
+        if (!response.ok) {
+          return null;
+        }
+        
+        const data = await response.json();
+        
+        if (data.code === 200 && data.data) {
+          const avatarUrl = data.data.url;
+          avatarCache.set(robloxId, avatarUrl);
+          return avatarUrl;
+        }
+        
+        return null;
+      } catch (error) {
+        return null;
+      }
+    }
+    
+    // Select Server
+    function selectServer(serverId, serverName, serverIcon, serverConfig) {
+      selectedServerId = serverId;
+      selectedServerConfig = serverConfig;
+      
+      // Update server info in sidebar and mobile header
+      document.getElementById('sidebarServerName').textContent = serverName;
+      document.getElementById('sidebarServerIcon').src = serverIcon || 'https://duckybot.xyz/images/Ducky.svg';
+      document.getElementById('mobileServerName').textContent = serverName;
+      document.getElementById('mobileServerIcon').src = serverIcon || 'https://duckybot.xyz/images/Ducky.svg';
+      
+      // Switch views
+      serverSelectionView.classList.add('hidden');
+      dashboardView.classList.remove('hidden');
+      
+      // Save selected server to localStorage
+      localStorage.setItem('selectedServerId', JSON.stringify({
+        id: serverId,
+        name: serverName,
+        icon: serverIcon,
+        config: serverConfig
+      }));
+      
+      // Setup dropdowns
+      let punishmentTypes = [];
+      if (serverConfig && serverConfig.punishmenttypes && serverConfig.punishmenttypes.length > 0) {
+        punishmentTypes = serverConfig.punishmenttypes;
+      }
+      setupPunishmentTypeDropdown(punishmentTypes);
+      
+      let shiftTypes = [];
+      if (serverConfig && serverConfig.shifttypes && serverConfig.shifttypes.length > 0) {
+        shiftTypes = serverConfig.shifttypes;
+      }
+      setupShiftTypeDropdown(shiftTypes);
+      
+      if (serverConfig && serverConfig.automations) {
+        setupAutomationsDropdown(serverConfig.automations);
+      } else {
+        setupAutomationsDropdown([]);
+      }
+      
+      // Load initial data
+      loadPunishments(serverId);
+      checkActiveShift(serverId);
+      updateDiscordCheckCooldown();
+      
+      // Default to punishments tab
+      switchTab('punishments');
+    }
+    
+    // Load Servers
+    async function loadServers() {
+      discordToken = getDiscordToken();
+      
+      if (!discordToken) {
+        window.location.href = "/login?redirect=modpanel";
+        return;
+      }
+      
+      const savedServer = localStorage.getItem('selectedServerId');
+      if (savedServer) {
+        try {
+          const serverData = JSON.parse(savedServer);
+          if (serverData && serverData.id) {
+            selectedServerId = serverData.id;
+          }
+        } catch (e) {
+          localStorage.removeItem('selectedServerId');
+        }
+      }
+
+      try {
+        const response = await fetch("https://api.duckybot.xyz/guilds", {
+          headers: { "Discord-Code": discordToken }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+
+        const { data: servers, code } = await response.json();
+        
+        if (code !== 200 || !servers) {
+          throw new Error('Invalid response from server');
+        }
+        
+        const userResponse = await fetch('https://discord.com/api/users/@me', {
+          headers: { authorization: `Bearer ${discordToken}` }
+        });
+        
+        if (userResponse.ok) {
+          discordUser = await userResponse.json();
+          document.getElementById('username').textContent = discordUser.global_name || discordUser.username;
+          const avatarUrl = `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`;
+          document.getElementById('profilePicture').src = avatarUrl;
+        }
+        
+        const filteredServers = servers.filter(server => server.manage_server && server.ducky);
+        
+        if (filteredServers.length === 0) {
+          serverGrid.innerHTML = '<div class="text-center py-8"><i class="fas fa-server text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No servers with Ducky found. Make sure you have the right permissions.</p></div>';
+        } else {
+          serverGrid.innerHTML = '';
+          
+          const fragment = document.createDocumentFragment();
+          
+          let savedServerValid = false;
+          let savedServerData = null;
+          
+          if (selectedServerId) {
+            savedServerData = filteredServers.find(server => server.id === selectedServerId);
+            if (savedServerData) {
+              savedServerValid = true;
+            }
+          }
+          
+          filteredServers.forEach(server => {
+            const serverCard = document.createElement('div');
+            serverCard.className = 'server-card';
+            
+            const img = document.createElement('img');
+            img.src = server.icon || 'https://duckybot.xyz/images/Ducky.svg';
+            img.alt = server.name;
+            img.loading = 'lazy';
+
+            const name = document.createElement('p');
+            name.className = 'text-center font-medium text-xs';
+            name.textContent = server.name;
+            
+            serverCard.appendChild(img);
+            serverCard.appendChild(name);
+            
+            serverCard.addEventListener('click', () => {
+              selectServer(server.id, server.name, server.icon, server.config);
+            });
+            
+            fragment.appendChild(serverCard);
+          });
+          
+          serverGrid.appendChild(fragment);
+          
+          if (savedServerValid && savedServerData) {
+            selectServer(savedServerData.id, savedServerData.name, savedServerData.icon, savedServerData.config);
+          }
+        }
+        
+        loadingOverlay.classList.add('fade-out');
+        setTimeout(() => {
+          loadingOverlay.style.display = 'none';
+          serverSelectionView.style.opacity = '1';
+        }, 500);
+        
+      } catch (error) {
+        serverGrid.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Failed to load servers. Please try again later.</p></div>';
+        loadingOverlay.classList.add('fade-out');
+        setTimeout(() => {
+          loadingOverlay.style.display = 'none';
+          serverSelectionView.style.opacity = '1';
+        }, 500);
+      }
+    }
+    
+    // Load Punishments
+    async function loadPunishments(serverId) {
+      punishmentHistory.innerHTML = `
+        <div class="text-center py-4">
+          <div class="spinner mx-auto mb-2"></div>
+          <p class="text-gray-400">Loading punishment history...</p>
+        </div>
+      `;
+      
+      if (!discordToken) {
+        punishmentHistory.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Authentication error. Please log in again.</p></div>';
+        return;
+      }
+      
+      try {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/punishments`, {
+          headers: { "Discord-Code": discordToken }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch punishments');
+        }
+        
+        const { data: punishments } = await response.json();
+        
+        if (!punishments || punishments.length === 0) {
+          punishmentHistory.innerHTML = '<div class="text-center py-8"><i class="fas fa-ban text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No punishment history found.</p></div>';
+          return;
+        }
+        
+        punishmentHistory.innerHTML = '';
+        
+        punishments.sort((a, b) => b.timestamp - a.timestamp);
+        
+        const fragment = document.createDocumentFragment();
+        
+        for (const punishment of punishments.slice(0, 20)) {
+          const item = document.createElement('div');
+          item.className = 'punishment-item';
+          item.dataset.punishmentId = punishment.punishmentid || punishment.id;
+          
+          const typeColors = {
+            warn: 'text-yellow-400',
+            warning: 'text-yellow-400',
+            kick: 'text-orange-400',
+            ban: 'text-red-500',
+            tempban: 'text-red-400'
+          };
+          
+          const typeColor = typeColors[punishment.type.toLowerCase()] || 'text-gray-400';
+          
+          const moderatorData = await fetchUserData(punishment.moderator);
+          const moderatorName = moderatorData.username || moderatorData.name || punishment.moderator;
+          
+          let avatarUrl = punishment.robloxUser.pfpURL || punishment.robloxUser.avatar;
+          if (!avatarUrl && punishment.robloxUser.id) {
+            avatarUrl = await fetchRobloxAvatar(punishment.robloxUser.id);
+          }
+          
+          const userInfoDiv = document.createElement('div');
+          userInfoDiv.className = 'flex items-center gap-3 md:col-span-1';
+          
+          const avatarDiv = document.createElement('div');
+          avatarDiv.className = 'avatar hidden sm:flex';
+          
+          if (avatarUrl) {
+            const img = document.createElement('img');
+            img.src = avatarUrl;
+            img.alt = punishment.robloxUser.name;
+            avatarDiv.appendChild(img);
+          } else {
+            avatarDiv.textContent = punishment.robloxUser.name.charAt(0).toUpperCase();
+          }
+          
+          const userTextDiv = document.createElement('div');
+          userTextDiv.innerHTML = `
+            <div class="font-medium">${punishment.robloxUser.name}</div>
+            <div class="text-xs text-gray-400">@${punishment.robloxUser.name}</div>
+          `;
+          
+          userInfoDiv.appendChild(avatarDiv);
+          userInfoDiv.appendChild(userTextDiv);
+          
+          const typeDiv = document.createElement('div');
+          typeDiv.className = `${typeColor} font-medium md:col-span-1`;
+          typeDiv.textContent = punishment.type.toUpperCase();
+          
+          const reasonDiv = document.createElement('div');
+          reasonDiv.className = 'text-gray-400 mt-2 md:mt-0 md:col-span-1';
+          reasonDiv.textContent = punishment.reason;
+          
+          const dateDiv = document.createElement('div');
+          dateDiv.className = 'text-gray-500 text-sm mt-2 md:mt-0 md:text-right md:col-span-1';
+          dateDiv.textContent = formatDate(punishment.timestamp);
+          
+          const moderatorDiv = document.createElement('div');
+          moderatorDiv.className = 'text-gray-400 text-xs mt-1 md:text-right';
+          moderatorDiv.textContent = `By: ${moderatorName}`;
+          
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'delete-btn';
+          deleteBtn.title = 'Delete punishment';
+          deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+          deleteBtn.addEventListener('click', () => {
+            showDeleteConfirmation(punishment.punishmentid || punishment.id, punishment.robloxUser.name, punishment.type);
+          });
+          
+          // For mobile layout
+          if (window.innerWidth < 768) {
+            item.appendChild(userInfoDiv);
+            item.appendChild(typeDiv);
+            item.appendChild(reasonDiv);
+            
+            const metaDiv = document.createElement('div');
+            metaDiv.className = 'mt-2';
+            metaDiv.appendChild(dateDiv);
+            metaDiv.appendChild(moderatorDiv);
+            
+            item.appendChild(metaDiv);
+          } else {
+            // For desktop layout (grid)
+            item.classList.add('grid', 'grid-cols-4', 'items-center', 'gap-4');
+            item.appendChild(userInfoDiv);
+            item.appendChild(typeDiv);
+            item.appendChild(reasonDiv);
+            
+            const metaDiv = document.createElement('div');
+            metaDiv.appendChild(dateDiv);
+            metaDiv.appendChild(moderatorDiv);
+            
+            item.appendChild(metaDiv);
+          }
+          
+          item.appendChild(deleteBtn);
+          fragment.appendChild(item);
+        }
+        
+        punishmentHistory.appendChild(fragment);
+        
+      } catch (error) {
+        punishmentHistory.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Failed to load punishment history. Please try again.</p></div>';
+      }
+    }
+    
+    // Load BOLOs
+    async function loadBOLOs(serverId) {
+      if (!activeBOLOs) return;
+      
+      activeBOLOs.innerHTML = `
+        <div class="text-center py-4">
+          <div class="spinner mx-auto mb-2"></div>
+          <p class="text-gray-400">Loading BOLOs...</p>
+        </div>
+      `;
+      
+      if (!discordToken) {
+        activeBOLOs.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Authentication error. Please log in again.</p></div>';
+        return;
+      }
+      
+      try {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/bolos`, {
+          headers: { "Discord-Code": discordToken }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch BOLOs');
+        }
+        
+        const data = await response.json();
+        
+        if (!data.data || data.data.length === 0) {
+          activeBOLOs.innerHTML = '<div class="text-center py-8"><i class="fas fa-search text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No active BOLOs found.</p></div>';
+          return;
+        }
+        
+        activeBOLOs.innerHTML = '';
+        
+        const fragment = document.createDocumentFragment();
+        
+        for (const bolo of data.data) {
+          const boloCard = document.createElement('div');
+          boloCard.className = 'p-4 bg-black/20 rounded-lg border-l-2 border-red-500 mb-3';
+          boloCard.dataset.robloxId = bolo.user;
+          
+          const robloxUser = await fetchUserData(bolo.user);
+          const avatarUrl = robloxUser.avatar;
+          
+          boloCard.innerHTML = `
+            <div class="flex items-start gap-3">
+              <div class="avatar">
+                ${avatarUrl ? `<img src="${avatarUrl}" alt="${robloxUser.name}">` : robloxUser.name.charAt(0).toUpperCase()}
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h4 class="font-medium">${robloxUser.name}</h4>
+                    <p class="text-sm text-gray-400 mt-1">${bolo.reason}</p>
+                    <p class="text-xs text-gray-500 mt-2">Created: ${formatDate(bolo.created)}</p>
+                  </div>
+                  <div class="flex gap-2">
+                    <button class="btn btn-icon btn-success approve-bolo-btn">
+                      <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-icon btn-danger delete-bolo-btn">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          
+          const approveBtn = boloCard.querySelector('.approve-bolo-btn');
+          const deleteBtn = boloCard.querySelector('.delete-bolo-btn');
+          
+          approveBtn.addEventListener('click', () => approveBOLO(bolo.user));
+          deleteBtn.addEventListener('click', () => deleteBOLO(bolo.user));
+          
+          fragment.appendChild(boloCard);
+        }
+        
+        activeBOLOs.appendChild(fragment);
+        
+      } catch (error) {
+        activeBOLOs.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Failed to load BOLOs. Please try again.</p></div>';
+      }
+    }
+    
+    // Load Shifts
+    async function loadShifts(serverId) {
+      activeShifts.innerHTML = `
+        <div class="text-center py-4 col-span-full">
+          <div class="spinner mx-auto mb-2"></div>
+          <p class="text-gray-400">Loading active shifts...</p>
+        </div>
+      `;
+      
+      recentShifts.innerHTML = `
+        <div class="text-center py-4">
+          <div class="spinner mx-auto mb-2"></div>
+          <p class="text-gray-400">Loading recent shifts...</p>
+        </div>
+      `;
+      
+      if (!discordToken) {
+        activeShifts.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Authentication error. Please log in again.</p></div>';
+        recentShifts.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Authentication error. Please log in again.</p></div>';
+        return;
+      }
+      
+      try {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/shifts`, {
+          headers: { "Discord-Code": discordToken }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch shifts');
+        }
+        
+        const { data } = await response.json();
+        
+        // Process active shifts
+        if (!data.activeshifts || data.activeshifts.length === 0) {
+          activeShifts.innerHTML = '<div class="text-center py-8"><i class="fas fa-user-clock text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No active shifts found.</p></div>';
+        } else {
+          activeShifts.innerHTML = '';
+          
+          const fragment = document.createDocumentFragment();
+          
+          for (const shift of data.activeshifts) {
+            const duration = Math.floor(Date.now() / 1000 - shift.started);
+            const userData = await fetchUserData(shift.user);
+            
+            const card = document.createElement('div');
+            card.className = 'p-4 bg-black/20 rounded-lg border-l-2 border-green-500';
+            
+            const avatarUrl = userData.avatar;
+            
+            card.innerHTML = `
+              <div class="flex items-center gap-3">
+                <div class="avatar">
+                  ${avatarUrl ? `<img src="${avatarUrl}" alt="${userData.username || userData.name || shift.user}">` : (userData.username || userData.name || shift.user).charAt(0).toUpperCase()}
+                </div>
+                <div class="flex-1">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <div class="font-medium">${userData.username || userData.name || shift.user}</div>
+                      <div class="text-sm text-gray-400 mt-1">Active for ${formatDuration(duration)}</div>
+                      <div class="text-xs text-gray-400 mt-1">Type: ${shift.type || 'Default'}</div>
+                    </div>
+                    <div class="badge badge-success">
+                      <i class="fas fa-circle mr-1 text-xs"></i> Active
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+            
+            fragment.appendChild(card);
+          }
+          
+          activeShifts.appendChild(fragment);
+        }
+        
+        // Process recent shifts
+        if (!data.shifts || data.shifts.length === 0) {
+          recentShifts.innerHTML = '<div class="text-center py-8"><i class="fas fa-history text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No recent shifts found.</p></div>';
+        } else {
+          recentShifts.innerHTML = '';
+          
+          const fragment = document.createDocumentFragment();
+          
+          const sortedShifts = data.shifts
+            .sort((a, b) => b.ended - a.ended)
+            .slice(0, 5);
+          
+          for (const shift of sortedShifts) {
+            const userData = await fetchUserData(shift.user);
+            
+            const item = document.createElement('div');
+            item.className = 'p-4 bg-black/20 rounded-lg border-l-2 border-gray-500';
+            
+            const avatarUrl = userData.avatar;
+            const actualDuration = shift.elapsed > 0 ? shift.elapsed * 60 : 0;
+            
+            item.innerHTML = `
+              <div class="flex items-center gap-3">
+                <div class="avatar">
+                  ${avatarUrl ? `<img src="${avatarUrl}" alt="${userData.username || userData.name || shift.user}">` : (userData.username || userData.name || shift.user).charAt(0).toUpperCase()}
+                </div>
+                <div class="flex-1">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <div class="font-medium">${userData.username || userData.name || shift.user}</div>
+                      <div class="text-sm text-gray-400 mt-1">Duration: ${formatDuration(actualDuration)}</div>
+                      <div class="text-xs text-gray-400 mt-1">Type: ${shift.type || 'Default'}</div>
+                    </div>
+                    <div class="text-right">
+                      <p class="text-xs text-gray-500">Ended: ${formatDate(shift.ended)}</p>
+                      <p class="text-xs text-gray-400 mt-1">Punishments: ${shift.punishments}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+            
+            fragment.appendChild(item);
+          }
+          
+          recentShifts.appendChild(fragment);
+        }
+        
+        // Process user's recent shifts
+        loadUserRecentShifts(serverId, data);
+        
+        // Check if user has an active shift
+        if (discordUser) {
+          const userId = discordUser.id;
+          const userActiveShift = data.activeshifts?.find(shift => shift.user === userId && shift.type === shiftType.value);
+          
+          if (userActiveShift) {
+            currentUserShift = userActiveShift;
+            shiftStatus = userActiveShift.paused ? 'paused' : 'active';
+            shiftStartTime = userActiveShift.started;
+            shiftElapsedTime = userActiveShift.elapsed || 0;
+            
+            updateShiftUI();
+            
+            if (shiftStatus === 'active') {
+              startShiftTimer();
+            }
+          }
+        }
+        
+      } catch (error) {
+        activeShifts.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Failed to load active shifts. Please try again.</p></div>';
+        recentShifts.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Failed to load recent shifts. Please try again.</p></div>';
+      }
+    }
+    
+    // Load User Recent Shifts
+    async function loadUserRecentShifts(serverId, shiftData) {
+      if (!discordToken || !discordUser) {
+        recentUserShifts.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Authentication error. Please log in again.</p></div>';
+        return;
+      }
+      
+      try {
+        const userId = discordUser.id;
+        
+        if (!shiftData || !shiftData.shifts || shiftData.shifts.length === 0) {
+          recentUserShifts.innerHTML = '<div class="text-center py-8"><i class="fas fa-history text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No shift history found.</p></div>';
+          return;
+        }
+        
+        const userShifts = shiftData.shifts.filter(shift => shift.user === userId);
+        
+        if (userShifts.length === 0) {
+          recentUserShifts.innerHTML = '<div class="text-center py-8"><i class="fas fa-history text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No shift history found.</p></div>';
+          return;
+        }
+        
+        recentUserShifts.innerHTML = '';
+        
+        const fragment = document.createDocumentFragment();
+        
+        userShifts.sort((a, b) => b.ended - a.ended);
+        
+        const recentUserShiftsList = userShifts.slice(0, 3);
+        
+        for (const shift of recentUserShiftsList) {
+          const item = document.createElement('div');
+          item.className = 'p-4 bg-black/20 rounded-lg flex justify-between items-center mb-3';
+          
+          const actualDuration = shift.elapsed > 0 ? shift.elapsed * 60 : 0;
+          
+          item.innerHTML = `
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="badge badge-success">${shift.type || 'default'}</span>
+                <span class="text-sm text-gray-400">${shift.breaks || 0} breaks</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-sm font-semibold">${formatDuration(actualDuration)}</div>
+            </div>
+          `;
+          
+          fragment.appendChild(item);
+        }
+        
+        recentUserShifts.appendChild(fragment);
+        
+      } catch (error) {
+        recentUserShifts.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Failed to load your shift history.</p></div>';
+      }
+    }
+    
+    // Load ER:LC Data
+    async function loadERLCData(serverId) {
+      erlcServerInfo.innerHTML = `
+        <div class="text-center py-4 col-span-full">
+          <div class="spinner mx-auto mb-2"></div>
+          <p class="text-gray-400">Loading server information...</p>
+        </div>
+      `;
+      
+      erlcPlayersList.innerHTML = `
+        <div class="text-center py-4 col-span-full">
+          <div class="spinner mx-auto mb-2"></div>
+          <p class="text-gray-400">Loading players...</p>
+        </div>
+      `;
+      
+      if (!discordToken) {
+        erlcServerInfo.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Authentication error. Please log in again.</p></div>';
+        erlcPlayersList.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Authentication error. Please log in again.</p></div>';
+        return;
+      }
+      
+      try {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/erlc/data`, {
+          headers: { "Discord-Code": discordToken }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch ER:LC data');
+        }
+        
+        const data = await response.json();
+        
+        if (!data.data) {
+          erlcServerInfo.innerHTML = '<div class="text-center py-8"><i class="fas fa-server text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No ER:LC server found.</p></div>';
+          erlcPlayersList.innerHTML = '<div class="text-center py-8"><i class="fas fa-users text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No players found.</p></div>';
+          return;
+        }
+        
+        const serverData = data.data.server;
+        const isOnline = data.data.players.length > 0;
+        
+        // Server Info
+        erlcServerInfo.innerHTML = '';
+        
+        const serverInfoItems = [
+          { label: 'Server Name', value: serverData.Name || 'Unknown' },
+          { label: 'Players', value: `${data.data.players.length || 0} / ${serverData.MaxPlayers || '?'}` },
+          { label: 'Queue', value: data.data.lastQueueCount || 0 },
+          { 
+            label: 'Join Key', 
+            value: `<a href="https://policeroleplay.community/join/${serverData.JoinKey}" class="text-white hover:underline">${serverData.JoinKey || 'None'}</a>` 
+          },
+          { 
+            label: 'Status', 
+            value: `<span class="badge ${isOnline ? 'badge-success' : 'badge-danger'}">${isOnline ? 'Online' : 'Offline'}</span>` 
+          }
+        ];
+        
+        serverInfoItems.forEach(item => {
+          const infoItem = document.createElement('div');
+          infoItem.className = 'p-4 bg-black/20 rounded-lg';
+          infoItem.innerHTML = `
+            <div class="text-sm text-gray-400 mb-1">${item.label}</div>
+            <div class="font-medium">${item.value}</div>
+          `;
+          erlcServerInfo.appendChild(infoItem);
+        });
+        
+        // Players List
+        if (!data.data.players || data.data.players.length === 0) {
+          erlcPlayersList.innerHTML = '<div class="text-center py-8"><i class="fas fa-users text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No players found.</p></div>';
+          return;
+        }
+        
+        erlcPlayersList.innerHTML = '';
+        
+        const fragment = document.createDocumentFragment();
+        
+        const bolosResponse = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/bolos`, {
+          headers: { "Discord-Code": discordToken }
+        }).catch(() => ({ ok: false }));
+        
+        let bolos = [];
+        if (bolosResponse && bolosResponse.ok) {
+          const bolosData = await bolosResponse.json();
+          bolos = bolosData.data || [];
+        }
+        
+        for (const player of data.data.players) {
+          const playerCard = document.createElement('div');
+          playerCard.className = 'p-4 bg-black/20 rounded-lg border-l-2 border-[#F5FF82]';
+          
+          const robloxUser = await fetchUserData(player.ID);
+          const avatarUrl = robloxUser.avatar;
+          
+          const hasBOLO = bolos.some(bolo => bolo.user === player.ID);
+          
+          playerCard.innerHTML = `
+            <div class="flex items-start gap-3">
+              <div class="avatar">
+                ${avatarUrl ? `<img src="${avatarUrl}" alt="${player.Name}">` : player.Name.charAt(0).toUpperCase()}
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h4 class="font-medium flex items-center gap-2">
+                      ${player.Name}
+                      ${hasBOLO ? '<span class="badge badge-danger"><i class="fas fa-exclamation-triangle mr-1"></i>BOLO</span>' : ''}
+                    </h4>
+                    <p class="text-sm text-gray-400 mt-1">Team: ${player.Team || 'Civilian'}</p>
+                    <p class="text-sm text-gray-400">Permission: ${player.Permission || 'None'}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          
+          fragment.appendChild(playerCard);
+        }
+        
+        erlcPlayersList.appendChild(fragment);
+        
+      } catch (error) {
+        erlcServerInfo.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Failed to load ER:LC data. Please try again.</p></div>';
+        erlcPlayersList.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Failed to load players. Please try again.</p></div>';
+      }
+    }
+    
+    // Check Active Shift
+    async function checkActiveShift(serverId) {
+      if (!discordToken || !discordUser) return;
+      
+      try {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts`, {
+          headers: { "Discord-Code": discordToken }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to check active shift');
+        }
+        
+        const { data } = await response.json();
+        
+        const userId = discordUser.id;
+        let userActiveShift = null;
+        
+        if (data.activeshifts && data.activeshifts.length > 0) {
+          userActiveShift = data.activeshifts.find(shift => shift.user === userId && shift.type === shiftType.value);
+        }
+        
+        if (userActiveShift) {
+          currentUserShift = userActiveShift;
+          shiftStatus = userActiveShift.paused ? 'paused' : 'active';
+          shiftStartTime = userActiveShift.started;
+          shiftElapsedTime = userActiveShift.elapsed || 0;
+          
+          updateShiftUI();
+          
+          if (shiftStatus === 'active') {
+            startShiftTimer();
+          }
+        } else {
+          shiftStatus = 'inactive';
+          updateShiftUI();
+        }
+        
+      } catch (error) {
+        showToast('Failed to check active shift status', 'error');
+      }
+    }
+    
+    // Show Delete Confirmation
+    function showDeleteConfirmation(punishmentId, username, type) {
+      currentPunishmentToDelete = punishmentId;
+      confirmationMessage.textContent = `Are you sure you want to delete the ${type.toUpperCase()} punishment for ${username}?`;
+      confirmationModal.classList.add('show');
+    }
+    
+    // Issue Punishment
+    async function issuePunishment() {
+      const now = Date.now();
+      if (now - lastPunishmentTime < PUNISHMENT_COOLDOWN) {
+        showToast('Please wait 5 seconds between punishments', 'error');
+        return;
+      }
+
+      if (!discordToken) {
+        showToast('Authentication error. Please log in again.', 'error');
+        return;
+      }
+      
+      const robloxUsername = document.getElementById('robloxUsername').value;
+      const type = document.getElementById('punishmentType').value;
+      const reason = document.getElementById('reason').value;
+      
+      if (!type) {
+        showToast('Please select a punishment type', 'error');
+        return;
+      }
+      
+      let expires = null;
+      if (type === 'tempban') {
+        const durationValue = document.getElementById('durationValue').value;
+        const durationUnit = document.getElementById('durationUnit').value;
+        
+        if (!durationValue || durationValue <= 0) {
+          showToast('Please enter a valid duration', 'error');
+          return;
+        }
+        
+        const multipliers = {
+          minutes: 60,
+          hours: 3600,
+          days: 86400,
+          weeks: 604800
+        };
+        
+        const duration = durationValue * multipliers[durationUnit];
+        expires = Math.floor(Date.now() / 1000) + duration;
+      }
+      
+      const submitBtn = document.getElementById('submitBtn');
+      const originalBtnText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+      
+      try {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Discord-Code': discordToken
+          },
+          body: JSON.stringify({
+            username: robloxUsername,
+            type,
+            reason,
+            expires
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to issue punishment');
+        }
+        
+        punishmentForm.reset();
+        durationContainer.classList.add('hidden');
+        punishmentTypeToggle.querySelector('span').textContent = 'Select type...';
+        document.querySelectorAll('#punishmentTypeMenu .dropdown-item').forEach(opt => {
+          opt.classList.remove('active');
+        });
+        
+        showToast(`Successfully issued ${type} to ${robloxUsername}`);
+        lastPunishmentTime = now;
+        
+        loadPunishments(selectedServerId);
+        
+      } catch (error) {
+        showToast(error.message || 'Failed to issue punishment. Please try again.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+      }
+    }
+    
+    // Create BOLO
+    async function createBOLO() {
+      if (!discordToken || !selectedServerId) {
+        showToast('Authentication error. Please log in again.', 'error');
+        return;
+      }
+      
+      const username = document.getElementById('boloUsername').value;
+      const reason = document.getElementById('boloReason').value;
+      
+      if (!username || !reason) {
+        showToast('Please fill in all fields', 'error');
+        return;
+      }
+      
+      const submitBtn = document.getElementById('submitBoloBtn');
+      const originalBtnText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+      
+      try {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/bolos`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Discord-Code': discordToken
+          },
+          body: JSON.stringify({
+            username: username,
+            reason: reason
+          })
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to create BOLO');
+        }
+        
+        boloForm.reset();
+        showToast(`Successfully created BOLO for ${username}`);
+        
+        loadBOLOs(selectedServerId);
+        
+      } catch (error) {
+        showToast(error.message || 'Failed to create BOLO. Please try again.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+      }
+    }
+    
+    // Approve BOLO
+    async function approveBOLO(robloxId) {
+      if (!discordToken || !selectedServerId) {
+        showToast('Authentication error. Please log in again.', 'error');
+        return;
+      }
+      
+      try {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/bolos/${robloxId}`, {
+          method: 'POST',
+          headers: {
+            'Discord-Code': discordToken
+          }
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to approve BOLO');
+        }
+        
+        showToast('BOLO approved successfully');
+        
+        const boloCard = document.querySelector(`[data-roblox-id="${robloxId}"]`);
+        if (boloCard) {
+          boloCard.remove();
+          
+          if (activeBOLOs.children.length === 0) {
+            activeBOLOs.innerHTML = '<div class="text-center py-8"><i class="fas fa-search text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No active BOLOs found.</p></div>';
+          }
+        }
+        
+      } catch (error) {
+        showToast(error.message || 'Failed to approve BOLO. Please try again.', 'error');
+      }
+    }
+    
+    // Delete BOLO
+    async function deleteBOLO(robloxId) {
+      if (!discordToken || !selectedServerId) {
+        showToast('Authentication error. Please log in again.', 'error');
+        return;
+      }
+      
+      try {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/bolos/${robloxId}`, {
+          method: 'DELETE',
+          headers: {
+            'Discord-Code': discordToken
+          }
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error('Failed to delete BOLO');
+        }
+        
+        showToast('BOLO deleted successfully');
+        
+        const boloCard = document.querySelector(`[data-roblox-id="${robloxId}"]`);
+        if (boloCard) {
+          boloCard.remove();
+          
+          if (activeBOLOs.children.length === 0) {
+            activeBOLOs.innerHTML = '<div class="text-center py-8"><i class="fas fa-search text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No active BOLOs found.</p></div>';
+          }
+        }
+        
+      } catch (error) {
+        showToast('Failed to delete BOLO. Please try again.', 'error');
+      }
+    }
+    
+    // Confirm Delete Punishment
+    async function confirmDeletePunishment() {
+      if (!currentPunishmentToDelete || !selectedServerId || !discordToken) {
+        showToast('Error: Missing information for deletion', 'error');
+        confirmationModal.classList.remove('show');
+        return;
+      }
+      
+      try {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments/${currentPunishmentToDelete}`, {
+          method: 'DELETE',
+          headers: {
+            'Discord-Code': discordToken
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to delete punishment');
+        }
+        
+        showToast('Punishment deleted successfully');
+        
+        const punishmentElement = document.querySelector(`.punishment-item[data-punishment-id="${currentPunishmentToDelete}"]`);
+        if (punishmentElement) {
+          punishmentElement.style.height = punishmentElement.offsetHeight + 'px';
+          punishmentElement.style.overflow = 'hidden';
+          
+          setTimeout(() => {
+            punishmentElement.style.height = '0';
+            punishmentElement.style.padding = '0';
+            punishmentElement.style.margin = '0';
+            punishmentElement.style.opacity = '0';
+            
+            setTimeout(() => {
+              punishmentElement.remove();
+              
+              if (punishmentHistory.children.length === 0) {
+                punishmentHistory.innerHTML = '<div class="text-center py-8"><i class="fas fa-ban text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No punishment history found.</p></div>';
+              }
+            }, 300);
+          }, 10);
+        }
+        
+      } catch (error) {
+        showToast('Failed to delete punishment: ' + error.message, 'error');
+      } finally {
+        confirmationModal.classList.remove('show');
+        currentPunishmentToDelete = null;
+      }
+    }
+    
+    // Start Shift
+    async function startShift() {
+      if (!discordToken || !selectedServerId) {
+        showToast('Authentication error. Please log in again.', 'error');
+        return;
+      }
+      
+      const type = shiftType.value;
+      
+      try {
+        startShiftBtn.disabled = true;
+        startShiftBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+        
+        if (shiftStatus === 'paused' && currentUserShift) {
+          const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/start`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Discord-Code': discordToken
+            },
+            body: JSON.stringify({ type })
+          });
+          
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to resume shift');
+          }
+          
+          shiftStatus = 'active';
+          startShiftTimer();
+          
+          showToast('Shift resumed successfully');
+        } else {
+          const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/start`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Discord-Code': discordToken
+            },
+            body: JSON.stringify({ type })
+          });
+          
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to start shift');
+          }
+          
+          shiftStatus = 'active';
+          shiftStartTime = Math.floor(Date.now() / 1000);
+          shiftElapsedTime = 0;
+          
+          startShiftTimer();
+          
+          showToast('Shift started successfully');
+        }
+        
+        updateShiftUI();
+        loadShifts(selectedServerId);
+        
+      } catch (error) {
+        showToast('Failed to start shift: ' + error.message, 'error');
+      } finally {
+        startShiftBtn.disabled = false;
+        if (shiftStatus === 'paused') {
+          startShiftBtn.innerHTML = '<i class="fas fa-play mr-2"></i><span>Resume</span>';
+        } else {
+          startShiftBtn.innerHTML = '<i class="fas fa-play mr-2"></i><span>Start</span>';
+        }
+      }
+    }
+    
+    // Pause Shift
+    async function pauseShift() {
+      if (!discordToken || !selectedServerId) {
+        showToast('Authentication error. Please log in again.', 'error');
+        return;
+      }
+
+      const type = shiftType.value;
+      
+      try {
+        pauseShiftBtn.disabled = true;
+        pauseShiftBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+        
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/pause`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Discord-Code': discordToken
+          },
+          body: JSON.stringify({ type })
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to pause shift');
+        }
+        
+        if (shiftTimerInterval) {
+          clearInterval(shiftTimerInterval);
+          shiftTimerInterval = null;
+        }
+        
+        shiftStatus = 'paused';
+        updateShiftUI();
+        
+        showToast('Shift paused successfully');
+        
+        loadShifts(selectedServerId);
+        
+      } catch (error) {
+        showToast('Failed to pause shift: ' + error.message, 'error');
+      } finally {
+        pauseShiftBtn.disabled = false;
+        pauseShiftBtn.innerHTML = '<i class="fas fa-pause mr-2"></i><span>Pause</span>';
+      }
+    }
+    
+    // End Shift
+    async function endShift() {
+      if (!discordToken || !selectedServerId) {
+        showToast('Authentication error. Please log in again.', 'error');
+        return;
+      }
+
+      const type = shiftType.value;
+      
+      try {
+        endShiftBtn.disabled = true;
+        endShiftBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+        
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/end`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Discord-Code': discordToken
+          },
+          body: JSON.stringify({ type })
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to end shift');
+        }
+        
+        if (shiftTimerInterval) {
+          clearInterval(shiftTimerInterval);
+          shiftTimerInterval = null;
+        }
+        
+        shiftStatus = 'inactive';
+        shiftStartTime = 0;
+        shiftElapsedTime = 0;
+        currentUserShift = null;
+        
+        updateShiftUI();
+        
+        showToast('Shift ended successfully');
+        
+        loadShifts(selectedServerId);
+        
+      } catch (error) {
+        showToast('Failed to end shift: ' + error.message, 'error');
+      } finally {
+        endShiftBtn.disabled = false;
+        endShiftBtn.innerHTML = '<i class="fas fa-stop mr-2"></i><span>End</span>';
+      }
+    }
+    
+    // Run Discord Check
+    async function runDiscordCheck() {
+      if (!discordToken || !selectedServerId) {
+        showToast('Authentication error. Please log in again.', 'error');
+        return;
+      }
+      
+      if (discordCheckCooldowns[selectedServerId] && discordCheckCooldowns[selectedServerId] > Date.now()) {
+        showToast('Discord check is on cooldown. Please wait before trying again.', 'error');
+        return;
+      }
+      
+      try {
+        runDiscordCheckBtn.disabled = true;
+        runDiscordCheckBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Running check...';
+      
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/erlc/check`, {
+          headers: { "Discord-Code": discordToken }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to run Discord check');
+        }
+        
+        const { data } = await response.json();
+        
+        discordCheckList.innerHTML = '';
+        
+        if (!data || data.length === 0) {
+          discordCheckList.innerHTML = '<div class="text-center py-8"><i class="fas fa-users text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No players found in-game.</p></div>';
+        } else {
+          const fragment = document.createDocumentFragment();
+          
+          for (const player of data) {
+            const item = document.createElement('div');
+            item.className = 'p-4 bg-black/20 rounded-lg';
+            
+            if (player.discord) {
+              item.innerHTML = `
+                <div class="flex items-start gap-3">
+                  <div class="avatar">
+                    ${player.roblox.avatar ? `<img src="${player.roblox.avatar}" alt="${player.roblox.name}">` : player.roblox.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex justify-between items-start">
+                      <div>
+                        <h4 class="font-medium">${player.roblox.displayName || player.roblox.name} <span class="text-sm text-gray-400">(${player.roblox.name})</span></h4>
+                        <div class="flex items-center gap-2 mt-1">
+                          <span class="badge badge-success">Discord Linked</span>
+                          <span class="text-sm text-gray-400">@${player.discord.username}</span>
+                        </div>
+                        ${player.discord.vc ? `
+                          <div class="mt-2">
+                            <span class="flex items-center gap-1 text-sm text-[#F5FF82]">
+                              <i class="fas fa-headset"></i> ${player.discord.vc.name}
+                            </span>
+                          </div>
+                        ` : ''}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            } else {
+              item.innerHTML = `
+                <div class="flex items-start gap-3">
+                  <div class="avatar">
+                    ${player.roblox.avatar ? `<img src="${player.roblox.avatar}" alt="${player.roblox.name}">` : player.roblox.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex justify-between items-start">
+                      <div>
+                        <h4 class="font-medium">${player.roblox.displayName || player.roblox.name} <span class="text-sm text-gray-400">(${player.roblox.name})</span></h4>
+                        <div class="flex items-center gap-2 mt-1">
+                          <span class="badge badge-danger">Not Linked</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }
+            
+            fragment.appendChild(item);
+          }
+          
+          discordCheckList.appendChild(fragment);
+        }
+        
+        discordCheckResults.classList.remove('hidden');
+        
+        discordCheckCooldowns[selectedServerId] = Date.now() + DISCORD_CHECK_COOLDOWN;
+        updateDiscordCheckCooldown();
+        
+      } catch (error) {
+        showToast('Failed to run Discord check: ' + error.message, 'error');
+      } finally {
+        if (!discordCheckCooldowns[selectedServerId] || discordCheckCooldowns[selectedServerId] <= Date.now()) {
+          runDiscordCheckBtn.disabled = false;
+          runDiscordCheckBtn.innerHTML = 'Run Discord Check';
+        }
+      }
+    }
+    
+    // Execute Command
+    async function executeCommand(e) {
+      e.preventDefault();
+      
+      if (!discordToken || !selectedServerId) {
+        showToast('Authentication error. Please log in again.', 'error');
+        return;
+      }
+      
+      const commandInput = document.getElementById('command');
+      const command = commandInput.value.trim();
+      
+      if (!command) {
+        showToast('Please enter a command', 'error');
+        return;
+      }
+      
+      const executeBtn = document.getElementById('executeCommandBtn');
+      const originalBtnText = executeBtn.innerHTML;
+      executeBtn.disabled = true;
+      executeBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Executing...';
+      
+      try {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/erlc/execute`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Discord-Code': discordToken
+          },
+          body: JSON.stringify({
+            command: command
+          })
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to execute command');
+        }
+        
+        commandInput.value = '';
+        showToast(`Command executed successfully`);
+        
+      } catch (error) {
+        showToast('Failed to execute command: ' + error.message, 'error');
+      } finally {
+        executeBtn.disabled = false;
+        executeBtn.innerHTML = originalBtnText;
+      }
+    }
+    
+    // Run Automation
+    async function runAutomation() {
+      if (!discordToken || !selectedServerId || selectedAutomationId.value === '') {
+        showToast('Please select an automation to run', 'error');
+        return;
+      }
+      
+      const automationIndex = parseInt(selectedAutomationId.value);
+      if (isNaN(automationIndex) || automationIndex < 0 || automationIndex >= serverAutomations.length) {
+        showToast('Invalid automation selected', 'error');
+        return;
+      }
+      
+      const automation = serverAutomations[automationIndex];
+      if (!automation) {
+        showToast('Invalid automation selected', 'error');
+        return;
+      }
+      
+      try {
+        runAutomationBtn.disabled = true;
+        runAutomationBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Running...';
+        
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/automations/${automationIndex}`, {
+          method: 'POST',
+          headers: {
+            'Discord-Code': discordToken
+          }
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to run automation');
+        }
+        
+        showToast(`Successfully ran automation: ${automation.name}`);
+        
+      } catch (error) {
+        showToast('Failed to run automation: ' + error.message, 'error');
+      } finally {
+        runAutomationBtn.disabled = false;
+        runAutomationBtn.innerHTML = 'Run Automation';
+      }
+    }
+    
+    // Event Listeners
+    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    closeMobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    toggleSidebarBtn.addEventListener('click', toggleSidebar);
+    mobileSidebarBtn.addEventListener('click', toggleMobileSidebar);
+    backToServersBtn.addEventListener('click', () => {
+      dashboardView.classList.add('hidden');
+      serverSelectionView.classList.remove('hidden');
+      localStorage.removeItem('selectedServerId');
+      resetShiftUI();
+    });
+    
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const tabId = link.dataset.tab;
+        switchTab(tabId);
+      });
+    });
+    
+    punishmentForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      issuePunishment();
+    });
+    
+    if (boloForm) {
+      boloForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        createBOLO();
+      });
+    }
+    
+    if (commandForm) {
+      commandForm.addEventListener('submit', executeCommand);
+    }
+    
+    startShiftBtn.addEventListener('click', startShift);
+    pauseShiftBtn.addEventListener('click', pauseShift);
+    endShiftBtn.addEventListener('click', endShift);
+    runDiscordCheckBtn.addEventListener('click', runDiscordCheck);
+    runAutomationBtn.addEventListener('click', runAutomation);
+    
+    confirmDeleteBtn.addEventListener('click', confirmDeletePunishment);
+    cancelDeleteBtn.addEventListener('click', () => {
+      confirmationModal.classList.remove('show');
+      currentPunishmentToDelete = null;
+    });
+    
+    // Initialize
+    initDropdowns();
+    loadServers();
+  </script>
+</body>
+</html>
+
