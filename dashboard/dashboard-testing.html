@@ -19,7 +19,7 @@
             --primary: #F5FF82;
             --primary-dark: #e6ff4d;
             --background: #0a0a0a;
-            --card-bg: #1e1e1e;
+            --card-bg: #121212;
             --card-border: rgba(255, 255, 255, 0.1);
             --card-hover-border: rgba(245, 255, 130, 0.3);
             --text: #ffffff;
@@ -33,9 +33,7 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--background);
             color: var(--text);
-            margin: 0;
-            padding: 0;
-            padding-top: 100px;
+            -webkit-tap-highlight-color: transparent;
         }
         
         .grid-container {
@@ -243,19 +241,17 @@
         }
         
         .punishment-item {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: center;
+            position: relative;
             padding: 0.75rem;
             border-radius: 6px;
-            background-color: rgba(30, 30, 30, 0.5);
+            background-color: rgba(18, 18, 18, 0.6);
             border-left: 2px solid var(--primary);
             margin-bottom: 0.5rem;
             transition: background-color 0.2s ease;
         }
         
         .punishment-item:hover {
-            background-color: rgba(30, 30, 30, 0.7);
+            background-color: rgba(30, 30, 30, 0.8);
         }
         
         .delete-btn {
@@ -267,11 +263,11 @@
             width: 2rem;
             height: 2rem;
             border-radius: 50%;
+            opacity: 0;
             transition: all 0.2s ease;
             cursor: pointer;
-            opacity: 0;
         }
-        
+
         .punishment-item:hover .delete-btn {
             opacity: 1;
         }
@@ -529,7 +525,7 @@
         }
         
         .dropdown-selected span {
-            margin-right: 1rem;
+            margin-right: 1rem; 
         }
         
         .dropdown-options {
@@ -545,8 +541,6 @@
             opacity: 0;
             transition: all 0.2s ease;
             z-index: 10;
-            width: 100%;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
         
         .dropdown-options.active {
@@ -599,7 +593,7 @@
         
         .server-info-grid {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
         }
         
@@ -746,8 +740,8 @@
         }
         
         .moderation-log-header {
-            display: grid;
-            grid-template-columns: 1fr 1fr 2fr 1fr;
+            display: flex;
+            justify-content: space-between;
             padding: 0.75rem 1rem;
             border-bottom: 1px solid var(--card-border);
             font-weight: 600;
@@ -766,9 +760,8 @@
             gap: 0.75rem;
             padding: 0.75rem;
             border-radius: 6px;
-            background-color: rgba(30, 30, 30, 0.5);
-            border: 1px solid var(--card-border);
-            margin-bottom: 0.75rem;
+            background-color: rgba(18, 18, 18, 0.6);
+            margin-bottom: 0.5rem;
         }
         
         .staff-info {
@@ -1144,8 +1137,8 @@
 
             <div id="erlcTab" class="hidden">
                 <div class="grid-container">
-                    <div class="col-span-12 lg:col-span-8">
-                        <div class="grid-item mb-6">
+                    <div class="col-span-12 lg:col-span-12 mb-6">
+                        <div class="grid-item">
                             <div class="grid-item-header">
                                 <h3>Server Information</h3>
                             </div>
@@ -1158,8 +1151,10 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="grid-item">
+                    </div>
+                    
+                    <div class="col-span-8 lg:col-span-8">
+                        <div class="grid-item mb-6">
                             <div class="grid-item-header">
                                 <h3>In-Game Players</h3>
                             </div>
@@ -1168,6 +1163,28 @@
                                     <div class="text-center py-4 col-span-full">
                                         <div class="spinner mx-auto mb-2"></div>
                                         <p class="text-gray-400">Loading players...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid-item">
+                            <div class="grid-item-header">
+                                <h3>Discord Checks</h3>
+                            </div>
+                            <div class="grid-item-content">
+                                <p class="text-gray-400 mb-4">Check which players in-game are connected to Discord and view their voice channel status.</p>
+                                <button id="runDiscordCheckBtn" class="btn btn-primary">
+                                    Run Discord Check
+                                </button>
+                                <div id="discordCheckCooldown" class="mt-2 text-sm text-gray-400 hidden">
+                                    <i class="fas fa-clock mr-1"></i> <span id="discordCheckCooldownTime"></span> until next check
+                                </div>
+                                
+                                <div id="discordCheckResults" class="mt-6 space-y-3 hidden">
+                                    <h4 class="text-md font-semibold mb-3">Results</h4>
+                                    <div id="discordCheckList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
                                     </div>
                                 </div>
                             </div>
@@ -1864,6 +1881,7 @@
     });
 
     function selectServer(serverId, serverName, serverIcon, serverConfig) {
+        // Clear previous server data
         clearPreviousServerData();
         
         selectedServerId = serverId;
@@ -1894,6 +1912,7 @@
         }
         setupShiftTypeDropdown(shiftTypes);
         
+        // Setup automations dropdown
         if (serverConfig && serverConfig.automations) {
             setupAutomationsDropdown(serverConfig.automations);
         } else {
@@ -2054,7 +2073,7 @@
             
             for (const punishment of punishments) {
                 const item = document.createElement('div');
-                item.className = 'shift-card flex justify-between items-center';
+                item.className = 'punishment-item';
                 item.dataset.punishmentId = punishment.punishmentid || punishment.id;
                 item.dataset.username = (punishment.robloxUser.name || '').toLowerCase();
                 item.dataset.displayname = (punishment.robloxUser.displayName || '').toLowerCase();
@@ -2080,22 +2099,24 @@
                 }
                 
                 item.innerHTML = `
-                    <div class="flex-1 flex items-center gap-3">
-                        <div class="avatar-circle hidden sm:flex">
-                            ${avatarUrl ? `<img src="${avatarUrl}" alt="${punishment.robloxUser.name}">` : punishment.robloxUser.name.charAt(0)}
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-start gap-2">
+                            <div class="avatar-circle hidden sm:flex">
+                                ${avatarUrl ? `<img src="${avatarUrl}" alt="${punishment.robloxUser.name}">` : punishment.robloxUser.name.charAt(0)}
+                            </div>
+                            <div>
+                                <div class="font-medium">${punishment.robloxUser.displayName || punishment.robloxUser.name}</div>
+                                <div class="text-sm text-gray-400">@${punishment.robloxUser.name}</div>
+                                <div class="text-sm ${typeColor} mt-1">${punishment.type.toUpperCase()}</div>
+                                <div class="text-sm text-gray-400 mt-1">${punishment.reason}</div>
+                            </div>
                         </div>
-                        <div>
-                            <div class="font-medium">${punishment.robloxUser.displayName || punishment.robloxUser.name}</div>
-                            <div class="text-sm text-gray-400">@${punishment.robloxUser.name}</div>
-                            <div class="text-sm ${typeColor} mt-1">${punishment.type.toUpperCase()}</div>
-                            <div class="text-sm text-gray-400 mt-1">${punishment.reason}</div>
-                        </div>
-                    </div>
-                    <div class="text-right text-xs">
-                        <div class="text-gray-500">${formatDate(punishment.timestamp)}</div>
-                        <div class="text-gray-400 mt-1">By: ${moderatorName}</div>
-                        <div class="delete-btn" title="Delete punishment">
-                            <i class="fas fa-trash-alt"></i>
+                        <div class="text-right text-xs">
+                            <div class="text-gray-500">${formatDate(punishment.timestamp)}</div>
+                            <div class="text-gray-400 mt-1">By: ${moderatorName}</div>
+                            <div class="delete-btn" title="Delete punishment">
+                                <i class="fas fa-trash-alt"></i>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -2121,7 +2142,7 @@
 
     function filterPunishmentHistory() {
         const username = document.getElementById('robloxUsername').value.trim().toLowerCase();
-        const punishmentItems = document.querySelectorAll('#punishmentHistory .shift-card');
+        const punishmentItems = document.querySelectorAll('#punishmentHistory .punishment-item');
         
         if (!username) {
             punishmentItems.forEach(item => {
@@ -2150,7 +2171,7 @@
                 const noMatches = document.createElement('div');
                 noMatches.id = 'no-matches-message';
                 noMatches.className = 'empty-state';
-                noMatches.innerHTML = '<i class="fas fa-search"></i><p>No matching punishments found.</p>';
+                noMatches.innerHTML = '<i class="fas fa-search"></i><p>No matching punishments found.</p></div>';
                 punishmentHistory.appendChild(noMatches);
             }
         } else {
@@ -2183,12 +2204,13 @@
             });
             
             if (!response.ok) {
+                const errorData = await response.json();
                 throw new Error('Failed to delete punishment');
             }
             
             showToast('Punishment deleted successfully');
             
-            const punishmentElement = document.querySelector(`.shift-card[data-punishment-id="${currentPunishmentToDelete}"]`);
+            const punishmentElement = document.querySelector(`.punishment-item[data-punishment-id="${currentPunishmentToDelete}"]`);
             if (punishmentElement) {
                 punishmentElement.style.height = punishmentElement.offsetHeight + 'px';
                 punishmentElement.style.overflow = 'hidden';
@@ -2261,7 +2283,7 @@
                     const userData = await fetchUserData(shift.user);
                     
                     const card = document.createElement('div');
-                    card.className = 'shift-card';
+                    card.className = 'active-staff-item';
                     
                     const avatarUrl = userData.avatar;
                     
@@ -2269,18 +2291,13 @@
                         <div class="avatar-circle">
                             ${avatarUrl ? `<img src="${avatarUrl}" alt="${userData.username || userData.name || shift.user}">` : (userData.username || userData.name || shift.user).charAt(0)}
                         </div>
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h4 class="font-medium">${userData.username || userData.name || shift.user}</h4>
-                                    <p class="text-sm text-[#F5FF82] mt-1">Active for ${formatDuration(duration)}</p>
-                                    <p class="text-xs text-gray-400 mt-1">Type: ${shift.type || 'Default'}</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-xs text-gray-500">Started: ${formatDate(shift.started)}</p>
-                                    <p class="text-xs text-gray-400 mt-1">Punishments: ${shift.punishments}</p>
-                                </div>
-                            </div>
+                        <div class="staff-info">
+                            <div class="staff-name">${userData.username || userData.name || shift.user}</div>
+                            <div class="staff-status">Active for ${formatDuration(duration)}</div>
+                            <div class="text-xs text-gray-400 mt-1">Type: ${shift.type || 'Default'}</div>
+                        </div>
+                        <div class="staff-active-badge">
+                            <i class="fas fa-circle mr-1"></i> Active
                         </div>
                     `;
                     
@@ -2477,6 +2494,11 @@
                 </div>
             `;
             
+            if (!data.data.players || data.data.players.length === 0) {
+                erlcPlayersList.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-users"></i><p>No players found.</p></div>';
+                return;
+            }
+            
             erlcPlayersList.innerHTML = '';
             
             const fragment = document.createDocumentFragment();
@@ -2493,22 +2515,29 @@
             
             for (const player of data.data.players) {
                 const playerCard = document.createElement('div');
-                playerCard.className = 'shift-card flex justify-between items-center';
+                playerCard.className = 'p-3 bg-black/30 rounded-lg border-l-2 border-[#F5FF82]';
                 
                 const robloxUser = await fetchUserData(player.ID);
                 const avatarUrl = robloxUser.avatar;
                 
-                const hasBOLO = bolos.some(bolo => bolo.robloxId === player.ID);
+                const hasBOLO = bolos.some(bolo => bolo.user === player.ID);
                 
                 playerCard.innerHTML = `
-                    <div class="flex-1 flex items-center gap-3">
+                    <div class="flex items-start gap-3">
                         <div class="avatar-circle">
                             ${avatarUrl ? `<img src="${avatarUrl}" alt="${player.Name}">` : player.Name.charAt(0)}
                         </div>
-                        <div>
-                            <h4 class="font-medium">${player.Name}</h4>
-                            <p class="text-sm text-gray-400 mt-1">Team: ${player.Team || 'Civilian'}</p>
-                            ${hasBOLO ? '<span class="bolo-tag"><i class="fas fa-exclamation-triangle"></i>BOLO</span>' : ''}
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-medium flex items-center gap-2">
+                                        ${player.Name}
+                                        ${hasBOLO ? '<span class="bolo-tag"><i class="fas fa-exclamation-triangle"></i>BOLO</span>' : ''}
+                                    </h4>
+                                    <p class="text-sm text-gray-400 mt-1">Team: ${player.Team || 'Civilian'}</p>
+                                    <p class="text-sm text-gray-400">Permission: ${player.Permission || 'None'}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -2554,38 +2583,41 @@
             
             for (const bolo of data.data) {
                 const boloCard = document.createElement('div');
-                boloCard.className = 'shift-card flex justify-between items-center';
-                boloCard.dataset.robloxId = bolo.robloxId;
+                boloCard.className = 'p-3 bg-black/30 rounded-lg border-l-2 border-red-500 mb-3';
+                boloCard.dataset.robloxId = bolo.user;
                 
-                const robloxUser = await fetchUserData(bolo.robloxId);
+                const robloxUser = await fetchUserData(bolo.user);
                 const avatarUrl = robloxUser.avatar;
                 
                 boloCard.innerHTML = `
-                    <div class="flex-1 flex items-center gap-3">
+                    <div class="flex items-start gap-3">
                         <div class="avatar-circle">
-                            ${avatarUrl ? `<img src="${avatarUrl}" alt="${bolo.username}">` : bolo.username.charAt(0)}
+                            ${avatarUrl ? `<img src="${avatarUrl}" alt="${robloxUser.name}">` : robloxUser.name.charAt(0)}
                         </div>
-                        <div>
-                            <h4 class="font-medium">${bolo.username}</h4>
-                            <p class="text-sm text-gray-400 mt-1">${bolo.reason}</p>
-                            <p class="text-xs text-gray-500 mt-2">Created: ${formatDate(bolo.timestamp)}</p>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-medium">${robloxUser.name}</h4>
+                                    <p class="text-sm text-gray-400 mt-1">${bolo.reason}</p>
+                                    <p class="text-xs text-gray-500 mt-2">Created: ${formatDate(bolo.created)}</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button class="approve-bolo-btn px-2 py-1 bg-green-500/10 text-green-500 rounded-md text-xs font-medium hover:bg-green-500/20 transition">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="delete-bolo-btn px-2 py-1 bg-red-500/10 text-red-500 rounded-md text-xs font-medium hover:bg-red-500/20 transition">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="flex gap-2">
-                        <button class="approve-bolo-btn px-2 py-1 bg-green-500/10 text-green-500 rounded-md text-xs font-medium hover:bg-green-500/20 transition">
-                            <i class="fas fa-check"></i>
-                        </button>
-                        <button class="delete-bolo-btn px-2 py-1 bg-red-500/10 text-red-500 rounded-md text-xs font-medium hover:bg-red-500/20 transition">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                `;
-                
+                `;                
                 const approveBtn = boloCard.querySelector('.approve-bolo-btn');
                 const deleteBtn = boloCard.querySelector('.delete-bolo-btn');
                 
-                approveBtn.addEventListener('click', () => approveBOLO(bolo.robloxId));
-                deleteBtn.addEventListener('click', () => deleteBOLO(bolo.robloxId));
+                approveBtn.addEventListener('click', () => approveBOLO(bolo.user));
+                deleteBtn.addEventListener('click', () => deleteBOLO(bolo.user));
                 
                 fragment.appendChild(boloCard);
             }
@@ -2593,7 +2625,7 @@
             activeBOLOs.appendChild(fragment);
             
         } catch (error) {
-            activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><p>No active BOLOs found.</p></div>';
+            activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load BOLOs. Please try again.</p></div>';
         }
     }
     
@@ -2701,7 +2733,7 @@
             
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to delete BOLO');
+                throw new Error('Failed to delete BOLO');
             }
             
             showToast('BOLO deleted successfully');
@@ -2861,7 +2893,7 @@
         if (!discordToken || !discordUser) return;
         
         try {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/shifts`, {
+            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts`, {
                 headers: { "Discord-Code": discordToken }
             });
             
@@ -3151,7 +3183,7 @@
                 
                 for (const player of data) {
                     const item = document.createElement('div');
-                    item.className = 'shift-card flex justify-between items-center';
+                    item.className = 'p-4 bg-black/30 rounded-lg border-l-2 border-[#F5FF82]';
                     
                     if (player.discord) {
                         item.innerHTML = `

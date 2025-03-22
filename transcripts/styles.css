@@ -31,3 +31,74 @@ li {
   border-radius: 5px;
 }
 
+@media (max-width: 640px) {
+  .message {
+    padding: 0.5rem;
+  }
+
+  .embed {
+    padding: 0.5rem;
+  }
+
+  .sticker {
+    margin: 0.25rem;
+  }
+
+  .attachment {
+    margin: 0.25rem;
+  }
+}
+
+.break-words {
+  word-break: break-word;
+}
+
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
+
+.spoiler {
+  background-color: #000;
+  color: #000;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.spoiler:hover {
+  color: #fff;
+}
+
+pre code {
+  display: block;
+  padding: 0.5em;
+  background: #23241f;
+  color: #f8f8f2;
+  border-radius: 5px;
+}
+
+code {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+blockquote {
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  border-left: 4px solid #ccc;
+  font-style: italic;
+}
+
+li {
+  margin-bottom: 0.5em;
+}
+
+li.indent {
+  margin-left: 2em;
+}
+
+li.numbered {
+  list-style-type: decimal;
+}

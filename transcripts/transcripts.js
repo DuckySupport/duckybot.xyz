@@ -53,27 +53,40 @@ document.addEventListener("DOMContentLoaded", () => {
   
     function formatDiscordMarkdown(text) {
       if (!text) return ""
+  
+      text = text.replace(/<:(\w+):(\d+)>/g, ":$1:")
+  
+      text = text.replace(/<@!?(\d+)>/g, (match, id) => `@${id}`)
+      text = text.replace(/<@&(\d+)>/g, (match, id) => `@&${id}`)
+      text = text.replace(/<#(\d+)>/g, (match, id) => `#${id}`) 
+  
+      text = text.replace(/```(\w+)\n([\s\S]*?)```/g, '<pre><code class="language-$1 break-words whitespace-pre-wrap">$2</code></pre>')
+      text = text.replace(/```([\s\S]*?)```/g, '<pre><code class="break-words whitespace-pre-wrap">$1</code></pre>')
+  
+      text = text.replace(/`([^`]+)`/g, '<code class="break-words whitespace-pre-wrap">$1</code>')
+  
+      text = text.replace(/\*\*\*([^*]+)\*\*\*/g, "<strong><em>$1</em></strong>")
+      text = text.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      text = text.replace(/\*([^*]+)\*/g, "<em>$1</em>")
+      text = text.replace(/_([^_]+)_/g, "<em>$1</em>")
+      text = text.replace(/__(.*?)__/g, "<u>$1</u>")
+      text = text.replace(/~~(.*?)~~/, "<s>$1</s>")
+      text = text.replace(/\|\|(.*?)\|\|/g, '<span class="spoiler">$1</span>')
+  
+      text = text.replace(/>>>([\s\S]*)/g, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
+      text = text.replace(/^> (.+)/gm, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
+  
+      text = text.replace(/^# (.*?)$/gm, "<h1>$1</h1>")
+      text = text.replace(/^## (.*?)$/gm, "<h2>$1</h2>")
+      text = text.replace(/^### (.*?)$/gm, "<h3>$1</h3>")
+  
+      text = text.replace(/^(?:- |\* )(.*)/gm, "<li>$1</li>")
+      text = text.replace(/^(?: {2}- | {2}\* )(.*)/gm, '<li class="indent">$1</li>')
+      text = text.replace(/^(?:\d+\. )(.*)/gm, '<li class="numbered">$1</li>')
+  
+      text = text.replace(/\n/g, "<br>")
+  
       return text
-        .replace(/(\w+)?\n([\s\S]*?)/g, '<pre><code class="language-$1 break-words whitespace-pre-wrap">$2</code></pre>')
-        .replace(/`([^`]+)`/g, '<code class="break-words whitespace-pre-wrap">$1</code>')
-        .replace(/\*\*\*([^*]+)\*\*\*/g, "<strong><em>$1</em></strong>")
-        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-        .replace(/\*([^*]+)\*/g, "<em>$1</em>")
-        .replace(/_([^_]+)_/g, "<em>$1</em>")
-        .replace(/__(.*?)__/g, "<u>$1</u>")
-        .replace(/~~(.*?)~~/, "<s>$1</s>")
-        .replace(/\|\|(.*?)\|\|/g, '<span class="spoiler">$1</span>')
-        .replace(/^# (.*?)$/gm, "<h1>$1</h1>")
-        .replace(/^## (.*?)$/gm, "<h2>$1</h2>")
-        .replace(/^### (.*?)$/gm, "<h3>$1</h3>")
-        .replace(/^-# (.*?)$/gm, '<div class="subtext">$1</div>')
-        .replace(/^(?:- |\* )(.*)/gm, "<li>$1</li>")
-        .replace(/^(?: {2}- | {2}\* )(.*)/gm, '<li class="indent">$1</li>')
-        .replace(/^(?:\d+\. )(.*)/gm, '<li class="numbered">$1</li>')
-        .replace(/>>>([\s\S]*)/g, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
-        .replace(/^> (.+)/gm, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
-        .replace(/<:([^:]+):\d+>/g, "$1")
-        .replace(/\n/g, "<br>")
     }
   
     function renderMessage(msg) {
@@ -159,5 +172,6 @@ document.addEventListener("DOMContentLoaded", () => {
           `
     }
   })
+  
   
   
