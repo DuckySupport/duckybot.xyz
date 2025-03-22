@@ -2460,22 +2460,6 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Team Stats</h4>
-                    <div class="team-stats-grid">
-                        <div class="team-stat-item">
-                            <div class="team-stat-label">Law Enforcement</div>
-                            <div class="team-stat-value">${(data.data.lastTeamPlayerCounts?.Sheriff || 0) + (data.data.lastTeamPlayerCounts?.Police || 0)}</div>
-                        </div>
-                        <div class="team-stat-item">
-                            <div class="team-stat-label">Jail/Civilian</div>
-                            <div class="team-stat-value">${(data.data.lastTeamPlayerCounts?.Jail || 0) + (data.data.lastTeamPlayerCounts?.Civilian || 0)}</div>
-                        </div>
-                    </div>
-                    <div class="last-updated">
-                        Last Updated: ${new Date().toLocaleString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
-                    </div>
-                </div>
             `;
             
             if (!data.data.players || data.data.players.length === 0) {
