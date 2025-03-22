@@ -2233,7 +2233,7 @@
                 document.getElementById('profilePicture').src = avatarUrl;
             }
             
-            const filteredServers = servers.filter(server => server.manage_server && server.ducky);
+            const filteredServers = servers.filter(server => server.manageable);
             
             if (filteredServers.length === 0) {
                 serverGrid.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-server"></i><p>No servers with Ducky found. Make sure you have the right permissions.</p></div>';
