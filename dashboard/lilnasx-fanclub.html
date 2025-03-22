@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Ducky Moderation Panel - Manage your ER:LC server">
-  <meta content="Ducky Moderation Panel" property="og:title">
+  <meta name="description" content="Ducky Dashboard - Manage your ER:LC server">
+  <meta content="Ducky Dashboard" property="og:title">
   <meta content="Manage your ER:LC server with Ducky's powerful moderation tools" property="og:description">
-  <meta content="https://duckybot.xyz/modpanel" property="og:url">
+  <meta content="https://duckybot.xyz/dashboard" property="og:url">
   <meta content="https://duckybot.xyz/images/Ducky.svg" property="og:image">
   <meta content="#F5FF82" name="theme-color">
   <link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
-  <title>Ducky Moderation Panel</title>
+  <title>Ducky Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -18,9 +18,12 @@
     :root {
       --primary: #F5FF82;
       --primary-hover: #e6ff4d;
-      --bg-dark: #0f0f0f;
-      --bg-card: #1a1a1a;
-      --border: rgba(255, 255, 255, 0.1);
+      --primary-transparent: rgba(245, 255, 130, 0.1);
+      --bg-dark: #0a0a0a;
+      --bg-sidebar: #111111;
+      --bg-card: #151515;
+      --bg-input: #1a1a1a;
+      --border-color: #222222;
       --text: #ffffff;
       --text-secondary: #9ca3af;
       --success: #10b981;
@@ -40,74 +43,392 @@
       color: var(--text);
       -webkit-tap-highlight-color: transparent;
       min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: #333;
+      border-radius: 3px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: #444;
     }
     
     /* Sidebar */
     .sidebar {
-      background-color: rgba(0, 0, 0, 0.3);
-      border-right: 1px solid var(--border);
-      transition: all 0.3s ease;
-      z-index: 30;
+      background-color: var(--bg-sidebar);
+      border-right: 1px solid var(--border-color);
+      width: 70px;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 50;
+      transition: width 0.3s ease;
+      overflow: hidden;
     }
     
-    .sidebar-collapsed {
-      width: 5rem;
+    .sidebar:hover {
+      width: 240px;
     }
     
-    .sidebar-expanded {
-      width: 16rem;
+    .sidebar-logo {
+      padding: 1.5rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .sidebar-logo img {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .sidebar-logo span {
+      margin-left: 1rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .sidebar:hover .sidebar-logo span {
+      opacity: 1;
+    }
+    
+    .sidebar-nav {
+      padding: 1rem 0;
     }
     
     .sidebar-link {
       display: flex;
       align-items: center;
-      padding: 0.75rem 1rem;
-      border-radius: 0.5rem;
+      padding: 0.75rem 1.5rem;
       color: var(--text-secondary);
       transition: all 0.2s ease;
+      position: relative;
+      text-decoration: none;
     }
     
     .sidebar-link:hover {
-      background-color: rgba(255, 255, 255, 0.05);
       color: var(--text);
+      background-color: rgba(255, 255, 255, 0.05);
     }
     
     .sidebar-link.active {
-      background-color: rgba(245, 255, 130, 0.1);
       color: var(--primary);
     }
     
+    .sidebar-link.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background-color: var(--primary);
+    }
+    
     .sidebar-link i {
-      width: 1.5rem;
+      font-size: 1.25rem;
+      min-width: 1.5rem;
       text-align: center;
+    }
+    
+    .sidebar-link span {
+      margin-left: 1rem;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .sidebar:hover .sidebar-link span {
+      opacity: 1;
+    }
+    
+    /* Main Content */
+    .main-content {
+      margin-left: 70px;
+      min-height: 100vh;
+      transition: margin-left 0.3s ease;
+    }
+    
+    /* Header */
+    .header {
+      height: 70px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      background-color: var(--bg-dark);
+      z-index: 40;
+    }
+    
+    .header-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .server-selector {
+      position: relative;
+    }
+    
+    .server-selector-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .server-selector-toggle:hover {
+      border-color: var(--primary-transparent);
+    }
+    
+    .server-selector-toggle img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+    }
+    
+    .server-selector-menu {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      right: 0;
+      width: 240px;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 0.375rem;
+      overflow: hidden;
+      z-index: 50;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.2s ease;
+    }
+    
+    .server-selector-menu.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    
+    .server-selector-header {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    
+    .server-selector-list {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    .server-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .server-item:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .server-item.active {
+      background-color: var(--primary-transparent);
+    }
+    
+    .server-item img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+    
+    .server-item-info {
+      flex: 1;
+      overflow: hidden;
+    }
+    
+    .server-item-name {
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .server-item-id {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+    
+    .user-menu {
+      position: relative;
+    }
+    
+    .user-menu-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+    }
+    
+    .user-menu-toggle img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+    
+    .user-menu-toggle span {
+      font-weight: 500;
+    }
+    
+    .user-menu-dropdown {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      right: 0;
+      width: 200px;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 0.375rem;
+      overflow: hidden;
+      z-index: 50;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.2s ease;
+    }
+    
+    .user-menu-dropdown.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    
+    .user-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    
+    .user-menu-item:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .user-menu-item.danger {
+      color: var(--danger);
+    }
+    
+    /* Content */
+    .content {
+      padding: 1.5rem;
+    }
+    
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
     }
     
     /* Cards */
     .card {
       background-color: var(--bg-card);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-color);
       border-radius: 0.5rem;
       overflow: hidden;
       transition: all 0.2s ease;
     }
     
     .card:hover {
-      border-color: rgba(245, 255, 130, 0.2);
+      border-color: rgba(255, 255, 255, 0.1);
     }
     
     .card-header {
-      padding: 1rem;
-      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .card-title {
+      font-size: 1rem;
       font-weight: 600;
     }
     
     .card-body {
-      padding: 1rem;
+      padding: 1.25rem;
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    
+    .tabs::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .tab {
+      padding: 0.75rem 1.25rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    
+    .tab:hover {
+      color: var(--text);
+    }
+    
+    .tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
     }
     
     /* Forms */
     .form-group {
-      margin-bottom: 1rem;
+      margin-bottom: 1.25rem;
     }
     
     .form-label {
@@ -121,8 +442,8 @@
     .form-control {
       width: 100%;
       padding: 0.625rem 0.75rem;
-      background-color: rgba(0, 0, 0, 0.2);
-      border: 1px solid var(--border);
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-color);
       border-radius: 0.375rem;
       color: var(--text);
       transition: all 0.2s ease;
@@ -131,7 +452,16 @@
     .form-control:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(245, 255, 130, 0.1);
+      box-shadow: 0 0 0 2px var(--primary-transparent);
+    }
+    
+    .form-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 1rem;
+      padding-right: 2.5rem;
     }
     
     /* Buttons */
@@ -139,7 +469,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0.625rem 1rem;
+      padding: 0.625rem 1.25rem;
       border-radius: 0.375rem;
       font-weight: 500;
       transition: all 0.2s ease;
@@ -147,9 +477,19 @@
       border: none;
     }
     
+    .btn-sm {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.875rem;
+    }
+    
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 1.125rem;
+    }
+    
     .btn-primary {
       background-color: var(--primary);
-      color: black;
+      color: #000;
     }
     
     .btn-primary:hover {
@@ -158,7 +498,7 @@
     
     .btn-secondary {
       background-color: rgba(255, 255, 255, 0.1);
-      color: white;
+      color: var(--text);
     }
     
     .btn-secondary:hover {
@@ -181,6 +521,15 @@
     
     .btn-success:hover {
       background-color: #059669;
+    }
+    
+    .btn-warning {
+      background-color: var(--warning);
+      color: white;
+    }
+    
+    .btn-warning:hover {
+      background-color: #d97706;
     }
     
     .btn-icon {
@@ -235,6 +584,7 @@
       object-fit: cover;
     }
     
+    /* Dropdown */
     .dropdown {
       position: relative;
     }
@@ -253,7 +603,7 @@
       padding: 0.5rem 0;
       margin-top: 0.5rem;
       background-color: var(--bg-card);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-color);
       border-radius: 0.375rem;
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
       opacity: 0;
@@ -281,7 +631,7 @@
     }
     
     .dropdown-item.active {
-      background-color: rgba(245, 255, 130, 0.1);
+      background-color: var(--primary-transparent);
       color: var(--primary);
     }
     
@@ -345,7 +695,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 40;
+      z-index: 100;
       opacity: 0;
       visibility: hidden;
       transition: all 0.3s ease;
@@ -358,7 +708,7 @@
     
     .modal-content {
       background-color: var(--bg-card);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-color);
       border-radius: 0.5rem;
       width: 90%;
       max-width: 28rem;
@@ -372,7 +722,7 @@
     
     .modal-header {
       padding: 1rem;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border-color);
     }
     
     .modal-body {
@@ -381,69 +731,10 @@
     
     .modal-footer {
       padding: 1rem;
-      border-top: 1px solid var(--border);
+      border-top: 1px solid var(--border-color);
       display: flex;
       justify-content: flex-end;
       gap: 0.5rem;
-    }
-    
-    /* Tabs */
-    .tabs {
-      display: flex;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 1rem;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    
-    .tabs::-webkit-scrollbar {
-      display: none;
-    }
-    
-    .tab {
-      padding: 0.75rem 1rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      border-bottom: 2px solid transparent;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    
-    .tab.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-    }
-    
-    /* Server selection */
-    .server-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 1rem;
-    }
-    
-    .server-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 1rem;
-      cursor: pointer;
-      background-color: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 0.5rem;
-      transition: all 0.2s ease;
-    }
-    
-    .server-card:hover {
-      border-color: rgba(245, 255, 130, 0.3);
-      transform: translateY(-2px);
-    }
-    
-    .server-card img {
-      width: 3rem;
-      height: 3rem;
-      border-radius: 50%;
-      object-fit: cover;
     }
     
     /* Punishment list */
@@ -562,18 +853,43 @@
       }
     }
     
-    /* Responsive */
+    /* Loading overlay */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      transition: opacity 0.5s ease;
+    }
+    
+    /* Mobile */
     @media (max-width: 768px) {
-      .sidebar-expanded {
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        transform: translateX(-100%);
+      .sidebar {
+        width: 0;
+        z-index: 100;
       }
       
-      .sidebar-expanded.show {
-        transform: translateX(0);
+      .sidebar.show {
+        width: 240px;
+      }
+      
+      .sidebar-logo span,
+      .sidebar-link span {
+        opacity: 1;
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .mobile-menu-toggle {
+        display: block !important;
       }
       
       .delete-btn {
@@ -584,546 +900,560 @@
 </head>
 <body>
   <!-- Loading Overlay -->
-  <div id="loadingOverlay" class="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+  <div id="loadingOverlay" class="loading-overlay">
     <div class="flex flex-col items-center">
       <div class="w-12 h-12 border-4 border-[#F5FF82]/20 border-t-[#F5FF82] rounded-full animate-spin mb-4"></div>
       <p class="text-gray-400">Loading...</p>
     </div>
   </div>
 
-  <!-- Server Selection View -->
-  <div id="serverSelectionView" class="min-h-screen flex flex-col opacity-0 transition-opacity duration-500">
-    <header class="bg-black/30 backdrop-blur-sm border-b border-white/5 sticky top-0 z-10">
-      <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-        <a href="/" class="flex items-center gap-3">
-          <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
-          <span class="text-2xl font-bold text-[#F5FF82]">Ducky</span>
-        </a>
-        <button id="mobileMenuBtn" class="md:hidden text-2xl text-[#F5FF82]">
-          <i class="fas fa-bars"></i>
-        </button>
-        <nav class="hidden md:flex items-center gap-6">
-          <a href="/team" class="text-gray-300 hover:text-[#F5FF82] transition">Team</a>
-          <a href="/docs" class="text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
-          <a href="/invite" class="text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
-          <a href="/status" class="text-gray-300 hover:text-[#F5FF82] transition">Status</a>
-          <a href="/support" class="text-gray-300 hover:text-[#F5FF82] transition">Support</a>
-          <a href="/plus" class="btn btn-primary">Get Ducky Plus+</a>
-        </nav>
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-logo">
+      <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky">
+      <span>Ducky</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#dashboard" class="sidebar-link active" data-tab="dashboard">
+        <i class="fas fa-home"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="#punishments" class="sidebar-link" data-tab="punishments">
+        <i class="fas fa-gavel"></i>
+        <span>Punishments</span>
+      </a>
+      <a href="#shifts" class="sidebar-link" data-tab="shifts">
+        <i class="fas fa-clock"></i>
+        <span>Shifts</span>
+      </a>
+      <a href="#erlc" class="sidebar-link" data-tab="erlc">
+        <i class="fas fa-car"></i>
+        <span>ER:LC Integration</span>
+      </a>
+      <a href="#automations" class="sidebar-link" data-tab="automations">
+        <i class="fas fa-robot"></i>
+        <span>Automations</span>
+      </a>
+      <a href="#bolos" class="sidebar-link" data-tab="bolos">
+        <i class="fas fa-search"></i>
+        <span>BOLOs</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="header">
+      <button id="mobileMenuToggle" class="mobile-menu-toggle hidden">
+        <i class="fas fa-bars text-xl"></i>
+      </button>
+      
+      <h1 class="header-title">Ducky Dashboard</h1>
+      
+      <div class="header-actions">
+        <div class="server-selector">
+          <div id="serverSelectorToggle" class="server-selector-toggle">
+            <img id="currentServerIcon" src="https://duckybot.xyz/images/Ducky.svg" alt="Server">
+            <span id="currentServerName">Select Server</span>
+            <i class="fas fa-chevron-down text-gray-400"></i>
+          </div>
+          
+          <div id="serverSelectorMenu" class="server-selector-menu">
+            <div class="server-selector-header">Your Servers</div>
+            <div id="serverList" class="server-selector-list">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+        
+        <div class="user-menu">
+          <div id="userMenuToggle" class="user-menu-toggle">
+            <img id="userAvatar" src="https://duckybot.xyz/images/Ducky.svg" alt="User">
+            <span id="username">Loading...</span>
+            <i class="fas fa-chevron-down text-gray-400 ml-2"></i>
+          </div>
+          
+          <div id="userMenuDropdown" class="user-menu-dropdown">
+            <a href="/profile" class="user-menu-item">
+              <i class="fas fa-user"></i>
+              <span>Profile</span>
+            </a>
+            <a href="/settings" class="user-menu-item">
+              <i class="fas fa-cog"></i>
+              <span>Settings</span>
+            </a>
+            <a href="#" id="logoutBtn" class="user-menu-item danger">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Logout</span>
+            </a>
+          </div>
+        </div>
       </div>
     </header>
 
-    <main class="flex-1 container mx-auto px-4 py-8">
-      <div class="card mb-6">
-        <div class="p-4 flex items-center gap-3">
-          <img id="profilePicture" alt="Profile" class="w-12 h-12 rounded-full">
-          <div>
-            <h2 class="text-lg font-bold">Welcome, <span id="username" class="text-[#F5FF82]"></span></h2>
-            <p class="text-gray-400 mt-0.5 text-sm">Select a server to moderate</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header flex flex-col sm:flex-row justify-between items-start sm:items-center">
-          <h2 class="text-lg font-bold">Your Servers</h2>
-          <span class="text-sm text-gray-400">Only servers with Ducky and moderation permissions are shown</span>
-        </div>
-        <div class="card-body">
-          <div id="serverGrid" class="server-grid">
-            <div class="col-span-full text-center py-4">
-              <div class="spinner mx-auto mb-2"></div>
-              <p class="text-gray-400">Loading servers...</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <footer class="border-t border-[#F5FF82]/10 py-8">
-      <div class="container mx-auto px-4">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-8">
-          <div class="flex items-center gap-3">
-            <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
-            <span class="text-xl font-bold text-[#F5FF82]">Ducky</span>
-          </div>
-          <div class="flex gap-6">
-            <a href="/legal/privacy/" class="text-gray-400 hover:text-[#F5FF82] transition">Privacy</a>
-            <a href="/legal/terms/" class="text-gray-400 hover:text-[#F5FF82] transition">Terms</a>
-            <a href="/support" class="text-gray-400 hover:text-[#F5FF82] transition">Support</a>
-          </div>
-        </div>
-        <p class="text-center text-gray-400 mt-8">© 2025 Ducky Bot. All rights reserved.</p>
-      </div>
-    </footer>
-  </div>
-
-  <!-- Mobile Menu -->
-  <div id="mobileMenu" class="fixed inset-0 bg-black/95 z-40 flex flex-col items-center justify-center gap-8 opacity-0 pointer-events-none transition-opacity duration-300">
-    <button id="closeMobileMenuBtn" class="absolute top-6 right-6 text-2xl">
-      <i class="fas fa-times"></i>
-    </button>
-    <a href="/team" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Team</a>
-    <a href="/docs" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
-    <a href="/invite" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Invite</a>
-    <a href="/status" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Status</a>
-    <a href="/support" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Support</a>
-    <a href="/plus" class="btn btn-primary px-6 py-3">Get Ducky Plus+</a>
-  </div>
-
-  <!-- Dashboard View -->
-  <div id="dashboardView" class="hidden min-h-screen flex">
-    <!-- Sidebar -->
-    <aside id="sidebar" class="sidebar sidebar-expanded hidden md:block">
-      <div class="p-4 flex items-center justify-between">
-        <a href="/" class="flex items-center gap-3">
-          <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
-          <span class="text-xl font-bold text-[#F5FF82] sidebar-text">Ducky</span>
-        </a>
-        <button id="toggleSidebarBtn" class="text-gray-400 hover:text-white">
-          <i class="fas fa-bars"></i>
-        </button>
-      </div>
-      
-      <div class="p-4 border-b border-white/5">
-        <div class="flex items-center gap-3">
-          <img id="sidebarServerIcon" alt="Server Icon" class="w-10 h-10 rounded-full">
-          <div class="sidebar-text">
-            <h2 class="font-bold text-[#F5FF82]" id="sidebarServerName"></h2>
-            <p class="text-xs text-gray-400">Moderation Panel</p>
-          </div>
-        </div>
-      </div>
-      
-      <div class="p-4">
-        <nav class="space-y-1">
-          <a href="#punishments" class="sidebar-link active" data-tab="punishments">
-            <i class="fas fa-gavel mr-3"></i>
-            <span class="sidebar-text">Punishments</span>
-          </a>
-          <a href="#shifts" class="sidebar-link" data-tab="shifts">
-            <i class="fas fa-clock mr-3"></i>
-            <span class="sidebar-text">Shifts</span>
-          </a>
-          <a href="#erlc" class="sidebar-link" data-tab="erlc">
-            <i class="fas fa-car mr-3"></i>
-            <span class="sidebar-text">ER:LC Integration</span>
-          </a>
-          <a href="#automations" class="sidebar-link" data-tab="automations">
-            <i class="fas fa-robot mr-3"></i>
-            <span class="sidebar-text">Automations</span>
-          </a>
-        </nav>
-      </div>
-      
-      <div class="mt-auto p-4 border-t border-white/5">
-        <button id="backToServersBtn" class="sidebar-link w-full justify-center">
-          <i class="fas fa-arrow-left mr-3"></i>
-          <span class="sidebar-text">Back to Servers</span>
-        </button>
-      </div>
-    </aside>
-
-    <!-- Main Content -->
-    <div class="flex-1 flex flex-col">
-      <!-- Mobile Header -->
-      <header class="md:hidden bg-black/30 backdrop-blur-sm border-b border-white/5 sticky top-0 z-10">
-        <div class="px-4 py-4 flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <button id="mobileSidebarBtn" class="text-[#F5FF82]">
-              <i class="fas fa-bars"></i>
-            </button>
-            <div>
-              <h2 class="font-bold text-[#F5FF82]" id="mobileServerName"></h2>
-              <p class="text-xs text-gray-400">Moderation Panel</p>
-            </div>
-          </div>
-          <img id="mobileServerIcon" alt="Server Icon" class="w-8 h-8 rounded-full">
-        </div>
-      </header>
-
-      <!-- Content Area -->
-      <main class="flex-1 p-4 md:p-6 overflow-auto">
-        <!-- Punishments Tab -->
-        <div id="punishmentsTab" class="tab-content">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Left Column -->
-            <div class="space-y-6">
-              <!-- Issue Punishment -->
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="text-lg font-medium">Issue Punishment</h3>
+    <!-- Content -->
+    <div class="content">
+      <!-- Dashboard Tab -->
+      <div id="dashboardTab" class="tab-content">
+        <h2 class="page-title">Dashboard</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+          <div class="card">
+            <div class="card-body p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Active Staff</h3>
+                <div class="text-primary">
+                  <i class="fas fa-users text-2xl"></i>
                 </div>
-                <div class="card-body">
-                  <form id="punishmentForm" class="space-y-4">
-                    <div class="form-group">
-                      <label for="robloxUsername" class="form-label">Roblox Username</label>
-                      <input type="text" id="robloxUsername" class="form-control" placeholder="Enter username" required>
+              </div>
+              <div class="text-3xl font-bold mb-2" id="activeStaffCount">0</div>
+              <p class="text-gray-400">Staff members currently on duty</p>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-body p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Recent Punishments</h3>
+                <div class="text-primary">
+                  <i class="fas fa-gavel text-2xl"></i>
+                </div>
+              </div>
+              <div class="text-3xl font-bold mb-2" id="recentPunishmentsCount">0</div>
+              <p class="text-gray-400">Punishments in the last 24 hours</p>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-body p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Active BOLOs</h3>
+                <div class="text-primary">
+                  <i class="fas fa-search text-2xl"></i>
+                </div>
+              </div>
+              <div class="text-3xl font-bold mb-2" id="activeBolosCount">0</div>
+              <p class="text-gray-400">Currently active BOLOs</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Recent Activity</h3>
+            </div>
+            <div class="card-body p-0">
+              <div id="recentActivity" class="divide-y divide-gray-800">
+                <div class="p-4 text-center">
+                  <div class="spinner mx-auto mb-2"></div>
+                  <p class="text-gray-400">Loading activity...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Server Status</h3>
+            </div>
+            <div class="card-body">
+              <div id="serverStatus" class="space-y-4">
+                <div class="text-center">
+                  <div class="spinner mx-auto mb-2"></div>
+                  <p class="text-gray-400">Loading server status...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Punishments Tab -->
+      <div id="punishmentsTab" class="tab-content hidden">
+        <h2 class="page-title">Punishments</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-1">
+            <div class="card mb-6">
+              <div class="card-header">
+                <h3 class="card-title">Issue Punishment</h3>
+              </div>
+              <div class="card-body">
+                <form id="punishmentForm" class="space-y-4">
+                  <div class="form-group">
+                    <label for="robloxUsername" class="form-label">Roblox Username</label>
+                    <input type="text" id="robloxUsername" class="form-control" placeholder="Enter username" required>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="punishmentType" class="form-label">Punishment Type</label>
+                    <div class="dropdown w-full">
+                      <div id="punishmentTypeToggle" class="dropdown-toggle form-control flex justify-between items-center">
+                        <span>Select type...</span>
+                        <i class="fas fa-chevron-down"></i>
+                      </div>
+                      <div id="punishmentTypeMenu" class="dropdown-menu w-full">
+                        <!-- Populated by JS -->
+                      </div>
+                      <input type="hidden" id="punishmentTypeInput" required>
                     </div>
-                    
-                    <div class="form-group">
-                      <label for="punishmentTypeContainer" class="form-label">Punishment Type</label>
-                      <div id="punishmentTypeContainer" class="dropdown">
-                        <div id="punishmentTypeToggle" class="dropdown-toggle form-control flex justify-between items-center">
+                  </div>
+                  
+                  <div id="durationContainer" class="form-group hidden">
+                    <label for="duration" class="form-label">Duration</label>
+                    <div class="grid grid-cols-2 gap-4">
+                      <input type="number" id="durationValue" min="1" class="form-control" placeholder="Duration">
+                      <div class="dropdown">
+                        <div id="durationUnitToggle" class="dropdown-toggle form-control flex justify-between items-center">
+                          <span>Minutes</span>
+                          <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div id="durationUnitMenu" class="dropdown-menu w-full">
+                          <div class="dropdown-item active" data-value="minutes">Minutes</div>
+                          <div class="dropdown-item" data-value="hours">Hours</div>
+                          <div class="dropdown-item" data-value="days">Days</div>
+                          <div class="dropdown-item" data-value="weeks">Weeks</div>
+                        </div>
+                        <input type="hidden" id="durationUnit" value="minutes">
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="reason" class="form-label">Reason</label>
+                    <textarea id="reason" rows="3" class="form-control" placeholder="Enter reason" required></textarea>
+                  </div>
+                  
+                  <div class="flex justify-end">
+                    <button type="submit" id="submitPunishmentBtn" class="btn btn-primary">
+                      Issue Punishment
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          
+          <div class="lg:col-span-2">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Punishment History</h3>
+                <div class="flex items-center gap-2">
+                  <input type="text" id="punishmentSearch" class="form-control text-sm" placeholder="Search username...">
+                  <button id="refreshPunishmentsBtn" class="btn btn-icon btn-secondary">
+                    <i class="fas fa-sync-alt"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body p-0">
+                <div class="p-4 bg-black/20 border-b border-gray-800 grid grid-cols-4 text-sm font-medium text-gray-400 hidden md:grid">
+                  <div>Username</div>
+                  <div>Type</div>
+                  <div>Reason</div>
+                  <div>Date</div>
+                </div>
+                <div id="punishmentHistory" class="punishment-list p-4">
+                  <div class="text-center py-4">
+                    <div class="spinner mx-auto mb-2"></div>
+                    <p class="text-gray-400">Loading punishment history...</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Shifts Tab -->
+      <div id="shiftsTab" class="tab-content hidden">
+        <h2 class="page-title">Shifts</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-1">
+            <div class="card mb-6">
+              <div class="card-header">
+                <h3 class="card-title">Manage Shift</h3>
+              </div>
+              <div class="card-body">
+                <div class="bg-black/20 rounded-lg p-4 mb-4">
+                  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                    <div class="flex items-center gap-3 mb-4 md:mb-0">
+                      <div id="shiftStatusIndicator" class="shift-status inactive">
+                        <div class="pulse inactive"></div>
+                        <span id="shiftStatusText">Off Duty</span>
+                      </div>
+                      <div class="text-2xl font-mono" id="shiftTimer">00:00:00</div>
+                    </div>
+                    <div class="w-full md:w-auto">
+                      <div class="dropdown">
+                        <div id="shiftTypeToggle" class="dropdown-toggle form-control flex justify-between items-center">
                           <span>Select type...</span>
                           <i class="fas fa-chevron-down"></i>
                         </div>
-                        <div id="punishmentTypeMenu" class="dropdown-menu w-full">
+                        <div id="shiftTypeMenu" class="dropdown-menu w-full">
                           <!-- Populated by JS -->
                         </div>
-                        <input type="hidden" id="punishmentType" required>
+                        <input type="hidden" id="shiftType" value="patrol">
                       </div>
                     </div>
-                    
-                    <div id="durationContainer" class="form-group hidden">
-                      <label for="duration" class="form-label">Duration</label>
-                      <div class="grid grid-cols-2 gap-4">
-                        <input type="number" id="durationValue" min="1" class="form-control" placeholder="Duration">
-                        <div class="dropdown">
-                            placeholder="Duration">
-                        <div class="dropdown">
-                          <div id="durationUnitToggle" class="dropdown-toggle form-control flex justify-between items-center">
-                            <span>Minutes</span>
-                            <i class="fas fa-chevron-down"></i>
-                          </div>
-                          <div id="durationUnitMenu" class="dropdown-menu w-full">
-                            <div class="dropdown-item active" data-value="minutes">Minutes</div>
-                            <div class="dropdown-item" data-value="hours">Hours</div>
-                            <div class="dropdown-item" data-value="days">Days</div>
-                            <div class="dropdown-item" data-value="weeks">Weeks</div>
-                          </div>
-                          <input type="hidden" id="durationUnit" value="minutes">
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div class="form-group">
-                      <label for="reason" class="form-label">Reason</label>
-                      <textarea id="reason" rows="2" class="form-control" placeholder="Enter reason" required></textarea>
-                    </div>
-                    
-                    <div class="flex justify-end">
-                      <button type="submit" id="submitBtn" class="btn btn-primary">
-                        Issue Punishment
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-              
-              <!-- BOLO Management -->
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="text-lg font-medium">BOLO Management</h3>
-                </div>
-                <div class="card-body">
-                  <form id="boloForm" class="space-y-4">
-                    <div class="form-group">
-                      <label for="boloUsername" class="form-label">Roblox Username</label>
-                      <input type="text" id="boloUsername" class="form-control" placeholder="Enter username" required>
-                    </div>
-                    
-                    <div class="form-group">
-                      <label for="boloReason" class="form-label">Reason</label>
-                      <textarea id="boloReason" rows="2" class="form-control" placeholder="Enter reason" required></textarea>
-                    </div>
-                    
-                    <div class="flex justify-end">
-                      <button type="submit" id="submitBoloBtn" class="btn btn-primary">
-                        Create BOLO
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-              
-              <!-- Active BOLOs -->
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="text-lg font-medium">Active BOLOs</h3>
-                </div>
-                <div class="card-body">
-                  <div id="activeBOLOs" class="space-y-3">
-                    <div class="text-center py-4">
-                      <div class="spinner mx-auto mb-2"></div>
-                      <p class="text-gray-400">Loading BOLOs...</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Right Column -->
-            <div>
-              <div class="card h-full">
-                <div class="card-header">
-                  <h3 class="text-lg font-medium">Punishment History</h3>
-                </div>
-                <div class="card-body p-0">
-                  <div class="p-4 bg-black/20 border-b border-white/5 grid grid-cols-4 text-sm font-medium text-gray-400 hidden md:grid">
-                    <div>Username</div>
-                    <div>Type</div>
-                    <div>Reason</div>
-                    <div>Date</div>
-                  </div>
-                  <div id="punishmentHistory" class="punishment-list p-4">
-                    <div class="text-center py-4">
-                      <div class="spinner mx-auto mb-2"></div>
-                      <p class="text-gray-400">Loading punishment history...</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Shifts Tab -->
-        <div id="shiftsTab" class="tab-content hidden">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Left Column -->
-            <div class="space-y-6">
-              <!-- Manage Shift -->
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="text-lg font-medium">Manage Shift</h3>
-                </div>
-                <div class="card-body">
-                  <div class="bg-black/20 rounded-lg p-4">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
-                      <div class="flex items-center gap-3 mb-4 md:mb-0">
-                        <div id="shiftStatusIndicator" class="shift-status inactive">
-                          <div class="pulse inactive"></div>
-                          <span id="shiftStatusText">Off Duty</span>
-                        </div>
-                        <div class="text-2xl font-mono" id="shiftTimer">00:00:00</div>
-                      </div>
-                      <div class="w-full md:w-auto">
-                        <div class="dropdown">
-                          <div id="shiftTypeToggle" class="dropdown-toggle form-control flex justify-between items-center">
-                            <span>Select type...</span>
-                            <i class="fas fa-chevron-down"></i>
-                          </div>
-                          <div id="shiftTypeMenu" class="dropdown-menu w-full">
-                            <!-- Populated by JS -->
-                          </div>
-                          <input type="hidden" id="shiftType" value="patrol">
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-3 gap-3">
-                      <button id="startShiftBtn" class="btn btn-success">
-                        <i class="fas fa-play mr-2"></i>
-                        <span>Start</span>
-                      </button>
-                      <button id="pauseShiftBtn" class="btn btn-warning" disabled>
-                        <i class="fas fa-pause mr-2"></i>
-                        <span>Pause</span>
-                      </button>
-                      <button id="endShiftBtn" class="btn btn-danger" disabled>
-                        <i class="fas fa-stop mr-2"></i>
-                        <span>End</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Your Recent Shifts -->
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="text-lg font-medium">Your Recent Shifts</h3>
-                </div>
-                <div class="card-body">
-                  <div id="recentUserShifts" class="space-y-3">
-                    <div class="text-center py-4">
-                      <div class="spinner mx-auto mb-2"></div>
-                      <p class="text-gray-400">Loading your shifts...</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Right Column -->
-            <div class="space-y-6">
-              <!-- Active Staff -->
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="text-lg font-medium">Active Staff</h3>
-                </div>
-                <div class="card-body">
-                  <div id="activeShifts" class="grid grid-cols-1 gap-4">
-                    <div class="text-center py-4">
-                      <div class="spinner mx-auto mb-2"></div>
-                      <p class="text-gray-400">Loading active shifts...</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Recent Shifts -->
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="text-lg font-medium">Recent Shifts</h3>
-                </div>
-                <div class="card-body">
-                  <div id="recentShifts" class="space-y-3">
-                    <div class="text-center py-4">
-                      <div class="spinner mx-auto mb-2"></div>
-                      <p class="text-gray-400">Loading recent shifts...</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- ER:LC Integration Tab -->
-        <div id="erlcTab" class="tab-content hidden">
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Server Info -->
-            <div class="lg:col-span-3">
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="text-lg font-medium">Server Information</h3>
-                </div>
-                <div class="card-body">
-                  <div id="erlcServerInfo" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="text-center py-4 col-span-full">
-                      <div class="spinner mx-auto mb-2"></div>
-                      <p class="text-gray-400">Loading server information...</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Players List -->
-            <div class="lg:col-span-2">
-              <div class="card mb-6">
-                <div class="card-header">
-                  <h3 class="text-lg font-medium">In-Game Players</h3>
-                </div>
-                <div class="card-body">
-                  <div id="erlcPlayersList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="text-center py-4 col-span-full">
-                      <div class="spinner mx-auto mb-2"></div>
-                      <p class="text-gray-400">Loading players...</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Discord Checks -->
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="text-lg font-medium">Discord Checks</h3>
-                </div>
-                <div class="card-body">
-                  <p class="text-gray-400 mb-4">Check which players in-game are connected to Discord and view their voice channel status.</p>
-                  <button id="runDiscordCheckBtn" class="btn btn-primary">
-                    Run Discord Check
-                  </button>
-                  <div id="discordCheckCooldown" class="mt-2 text-sm text-gray-400 hidden">
-                    <i class="fas fa-clock mr-1"></i> <span id="discordCheckCooldownTime"></span> until next check
                   </div>
                   
-                  <div id="discordCheckResults" class="mt-6 space-y-3 hidden">
-                    <h4 class="text-md font-semibold mb-3">Results</h4>
-                    <div id="discordCheckList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <!-- Populated by JS -->
-                    </div>
+                  <div class="grid grid-cols-3 gap-3">
+                    <button id="startShiftBtn" class="btn btn-success">
+                      <i class="fas fa-play mr-2"></i>
+                      <span>Start</span>
+                    </button>
+                    <button id="pauseShiftBtn" class="btn btn-warning" disabled>
+                      <i class="fas fa-pause mr-2"></i>
+                      <span>Pause</span>
+                    </button>
+                    <button id="endShiftBtn" class="btn btn-danger" disabled>
+                      <i class="fas fa-stop mr-2"></i>
+                      <span>End</span>
+                    </button>
+                  </div>
+                </div>
+                
+                <h4 class="text-lg font-medium mb-3">Your Recent Shifts</h4>
+                <div id="recentUserShifts" class="space-y-3">
+                  <div class="text-center py-4">
+                    <div class="spinner mx-auto mb-2"></div>
+                    <p class="text-gray-400">Loading your shifts...</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="lg:col-span-2">
+            <div class="card mb-6">
+              <div class="card-header">
+                <h3 class="card-title">Active Staff</h3>
+              </div>
+              <div class="card-body">
+                <div id="activeShifts" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="text-center py-4 col-span-full">
+                    <div class="spinner mx-auto mb-2"></div>
+                    <p class="text-gray-400">Loading active shifts...</p>
                   </div>
                 </div>
               </div>
             </div>
             
-            <!-- Command Execution -->
-            <div>
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="text-lg font-medium">Execute Command</h3>
-                </div>
-                <div class="card-body">
-                  <form id="commandForm" class="space-y-4">
-                    <div class="form-group">
-                      <label for="command" class="form-label">Command</label>
-                      <div class="flex">
-                        <span class="inline-flex items-center px-3 py-2 bg-black/50 border border-r-0 border-white/10 rounded-l-md text-gray-400">:</span>
-                        <input type="text" id="command" class="form-control rounded-l-none" placeholder="Enter command" required>
-                      </div>
-                    </div>
-                    <div class="flex justify-end">
-                      <button type="submit" id="executeCommandBtn" class="btn btn-primary">
-                        Execute
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Automations Tab -->
-        <div id="automationsTab" class="tab-content hidden">
-          <div class="max-w-3xl mx-auto">
             <div class="card">
               <div class="card-header">
-                <h3 class="text-lg font-medium">Custom Automations</h3>
+                <h3 class="card-title">Recent Shifts</h3>
               </div>
               <div class="card-body">
-                <p class="text-gray-400 mb-4">Run your server's custom automations manually.</p>
-                
-                <div class="form-group">
-                  <label for="automationSelector" class="form-label">Select Automation</label>
-                  <div class="dropdown">
-                    <div id="automationToggle" class="dropdown-toggle form-control flex justify-between items-center">
-                      <span>Select automation...</span>
-                      <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div id="automationMenu" class="dropdown-menu w-full">
-                      <!-- Populated by JS -->
-                    </div>
-                    <input type="hidden" id="selectedAutomationId">
-                  </div>
-                </div>
-                
-                <button id="runAutomationBtn" class="btn btn-primary mt-4" disabled>
-                  Run Automation
-                </button>
-                
-                <div id="automationDetails" class="mt-6 p-4 bg-black/20 rounded-lg hidden">
-                  <h4 class="font-medium mb-3">Automation Details</h4>
-                  <div class="space-y-3 text-sm">
-                    <div class="grid grid-cols-4">
-                      <span class="text-gray-400 col-span-1">Trigger:</span>
-                      <span id="automationTrigger" class="col-span-3"></span>
-                    </div>
-                    <div class="grid grid-cols-4">
-                      <span class="text-gray-400 col-span-1">Actions:</span>
-                      <div id="automationActions" class="col-span-3"></div>
-                    </div>
-                    <div class="grid grid-cols-4" id="automationRoleContainer">
-                      <span class="text-gray-400 col-span-1">Required Role:</span>
-                      <span id="automationRole" class="col-span-3"></span>
-                    </div>
-                    <div class="grid grid-cols-4">
-                      <span class="text-gray-400 col-span-1">Created by:</span>
-                      <span id="automationAuthor" class="col-span-3"></span>
-                    </div>
+                <div id="recentShifts" class="space-y-3">
+                  <div class="text-center py-4">
+                    <div class="spinner mx-auto mb-2"></div>
+                    <p class="text-gray-400">Loading recent shifts...</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </main>
+      </div>
+      
+      <!-- ER:LC Integration Tab -->
+      <div id="erlcTab" class="tab-content hidden">
+        <h2 class="page-title">ER:LC Integration</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-3">
+            <div class="card mb-6">
+              <div class="card-header">
+                <h3 class="card-title">Server Information</h3>
+              </div>
+              <div class="card-body">
+                <div id="erlcServerInfo" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                  <div class="text-center py-4 col-span-full">
+                    <div class="spinner mx-auto mb-2"></div>
+                    <p class="text-gray-400">Loading server information...</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="lg:col-span-2">
+            <div class="card mb-6">
+              <div class="card-header">
+                <h3 class="card-title">In-Game Players</h3>
+              </div>
+              <div class="card-body">
+                <div id="erlcPlayersList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="text-center py-4 col-span-full">
+                    <div class="spinner mx-auto mb-2"></div>
+                    <p class="text-gray-400">Loading players...</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Discord Checks</h3>
+              </div>
+              <div class="card-body">
+                <p class="text-gray-400 mb-4">Check which players in-game are connected to Discord and view their voice channel status.</p>
+                <button id="runDiscordCheckBtn" class="btn btn-primary">
+                  Run Discord Check
+                </button>
+                <div id="discordCheckCooldown" class="mt-2 text-sm text-gray-400 hidden">
+                  <i class="fas fa-clock mr-1"></i> <span id="discordCheckCooldownTime"></span> until next check
+                </div>
+                
+                <div id="discordCheckResults" class="mt-6 space-y-3 hidden">
+                  <h4 class="text-md font-semibold mb-3">Results</h4>
+                  <div id="discordCheckList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Populated by JS -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="lg:col-span-1">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Execute Command</h3>
+              </div>
+              <div class="card-body">
+                <form id="commandForm" class="space-y-4">
+                  <div class="form-group">
+                    <label for="command" class="form-label">Command</label>
+                    <div class="flex">
+                      <span class="inline-flex items-center px-3 py-2 bg-black/50 border border-r-0 border-gray-800 rounded-l-md text-gray-400">:</span>
+                      <input type="text" id="command" class="form-control rounded-l-none" placeholder="Enter command" required>
+                    </div>
+                  </div>
+                  <div class="flex justify-end">
+                    <button type="submit" id="executeCommandBtn" class="btn btn-primary">
+                      Execute
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Automations Tab -->
+      <div id="automationsTab" class="tab-content hidden">
+        <h2 class="page-title">Automations</h2>
+        
+        <div class="max-w-3xl mx-auto">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Custom Automations</h3>
+            </div>
+            <div class="card-body">
+              <p class="text-gray-400 mb-4">Run your server's custom automations manually.</p>
+              
+              <div class="form-group">
+                <label for="automationSelector" class="form-label">Select Automation</label>
+                <div class="dropdown">
+                  <div id="automationToggle" class="dropdown-toggle form-control flex justify-between items-center">
+                    <span>Select automation...</span>
+                    <i class="fas fa-chevron-down"></i>
+                  </div>
+                  <div id="automationMenu" class="dropdown-menu w-full">
+                    <!-- Populated by JS -->
+                  </div>
+                  <input type="hidden" id="selectedAutomationId">
+                </div>
+              </div>
+              
+              <button id="runAutomationBtn" class="btn btn-primary mt-4" disabled>
+                Run Automation
+              </button>
+              
+              <div id="automationDetails" class="mt-6 p-4 bg-black/20 rounded-lg hidden">
+                <h4 class="font-medium mb-3">Automation Details</h4>
+                <div class="space-y-3 text-sm">
+                  <div class="grid grid-cols-4">
+                    <span class="text-gray-400 col-span-1">Trigger:</span>
+                    <span id="automationTrigger" class="col-span-3"></span>
+                  </div>
+                  <div class="grid grid-cols-4">
+                    <span class="text-gray-400 col-span-1">Actions:</span>
+                    <div id="automationActions" class="col-span-3"></div>
+                  </div>
+                  <div class="grid grid-cols-4" id="automationRoleContainer">
+                    <span class="text-gray-400 col-span-1">Required Role:</span>
+                    <span id="automationRole" class="col-span-3"></span>
+                  </div>
+                  <div class="grid grid-cols-4">
+                    <span class="text-gray-400 col-span-1">Created by:</span>
+                    <span id="automationAuthor" class="col-span-3"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- BOLOs Tab -->
+      <div id="bolosTab" class="tab-content hidden">
+        <h2 class="page-title">BOLOs</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-1">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Create BOLO</h3>
+              </div>
+              <div class="card-body">
+                <form id="boloForm" class="space-y-4">
+                  <div class="form-group">
+                    <label for="boloUsername" class="form-label">Roblox Username</label>
+                    <input type="text" id="boloUsername" class="form-control" placeholder="Enter username" required>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="boloReason" class="form-label">Reason</label>
+                    <textarea id="boloReason" rows="3" class="form-control" placeholder="Enter reason" required></textarea>
+                  </div>
+                  
+                  <div class="flex justify-end">
+                    <button type="submit" id="submitBoloBtn" class="btn btn-primary">
+                      Create BOLO
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          
+          <div class="lg:col-span-2">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Active BOLOs</h3>
+                <button id="refreshBolosBtn" class="btn btn-icon btn-secondary">
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+              </div>
+              <div class="card-body">
+                <div id="activeBOLOs" class="space-y-3">
+                  <div class="text-center py-4">
+                    <div class="spinner mx-auto mb-2"></div>
+                    <p class="text-gray-400">Loading BOLOs...</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </main>
 
   <!-- Confirmation Modal -->
   <div id="confirmationModal" class="modal">
@@ -1151,66 +1481,92 @@
   <script>
     // DOM Elements
     const loadingOverlay = document.getElementById('loadingOverlay');
-    const serverSelectionView = document.getElementById('serverSelectionView');
-    const dashboardView = document.getElementById('dashboardView');
-    const serverGrid = document.getElementById('serverGrid');
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const closeMobileMenuBtn = document.getElementById('closeMobileMenuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
     const sidebar = document.getElementById('sidebar');
-    const toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
-    const mobileSidebarBtn = document.getElementById('mobileSidebarBtn');
-    const backToServersBtn = document.getElementById('backToServersBtn');
-    const sidebarLinks = document.querySelectorAll('.sidebar-link[data-tab]');
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
     const tabContents = document.querySelectorAll('.tab-content');
-    const punishmentForm = document.getElementById('punishmentForm');
-    const boloForm = document.getElementById('boloForm');
-    const commandForm = document.getElementById('commandForm');
-    const toast = document.getElementById('toast');
-    const toastMessage = document.getElementById('toastMessage');
-    const confirmationModal = document.getElementById('confirmationModal');
-    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-    const confirmationMessage = document.getElementById('confirmationMessage');
+    const serverSelectorToggle = document.getElementById('serverSelectorToggle');
+    const serverSelectorMenu = document.getElementById('serverSelectorMenu');
+    const serverList = document.getElementById('serverList');
+    const currentServerIcon = document.getElementById('currentServerIcon');
+    const currentServerName = document.getElementById('currentServerName');
+    const userMenuToggle = document.getElementById('userMenuToggle');
+    const userMenuDropdown = document.getElementById('userMenuDropdown');
+    const userAvatar = document.getElementById('userAvatar');
+    const username = document.getElementById('username');
+    const logoutBtn = document.getElementById('logoutBtn');
     
-    // Dropdown elements
+    // Punishment elements
+    const punishmentForm = document.getElementById('punishmentForm');
     const punishmentTypeToggle = document.getElementById('punishmentTypeToggle');
     const punishmentTypeMenu = document.getElementById('punishmentTypeMenu');
-    const punishmentType = document.getElementById('punishmentType');
+    const punishmentTypeInput = document.getElementById('punishmentTypeInput');
     const durationContainer = document.getElementById('durationContainer');
     const durationUnitToggle = document.getElementById('durationUnitToggle');
     const durationUnitMenu = document.getElementById('durationUnitMenu');
     const durationUnit = document.getElementById('durationUnit');
+    const punishmentHistory = document.getElementById('punishmentHistory');
+    const punishmentSearch = document.getElementById('punishmentSearch');
+    const refreshPunishmentsBtn = document.getElementById('refreshPunishmentsBtn');
+    
+    // Shift elements
     const shiftTypeToggle = document.getElementById('shiftTypeToggle');
     const shiftTypeMenu = document.getElementById('shiftTypeMenu');
     const shiftType = document.getElementById('shiftType');
-    const automationToggle = document.getElementById('automationToggle');
-    const automationMenu = document.getElementById('automationMenu');
-    const selectedAutomationId = document.getElementById('selectedAutomationId');
-    
-    // Shift elements
     const startShiftBtn = document.getElementById('startShiftBtn');
     const pauseShiftBtn = document.getElementById('pauseShiftBtn');
     const endShiftBtn = document.getElementById('endShiftBtn');
     const shiftStatusIndicator = document.getElementById('shiftStatusIndicator');
     const shiftStatusText = document.getElementById('shiftStatusText');
     const shiftTimer = document.getElementById('shiftTimer');
-    
-    // Other elements
-    const punishmentHistory = document.getElementById('punishmentHistory');
-    const activeBOLOs = document.getElementById('activeBOLOs');
     const activeShifts = document.getElementById('activeShifts');
     const recentShifts = document.getElementById('recentShifts');
     const recentUserShifts = document.getElementById('recentUserShifts');
+    
+    // ERLC elements
+    const erlcServerInfo = document.getElementById('erlcServerInfo');
+    const erlcPlayersList = document.getElementById('erlcPlayersList');
+    const commandForm = document.getElementById('commandForm');
     const runDiscordCheckBtn = document.getElementById('runDiscordCheckBtn');
     const discordCheckResults = document.getElementById('discordCheckResults');
     const discordCheckList = document.getElementById('discordCheckList');
     const discordCheckCooldown = document.getElementById('discordCheckCooldown');
     const discordCheckCooldownTime = document.getElementById('discordCheckCooldownTime');
-    const erlcServerInfo = document.getElementById('erlcServerInfo');
-    const erlcPlayersList = document.getElementById('erlcPlayersList');
+    
+    // Automation elements
+    const automationToggle = document.getElementById('automationToggle');
+    const automationMenu = document.getElementById('automationMenu');
+    const selectedAutomationId = document.getElementById('selectedAutomationId');
     const runAutomationBtn = document.getElementById('runAutomationBtn');
     const automationDetails = document.getElementById('automationDetails');
+    const automationTrigger = document.getElementById('automationTrigger');
+    const automationActions = document.getElementById('automationActions');
+    const automationRole = document.getElementById('automationRole');
+    const automationRoleContainer = document.getElementById('automationRoleContainer');
+    const automationAuthor = document.getElementById('automationAuthor');
+    
+    // BOLO elements
+    const boloForm = document.getElementById('boloForm');
+    const activeBOLOs = document.getElementById('activeBOLOs');
+    const refreshBolosBtn = document.getElementById('refreshBolosBtn');
+    
+    // Modal elements
+    const confirmationModal = document.getElementById('confirmationModal');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+    const confirmationMessage = document.getElementById('confirmationMessage');
+    
+    // Toast elements
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    
+    // Dashboard elements
+    const activeStaffCount = document.getElementById('activeStaffCount');
+    const recentPunishmentsCount = document.getElementById('recentPunishmentsCount');
+    const activeBolosCount = document.getElementById('activeBolosCount');
+    const recentActivity = document.getElementById('recentActivity');
+    const serverStatus = document.getElementById('serverStatus');
     
     // State variables
     let selectedServerId = null;
@@ -1286,34 +1642,8 @@
       }, 3000);
     }
     
-    // Toggle Sidebar
-    function toggleSidebar() {
-      const isExpanded = sidebar.classList.contains('sidebar-expanded');
-      
-      if (isExpanded) {
-        sidebar.classList.remove('sidebar-expanded');
-        sidebar.classList.add('sidebar-collapsed');
-        document.querySelectorAll('.sidebar-text').forEach(el => {
-          el.style.display = 'none';
-        });
-      } else {
-        sidebar.classList.remove('sidebar-collapsed');
-        sidebar.classList.add('sidebar-expanded');
-        document.querySelectorAll('.sidebar-text').forEach(el => {
-          el.style.display = '';
-        });
-      }
-    }
-    
     // Toggle Mobile Menu
     function toggleMobileMenu() {
-      mobileMenu.classList.toggle('opacity-0');
-      mobileMenu.classList.toggle('pointer-events-none');
-      document.body.classList.toggle('overflow-hidden');
-    }
-    
-    // Toggle Mobile Sidebar
-    function toggleMobileSidebar() {
       sidebar.classList.toggle('show');
     }
     
@@ -1336,10 +1666,15 @@
       });
       
       // Load tab-specific data if needed
-      if (tabId === 'shifts' && activeShifts.innerHTML.includes('Loading')) {
+      if (tabId === 'dashboard') {
+        loadDashboardData();
+      } else if (tabId === 'punishments') {
+        loadPunishments(selectedServerId);
+      } else if (tabId === 'shifts') {
         loadShifts(selectedServerId);
       } else if (tabId === 'erlc') {
         loadERLCData(selectedServerId);
+      } else if (tabId === 'bolos') {
         loadBOLOs(selectedServerId);
       }
       
@@ -1363,52 +1698,57 @@
       }
     }
     
-    // Initialize Dropdowns
-    function initDropdowns() {
-      // Punishment Type Dropdown
-      punishmentTypeToggle.addEventListener('click', () => {
-        toggleDropdown(punishmentTypeToggle, punishmentTypeMenu);
-      });
+    // Fetch User Data
+    async function fetchUserData(userId, forceRefresh = false) {
+      if (!forceRefresh && userCache.has(userId)) {
+        return userCache.get(userId);
+      }
       
-      // Duration Unit Dropdown
-      durationUnitToggle.addEventListener('click', () => {
-        toggleDropdown(durationUnitToggle, durationUnitMenu);
-      });
-      
-      // Set up duration unit options
-      document.querySelectorAll('#durationUnitMenu .dropdown-item').forEach(item => {
-        item.addEventListener('click', () => {
-          const value = item.dataset.value;
-          durationUnit.value = value;
-          durationUnitToggle.querySelector('span').textContent = item.textContent;
-          
-          document.querySelectorAll('#durationUnitMenu .dropdown-item').forEach(opt => {
-            opt.classList.remove('active');
-          });
-          item.classList.add('active');
-          
-          durationUnitMenu.classList.remove('show');
-        });
-      });
-      
-      // Shift Type Dropdown
-      shiftTypeToggle.addEventListener('click', () => {
-        toggleDropdown(shiftTypeToggle, shiftTypeMenu);
-      });
-      
-      // Automation Dropdown
-      automationToggle.addEventListener('click', () => {
-        toggleDropdown(automationToggle, automationMenu);
-      });
-      
-      // Close dropdowns when clicking outside
-      document.addEventListener('click', (e) => {
-        if (!e.target.closest('.dropdown')) {
-          document.querySelectorAll('.dropdown-menu').forEach(el => {
-            el.classList.remove('show');
-          });
+      try {
+        const response = await fetch(`https://api.duckybot.xyz/user/${userId}`);
+        
+        if (!response.ok) {
+          return { id: userId, name: userId, username: userId };
         }
-      });
+        
+        const data = await response.json();
+        
+        if (data.code === 200 && data.data) {
+          userCache.set(userId, data.data);
+          return data.data;
+        }
+        
+        return { id: userId, name: userId, username: userId };
+      } catch (error) {
+        return { id: userId, name: userId, username: userId };
+      }
+    }
+    
+    // Fetch Roblox Avatar
+    async function fetchRobloxAvatar(robloxId) {
+      if (avatarCache.has(robloxId)) {
+        return avatarCache.get(robloxId);
+      }
+      
+      try {
+        const response = await fetch(`https://api.duckybot.xyz/avatar/roblox/${robloxId}`);
+        
+        if (!response.ok) {
+          return null;
+        }
+        
+        const data = await response.json();
+        
+        if (data.code === 200 && data.data) {
+          const avatarUrl = data.data.url;
+          avatarCache.set(robloxId, avatarUrl);
+          return avatarUrl;
+        }
+        
+        return null;
+      } catch (error) {
+        return null;
+      }
     }
     
     // Setup Punishment Type Dropdown
@@ -1426,7 +1766,7 @@
         item.textContent = type.charAt(0).toUpperCase() + type.slice(1);
         
         item.addEventListener('click', () => {
-          punishmentType.value = type.toLowerCase();
+          punishmentTypeInput.value = type.toLowerCase();
           punishmentTypeToggle.querySelector('span').textContent = item.textContent;
           
           document.querySelectorAll('#punishmentTypeMenu .dropdown-item').forEach(opt => {
@@ -1436,7 +1776,7 @@
           
           punishmentTypeMenu.classList.remove('show');
           
-          durationContainer.classList.toggle('hidden', punishmentType.value !== 'tempban');
+          durationContainer.classList.toggle('hidden', punishmentTypeInput.value !== 'tempban');
         });
         
         punishmentTypeMenu.appendChild(item);
@@ -1540,12 +1880,6 @@
     
     // Show Automation Details
     function showAutomationDetails(automation) {
-      const automationTrigger = document.getElementById('automationTrigger');
-      const automationActions = document.getElementById('automationActions');
-      const automationRole = document.getElementById('automationRole');
-      const automationRoleContainer = document.getElementById('automationRoleContainer');
-      const automationAuthor = document.getElementById('automationAuthor');
-      
       automationTrigger.textContent = automation.trigger ? automation.trigger.name : 'Unknown';
       
       automationActions.innerHTML = '';
@@ -1677,108 +2011,133 @@
       setTimeout(updateDiscordCheckCooldown, 1000);
     }
     
-    // Fetch User Data
-    async function fetchUserData(userId, forceRefresh = false) {
-      if (!forceRefresh && userCache.has(userId)) {
-        return userCache.get(userId);
-      }
+    // Load Dashboard Data
+    async function loadDashboardData() {
+      if (!selectedServerId || !discordToken) return;
       
       try {
-        const response = await fetch(`https://api.duckybot.xyz/user/${userId}`);
+        // Load active staff count
+        const shiftsResponse = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts`, {
+          headers: { "Discord-Code": discordToken }
+        });
         
-        if (!response.ok) {
-          return { id: userId, name: userId, username: userId };
+        if (shiftsResponse.ok) {
+          const shiftsData = await shiftsResponse.json();
+          if (shiftsData.data && shiftsData.data.activeshifts) {
+            activeStaffCount.textContent = shiftsData.data.activeshifts.length;
+          }
         }
         
-        const data = await response.json();
+        // Load punishments count
+        const punishmentsResponse = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments`, {
+          headers: { "Discord-Code": discordToken }
+        });
         
-        if (data.code === 200 && data.data) {
-          userCache.set(userId, data.data);
-          return data.data;
+        if (punishmentsResponse.ok) {
+          const punishmentsData = await punishmentsResponse.json();
+          if (punishmentsData.data) {
+            const oneDayAgo = Math.floor(Date.now() / 1000) - 86400;
+            const recentPunishments = punishmentsData.data.filter(p => p.timestamp >= oneDayAgo);
+            recentPunishmentsCount.textContent = recentPunishments.length;
+            
+            // Load recent activity
+            recentActivity.innerHTML = '';
+            
+            if (recentPunishments.length === 0) {
+              recentActivity.innerHTML = '<div class="p-4 text-center text-gray-400">No recent activity</div>';
+            } else {
+              const sortedPunishments = recentPunishments.sort((a, b) => b.timestamp - a.timestamp).slice(0, 5);
+              
+              for (const punishment of sortedPunishments) {
+                const moderatorData = await fetchUserData(punishment.moderator);
+                const moderatorName = moderatorData.username || moderatorData.name || punishment.moderator;
+                
+                const activityItem = document.createElement('div');
+                activityItem.className = 'p-4 flex items-start gap-3';
+                
+                const typeColors = {
+                  warn: 'text-yellow-400',
+                  warning: 'text-yellow-400',
+                  kick: 'text-orange-400',
+                  ban: 'text-red-500',
+                  tempban: 'text-red-400'
+                };
+                
+                const typeColor = typeColors[punishment.type.toLowerCase()] || 'text-gray-400';
+                
+                activityItem.innerHTML = `
+                  <div class="mt-1">
+                    <i class="fas fa-gavel ${typeColor}"></i>
+                  </div>
+                  <div class="flex-1">
+                    <p><span class="font-medium">${moderatorName}</span> issued a <span class="${typeColor} font-medium">${punishment.type}</span> to <span class="font-medium">${punishment.robloxUser.name}</span></p>
+                    <p class="text-sm text-gray-400 mt-1">${punishment.reason}</p>
+                    <p class="text-xs text-gray-500 mt-1">${formatDate(punishment.timestamp)}</p>
+                  </div>
+                `;
+                
+                recentActivity.appendChild(activityItem);
+              }
+            }
+          }
         }
         
-        return { id: userId, name: userId, username: userId };
+        // Load BOLOs count
+        const bolosResponse = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/bolos`, {
+          headers: { "Discord-Code": discordToken }
+        });
+        
+        if (bolosResponse.ok) {
+          const bolosData = await bolosResponse.json();
+          if (bolosData.data) {
+            activeBolosCount.textContent = bolosData.data.length;
+          }
+        }
+        
+        // Load server status
+        const erlcResponse = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/erlc/data`, {
+          headers: { "Discord-Code": discordToken }
+        });
+        
+        if (erlcResponse.ok) {
+          const erlcData = await erlcResponse.json();
+          if (erlcData.data) {
+            const serverData = erlcData.data.server;
+            const isOnline = erlcData.data.players.length > 0;
+            
+            serverStatus.innerHTML = `
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h4 class="font-medium">${serverData.Name || 'ER:LC Server'}</h4>
+                  <p class="text-sm text-gray-400 mt-1">Join Key: ${serverData.JoinKey || 'None'}</p>
+                </div>
+                <div class="badge ${isOnline ? 'badge-success' : 'badge-danger'}">
+                  ${isOnline ? 'Online' : 'Offline'}
+                </div>
+              </div>
+              
+              <div class="grid grid-cols-2 gap-4">
+                <div class="bg-black/20 p-3 rounded-lg">
+                  <div class="text-sm text-gray-400 mb-1">Players</div>
+                  <div class="text-xl font-bold">${erlcData.data.players.length || 0} / ${serverData.MaxPlayers || '?'}</div>
+                </div>
+                
+                <div class="bg-black/20 p-3 rounded-lg">
+                  <div class="text-sm text-gray-400 mb-1">Queue</div>
+                  <div class="text-xl font-bold">${erlcData.data.lastQueueCount || 0}</div>
+                </div>
+              </div>
+            `;
+          } else {
+            serverStatus.innerHTML = '<div class="p-4 text-center text-gray-400">No ER:LC server found</div>';
+          }
+        } else {
+          serverStatus.innerHTML = '<div class="p-4 text-center text-gray-400">No ER:LC server found</div>';
+        }
+        
       } catch (error) {
-        return { id: userId, name: userId, username: userId };
+        console.error('Failed to load dashboard data:', error);
       }
-    }
-    
-    // Fetch Roblox Avatar
-    async function fetchRobloxAvatar(robloxId) {
-      if (avatarCache.has(robloxId)) {
-        return avatarCache.get(robloxId);
-      }
-      
-      try {
-        const response = await fetch(`https://api.duckybot.xyz/avatar/roblox/${robloxId}`);
-        
-        if (!response.ok) {
-          return null;
-        }
-        
-        const data = await response.json();
-        
-        if (data.code === 200 && data.data) {
-          const avatarUrl = data.data.url;
-          avatarCache.set(robloxId, avatarUrl);
-          return avatarUrl;
-        }
-        
-        return null;
-      } catch (error) {
-        return null;
-      }
-    }
-    
-    // Select Server
-    function selectServer(serverId, serverName, serverIcon, serverConfig) {
-      selectedServerId = serverId;
-      selectedServerConfig = serverConfig;
-      
-      // Update server info in sidebar and mobile header
-      document.getElementById('sidebarServerName').textContent = serverName;
-      document.getElementById('sidebarServerIcon').src = serverIcon || 'https://duckybot.xyz/images/Ducky.svg';
-      document.getElementById('mobileServerName').textContent = serverName;
-      document.getElementById('mobileServerIcon').src = serverIcon || 'https://duckybot.xyz/images/Ducky.svg';
-      
-      // Switch views
-      serverSelectionView.classList.add('hidden');
-      dashboardView.classList.remove('hidden');
-      
-      // Save selected server to localStorage
-      localStorage.setItem('selectedServerId', JSON.stringify({
-        id: serverId,
-        name: serverName,
-        icon: serverIcon,
-        config: serverConfig
-      }));
-      
-      // Setup dropdowns
-      let punishmentTypes = [];
-      if (serverConfig && serverConfig.punishmenttypes && serverConfig.punishmenttypes.length > 0) {
-        punishmentTypes = serverConfig.punishmenttypes;
-      }
-      setupPunishmentTypeDropdown(punishmentTypes);
-      
-      let shiftTypes = [];
-      if (serverConfig && serverConfig.shifttypes && serverConfig.shifttypes.length > 0) {
-        shiftTypes = serverConfig.shifttypes;
-      }
-      setupShiftTypeDropdown(shiftTypes);
-      
-      if (serverConfig && serverConfig.automations) {
-        setupAutomationsDropdown(serverConfig.automations);
-      } else {
-        setupAutomationsDropdown([]);
-      }
-      
-      // Load initial data
-      loadPunishments(serverId);
-      checkActiveShift(serverId);
-      updateDiscordCheckCooldown();
-      
-      // Default to punishments tab
-      switchTab('punishments');
     }
     
     // Load Servers
@@ -1786,7 +2145,7 @@
       discordToken = getDiscordToken();
       
       if (!discordToken) {
-        window.location.href = "/login?redirect=modpanel";
+        window.location.href = "/login?redirect=dashboard";
         return;
       }
       
@@ -1823,17 +2182,17 @@
         
         if (userResponse.ok) {
           discordUser = await userResponse.json();
-          document.getElementById('username').textContent = discordUser.global_name || discordUser.username;
+          username.textContent = discordUser.global_name || discordUser.username;
           const avatarUrl = `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`;
-          document.getElementById('profilePicture').src = avatarUrl;
+          userAvatar.src = avatarUrl;
         }
         
         const filteredServers = servers.filter(server => server.manage_server && server.ducky);
         
         if (filteredServers.length === 0) {
-          serverGrid.innerHTML = '<div class="text-center py-8"><i class="fas fa-server text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No servers with Ducky found. Make sure you have the right permissions.</p></div>';
+          serverList.innerHTML = '<div class="p-4 text-center text-gray-400">No servers with Ducky found</div>';
         } else {
-          serverGrid.innerHTML = '';
+          serverList.innerHTML = '';
           
           const fragment = document.createDocumentFragment();
           
@@ -1848,49 +2207,113 @@
           }
           
           filteredServers.forEach(server => {
-            const serverCard = document.createElement('div');
-            serverCard.className = 'server-card';
+            const serverItem = document.createElement('div');
+            serverItem.className = 'server-item';
+            if (server.id === selectedServerId) {
+              serverItem.classList.add('active');
+            }
             
             const img = document.createElement('img');
             img.src = server.icon || 'https://duckybot.xyz/images/Ducky.svg';
             img.alt = server.name;
             img.loading = 'lazy';
 
-            const name = document.createElement('p');
-            name.className = 'text-center font-medium text-xs';
+            const serverInfo = document.createElement('div');
+            serverInfo.className = 'server-item-info';
+            
+            const name = document.createElement('div');
+            name.className = 'server-item-name';
             name.textContent = server.name;
             
-            serverCard.appendChild(img);
-            serverCard.appendChild(name);
+            const id = document.createElement('div');
+            id.className = 'server-item-id';
+            id.textContent = `ID: ${server.id}`;
             
-            serverCard.addEventListener('click', () => {
+            serverInfo.appendChild(name);
+            serverInfo.appendChild(id);
+            
+            serverItem.appendChild(img);
+            serverItem.appendChild(serverInfo);
+            
+            serverItem.addEventListener('click', () => {
               selectServer(server.id, server.name, server.icon, server.config);
+              serverSelectorMenu.classList.remove('show');
             });
             
-            fragment.appendChild(serverCard);
+            fragment.appendChild(serverItem);
           });
           
-          serverGrid.appendChild(fragment);
+          serverList.appendChild(fragment);
           
           if (savedServerValid && savedServerData) {
             selectServer(savedServerData.id, savedServerData.name, savedServerData.icon, savedServerData.config);
+          } else if (filteredServers.length > 0) {
+            selectServer(filteredServers[0].id, filteredServers[0].name, filteredServers[0].icon, filteredServers[0].config);
           }
         }
         
-        loadingOverlay.classList.add('fade-out');
+        loadingOverlay.style.opacity = '0';
         setTimeout(() => {
           loadingOverlay.style.display = 'none';
-          serverSelectionView.style.opacity = '1';
         }, 500);
         
       } catch (error) {
-        serverGrid.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Failed to load servers. Please try again later.</p></div>';
-        loadingOverlay.classList.add('fade-out');
+        showToast('Failed to load servers. Please try again later.', 'error');
+        loadingOverlay.style.opacity = '0';
         setTimeout(() => {
           loadingOverlay.style.display = 'none';
-          serverSelectionView.style.opacity = '1';
         }, 500);
       }
+    }
+    
+    // Select Server
+    function selectServer(serverId, serverName, serverIcon, serverConfig) {
+      selectedServerId = serverId;
+      selectedServerConfig = serverConfig;
+      
+      // Update server selector
+      currentServerIcon.src = serverIcon || 'https://duckybot.xyz/images/Ducky.svg';
+      currentServerName.textContent = serverName;
+      
+      // Update active server in list
+      document.querySelectorAll('.server-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.querySelector('.server-item-id').textContent.includes(serverId)) {
+          item.classList.add('active');
+        }
+      });
+      
+      // Save selected server to localStorage
+      localStorage.setItem('selectedServerId', JSON.stringify({
+        id: serverId,
+        name: serverName,
+        icon: serverIcon,
+        config: serverConfig
+      }));
+      
+      // Setup dropdowns
+      let punishmentTypes = [];
+      if (serverConfig && serverConfig.punishmenttypes && serverConfig.punishmenttypes.length > 0) {
+        punishmentTypes = serverConfig.punishmenttypes;
+      }
+      setupPunishmentTypeDropdown(punishmentTypes);
+      
+      let shiftTypes = [];
+      if (serverConfig && serverConfig.shifttypes && serverConfig.shifttypes.length > 0) {
+        shiftTypes = serverConfig.shifttypes;
+      }
+      setupShiftTypeDropdown(shiftTypes);
+      
+      if (serverConfig && serverConfig.automations) {
+        setupAutomationsDropdown(serverConfig.automations);
+      } else {
+        setupAutomationsDropdown([]);
+      }
+      
+      // Load initial data
+      loadDashboardData();
+      checkActiveShift(serverId);
+      updateDiscordCheckCooldown();
     }
     
     // Load Punishments
@@ -1933,6 +2356,9 @@
           const item = document.createElement('div');
           item.className = 'punishment-item';
           item.dataset.punishmentId = punishment.punishmentid || punishment.id;
+          item.dataset.username = (punishment.robloxUser.name || '').toLowerCase();
+          item.dataset.displayname = (punishment.robloxUser.displayName || '').toLowerCase();
+          item.dataset.robloxid = (punishment.robloxUser.id || 0).toString();
           
           const typeColors = {
             warn: 'text-yellow-400',
@@ -1952,95 +2378,127 @@
             avatarUrl = await fetchRobloxAvatar(punishment.robloxUser.id);
           }
           
-          const userInfoDiv = document.createElement('div');
-          userInfoDiv.className = 'flex items-center gap-3 md:col-span-1';
-          
-          const avatarDiv = document.createElement('div');
-          avatarDiv.className = 'avatar hidden sm:flex';
-          
-          if (avatarUrl) {
-            const img = document.createElement('img');
-            img.src = avatarUrl;
-            img.alt = punishment.robloxUser.name;
-            avatarDiv.appendChild(img);
-          } else {
-            avatarDiv.textContent = punishment.robloxUser.name.charAt(0).toUpperCase();
-          }
-          
-          const userTextDiv = document.createElement('div');
-          userTextDiv.innerHTML = `
-            <div class="font-medium">${punishment.robloxUser.name}</div>
-            <div class="text-xs text-gray-400">@${punishment.robloxUser.name}</div>
-          `;
-          
-          userInfoDiv.appendChild(avatarDiv);
-          userInfoDiv.appendChild(userTextDiv);
-          
-          const typeDiv = document.createElement('div');
-          typeDiv.className = `${typeColor} font-medium md:col-span-1`;
-          typeDiv.textContent = punishment.type.toUpperCase();
-          
-          const reasonDiv = document.createElement('div');
-          reasonDiv.className = 'text-gray-400 mt-2 md:mt-0 md:col-span-1';
-          reasonDiv.textContent = punishment.reason;
-          
-          const dateDiv = document.createElement('div');
-          dateDiv.className = 'text-gray-500 text-sm mt-2 md:mt-0 md:text-right md:col-span-1';
-          dateDiv.textContent = formatDate(punishment.timestamp);
-          
-          const moderatorDiv = document.createElement('div');
-          moderatorDiv.className = 'text-gray-400 text-xs mt-1 md:text-right';
-          moderatorDiv.textContent = `By: ${moderatorName}`;
-          
-          const deleteBtn = document.createElement('button');
-          deleteBtn.className = 'delete-btn';
-          deleteBtn.title = 'Delete punishment';
-          deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-          deleteBtn.addEventListener('click', () => {
-            showDeleteConfirmation(punishment.punishmentid || punishment.id, punishment.robloxUser.name, punishment.type);
-          });
-          
           // For mobile layout
           if (window.innerWidth < 768) {
-            item.appendChild(userInfoDiv);
-            item.appendChild(typeDiv);
-            item.appendChild(reasonDiv);
-            
-            const metaDiv = document.createElement('div');
-            metaDiv.className = 'mt-2';
-            metaDiv.appendChild(dateDiv);
-            metaDiv.appendChild(moderatorDiv);
-            
-            item.appendChild(metaDiv);
+            item.innerHTML = `
+              <div class="flex items-center gap-3 mb-3">
+                <div class="avatar">
+                  ${avatarUrl ? `<img src="${avatarUrl}" alt="${punishment.robloxUser.name}">` : punishment.robloxUser.name.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <div class="font-medium">${punishment.robloxUser.name}</div>
+                  <div class="text-xs text-gray-400">@${punishment.robloxUser.name}</div>
+                </div>
+              </div>
+              <div class="${typeColor} font-medium mb-2">${punishment.type.toUpperCase()}</div>
+              <div class="text-gray-400 mb-3">${punishment.reason}</div>
+              <div class="text-gray-500 text-sm">${formatDate(punishment.timestamp)}</div>
+              <div class="text-gray-400 text-xs">By: ${moderatorName}</div>
+              <button class="delete-btn" data-id="${punishment.punishmentid || punishment.id}">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            `;
           } else {
             // For desktop layout (grid)
             item.classList.add('grid', 'grid-cols-4', 'items-center', 'gap-4');
-            item.appendChild(userInfoDiv);
-            item.appendChild(typeDiv);
-            item.appendChild(reasonDiv);
-            
-            const metaDiv = document.createElement('div');
-            metaDiv.appendChild(dateDiv);
-            metaDiv.appendChild(moderatorDiv);
-            
-            item.appendChild(metaDiv);
+            item.innerHTML = `
+              <div class="flex items-center gap-3">
+                <div class="avatar hidden sm:flex">
+                  ${avatarUrl ? `<img src="${avatarUrl}" alt="${punishment.robloxUser.name}">` : punishment.robloxUser.name.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <div class="font-medium">${punishment.robloxUser.name}</div>
+                  <div class="text-xs text-gray-400">@${punishment.robloxUser.name}</div>
+                </div>
+              </div>
+              <div class="${typeColor} font-medium">${punishment.type.toUpperCase()}</div>
+              <div class="text-gray-400">${punishment.reason}</div>
+              <div>
+                <div class="text-gray-500 text-sm">${formatDate(punishment.timestamp)}</div>
+                <div class="text-gray-400 text-xs">By: ${moderatorName}</div>
+              </div>
+              <button class="delete-btn" data-id="${punishment.punishmentid || punishment.id}">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            `;
           }
           
-          item.appendChild(deleteBtn);
           fragment.appendChild(item);
         }
         
         punishmentHistory.appendChild(fragment);
+        
+        // Add event listeners to delete buttons
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const punishmentId = btn.dataset.id;
+            const punishmentItem = document.querySelector(`.punishment-item[data-punishment-id="${punishmentId}"]`);
+            const username = punishmentItem.dataset.username;
+            const type = punishmentItem.querySelector('[class*="text-"]').textContent;
+            showDeleteConfirmation(punishmentId, username, type);
+          });
+        });
+        
+        // Setup search functionality
+        punishmentSearch.addEventListener('input', filterPunishments);
         
       } catch (error) {
         punishmentHistory.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Failed to load punishment history. Please try again.</p></div>';
       }
     }
     
+    // Filter Punishments
+    function filterPunishments() {
+      const searchTerm = punishmentSearch.value.trim().toLowerCase();
+      const punishmentItems = document.querySelectorAll('#punishmentHistory .punishment-item');
+      
+      if (!searchTerm) {
+        punishmentItems.forEach(item => {
+          item.style.display = '';
+        });
+        return;
+      }
+      
+      let matchFound = false;
+      
+      punishmentItems.forEach(item => {
+        const username = item.dataset.username || '';
+        const displayName = item.dataset.displayname || '';
+        const robloxId = item.dataset.robloxid || '';
+        
+        if (username.includes(searchTerm) || displayName.includes(searchTerm) || robloxId === searchTerm) {
+          item.style.display = '';
+          matchFound = true;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+      
+      if (!matchFound && punishmentItems.length > 0) {
+        if (!document.getElementById('no-matches-message')) {
+          const noMatches = document.createElement('div');
+          noMatches.id = 'no-matches-message';
+          noMatches.className = 'text-center py-4 text-gray-400';
+          noMatches.innerHTML = '<i class="fas fa-search mb-2 text-2xl"></i><p>No matching punishments found.</p>';
+          punishmentHistory.appendChild(noMatches);
+        }
+      } else {
+        const noMatches = document.getElementById('no-matches-message');
+        if (noMatches) {
+          noMatches.remove();
+        }
+      }
+    }
+    
+    // Show Delete Confirmation
+    function showDeleteConfirmation(punishmentId, username, type) {
+      currentPunishmentToDelete = punishmentId;
+      confirmationMessage.textContent = `Are you sure you want to delete the ${type} punishment for ${username}?`;
+      confirmationModal.classList.add('show');
+    }
+    
     // Load BOLOs
     async function loadBOLOs(serverId) {
-      if (!activeBOLOs) return;
-      
       activeBOLOs.innerHTML = `
         <div class="text-center py-4">
           <div class="spinner mx-auto mb-2"></div>
@@ -2094,10 +2552,10 @@
                     <p class="text-xs text-gray-500 mt-2">Created: ${formatDate(bolo.created)}</p>
                   </div>
                   <div class="flex gap-2">
-                    <button class="btn btn-icon btn-success approve-bolo-btn">
+                    <button class="btn btn-icon btn-success approve-bolo-btn" data-id="${bolo.user}">
                       <i class="fas fa-check"></i>
                     </button>
-                    <button class="btn btn-icon btn-danger delete-bolo-btn">
+                    <button class="btn btn-icon btn-danger delete-bolo-btn" data-id="${bolo.user}">
                       <i class="fas fa-times"></i>
                     </button>
                   </div>
@@ -2106,16 +2564,23 @@
             </div>
           `;
           
-          const approveBtn = boloCard.querySelector('.approve-bolo-btn');
-          const deleteBtn = boloCard.querySelector('.delete-bolo-btn');
-          
-          approveBtn.addEventListener('click', () => approveBOLO(bolo.user));
-          deleteBtn.addEventListener('click', () => deleteBOLO(bolo.user));
-          
           fragment.appendChild(boloCard);
         }
         
         activeBOLOs.appendChild(fragment);
+        
+        // Add event listeners to BOLO buttons
+        document.querySelectorAll('.approve-bolo-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            approveBOLO(btn.dataset.id);
+          });
+        });
+        
+        document.querySelectorAll('.delete-bolo-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            deleteBOLO(btn.dataset.id);
+          });
+        });
         
       } catch (error) {
         activeBOLOs.innerHTML = '<div class="text-center py-8"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i><p class="text-gray-400">Failed to load BOLOs. Please try again.</p></div>';
@@ -2214,7 +2679,7 @@
             const userData = await fetchUserData(shift.user);
             
             const item = document.createElement('div');
-            item.className = 'p-4 bg-black/20 rounded-lg border-l-2 border-gray-500';
+            item.className = 'p-4 bg-black/20 rounded-lg border-l-2 border-gray-500 mb-3';
             
             const avatarUrl = userData.avatar;
             const actualDuration = shift.elapsed > 0 ? shift.elapsed * 60 : 0;
@@ -2461,147 +2926,164 @@
       }
     }
     
-    // Check Active Shift
-    async function checkActiveShift(serverId) {
-      if (!discordToken || !discordUser) return;
-      
-      try {
-        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts`, {
-          headers: { "Discord-Code": discordToken }
-        });
-        
-        if (!response.ok) {
-          throw new Error('Failed to check active shift');
-        }
-        
-        const { data } = await response.json();
-        
-        const userId = discordUser.id;
-        let userActiveShift = null;
-        
-        if (data.activeshifts && data.activeshifts.length > 0) {
-          userActiveShift = data.activeshifts.find(shift => shift.user === userId && shift.type === shiftType.value);
-        }
-        
-        if (userActiveShift) {
-          currentUserShift = userActiveShift;
-          shiftStatus = userActiveShift.paused ? 'paused' : 'active';
-          shiftStartTime = userActiveShift.started;
-          shiftElapsedTime = userActiveShift.elapsed || 0;
-          
-          updateShiftUI();
-          
-          if (shiftStatus === 'active') {
-            startShiftTimer();
-          }
-        } else {
-          shiftStatus = 'inactive';
-          updateShiftUI();
-        }
-        
-      } catch (error) {
-        showToast('Failed to check active shift status', 'error');
-      }
-    }
-    
-    // Show Delete Confirmation
-    function showDeleteConfirmation(punishmentId, username, type) {
-      currentPunishmentToDelete = punishmentId;
-      confirmationMessage.textContent = `Are you sure you want to delete the ${type.toUpperCase()} punishment for ${username}?`;
-      confirmationModal.classList.add('show');
-    }
-    
-    // Issue Punishment
-    async function issuePunishment() {
-      const now = Date.now();
-      if (now - lastPunishmentTime < PUNISHMENT_COOLDOWN) {
-        showToast('Please wait 5 seconds between punishments', 'error');
-        return;
-      }
-
-      if (!discordToken) {
+    // Run Discord Check
+    async function runDiscordCheck() {
+      if (!discordToken || !selectedServerId) {
         showToast('Authentication error. Please log in again.', 'error');
         return;
       }
       
-      const robloxUsername = document.getElementById('robloxUsername').value;
-      const type = document.getElementById('punishmentType').value;
-      const reason = document.getElementById('reason').value;
-      
-      if (!type) {
-        showToast('Please select a punishment type', 'error');
+      if (discordCheckCooldowns[selectedServerId] && discordCheckCooldowns[selectedServerId] > Date.now()) {
+        showToast('Discord check is on cooldown. Please wait before trying again.', 'error');
         return;
       }
       
-      let expires = null;
-      if (type === 'tempban') {
-        const durationValue = document.getElementById('durationValue').value;
-        const durationUnit = document.getElementById('durationUnit').value;
+      try {
+        runDiscordCheckBtn.disabled = true;
+        runDiscordCheckBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Running check...';
+      
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/erlc/check`, {
+          headers: { "Discord-Code": discordToken }
+        });
         
-        if (!durationValue || durationValue <= 0) {
-          showToast('Please enter a valid duration', 'error');
-          return;
+        if (!response.ok) {
+          throw new Error('Failed to run Discord check');
         }
         
-        const multipliers = {
-          minutes: 60,
-          hours: 3600,
-          days: 86400,
-          weeks: 604800
-        };
+        const { data } = await response.json();
         
-        const duration = durationValue * multipliers[durationUnit];
-        expires = Math.floor(Date.now() / 1000) + duration;
+        discordCheckList.innerHTML = '';
+        
+        if (!data || data.length === 0) {
+          discordCheckList.innerHTML = '<div class="text-center py-8 col-span-full"><i class="fas fa-users text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No players found in-game.</p></div>';
+        } else {
+          const fragment = document.createDocumentFragment();
+          
+          for (const player of data) {
+            const item = document.createElement('div');
+            item.className = 'p-4 bg-black/20 rounded-lg';
+            
+            if (player.discord) {
+              item.innerHTML = `
+                <div class="flex items-start gap-3">
+                  <div class="avatar">
+                    ${player.roblox.avatar ? `<img src="${player.roblox.avatar}" alt="${player.roblox.name}">` : player.roblox.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex justify-between items-start">
+                      <div>
+                        <h4 class="font-medium">${player.roblox.displayName || player.roblox.name} <span class="text-sm text-gray-400">(${player.roblox.name})</span></h4>
+                        <div class="flex items-center gap-2 mt-1">
+                          <span class="badge badge-success">Discord Linked</span>
+                          <span class="text-sm text-gray-400">@${player.discord.username}</span>
+                        </div>
+                        ${player.discord.vc ? `
+                          <div class="mt-2">
+                            <span class="flex items-center gap-1 text-sm text-[#F5FF82]">
+                              <i class="fas fa-headset"></i> ${player.discord.vc.name}
+                            </span>
+                          </div>
+                        ` : ''}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            } else {
+              item.innerHTML = `
+                <div class="flex items-start gap-3">
+                  <div class="avatar">
+                    ${player.roblox.avatar ? `<img src="${player.roblox.avatar}" alt="${player.roblox.name}">` : player.roblox.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex justify-between items-start">
+                      <div>
+                        <h4 class="font-medium">${player.roblox.displayName || player.roblox.name} <span class="text-sm text-gray-400">(${player.roblox.name})</span></h4>
+                        <div class="flex items-center gap-2 mt-1">
+                          <span class="badge badge-danger">Not Linked</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }
+            
+            fragment.appendChild(item);
+          }
+          
+          discordCheckList.appendChild(fragment);
+        }
+        
+        discordCheckResults.classList.remove('hidden');
+        
+        discordCheckCooldowns[selectedServerId] = Date.now() + DISCORD_CHECK_COOLDOWN;
+        updateDiscordCheckCooldown();
+        
+      } catch (error) {
+        showToast('Failed to run Discord check: ' + error.message, 'error');
+      } finally {
+        if (!discordCheckCooldowns[selectedServerId] || discordCheckCooldowns[selectedServerId] <= Date.now()) {
+          runDiscordCheckBtn.disabled = false;
+          runDiscordCheckBtn.innerHTML = 'Run Discord Check';
+        }
+      }
+    }
+    
+    // Execute Command
+    async function executeCommand(e) {
+      e.preventDefault();
+      
+      if (!discordToken || !selectedServerId) {
+        showToast('Authentication error. Please log in again.', 'error');
+        return;
       }
       
-      const submitBtn = document.getElementById('submitBtn');
-      const originalBtnText = submitBtn.innerHTML;
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+      const commandInput = document.getElementById('command');
+      const command = commandInput.value.trim();
+      
+      if (!command) {
+        showToast('Please enter a command', 'error');
+        return;
+      }
+      
+      const executeBtn = document.getElementById('executeCommandBtn');
+      const originalBtnText = executeBtn.innerHTML;
+      executeBtn.disabled = true;
+      executeBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Executing...';
       
       try {
-        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments`, {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/erlc/execute`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Discord-Code': discordToken
           },
           body: JSON.stringify({
-            username: robloxUsername,
-            type,
-            reason,
-            expires
+            command: command
           })
         });
         
-        const data = await response.json();
-        
         if (!response.ok) {
-          throw new Error(data.message || 'Failed to issue punishment');
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to execute command');
         }
         
-        punishmentForm.reset();
-        durationContainer.classList.add('hidden');
-        punishmentTypeToggle.querySelector('span').textContent = 'Select type...';
-        document.querySelectorAll('#punishmentTypeMenu .dropdown-item').forEach(opt => {
-          opt.classList.remove('active');
-        });
-        
-        showToast(`Successfully issued ${type} to ${robloxUsername}`);
-        lastPunishmentTime = now;
-        
-        loadPunishments(selectedServerId);
+        commandInput.value = '';
+        showToast(`Command executed successfully`);
         
       } catch (error) {
-        showToast(error.message || 'Failed to issue punishment. Please try again.', 'error');
+        showToast('Failed to execute command: ' + error.message, 'error');
       } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalBtnText;
+        executeBtn.disabled = false;
+        executeBtn.innerHTML = originalBtnText;
       }
     }
     
     // Create BOLO
-    async function createBOLO() {
+    async function createBOLO(e) {
+      e.preventDefault();
+      
       if (!discordToken || !selectedServerId) {
         showToast('Authentication error. Please log in again.', 'error');
         return;
@@ -2682,6 +3164,8 @@
           }
         }
         
+        loadERLCData(selectedServerId);
+        
       } catch (error) {
         showToast(error.message || 'Failed to approve BOLO. Please try again.', 'error');
       }
@@ -2718,59 +3202,98 @@
           }
         }
         
+        loadERLCData(selectedServerId);
+        
       } catch (error) {
         showToast('Failed to delete BOLO. Please try again.', 'error');
       }
     }
     
-    // Confirm Delete Punishment
-    async function confirmDeletePunishment() {
-      if (!currentPunishmentToDelete || !selectedServerId || !discordToken) {
-        showToast('Error: Missing information for deletion', 'error');
-        confirmationModal.classList.remove('show');
+    // Run Automation
+    async function runAutomation() {
+      if (!discordToken || !selectedServerId || selectedAutomationId.value === '') {
+        showToast('Please select an automation to run', 'error');
+        return;
+      }
+      
+      const automationIndex = parseInt(selectedAutomationId.value);
+      if (isNaN(automationIndex) || automationIndex < 0 || automationIndex >= serverAutomations.length) {
+        showToast('Invalid automation selected', 'error');
+        return;
+      }
+      
+      const automation = serverAutomations[automationIndex];
+      if (!automation) {
+        showToast('Invalid automation selected', 'error');
         return;
       }
       
       try {
-        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments/${currentPunishmentToDelete}`, {
-          method: 'DELETE',
+        runAutomationBtn.disabled = true;
+        runAutomationBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Running...';
+        
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/automations/${automationIndex}`, {
+          method: 'POST',
           headers: {
             'Discord-Code': discordToken
           }
         });
         
         if (!response.ok) {
-          throw new Error('Failed to delete punishment');
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to run automation');
         }
         
-        showToast('Punishment deleted successfully');
+        showToast(`Successfully ran automation: ${automation.name}`);
         
-        const punishmentElement = document.querySelector(`.punishment-item[data-punishment-id="${currentPunishmentToDelete}"]`);
-        if (punishmentElement) {
-          punishmentElement.style.height = punishmentElement.offsetHeight + 'px';
-          punishmentElement.style.overflow = 'hidden';
+      } catch (error) {
+        showToast('Failed to run automation: ' + error.message, 'error');
+      } finally {
+        runAutomationBtn.disabled = false;
+        runAutomationBtn.innerHTML = 'Run Automation';
+      }
+    }
+    
+    // Check Active Shift
+    async function checkActiveShift(serverId) {
+      if (!discordToken || !discordUser) return;
+      
+      try {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts`, {
+          headers: { "Discord-Code": discordToken }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to check active shift');
+        }
+        
+        const { data } = await response.json();
+        
+        const userId = discordUser.id;
+        let userActiveShift = null;
+        
+        if (data.activeshifts && data.activeshifts.length > 0) {
+          userActiveShift = data.activeshifts.find(shift => shift.user === userId && shift.type === shiftType.value);
+        }
+        
+        if (userActiveShift) {
+          currentUserShift = userActiveShift;
+          shiftStatus = userActiveShift.paused ? 'paused' : 'active';
+          shiftStartTime = userActiveShift.started;
+          shiftElapsedTime = userActiveShift.elapsed || 0;
           
-          setTimeout(() => {
-            punishmentElement.style.height = '0';
-            punishmentElement.style.padding = '0';
-            punishmentElement.style.margin = '0';
-            punishmentElement.style.opacity = '0';
-            
-            setTimeout(() => {
-              punishmentElement.remove();
-              
-              if (punishmentHistory.children.length === 0) {
-                punishmentHistory.innerHTML = '<div class="text-center py-8"><i class="fas fa-ban text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No punishment history found.</p></div>';
-              }
-            }, 300);
-          }, 10);
+          updateShiftUI();
+          
+          if (shiftStatus === 'active') {
+            startShiftTimer();
+          }
+        } else {
+          shiftStatus = 'inactive';
+          updateShiftUI();
         }
         
       } catch (error) {
-        showToast('Failed to delete punishment: ' + error.message, 'error');
-      } finally {
-        confirmationModal.classList.remove('show');
-        currentPunishmentToDelete = null;
+        showToast('Failed to check active shift status', 'error');
       }
     }
     
@@ -2943,216 +3466,150 @@
       }
     }
     
-    // Run Discord Check
-    async function runDiscordCheck() {
-      if (!discordToken || !selectedServerId) {
-        showToast('Authentication error. Please log in again.', 'error');
-        return;
-      }
-      
-      if (discordCheckCooldowns[selectedServerId] && discordCheckCooldowns[selectedServerId] > Date.now()) {
-        showToast('Discord check is on cooldown. Please wait before trying again.', 'error');
+    // Confirm Delete Punishment
+    async function confirmDeletePunishment() {
+      if (!currentPunishmentToDelete || !selectedServerId || !discordToken) {
+        showToast('Error: Missing information for deletion', 'error');
+        confirmationModal.classList.remove('show');
         return;
       }
       
       try {
-        runDiscordCheckBtn.disabled = true;
-        runDiscordCheckBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Running check...';
-      
-        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/erlc/check`, {
-          headers: { "Discord-Code": discordToken }
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments/${currentPunishmentToDelete}`, {
+          method: 'DELETE',
+          headers: {
+            'Discord-Code': discordToken
+          }
         });
         
         if (!response.ok) {
-          throw new Error('Failed to run Discord check');
+          throw new Error('Failed to delete punishment');
         }
         
-        const { data } = await response.json();
+        showToast('Punishment deleted successfully');
         
-        discordCheckList.innerHTML = '';
-        
-        if (!data || data.length === 0) {
-          discordCheckList.innerHTML = '<div class="text-center py-8"><i class="fas fa-users text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No players found in-game.</p></div>';
-        } else {
-          const fragment = document.createDocumentFragment();
+        const punishmentElement = document.querySelector(`.punishment-item[data-punishment-id="${currentPunishmentToDelete}"]`);
+        if (punishmentElement) {
+          punishmentElement.style.height = punishmentElement.offsetHeight + 'px';
+          punishmentElement.style.overflow = 'hidden';
           
-          for (const player of data) {
-            const item = document.createElement('div');
-            item.className = 'p-4 bg-black/20 rounded-lg';
+          setTimeout(() => {
+            punishmentElement.style.height = '0';
+            punishmentElement.style.padding = '0';
+            punishmentElement.style.margin = '0';
+            punishmentElement.style.opacity = '0';
             
-            if (player.discord) {
-              item.innerHTML = `
-                <div class="flex items-start gap-3">
-                  <div class="avatar">
-                    ${player.roblox.avatar ? `<img src="${player.roblox.avatar}" alt="${player.roblox.name}">` : player.roblox.name.charAt(0).toUpperCase()}
-                  </div>
-                  <div class="flex-1">
-                    <div class="flex justify-between items-start">
-                      <div>
-                        <h4 class="font-medium">${player.roblox.displayName || player.roblox.name} <span class="text-sm text-gray-400">(${player.roblox.name})</span></h4>
-                        <div class="flex items-center gap-2 mt-1">
-                          <span class="badge badge-success">Discord Linked</span>
-                          <span class="text-sm text-gray-400">@${player.discord.username}</span>
-                        </div>
-                        ${player.discord.vc ? `
-                          <div class="mt-2">
-                            <span class="flex items-center gap-1 text-sm text-[#F5FF82]">
-                              <i class="fas fa-headset"></i> ${player.discord.vc.name}
-                            </span>
-                          </div>
-                        ` : ''}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              `;
-            } else {
-              item.innerHTML = `
-                <div class="flex items-start gap-3">
-                  <div class="avatar">
-                    ${player.roblox.avatar ? `<img src="${player.roblox.avatar}" alt="${player.roblox.name}">` : player.roblox.name.charAt(0).toUpperCase()}
-                  </div>
-                  <div class="flex-1">
-                    <div class="flex justify-between items-start">
-                      <div>
-                        <h4 class="font-medium">${player.roblox.displayName || player.roblox.name} <span class="text-sm text-gray-400">(${player.roblox.name})</span></h4>
-                        <div class="flex items-center gap-2 mt-1">
-                          <span class="badge badge-danger">Not Linked</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              `;
-            }
-            
-            fragment.appendChild(item);
-          }
-          
-          discordCheckList.appendChild(fragment);
+            setTimeout(() => {
+              punishmentElement.remove();
+              
+              if (punishmentHistory.children.length === 0) {
+                punishmentHistory.innerHTML = '<div class="text-center py-8"><i class="fas fa-ban text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">No punishment history found.</p></div>';
+              }
+            }, 300);
+          }, 10);
         }
-        
-        discordCheckResults.classList.remove('hidden');
-        
-        discordCheckCooldowns[selectedServerId] = Date.now() + DISCORD_CHECK_COOLDOWN;
-        updateDiscordCheckCooldown();
         
       } catch (error) {
-        showToast('Failed to run Discord check: ' + error.message, 'error');
+        showToast('Failed to delete punishment: ' + error.message, 'error');
       } finally {
-        if (!discordCheckCooldowns[selectedServerId] || discordCheckCooldowns[selectedServerId] <= Date.now()) {
-          runDiscordCheckBtn.disabled = false;
-          runDiscordCheckBtn.innerHTML = 'Run Discord Check';
-        }
+        confirmationModal.classList.remove('show');
+        currentPunishmentToDelete = null;
       }
     }
     
-    // Execute Command
-    async function executeCommand(e) {
+    // Issue Punishment
+    async function issuePunishment(e) {
       e.preventDefault();
       
-      if (!discordToken || !selectedServerId) {
+      const now = Date.now();
+      if (now - lastPunishmentTime < PUNISHMENT_COOLDOWN) {
+        showToast('Please wait 5 seconds between punishments', 'error');
+        return;
+      }
+
+      if (!discordToken) {
         showToast('Authentication error. Please log in again.', 'error');
         return;
       }
       
-      const commandInput = document.getElementById('command');
-      const command = commandInput.value.trim();
+      const robloxUsername = document.getElementById('robloxUsername').value;
+      const type = punishmentTypeInput.value;
+      const reason = document.getElementById('reason').value;
       
-      if (!command) {
-        showToast('Please enter a command', 'error');
+      if (!type) {
+        showToast('Please select a punishment type', 'error');
         return;
       }
       
-      const executeBtn = document.getElementById('executeCommandBtn');
-      const originalBtnText = executeBtn.innerHTML;
-      executeBtn.disabled = true;
-      executeBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Executing...';
+      let expires = null;
+      if (type === 'tempban') {
+        const durationValue = document.getElementById('durationValue').value;
+        const durationUnit = document.getElementById('durationUnit').value;
+        
+        if (!durationValue || durationValue <= 0) {
+          showToast('Please enter a valid duration', 'error');
+          return;
+        }
+        
+        const multipliers = {
+          minutes: 60,
+          hours: 3600,
+          days: 86400,
+          weeks: 604800
+        };
+        
+        const duration = durationValue * multipliers[durationUnit];
+        expires = Math.floor(Date.now() / 1000) + duration;
+      }
+      
+      const submitBtn = document.getElementById('submitPunishmentBtn');
+      const originalBtnText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
       
       try {
-        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/erlc/execute`, {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Discord-Code': discordToken
           },
           body: JSON.stringify({
-            command: command
+            username: robloxUsername,
+            type,
+            reason,
+            expires
           })
         });
         
+        const data = await response.json();
+        
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to execute command');
+          throw new Error(data.message || 'Failed to issue punishment');
         }
         
-        commandInput.value = '';
-        showToast(`Command executed successfully`);
-        
-      } catch (error) {
-        showToast('Failed to execute command: ' + error.message, 'error');
-      } finally {
-        executeBtn.disabled = false;
-        executeBtn.innerHTML = originalBtnText;
-      }
-    }
-    
-    // Run Automation
-    async function runAutomation() {
-      if (!discordToken || !selectedServerId || selectedAutomationId.value === '') {
-        showToast('Please select an automation to run', 'error');
-        return;
-      }
-      
-      const automationIndex = parseInt(selectedAutomationId.value);
-      if (isNaN(automationIndex) || automationIndex < 0 || automationIndex >= serverAutomations.length) {
-        showToast('Invalid automation selected', 'error');
-        return;
-      }
-      
-      const automation = serverAutomations[automationIndex];
-      if (!automation) {
-        showToast('Invalid automation selected', 'error');
-        return;
-      }
-      
-      try {
-        runAutomationBtn.disabled = true;
-        runAutomationBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Running...';
-        
-        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/automations/${automationIndex}`, {
-          method: 'POST',
-          headers: {
-            'Discord-Code': discordToken
-          }
+        punishmentForm.reset();
+        durationContainer.classList.add('hidden');
+        punishmentTypeToggle.querySelector('span').textContent = 'Select type...';
+        document.querySelectorAll('#punishmentTypeMenu .dropdown-item').forEach(opt => {
+          opt.classList.remove('active');
         });
         
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to run automation');
-        }
+        showToast(`Successfully issued ${type} to ${robloxUsername}`);
+        lastPunishmentTime = now;
         
-        showToast(`Successfully ran automation: ${automation.name}`);
+        loadPunishments(selectedServerId);
         
       } catch (error) {
-        showToast('Failed to run automation: ' + error.message, 'error');
+        showToast(error.message || 'Failed to issue punishment. Please try again.', 'error');
       } finally {
-        runAutomationBtn.disabled = false;
-        runAutomationBtn.innerHTML = 'Run Automation';
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
       }
     }
     
     // Event Listeners
-    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-    closeMobileMenuBtn.addEventListener('click', toggleMobileMenu);
-    toggleSidebarBtn.addEventListener('click', toggleSidebar);
-    mobileSidebarBtn.addEventListener('click', toggleMobileSidebar);
-    backToServersBtn.addEventListener('click', () => {
-      dashboardView.classList.add('hidden');
-      serverSelectionView.classList.remove('hidden');
-      localStorage.removeItem('selectedServerId');
-      resetShiftUI();
-    });
+    mobileMenuToggle.addEventListener('click', toggleMobileMenu);
     
     sidebarLinks.forEach(link => {
       link.addEventListener('click', (e) => {
@@ -3162,27 +3619,53 @@
       });
     });
     
-    punishmentForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      issuePunishment();
+    serverSelectorToggle.addEventListener('click', () => {
+      serverSelectorMenu.classList.toggle('show');
     });
     
-    if (boloForm) {
-      boloForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        createBOLO();
-      });
-    }
+    userMenuToggle.addEventListener('click', () => {
+      userMenuDropdown.classList.toggle('show');
+    });
     
-    if (commandForm) {
-      commandForm.addEventListener('submit', executeCommand);
-    }
+    punishmentTypeToggle.addEventListener('click', () => {
+      toggleDropdown(punishmentTypeToggle, punishmentTypeMenu);
+    });
+    
+    durationUnitToggle.addEventListener('click', () => {
+      toggleDropdown(durationUnitToggle, durationUnitMenu);
+    });
+    
+    shiftTypeToggle.addEventListener('click', () => {
+      toggleDropdown(shiftTypeToggle, shiftTypeMenu);
+    });
+    
+    automationToggle.addEventListener('click', () => {
+      toggleDropdown(automationToggle, automationMenu);
+    });
+    
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.server-selector') && serverSelectorMenu.classList.contains('show')) {
+        serverSelectorMenu.classList.remove('show');
+      }
+      
+      if (!e.target.closest('.user-menu') && userMenuDropdown.classList.contains('show')) {
+        userMenuDropdown.classList.remove('show');
+      }
+    });
+    
+    punishmentForm.addEventListener('submit', issuePunishment);
+    boloForm.addEventListener('submit', createBOLO);
+    commandForm.addEventListener('submit', executeCommand);
     
     startShiftBtn.addEventListener('click', startShift);
     pauseShiftBtn.addEventListener('click', pauseShift);
     endShiftBtn.addEventListener('click', endShift);
+    
     runDiscordCheckBtn.addEventListener('click', runDiscordCheck);
     runAutomationBtn.addEventListener('click', runAutomation);
+    
+    refreshPunishmentsBtn.addEventListener('click', () => loadPunishments(selectedServerId));
+    refreshBolosBtn.addEventListener('click', () => loadBOLOs(selectedServerId));
     
     confirmDeleteBtn.addEventListener('click', confirmDeletePunishment);
     cancelDeleteBtn.addEventListener('click', () => {
@@ -3190,10 +3673,13 @@
       currentPunishmentToDelete = null;
     });
     
+    logoutBtn.addEventListener('click', () => {
+      document.cookie = 'discord=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      window.location.href = '/login';
+    });
+    
     // Initialize
-    initDropdowns();
     loadServers();
   </script>
 </body>
 </html>
-
