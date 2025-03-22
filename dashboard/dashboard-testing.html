@@ -242,16 +242,41 @@
         
         .punishment-item {
             position: relative;
-            padding: 0.75rem;
-            border-radius: 6px;
+            padding: 1rem;
+            border-radius: 0;
             background-color: rgba(18, 18, 18, 0.6);
             border-left: 2px solid var(--primary);
             margin-bottom: 0.5rem;
             transition: background-color 0.2s ease;
+            display: grid;
+            grid-template-columns: minmax(150px, 2fr) minmax(100px, 1fr) minmax(150px, 2fr) minmax(120px, 1fr);
+            align-items: center;
         }
-        
+
         .punishment-item:hover {
             background-color: rgba(30, 30, 30, 0.8);
+        }
+
+        .punishment-item .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .punishment-item .punishment-type {
+            font-weight: 500;
+        }
+
+        .punishment-item .punishment-reason {
+            word-break: break-word;
+        }
+
+        .punishment-item .meta-info {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
         }
         
         .delete-btn {
@@ -263,9 +288,12 @@
             width: 2rem;
             height: 2rem;
             border-radius: 50%;
-            opacity: 0;
             transition: all 0.2s ease;
             cursor: pointer;
+            opacity: 0;
+            position: absolute;
+            bottom: 0.75rem;
+            right: 0.75rem;
         }
 
         .punishment-item:hover .delete-btn {
@@ -740,8 +768,8 @@
         }
         
         .moderation-log-header {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: minmax(150px, 2fr) minmax(100px, 1fr) minmax(150px, 2fr) minmax(120px, 1fr);
             padding: 0.75rem 1rem;
             border-bottom: 1px solid var(--card-border);
             font-weight: 600;
@@ -814,6 +842,40 @@
             
             .col-span-6, .col-span-8, .col-span-4 {
                 grid-column: span 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .moderation-log-header {
+                display: none;
+            }
+            
+            .punishment-item {
+                display: block;
+                padding-bottom: 2.5rem;
+            }
+            
+            .punishment-item .user-info {
+                margin-bottom: 0.75rem;
+            }
+            
+            .punishment-item .punishment-type {
+                margin-bottom: 0.5rem;
+            }
+            
+            .punishment-item .punishment-reason {
+                margin-bottom: 0.75rem;
+            }
+            
+            .punishment-item .meta-info {
+                align-items: flex-start;
+                margin-top: 0.5rem;
+            }
+            
+            .delete-btn {
+                bottom: 0.75rem;
+                right: 0.75rem;
+                opacity: 1;
             }
         }
     </style>
@@ -2098,34 +2160,63 @@
                     avatarUrl = robloxData.avatar;
                 }
                 
-                item.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <div class="flex items-start gap-2">
-                            <div class="avatar-circle hidden sm:flex">
-                                ${avatarUrl ? `<img src="${avatarUrl}" alt="${punishment.robloxUser.name}">` : punishment.robloxUser.name.charAt(0)}
-                            </div>
-                            <div>
-                                <div class="font-medium">${punishment.robloxUser.displayName || punishment.robloxUser.name}</div>
-                                <div class="text-sm text-gray-400">@${punishment.robloxUser.name}</div>
-                                <div class="text-sm ${typeColor} mt-1">${punishment.type.toUpperCase()}</div>
-                                <div class="text-sm text-gray-400 mt-1">${punishment.reason}</div>
-                            </div>
-                        </div>
-                        <div class="text-right text-xs">
-                            <div class="text-gray-500">${formatDate(punishment.timestamp)}</div>
-                            <div class="text-gray-400 mt-1">By: ${moderatorName}</div>
-                            <div class="delete-btn" title="Delete punishment">
-                                <i class="fas fa-trash-alt"></i>
-                            </div>
-                        </div>
-                    </div>
+                // User info column
+                const userInfoDiv = document.createElement('div');
+                userInfoDiv.className = 'user-info';
+                
+                const avatarDiv = document.createElement('div');
+                avatarDiv.className = 'avatar-circle hidden sm:flex';
+                if (avatarUrl) {
+                    const img = document.createElement('img');
+                    img.src = avatarUrl;
+                    img.alt = punishment.robloxUser.name;
+                    avatarDiv.appendChild(img);
+                } else {
+                    avatarDiv.textContent = punishment.robloxUser.name.charAt(0);
+                }
+                
+                const userTextDiv = document.createElement('div');
+                userTextDiv.innerHTML = `
+                    <div class="font-medium">${punishment.robloxUser.displayName || punishment.robloxUser.name}</div>
+                    <div class="text-sm text-gray-400">@${punishment.robloxUser.name}</div>
                 `;
                 
-                const deleteBtn = item.querySelector('.delete-btn');
+                userInfoDiv.appendChild(avatarDiv);
+                userInfoDiv.appendChild(userTextDiv);
+                
+                // Type column
+                const typeDiv = document.createElement('div');
+                typeDiv.className = `punishment-type ${typeColor}`;
+                typeDiv.textContent = punishment.type.toUpperCase();
+                
+                // Reason column
+                const reasonDiv = document.createElement('div');
+                reasonDiv.className = 'punishment-reason text-gray-400';
+                reasonDiv.textContent = punishment.reason;
+                
+                // Meta info column
+                const metaDiv = document.createElement('div');
+                metaDiv.className = 'meta-info';
+                metaDiv.innerHTML = `
+                    <div class="text-gray-500">${formatDate(punishment.timestamp)}</div>
+                    <div class="text-gray-400">By: ${moderatorName}</div>
+                `;
+                
+                // Delete button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.title = 'Delete punishment';
+                deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
                 deleteBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     showDeleteConfirmation(punishment.punishmentid || punishment.id, punishment.robloxUser.name, punishment.type);
                 });
+                
+                item.appendChild(userInfoDiv);
+                item.appendChild(typeDiv);
+                item.appendChild(reasonDiv);
+                item.appendChild(metaDiv);
+                item.appendChild(deleteBtn);
                 
                 fragment.appendChild(item);
             }
