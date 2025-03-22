@@ -1,33 +1,33 @@
 .author-table {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .author-pfp {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
-  }
-  
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  li {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-  }
-  
-  .embed {
-    background-color: #2b2d31;
-    border-left: 4px solid #7289da;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
-  }
-  
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.author-pfp {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.embed {
+  background-color: #2b2d31;
+  border-left: 4px solid #7289da;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
