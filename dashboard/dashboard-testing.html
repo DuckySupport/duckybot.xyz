@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Ducky Moderation Panel - Manage your ER:LC server">
-    <meta content="Ducky Moderation Panel" property="og:title">
+    <meta content="Ducky ・ Moderation Panel" property="og:title">
     <meta content="Manage your ER:LC server with Ducky's powerful moderation tools" property="og:description">
     <meta content="https://duckybot.xyz/modpanel" property="og:url">
     <meta content="https://duckybot.xyz/images/Ducky.svg" property="og:image">
     <meta content="#F5FF82" name="theme-color">
     <link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
-    <title>Ducky Moderation Panel</title>
+    <title>Ducky ・ Moderation Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -2047,80 +2047,82 @@ function filterPunishmentHistory() {
     }
     
     async function startShift() {
-    if (!discordToken || !selectedServerId) {
-        showToast('Authentication error. Please log in again.', 'error');
-        return;
-    }
-    
-    const type = shiftType.value;
-    
-    try {
-        startShiftBtn.disabled = true;
-        startShiftBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-        
-        if (shiftStatus === 'paused' && currentUserShift) {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/start`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Discord-Code': discordToken
-                },
-                body: JSON.stringify({ type: currentUserShift.type })
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to resume shift');
-            }
-            
-            shiftStatus = 'active';
-            startShiftTimer();
-            
-            showToast('Shift resumed successfully');
-        } else {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/start`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Discord-Code': discordToken
-                },
-                body: JSON.stringify({ type })
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to start shift');
-            }
-            
-            shiftStatus = 'active';
-            shiftStartTime = Math.floor(Date.now() / 1000);
-            shiftElapsedTime = 0;
-            
-            startShiftTimer();
-            
-            showToast('Shift started successfully');
+        if (!discordToken || !selectedServerId) {
+            showToast('Authentication error. Please log in again.', 'error');
+            return;
         }
         
-        updateShiftUI();
-        loadShifts(selectedServerId);
+        const type = shiftType.value;
         
-    } catch (error) {
-        showToast('Failed to start shift: ' + error.message, 'error');
-    } finally {
-        startShiftBtn.disabled = false;
-        if (shiftStatus === 'paused') {
-            startShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Resume</span>';
-        } else {
-            startShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Start</span>';
+        try {
+            startShiftBtn.disabled = true;
+            startShiftBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            if (shiftStatus === 'paused' && currentUserShift) {
+                const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/start`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Discord-Code': discordToken
+                    },
+                    body: JSON.stringify({ type })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to resume shift');
+                }
+                
+                shiftStatus = 'active';
+                startShiftTimer();
+                
+                showToast('Shift resumed successfully');
+            } else {
+                const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/shifts/start`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Discord-Code': discordToken
+                    },
+                    body: JSON.stringify({ type })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to start shift');
+                }
+                
+                shiftStatus = 'active';
+                shiftStartTime = Math.floor(Date.now() / 1000);
+                shiftElapsedTime = 0;
+                
+                startShiftTimer();
+                
+                showToast('Shift started successfully');
+            }
+            
+            updateShiftUI();
+            loadShifts(selectedServerId);
+            
+        } catch (error) {
+            showToast('Failed to start shift: ' + error.message, 'error');
+        } finally {
+            startShiftBtn.disabled = false;
+            if (shiftStatus === 'paused') {
+                startShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Resume</span>';
+            } else {
+                startShiftBtn.innerHTML = '<i class="fas fa-play"></i><span>Start</span>';
+            }
         }
     }
-}
     
     async function pauseShift() {
         if (!discordToken || !selectedServerId) {
             showToast('Authentication error. Please log in again.', 'error');
             return;
         }
+
+        const type = shiftType.value;
         
         try {
             pauseShiftBtn.disabled = true;
@@ -2130,7 +2132,8 @@ function filterPunishmentHistory() {
                 method: 'POST',
                 headers: {
                     'Discord-Code': discordToken
-                }
+                },
+                body: JSON.stringify({ type })
             });
             
             if (!response.ok) {
@@ -2163,6 +2166,8 @@ function filterPunishmentHistory() {
             showToast('Authentication error. Please log in again.', 'error');
             return;
         }
+
+        const type = shiftType.value;
         
         try {
             endShiftBtn.disabled = true;
@@ -2172,7 +2177,8 @@ function filterPunishmentHistory() {
                 method: 'POST',
                 headers: {
                     'Discord-Code': discordToken
-                }
+                },
+                body: JSON.stringify({ type })
             });
             
             if (!response.ok) {
