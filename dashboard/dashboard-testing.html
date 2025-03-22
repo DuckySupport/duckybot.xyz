@@ -1217,12 +1217,10 @@ function showAutomationDetails(automation) {
                 option.classList.add('selected');
                 shiftTypeSelected.querySelector('span').textContent = option.textContent;
                 shiftType.value = type.name.toLowerCase();
-                checkActiveShift(selectedServerId);
             }
             
             option.addEventListener('click', () => {
                 shiftType.value = type.name.toLowerCase();
-                checkActiveShift(selectedServerId);
                 shiftTypeSelected.querySelector('span').textContent = option.textContent;
                 
                 document.querySelectorAll('#shiftTypeOptions .dropdown-option').forEach(opt => {
@@ -1481,6 +1479,7 @@ function showAutomationDetails(automation) {
             item.dataset.punishmentId = punishment.punishmentid || punishment.id;
             item.dataset.username = (punishment.robloxUser.name || '').toLowerCase();
             item.dataset.displayname = (punishment.robloxUser.displayName || '').toLowerCase();
+            item.dataset.robloxid = (punishment.robloxUser.id || 0)
             
             const typeColors = {
                 warn: 'text-yellow-400',
@@ -1558,8 +1557,9 @@ function filterPunishmentHistory() {
     punishmentItems.forEach(item => {
         const itemUsername = item.dataset.username || '';
         const itemDisplayName = item.dataset.displayname || '';
+        const itemRobloxId = item.dataset.robloxid || 0;
         
-        if (itemUsername.includes(username) || itemDisplayName.includes(username)) {
+        if (itemUsername.includes(username) || itemDisplayName.includes(username) || toString(itemRobloxId) === username) {
             item.style.display = '';
             matchFound = true;
         } else {
