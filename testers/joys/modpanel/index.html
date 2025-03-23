@@ -1157,6 +1157,49 @@
         transform: none;
     }
 }
+
+.bolo-punishment {
+    background-color: rgba(239, 68, 68, 0.2);
+    border-left: 3px solid var(--danger);
+}
+
+.bolo-actions {
+    display: flex;
+    gap: 0.5rem;
+    position: absolute;
+    right: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.bolo-actions button {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+}
+
+.bolo-actions .approve-bolo-btn {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+.bolo-actions .delete-bolo-btn {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+.bolo-actions button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+    .bolo-actions {
+        position: static;
+        transform: none;
+        margin-top: 0.5rem;
+    }
+}
 </style>
 </head>
 <body>
@@ -1235,17 +1278,17 @@
 
         <div id="moderationPanelView" class="hidden mt-4">
             <div class="grid-item p-4 mb-6 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <img id="serverIcon" alt="Server Icon" class="w-12 h-12 rounded-full">
-                    <div>
-                        <h2 class="text-lg font-bold"><span id="serverName" class="text-[#F5FF82]"></span></h2>
-                        <p class="text-gray-400 mt-0.5 text-sm">Moderation Panel</p>
-                    </div>
-                </div>
-                <button id="backToServersBtn" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left mr-2"></i>Back
-                </button>
-            </div>
+    <div class="flex items-center gap-3">
+        <img id="serverIcon" alt="Server Icon" class="w-12 h-12 rounded-full">
+        <div>
+            <h2 class="text-lg font-bold text-left"><span id="serverName" class="text-[#F5FF82]"></span></h2>
+            <p class="text-gray-400 mt-0.5 text-sm">Moderation Panel</p>
+        </div>
+    </div>
+    <button id="backToServersBtn" class="btn btn-secondary ml-auto">
+        <i class="fas fa-arrow-left mr-2"></i>Back
+    </button>
+</div>
 
             <div class="flex gap-4 mb-4 border-b border-white/10 pb-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
     <button id="punishmentsTabBtn" class="tab-button active flex-shrink-0">Punishments</button>
@@ -1336,19 +1379,7 @@
                             </div>
                         </div>
                         
-                        <div class="grid-item">
-                            <div class="grid-item-header">
-                                <h3>Active BOLOs</h3>
-                            </div>
-                            <div class="grid-item-content">
-                                <div id="activeBOLOs" class="space-y-3">
-                                    <div class="text-center py-4">
-                                        <div class="spinner mx-auto mb-2"></div>
-                                        <p class="text-gray-400">Loading BOLOs...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                     
                     <div class="col-span-6 lg:col-span-6">
@@ -2117,9 +2148,6 @@
     function clearPreviousServerData() {
         punishmentHistory.innerHTML = '<div class="text-center py-4"><div class="spinner mx-auto mb-2"></div><p class="text-gray-400">Loading punishment history...</p></div>';
         
-        if (activeBOLOs) {
-            activeBOLOs.innerHTML = '<div class="text-center py-4"><div class="spinner mx-auto mb-2"></div><p class="text-gray-400">Loading BOLOs...</p></div>';
-        }
         
         activeShifts.innerHTML = '<div class="text-center py-4 col-span-full"><div class="spinner mx-auto mb-2"></div><p class="text-gray-400">Loading active shifts...</p></div>';
         recentShifts.innerHTML = '<div class="text-center py-4"><div class="spinner mx-auto mb-2"></div><p class="text-gray-400">Loading recent shifts...</p></div>';
@@ -2935,80 +2963,116 @@ async function loadPunishments(serverId) {
     }    
     
     async function loadBOLOs(serverId) {
-        if (!activeBOLOs) return;
+    if (!discordToken) {
+        showToast('Authentication error. Please log in again.', 'error');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/bolos`, {
+            headers: { "Discord-Code": discordToken }
+        });
         
-        if (!discordToken) {
-            activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Authentication error. Please log in again.</p></div>';
+        if (!response.ok) {
+            throw new Error('Failed to fetch BOLOs');
+        }
+        
+        const data = await response.json();
+        
+        if (!data.data || data.data.length === 0) {
             return;
         }
         
-        try {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${serverId}/bolos`, {
-                headers: { "Discord-Code": discordToken }
-            });
+        const fragment = document.createDocumentFragment();
+        
+        for (const bolo of data.data) {
+            const boloItem = document.createElement('div');
+            boloItem.className = 'punishment-item bolo-punishment';
+            boloItem.dataset.robloxId = bolo.user;
             
-            if (!response.ok) {
-                throw new Error('Failed to fetch BOLOs');
+            const robloxUser = await fetchUserData(bolo.user);
+            const avatarUrl = robloxUser.avatar;
+            
+            const userInfoDiv = document.createElement('div');
+            userInfoDiv.className = 'user-info';
+            
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = 'avatar-circle hidden sm:flex';
+            avatarDiv.style.backgroundColor = '#1e1e1e';
+            avatarDiv.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+            
+            if (avatarUrl) {
+                const img = document.createElement('img');
+                img.src = avatarUrl;
+                img.alt = robloxUser.name;
+                avatarDiv.appendChild(img);
+            } else {
+                avatarDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#e74c3c" width="24" height="24">
+                    <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
+                </svg>`;
             }
             
-            const data = await response.json();
+            const userTextDiv = document.createElement('div');
+            userTextDiv.innerHTML = `
+                <div class="font-medium">${robloxUser.name}</div>
+                <div class="text-sm text-gray-400">@${robloxUser.name}</div>
+            `;
             
-            if (!data.data || data.data.length === 0) {
-                activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><p>No active BOLOs found.</p></div>';
-                return;
-            }
+            userInfoDiv.appendChild(avatarDiv);
+            userInfoDiv.appendChild(userTextDiv);
             
-            activeBOLOs.innerHTML = '';
+            const typeDiv = document.createElement('div');
+            typeDiv.className = 'punishment-type text-red-500';
+            typeDiv.textContent = 'BOLO';
             
-            const fragment = document.createDocumentFragment();
+            const reasonDiv = document.createElement('div');
+            reasonDiv.className = 'punishment-reason text-gray-400';
+            reasonDiv.textContent = bolo.reason;
             
-            for (const bolo of data.data) {
-                const boloCard = document.createElement('div');
-                boloCard.className = 'p-3 bg-black/30 rounded-lg border-l-2 border-red-500 mb-3';
-                boloCard.dataset.robloxId = bolo.user;
-                
-                const robloxUser = await fetchUserData(bolo.user);
-                const avatarUrl = robloxUser.avatar;
-                
-                boloCard.innerHTML = `
-                    <div class="flex items-start gap-3">
-                        <div class="avatar-circle">
-                            ${avatarUrl ? `<img src="${avatarUrl}" alt="${robloxUser.name}">` : robloxUser.name.charAt(0)}
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h4 class="font-medium">${robloxUser.name}</h4>
-                                    <p class="text-sm text-gray-400 mt-1">${bolo.reason}</p>
-                                    <p class="text-xs text-gray-500 mt-2">Created: ${formatDate(bolo.created)}</p>
-                                </div>
-                                <div class="flex gap-2">
-                                    <button class="approve-bolo-btn px-2 py-1 bg-green-500/10 text-green-500 rounded-md text-xs font-medium hover:bg-green-500/20 transition">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button class="delete-bolo-btn px-2 py-1 bg-red-500/10 text-red-500 rounded-md text-xs font-medium hover:bg-red-500/20 transition">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;                
-                const approveBtn = boloCard.querySelector('.approve-bolo-btn');
-                const deleteBtn = boloCard.querySelector('.delete-bolo-btn');
-                
-                approveBtn.addEventListener('click', () => approveBOLO(bolo.user));
-                deleteBtn.addEventListener('click', () => deleteBOLO(bolo.user));
-                
-                fragment.appendChild(boloCard);
-            }
+            const metaDiv = document.createElement('div');
+            metaDiv.className = 'meta-info';
+            metaDiv.innerHTML = `
+                <div class="text-gray-500">${formatDate(bolo.created)}</div>
+            `;
             
-            activeBOLOs.appendChild(fragment);
+            const boloActions = document.createElement('div');
+            boloActions.className = 'bolo-actions';
+            boloActions.innerHTML = `
+                <button class="approve-bolo-btn" title="Complete BOLO">
+                    <i class="fas fa-check"></i>
+                </button>
+                <button class="delete-bolo-btn" title="Delete BOLO">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
             
-        } catch (error) {
-            activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load BOLOs. Please try again.</p></div>';
+            const approveBtn = boloActions.querySelector('.approve-bolo-btn');
+            const deleteBtn = boloActions.querySelector('.delete-bolo-btn');
+            
+            approveBtn.addEventListener('click', () => approveBOLO(bolo.user));
+            deleteBtn.addEventListener('click', () => deleteBOLO(bolo.user));
+            
+            boloItem.appendChild(userInfoDiv);
+            boloItem.appendChild(typeDiv);
+            boloItem.appendChild(reasonDiv);
+            boloItem.appendChild(metaDiv);
+            boloItem.appendChild(boloActions);
+            
+            fragment.appendChild(boloItem);
         }
+        
+        // Insert BOLOs at the top of the punishment list
+        const punishmentList = document.getElementById('punishmentHistory');
+        if (punishmentList.firstChild) {
+            punishmentList.insertBefore(fragment, punishmentList.firstChild);
+        } else {
+            punishmentList.appendChild(fragment);
+        }
+        
+    } catch (error) {
+        showToast('Failed to load BOLOs: ' + error.message, 'error');
     }
+}
     
     async function createBOLO() {
         if (!discordToken || !selectedServerId) {
@@ -3062,78 +3126,74 @@ async function loadPunishments(serverId) {
     }
     
     async function approveBOLO(robloxId) {
-        if (!discordToken || !selectedServerId) {
-            showToast('Authentication error. Please log in again.', 'error');
-            return;
-        }
-        
-        try {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/bolos/${robloxId}`, {
-                method: 'POST',
-                headers: {
-                    'Discord-Code': discordToken
-                }
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to approve BOLO');
-            }
-            
-            showToast('BOLO approved successfully');
-            
-            const boloCard = document.querySelector(`[data-roblox-id="${robloxId}"]`);
-            if (boloCard) {
-                boloCard.remove();
-                
-                if (activeBOLOs.children.length === 0) {
-                    activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><p>No active BOLOs found.</p></div>';
-                }
-            }
-            
-            loadERLCData(selectedServerId);
-            
-        } catch (error) {
-            showToast(error.message || 'Failed to approve BOLO. Please try again.', 'error');
-        }
+    if (!discordToken || !selectedServerId) {
+        showToast('Authentication error. Please log in again.', 'error');
+        return;
     }
     
-    async function deleteBOLO(robloxId) {
-        if (!discordToken || !selectedServerId) {
-            showToast('Authentication error. Please log in again.', 'error');
-            return;
+    try {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/bolos/${robloxId}`, {
+            method: 'POST',
+            headers: {
+                'Discord-Code': discordToken
+            }
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to approve BOLO');
         }
         
-        try {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/bolos/${robloxId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Discord-Code': discordToken
-                }
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error('Failed to delete BOLO');
+        showToast('BOLO approved successfully');
+        
+        const boloItems = document.querySelectorAll(`.punishment-item[data-roblox-id="${robloxId}"]`);
+        boloItems.forEach(item => {
+            if (item.classList.contains('bolo-punishment')) {
+                item.remove();
             }
-            
-            showToast('BOLO deleted successfully');
-            
-            const boloCard = document.querySelector(`[data-roblox-id="${robloxId}"]`);
-            if (boloCard) {
-                boloCard.remove();
-                
-                if (activeBOLOs.children.length === 0) {
-                    activeBOLOs.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><p>No active BOLOs found.</p></div>';
-                }
-            }
-            
-            loadERLCData(selectedServerId);
-            
-        } catch (error) {
-            showToast('Failed to delete BOLO. Please try again.', 'error');
-        }
+        });
+        
+        loadERLCData(selectedServerId);
+        
+    } catch (error) {
+        showToast(error.message || 'Failed to approve BOLO. Please try again.', 'error');
     }
+}
+    
+    async function deleteBOLO(robloxId) {
+    if (!discordToken || !selectedServerId) {
+        showToast('Authentication error. Please log in again.', 'error');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/bolos/${robloxId}`, {
+            method: 'DELETE',
+            headers: {
+                'Discord-Code': discordToken
+            }
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error('Failed to delete BOLO');
+        }
+        
+        showToast('BOLO deleted successfully');
+        
+        const boloItems = document.querySelectorAll(`.punishment-item[data-roblox-id="${robloxId}"]`);
+        boloItems.forEach(item => {
+            if (item.classList.contains('bolo-punishment')) {
+                item.remove();
+            }
+        });
+        
+        loadERLCData(selectedServerId);
+        
+    } catch (error) {
+        showToast('Failed to delete BOLO. Please try again.', 'error');
+    }
+}
 
     async function executeCommand() {
         if (!discordToken || !selectedServerId) {
@@ -3642,3 +3702,4 @@ async function loadPunishments(serverId) {
     </script>
 </body>
 </html>
+
