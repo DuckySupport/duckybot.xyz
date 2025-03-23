@@ -1616,7 +1616,7 @@ async function checkAuthentication() {
         
         discordUser = await userResponse.json();
         
-        const allowedUsers = [
+        const allowedIds = [
             '1055865695298138192',
             '995664658038005772',
             '445152230132154380',
@@ -1626,10 +1626,8 @@ async function checkAuthentication() {
             '1017977993051787265'
         ];
         
-        if (!allowedUsers.includes(discordUser.id)) {
-            document.getElementById('authCheckOverlay').classList.add('hidden');
-            document.getElementById('accessDeniedOverlay').classList.remove('hidden');
-            return false;
+        if (!allowedIds.includes(discordUser.id)) {
+            throw new Error('User is not authorized');
         }
         
         document.getElementById('authCheckOverlay').classList.add('hidden');
@@ -1641,7 +1639,9 @@ async function checkAuthentication() {
         document.getElementById('accessDeniedOverlay').classList.remove('hidden');
         return false;
     }
-}function logout() {
+}
+
+function logout() {
     document.cookie = 'discord=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     window.location.href = '/login';
 }
