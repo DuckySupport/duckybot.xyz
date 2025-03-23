@@ -2340,7 +2340,8 @@
                 document.getElementById('profilePicture').src = avatarUrl;
             }
             
-            const filteredServers = servers.filter(server => server.manageable)
+            const filteredServers = servers
+                .filter(server => server.permissions && server.permissions.ERLC_STAFF === true)
                 .sort((a, b) => (b.members || 0) - (a.members || 0));
             
             if (filteredServers.length === 0) {
