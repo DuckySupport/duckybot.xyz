@@ -12,7 +12,7 @@
     <link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
     <title>Ducky ・ Moderation Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -1081,6 +1081,34 @@
 </style>
 </head>
 <body>
+<!-- Authentication Check -->
+<div id="authCheckOverlay" class="fixed inset-0 bg-black/90 flex items-center justify-center z-[100]">
+    <div class="max-w-md w-full bg-[#121212] border border-white/10 rounded-lg p-6 text-center">
+        <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-16 h-16 mx-auto mb-4">
+        <h2 class="text-xl font-bold text-[#F5FF82] mb-2">Authenticating...</h2>
+        <p class="text-gray-400 mb-4">Checking your permissions. Please wait.</p>
+        <div class="w-12 h-12 border-4 border-[#F5FF82]/20 border-t-[#F5FF82] rounded-full animate-spin mx-auto"></div>
+    </div>
+</div>
+
+<!-- Access Denied -->
+<div id="accessDeniedOverlay" class="fixed inset-0 bg-black/90 flex items-center justify-center z-[100] hidden">
+    <div class="max-w-md w-full bg-[#121212] border border-white/10 rounded-lg p-6 text-center">
+        <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center bg-red-500/10 text-red-500 rounded-full">
+            <i class="fas fa-times text-2xl"></i>
+        </div>
+        <h2 class="text-xl font-bold text-white mb-2">Access Denied</h2>
+        <p class="text-gray-400 mb-6">You don't have permission to access this dashboard. Please contact an administrator if you believe this is an error.</p>
+        <div class="flex flex-col gap-3">
+            <a href="/" class="px-4 py-2 bg-[#F5FF82] text-black rounded-lg font-medium hover:opacity-90 transition">
+                Return to Homepage
+            </a>
+            <button id="logoutBtn" class="px-4 py-2 bg-red-500/10 text-red-500 rounded-lg font-medium hover:bg-red-500/20 transition">
+                Logout
+            </button>
+        </div>
+    </div>
+</div>
     <div class="glow bg-[#F5FF82] top-0 left-0"></div>
     <div class="glow bg-[#F5FF82] bottom-0 right-0"></div>
 
@@ -1217,7 +1245,6 @@
                                                     <div class="dropdown-option" data-value="days">Days</div>
                                                     <div class="dropdown-option" data-value="weeks">Weeks</div>
                                                 </div>
-                                            </div>
                                             <input type="hidden" id="durationUnit" value="minutes">
                                         </div>
                                     </div>
@@ -1570,6 +1597,75 @@
     </div>
 
     <script>
+async function checkAuthentication() {
+    const discordToken = getDiscordToken();
+    
+    if (!discordToken) {
+        window.location.href = "/login?redirect=dashboard";
+        return false;
+    }
+    
+    try {
+        const userResponse = await fetch('https://discord.com/api/users/@me', {
+            headers: { authorization: `Bearer ${discordToken}` }
+        });
+        
+        if (!userResponse.ok) {
+            throw new Error('Failed to authenticate with Discord');
+        }
+        
+        discordUser = await userResponse.json();
+        
+        const guildId = '1228508072289370172';
+        const requiredRoleId = '1260070830180667402';
+        
+        const guildResponse = await fetch(`https://discord.com/api/users/@me/guilds/${guildId}/member`, {
+            headers: { authorization: `Bearer ${discordToken}` }
+        });
+        
+        if (!guildResponse.ok) {
+            throw new Error('User is not a member of the required server');
+        }
+        
+        const guildMember = await guildResponse.json();
+        
+        if (!guildMember.roles || !guildMember.roles.includes(requiredRoleId)) {
+            const hasHigherPermission = guildMember.roles.some(roleId => {
+                const higherRoleIds = ['1259747626195095672', '1286472622984400946']; 
+                return higherRoleIds.includes(roleId);
+            });
+            
+            if (!hasHigherPermission) {
+                throw new Error('User does not have the required role');
+            }
+        }
+        
+        document.getElementById('authCheckOverlay').classList.add('hidden');
+        return true;
+        
+    } catch (error) {
+        console.error('Authentication error:', error);
+        document.getElementById('authCheckOverlay').classList.add('hidden');
+        document.getElementById('accessDeniedOverlay').classList.remove('hidden');
+        return false;
+    }
+}
+
+function logout() {
+    document.cookie = 'discord=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    window.location.href = '/login';
+}
+
+document.getElementById('logoutBtn').addEventListener('click', logout);
+
+(async function() {
+    const isAuthenticated = await checkAuthentication();
+    if (isAuthenticated) {
+        loadServers();
+    } else {
+        document.getElementById('loadingOverlay').classList.add('hidden');
+    }
+})();
     const loadingOverlay = document.getElementById('loadingOverlay');
     const serverGrid = document.getElementById('serverGrid');
     const serverSelectionView = document.getElementById('serverSelectionView');
@@ -3552,8 +3648,8 @@ async function loadPunishments(serverId) {
 
     window.addEventListener('load', () => {
         initDropdowns();
-        loadServers();
     });
     </script>
 </body>
 </html>
+
