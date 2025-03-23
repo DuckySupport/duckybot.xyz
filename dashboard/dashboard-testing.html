@@ -2233,7 +2233,8 @@
                 document.getElementById('profilePicture').src = avatarUrl;
             }
             
-            const filteredServers = servers.filter(server => server.manageable);
+            const filteredServers = servers.filter(server => server.manageable)
+                .sort((a, b) => (b.members || 0) - (a.members || 0));
             
             if (filteredServers.length === 0) {
                 serverGrid.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-server"></i><p>No servers with Ducky found. Make sure you have the right permissions.</p></div>';
@@ -2265,8 +2266,13 @@
                     name.className = 'text-center font-medium text-xs';
                     name.textContent = server.name;
                     
+                    const memberCount = document.createElement('p');
+                    memberCount.className = 'text-center text-gray-400 text-xs mt-1';
+                    memberCount.textContent = `${server.members || 0} members`;
+                    
                     serverCard.appendChild(img);
                     serverCard.appendChild(name);
+                    serverCard.appendChild(memberCount);
                     
                     serverCard.addEventListener('click', () => {
                         selectServer(server.id, server.name, server.icon, server.config);
@@ -2297,7 +2303,6 @@
             }, 500);
         }
     }
-
 async function loadPunishments(serverId) {
     punishmentHistory.innerHTML = `
         <div class="text-center py-4">
