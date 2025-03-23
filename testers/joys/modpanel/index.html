@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
+:root {
             --primary: #F5FF82;
             --primary-dark: #e6ff4d;
             --background: #0a0a0a;
@@ -986,10 +986,6 @@
     align-items: flex-start;
     margin-top: 0.5rem;
   }
-  
-  .delete-btn {
-    opacity: 1;
-  }
 }
 
     .scrollbar-hide::-webkit-scrollbar {
@@ -1091,6 +1087,76 @@
             margin-bottom: 0.5rem;
         }
     }
+
+.dropdown-options.active {
+    max-height: 300px;
+    opacity: 1;
+    overflow-y: auto;
+    z-index: 50;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.grid-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.moderation-log {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex: 1;
+}
+
+.moderation-log-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 500px; 
+}
+
+.punishment-list {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.col-span-6 .grid-item {
+    height: auto !important;
+    min-height: 600px;
+}
+
+.punishment-item {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 0.5rem;
+    position: relative;
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr 1fr;
+    align-items: center;
+}
+
+.delete-btn {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+@media (max-width: 768px) {
+    .delete-btn {
+        top: auto;
+        bottom: 0.75rem;
+        right: 0.75rem;
+        transform: none;
+    }
+}
 </style>
 </head>
 <body>
