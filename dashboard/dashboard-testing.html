@@ -1616,28 +1616,20 @@ async function checkAuthentication() {
         
         discordUser = await userResponse.json();
         
-        const guildId = '1228508072289370172';
-        const requiredRoleId = '1260070830180667402';
+        const allowedUsers = [
+            '1055865695298138192',
+            '995664658038005772',
+            '445152230132154380',
+            '1057310810440994967',
+            '598958193032560642',
+            '782235114858872854',
+            '1017977993051787265'
+        ];
         
-        const guildResponse = await fetch(`https://discord.com/api/users/@me/guilds/${guildId}/member`, {
-            headers: { authorization: `Bearer ${discordToken}` }
-        });
-        
-        if (!guildResponse.ok) {
-            throw new Error('User is not a member of the required server');
-        }
-        
-        const guildMember = await guildResponse.json();
-        
-        if (!guildMember.roles || !guildMember.roles.includes(requiredRoleId)) {
-            const hasHigherPermission = guildMember.roles.some(roleId => {
-                const higherRoleIds = ['1259747626195095672', '1286472622984400946']; 
-                return higherRoleIds.includes(roleId);
-            });
-            
-            if (!hasHigherPermission) {
-                throw new Error('User does not have the required role');
-            }
+        if (!allowedUsers.includes(discordUser.id)) {
+            document.getElementById('authCheckOverlay').classList.add('hidden');
+            document.getElementById('accessDeniedOverlay').classList.remove('hidden');
+            return false;
         }
         
         document.getElementById('authCheckOverlay').classList.add('hidden');
@@ -1649,9 +1641,7 @@ async function checkAuthentication() {
         document.getElementById('accessDeniedOverlay').classList.remove('hidden');
         return false;
     }
-}
-
-function logout() {
+}function logout() {
     document.cookie = 'discord=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     window.location.href = '/login';
 }
