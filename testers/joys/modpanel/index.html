@@ -49,6 +49,8 @@
             border-radius: 8px;
             transition: border-color 0.2s ease;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
         
         .grid-item:hover {
@@ -596,9 +598,10 @@
         }
 
         .punishment-list {
-            max-height: 600px;
+            flex: 1;
             overflow-y: auto;
             padding-right: 0.5rem;
+            height: 100%;
         }
 
         .bolo-tag {
@@ -763,20 +766,14 @@
             display: flex;
             flex-direction: column;
         }
-        
-        .moderation-log-header {
-            display: grid;
-            grid-template-columns: 2fr 1fr 2fr 1fr;
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid var(--card-border);
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-        
+
         .moderation-log-content {
             flex: 1;
             overflow-y: auto;
             padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 40px); /* Subtract header height */
         }
         
         .active-staff-item {
@@ -1078,6 +1075,22 @@
             margin-bottom: 0.5rem;
         }
     }
+
+.moderation-log {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.moderation-log-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 40px); /* Subtract header height */
+}
+
 </style>
 </head>
 <body>
@@ -1273,7 +1286,7 @@
                     </div>
                     
                     <div class="col-span-6 lg:col-span-6">
-                        <div class="grid-item" style="height: 100%;">
+                        <div class="grid-item" style="height: 700px;">
                             <div class="grid-item-header">
                                 <h3>Moderation Log</h3>
                                 <p class="text-sm text-gray-400 mt-1">The moderation history for this server.</p>
@@ -3557,3 +3570,4 @@ async function loadPunishments(serverId) {
     </script>
 </body>
 </html>
+
