@@ -248,6 +248,8 @@
             border-left: 3px solid #e74c3c; 
             margin-bottom: 0.5rem;
             transition: background-color 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .punishment-item:hover {
@@ -258,14 +260,17 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            width: 100%;
         }
 
         .punishment-item .punishment-type {
             font-weight: 500;
+            width: 100%;
         }
 
         .punishment-item .punishment-reason {
             word-break: break-word;
+            width: 100%;
         }
 
         .punishment-item .meta-info {
@@ -274,6 +279,7 @@
             flex-direction: column;
             align-items: flex-end;
             gap: 0.5rem;
+            width: 100%;
         }
         
         .delete-btn {
@@ -295,8 +301,7 @@
 
         .punishment-item:hover .delete-btn {
             opacity: 1;
-        }
-        
+        }        
         .shift-controls {
             display: flex;
             gap: 0.5rem;
@@ -569,9 +574,10 @@
         }
         
         .dropdown-options.active {
-            max-height: 200px;
+            max-height: 300px;
             opacity: 1;
             overflow-y: auto;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         
         .dropdown-option {
@@ -848,23 +854,30 @@
             .punishment-item {
                 display: block;
                 padding-bottom: 2.5rem;
+                width: 100%;
+                box-sizing: border-box;
             }
             
             .punishment-item .user-info {
                 margin-bottom: 0.75rem;
+                width: 100%;
             }
             
             .punishment-item .punishment-type {
                 margin-bottom: 0.5rem;
+                width: 100%;
             }
             
             .punishment-item .punishment-reason {
                 margin-bottom: 0.75rem;
+                width: 100%;
+                word-break: break-word;
             }
             
             .punishment-item .meta-info {
                 align-items: flex-start;
                 margin-top: 0.5rem;
+                width: 100%;
             }
             
             .delete-btn {
