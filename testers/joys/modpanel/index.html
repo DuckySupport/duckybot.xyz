@@ -41,6 +41,7 @@
             grid-template-columns: repeat(12, 1fr);
             gap: 1rem;
             width: 100%;
+            height: 100%;
         }
         
         .grid-item {
@@ -1157,6 +1158,49 @@
         transform: none;
     }
 }
+
+.col-span-6 .grid-item {
+    height: auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.grid-item-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure the moderation log takes full height */
+.moderation-log {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.moderation-log-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Ensure BOLO sections expand properly */
+#punishmentsTab .col-span-6:first-child {
+    display: flex;
+    flex-direction: column;
+}
+
+#punishmentsTab .col-span-6:first-child .grid-item:last-child {
+    flex-grow: 1;
+}
+
+/* Make sure the active BOLOs section expands to fill available space */
+#activeBOLOs {
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    flex: 1;
+}
 </style>
 </head>
 <body>
@@ -1254,129 +1298,131 @@
     <button id="automationsTabBtn" class="tab-button flex-shrink-0">Automations</button>
 </div>
 
-            <div id="punishmentsTab">
-                <div class="grid-container">
-                    <div class="col-span-6 lg:col-span-6">
-                        <div class="grid-item mb-6">
-                            <div class="grid-item-header">
-                                <h3>Moderation</h3>
-                                <p class="text-sm text-gray-400 mt-1">Log moderations for ROBLOX users.</p>
-                            </div>
-                            <div class="grid-item-content">
-                                <form id="punishmentForm" class="space-y-4">
-                                    <div>
-                                        <label for="robloxUsername" class="input-label">Roblox Username</label>
-                                        <input type="text" id="robloxUsername" class="input-field" placeholder="Enter username" required>
-                                    </div>
-                                    <div>
-                                        <label for="punishmentTypeContainer" class="input-label">Punishment Type</label>
-                                        <div id="punishmentTypeContainer" class="custom-dropdown">
-                                            <div class="dropdown-selected" id="punishmentTypeSelected">
-                                                <span>Select type...</span>
-                                                <i class="fas fa-chevron-down"></i>
-                                            </div>
-                                            <div class="dropdown-options" id="punishmentTypeOptions">
-
-                                            </div>
-                                        </div>
-                                        <input type="hidden" id="punishmentType" required>
-                                    </div>
-                                    <div id="durationContainer" class="hidden">
-                                        <label for="duration" class="input-label">Duration</label>
-                                        <div class="grid grid-cols-2 gap-4">
-                                            <input type="number" id="durationValue" min="1" class="input-field" placeholder="Duration">
-                                            <div class="custom-dropdown">
-                                                <div class="dropdown-selected" id="durationUnitSelected">
-                                                    <span>Minutes</span>
-                                                    <i class="fas fa-chevron-down"></i>
-                                                </div>
-                                                <div class="dropdown-options" id="durationUnitOptions">
-                                                    <div class="dropdown-option selected" data-value="minutes">Minutes</div>
-                                                    <div class="dropdown-option" data-value="hours">Hours</div>
-                                                    <div class="dropdown-option" data-value="days">Days</div>
-                                                    <div class="dropdown-option" data-value="weeks">Weeks</div>
-                                                </div>
-                                            </div>
-                                            <input type="hidden" id="durationUnit" value="minutes">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label for="reason" class="input-label">Reason</label>
-                                        <textarea id="reason" rows="2" class="input-field" placeholder="Enter reason" required></textarea>
-                                    </div>
-                                    <div class="flex justify-end">
-                                        <button type="submit" id="submitBtn" class="btn btn-primary">
-                                            Issue Punishment
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+            
+<div id="punishmentsTab">
+    <div class="grid-container">
+        <div class="col-span-6 lg:col-span-6 flex flex-col">
+            <div class="grid-item mb-6">
+                <div class="grid-item-header">
+                    <h3>Moderation</h3>
+                    <p class="text-sm text-gray-400 mt-1">Log moderations for ROBLOX users.</p>
+                </div>
+                <div class="grid-item-content">
+                    <form id="punishmentForm" class="space-y-4">
+                        <div>
+                            <label for="robloxUsername" class="input-label">Roblox Username</label>
+                            <input type="text" id="robloxUsername" class="input-field" placeholder="Enter username" required>
                         </div>
+                        <div>
+                            <label for="punishmentTypeContainer" class="input-label">Punishment Type</label>
+                            <div id="punishmentTypeContainer" class="custom-dropdown">
+                                <div class="dropdown-selected" id="punishmentTypeSelected">
+                                    <span>Select type...</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="dropdown-options" id="punishmentTypeOptions">
 
-                        <div class="grid-item mb-6">
-                            <div class="grid-item-header">
-                                <h3>BOLO Management</h3>
-                            </div>
-                            <div class="grid-item-content">
-                                <form id="boloForm" class="space-y-4">
-                                    <div>
-                                        <label for="boloUsername" class="input-label">Roblox Username</label>
-                                        <input type="text" id="boloUsername" class="input-field" placeholder="Enter username" required>
-                                    </div>
-                                    <div>
-                                        <label for="boloReason" class="input-label">Reason</label>
-                                        <textarea id="boloReason" rows="2" class="input-field" placeholder="Enter reason" required></textarea>
-                                    </div>
-                                    <div class="flex justify-end">
-                                        <button type="submit" id="submitBoloBtn" class="btn btn-primary">
-                                            Create BOLO
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        
-                        <div class="grid-item">
-                            <div class="grid-item-header">
-                                <h3>Active BOLOs</h3>
-                            </div>
-                            <div class="grid-item-content">
-                                <div id="activeBOLOs" class="space-y-3">
-                                    <div class="text-center py-4">
-                                        <div class="spinner mx-auto mb-2"></div>
-                                        <p class="text-gray-400">Loading BOLOs...</p>
-                                    </div>
                                 </div>
                             </div>
+                            <input type="hidden" id="punishmentType" required>
+                        </div>
+                        <div id="durationContainer" class="hidden">
+                            <label for="duration" class="input-label">Duration</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="number" id="durationValue" min="1" class="input-field" placeholder="Duration">
+                                <div class="custom-dropdown">
+                                    <div class="dropdown-selected" id="durationUnitSelected">
+                                        <span>Minutes</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="dropdown-options" id="durationUnitOptions">
+                                        <div class="dropdown-option selected" data-value="minutes">Minutes</div>
+                                        <div class="dropdown-option" data-value="hours">Hours</div>
+                                        <div class="dropdown-option" data-value="days">Days</div>
+                                        <div class="dropdown-option" data-value="weeks">Weeks</div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="durationUnit" value="minutes">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="reason" class="input-label">Reason</label>
+                            <textarea id="reason" rows="2" class="input-field" placeholder="Enter reason" required></textarea>
+                        </div>
+                        <div class="flex justify-end">
+                            <button type="submit" id="submitBtn" class="btn btn-primary">
+                                Issue Punishment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="grid-item mb-6">
+                <div class="grid-item-header">
+                    <h3>BOLO Management</h3>
+                </div>
+                <div class="grid-item-content">
+                    <form id="boloForm" class="space-y-4">
+                        <div>
+                            <label for="boloUsername" class="input-label">Roblox Username</label>
+                            <input type="text" id="boloUsername" class="input-field" placeholder="Enter username" required>
+                        </div>
+                        <div>
+                            <label for="boloReason" class="input-label">Reason</label>
+                            <textarea id="boloReason" rows="2" class="input-field" placeholder="Enter reason" required></textarea>
+                        </div>
+                        <div class="flex justify-end">
+                            <button type="submit" id="submitBoloBtn" class="btn btn-primary">
+                                Create BOLO
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="grid-item flex-grow">
+                <div class="grid-item-header">
+                    <h3>Active BOLOs</h3>
+                </div>
+                <div class="grid-item-content">
+                    <div id="activeBOLOs" class="space-y-3 flex-grow">
+                        <div class="text-center py-4">
+                            <div class="spinner mx-auto mb-2"></div>
+                            <p class="text-gray-400">Loading BOLOs...</p>
                         </div>
                     </div>
-                    
-                    <div class="col-span-6 lg:col-span-6">
-                        <div class="grid-item" style="height: 100%;">
-                            <div class="grid-item-header">
-                                <h3>Moderation Log</h3>
-                                <p class="text-sm text-gray-400 mt-1">The moderation history for this server.</p>
-                            </div>
-                            <div class="moderation-log">
-                                <div class="moderation-log-header">
-                                    <div>Username</div>
-                                    <div>Type</div>
-                                    <div>Reason</div>
-                                    <div>Date</div>
-                                </div>
-                                <div class="moderation-log-content">
-                                    <div id="punishmentHistory" class="punishment-list space-y-3">
-                                        <div class="text-center py-4">
-                                            <div class="spinner mx-auto mb-2"></div>
-                                            <p class="text-gray-400">Loading punishment history...</p>
-                                        </div>
-                                    </div>
-                                </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-span-6 lg:col-span-6">
+            <div class="grid-item" style="height: 100%;">
+                <div class="grid-item-header">
+                    <h3>Moderation Log</h3>
+                    <p class="text-sm text-gray-400 mt-1">The moderation history for this server.</p>
+                </div>
+                <div class="moderation-log">
+                    <div class="moderation-log-header">
+                        <div>Username</div>
+                        <div>Type</div>
+                        <div>Reason</div>
+                        <div>Date</div>
+                    </div>
+                    <div class="moderation-log-content">
+                        <div id="punishmentHistory" class="punishment-list space-y-3">
+                            <div class="text-center py-4">
+                                <div class="spinner mx-auto mb-2"></div>
+                                <p class="text-gray-400">Loading punishment history...</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
 
             <div id="shiftsTab" class="hidden">
                 <div class="grid-container">
@@ -3636,3 +3682,4 @@ async function loadPunishments(serverId) {
     </script>
 </body>
 </html>
+
