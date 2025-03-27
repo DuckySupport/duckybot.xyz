@@ -818,6 +818,17 @@
             background-color: rgba(16, 185, 129, 0.1);
             color: var(--success);
         }
+
+        .staff-paused-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
         
         ::-webkit-scrollbar {
             width: 8px;
@@ -1199,6 +1210,17 @@
         transform: none;
         margin-top: 0.5rem;
     }
+}
+
+.font-medium, .staff-name, .user-info .font-medium {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-info .font-medium, .staff-name {
+    font-size: 0.95rem;
 }
 </style>
 </head>
@@ -1766,6 +1788,7 @@
     const DISCORD_CHECK_COOLDOWN = 5 * 60 * 1000; 
 
     let serverAutomations = [];
+    let currentTab = 'punishments'; 
 
     function updateDiscordCheckCooldown() {
         if (!selectedServerId || !discordCheckCooldowns[selectedServerId]) {
@@ -2045,9 +2068,9 @@
                 return data.data;
             }
             
-            return { id: userId, name: userId, username: username };
+            return { id: userId, name: userId, username: userId };
         } catch (error) {
-            return { id: userId, name: userId, username: username };
+            return { id: userId, name: userId, username: userId };
         }
     }
 
@@ -2064,14 +2087,30 @@
     function setupPunishmentTypeDropdown(types) {
         punishmentTypeOptions.innerHTML = '';
         
-        types.forEach((type, index) => {
+        let hasTypes = Array.isArray(types) && types.length > 0;
+        let processedTypes = hasTypes ? [...types] : [];
+        
+        if (!processedTypes.some(type => type.toLowerCase() === 'tempban')) {
+            processedTypes.push('TempBan');
+        }
+        
+        if (!processedTypes.some(type => type.toLowerCase() === 'bolo')) {
+            processedTypes.push('BOLO');
+        }
+        
+        if (processedTypes.length === 0) {
+            processedTypes = ['Warning', 'Kick', 'Ban', 'TempBan', 'BOLO'];
+        }
+        
+        processedTypes.forEach((type, index) => {
             const option = document.createElement('div');
             option.className = 'dropdown-option';
             option.dataset.value = type.toLowerCase();
+            option.dataset.displayValue = type; 
             option.textContent = type;
             
             option.addEventListener('click', () => {
-                punishmentType.value = type.toLowerCase();
+                punishmentType.value = option.dataset.displayValue;
                 punishmentTypeSelected.querySelector('span').textContent = option.textContent;
                 
                 document.querySelectorAll('#punishmentTypeOptions .dropdown-option').forEach(opt => {
@@ -2082,7 +2121,7 @@
                 punishmentTypeSelected.classList.remove('active');
                 punishmentTypeOptions.classList.remove('active');
                 
-                durationContainer.classList.toggle('hidden', punishmentType.value !== 'tempban');
+                durationContainer.classList.toggle('hidden', option.dataset.value !== 'tempban');
             });
             
             punishmentTypeOptions.appendChild(option);
@@ -2179,6 +2218,7 @@
         shiftsTab.classList.add('hidden');
         erlcTab.classList.add('hidden');
         automationsTab.classList.add('hidden');
+        currentTab = 'punishments';
     });
 
     shiftsTabBtn.addEventListener('click', () => {
@@ -2190,6 +2230,7 @@
         punishmentsTab.classList.add('hidden');
         erlcTab.classList.add('hidden');
         automationsTab.classList.add('hidden');
+        currentTab = 'shifts';
         
         if (activeShifts.innerHTML.includes('Loading')) {
             loadShifts(selectedServerId);
@@ -2205,6 +2246,7 @@
         punishmentsTab.classList.add('hidden');
         shiftsTab.classList.add('hidden');
         automationsTab.classList.add('hidden');
+        currentTab = 'erlc';
         
         loadERLCData(selectedServerId);
         loadBOLOs(selectedServerId);
@@ -2219,6 +2261,7 @@
         punishmentsTab.classList.add('hidden');
         shiftsTab.classList.add('hidden');
         erlcTab.classList.add('hidden');
+        currentTab = 'automations';
     });
 
     punishmentForm.addEventListener('submit', function(e) {
@@ -2267,7 +2310,8 @@
             id: serverId,
             name: serverName,
             icon: serverIcon,
-            config: serverConfig
+            config: serverConfig,
+            tab: currentTab
         }));
         
         let punishmentTypes = [];
@@ -2308,6 +2352,9 @@
                 const serverData = JSON.parse(savedServer);
                 if (serverData && serverData.id) {
                     selectedServerId = serverData.id;
+                    if (serverData.tab) {
+                        currentTab = serverData.tab;
+                    }
                 }
             } catch (e) {
                 localStorage.removeItem('selectedServerId');
@@ -2393,6 +2440,16 @@
                 
                 if (savedServerValid && savedServerData) {
                     selectServer(savedServerData.id, savedServerData.name, savedServerData.icon, savedServerData.config);
+                    
+                    if (currentTab === 'shifts') {
+                        shiftsTabBtn.click();
+                    } else if (currentTab === 'erlc') {
+                        erlcTabBtn.click();
+                    } else if (currentTab === 'automations') {
+                        automationsTabBtn.click();
+                    } else {
+                        punishmentsTabBtn.click();
+                    }
                 }
             }
             
@@ -2465,9 +2522,11 @@ async function loadPunishments(serverId) {
                 warning: 'text-yellow-400',
                 kick: 'text-orange-400',
                 ban: 'text-red-500',
-                tempban: 'text-red-400'
+                tempban: 'text-red-400',
+                bolo: 'text-red-500'
             };
             
+            const displayType = punishment.type;
             const typeColor = typeColors[punishment.type.toLowerCase()] || 'text-gray-400';
             
             const moderatorData = await fetchUserData(punishment.moderator);
@@ -2509,7 +2568,7 @@ async function loadPunishments(serverId) {
             
             const typeDiv = document.createElement('div');
             typeDiv.className = `punishment-type ${typeColor}`;
-            typeDiv.textContent = punishment.type.toUpperCase();
+            typeDiv.textContent = displayType.toUpperCase();
             
             const reasonDiv = document.createElement('div');
             reasonDiv.className = 'punishment-reason text-gray-400';
@@ -2528,7 +2587,7 @@ async function loadPunishments(serverId) {
             deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
             deleteBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                showDeleteConfirmation(punishment.punishmentid || punishment.id, punishment.robloxUser.name, punishment.type);
+                showDeleteConfirmation(punishment.punishmentid || punishment.id, punishment.robloxUser.name, displayType);
             });
             
             item.appendChild(userInfoDiv);
@@ -2697,6 +2756,12 @@ async function loadPunishments(serverId) {
                     
                     const avatarUrl = userData.avatar;
                     
+                    // Show paused status for paused shifts
+                    const isPaused = shift.paused === true;
+                    const statusBadgeClass = isPaused ? 'staff-paused-badge' : 'staff-active-badge';
+                    const statusText = isPaused ? 'Paused' : 'Active';
+                    const statusIcon = isPaused ? 'fa-pause' : 'fa-circle';
+                    
                     card.innerHTML = `
                         <div class="avatar-circle">
                             ${avatarUrl ? `<img src="${avatarUrl}" alt="${userData.username || userData.name || shift.user}">` : (userData.username || userData.name || shift.user).charAt(0)}
@@ -2706,8 +2771,8 @@ async function loadPunishments(serverId) {
                             <div class="staff-status">Active for ${formatDuration(duration)}</div>
                             <div class="text-xs text-gray-400 mt-1">Type: ${shift.type || 'Default'}</div>
                         </div>
-                        <div class="staff-active-badge">
-                            <i class="fas fa-circle mr-1"></i> Active
+                        <div class="${statusBadgeClass}">
+                            <i class="fas ${statusIcon} mr-1"></i> ${statusText}
                         </div>
                     `;
                     
@@ -3062,7 +3127,6 @@ async function loadPunishments(serverId) {
             fragment.appendChild(boloItem);
         }
         
-        // Insert BOLOs at the top of the punishment list
         const punishmentList = document.getElementById('punishmentHistory');
         if (punishmentList.firstChild) {
             punishmentList.insertBefore(fragment, punishmentList.firstChild);
@@ -3265,7 +3329,7 @@ async function loadPunishments(serverId) {
         }
         
         let expires = null;
-        if (type === 'tempban') {
+        if (type.toLowerCase() === 'tempban') {
             const durationValue = document.getElementById('durationValue').value;
             const durationUnit = document.getElementById('durationUnit').value;
             
@@ -3703,4 +3767,3 @@ async function loadPunishments(serverId) {
     </script>
 </body>
 </html>
-
