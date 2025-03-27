@@ -15,11 +15,20 @@ document.addEventListener("DOMContentLoaded", () => {
       errorElement.style.display = "block"
       return
     }
-  
-    const apiUrl = `https://api.duckybot.xyz/transcripts/${guildId}/${ticketId}`
+
+
+    const discordToken = document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1]
+
+    if (!discordToken) {
+      window.location.href = `/login?redirect=transcripts#${guildId}-${ticketId}`;
+      return;
+  }
+
+    const apiUrl = `https://api.duckybot.xyz/guilds/${guildId}/transcripts/${ticketId}`
   
     fetch(apiUrl, {
       method: "GET",
+      headers: { "Discord-Code": discordToken }
     })
       .then((response) => {
         if (!response.ok) {
