@@ -61,42 +61,74 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   
     function formatDiscordMarkdown(text) {
-      if (!text) return ""
-  
-      text = text.replace(/<:(\w+):(\d+)>/g, ":$1:")
-  
-      text = text.replace(/<@!?(\d+)>/g, (match, id) => `@${id}`)
-      text = text.replace(/<@&(\d+)>/g, (match, id) => `@&${id}`)
-      text = text.replace(/<#(\d+)>/g, (match, id) => `#${id}`) 
-  
-      text = text.replace(/```(\w+)\n([\s\S]*?)```/g, '<pre><code class="language-$1 break-words whitespace-pre-wrap">$2</code></pre>')
-      text = text.replace(/```([\s\S]*?)```/g, '<pre><code class="break-words whitespace-pre-wrap">$1</code></pre>')
-  
-      text = text.replace(/`([^`]+)`/g, '<code class="break-words whitespace-pre-wrap">$1</code>')
-  
-      text = text.replace(/\*\*\*([^*]+)\*\*\*/g, "<strong><em>$1</em></strong>")
-      text = text.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-      text = text.replace(/\*([^*]+)\*/g, "<em>$1</em>")
-      text = text.replace(/_([^_]+)_/g, "<em>$1</em>")
-      text = text.replace(/__(.*?)__/g, "<u>$1</u>")
-      text = text.replace(/~~(.*?)~~/, "<s>$1</s>")
-      text = text.replace(/\|\|(.*?)\|\|/g, '<span class="spoiler">$1</span>')
-  
-      text = text.replace(/>>>([\s\S]*)/g, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
-      text = text.replace(/^> (.+)/gm, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>')
-  
-      text = text.replace(/^# (.*?)$/gm, "<h1>$1</h1>")
-      text = text.replace(/^## (.*?)$/gm, "<h2>$1</h2>")
-      text = text.replace(/^### (.*?)$/gm, "<h3>$1</h3>")
-  
-      text = text.replace(/^(?:- |\* )(.*)/gm, "<li>$1</li>")
-      text = text.replace(/^(?: {2}- | {2}\* )(.*)/gm, '<li class="indent">$1</li>')
-      text = text.replace(/^(?:\d+\. )(.*)/gm, '<li class="numbered">$1</li>')
-  
-      text = text.replace(/\n/g, "<br>")
-  
-      return text
-    }
+      if (!text) return "";
+    
+      // Convert custom emoji
+      text = text.replace(/<:(\w+):(\d+)>/g, ":$1:");
+    
+      // Convert mentions
+      text = text.replace(/<@!?(\d+)>/g, (match, id) => `@${id}`);
+      text = text.replace(/<@&(\d+)>/g, (match, id) => `@&${id}`);
+      text = text.replace(/<#(\d+)>/g, (match, id) => `#${id}`);
+    
+      // Format code blocks
+      text = text.replace(/```(\w+)\n([\s\S]*?)```/g, '<pre><code class="language-$1 break-words whitespace-pre-wrap">$2</code></pre>');
+      text = text.replace(/```([\s\S]*?)```/g, '<pre><code class="break-words whitespace-pre-wrap">$1</code></pre>');
+      text = text.replace(/`([^`]+)`/g, '<code class="break-words whitespace-pre-wrap">$1</code>');
+    
+      // Bold, Italic, Underline, Strikethrough
+      text = text.replace(/\*\*\*([^*]+)\*\*\*/g, "<strong><em>$1</em></strong>");
+      text = text.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+      text = text.replace(/\*([^*]+)\*/g, "<em>$1</em>");
+      text = text.replace(/_([^_]+)_/g, "<em>$1</em>");
+      text = text.replace(/__(.*?)__/g, "<u>$1</u>");
+      text = text.replace(/~~(.*?)~~/g, "<s>$1</s>");
+      text = text.replace(/\|\|(.*?)\|\|/g, '<span class="spoiler">$1</span>');
+    
+      // Blockquotes
+      text = text.replace(/>>>([\s\S]*)/g, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>');
+      text = text.replace(/^> (.+)/gm, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>');
+    
+      // Headers
+      text = text.replace(/^# (.*?)$/gm, "<h1>$1</h1>");
+      text = text.replace(/^## (.*?)$/gm, "<h2>$1</h2>");
+      text = text.replace(/^### (.*?)$/gm, "<h3>$1</h3>");
+    
+      // Lists
+      text = text.replace(/^(?:- |\* )(.*)/gm, "<li>$1</li>");
+      text = text.replace(/^(?: {2}- | {2}\* )(.*)/gm, '<li class="indent">$1</li>');
+      text = text.replace(/^(?:\d+\. )(.*)/gm, '<li class="numbered">$1</li>');
+    
+      // Convert Discord timestamps
+      text = text.replace(/<t:(\d+)(?::(\w))?>/g, (match, timestamp, format) => {
+        let date = new Date(timestamp * 1000);
+        let options = {};
+    
+        switch (format) {
+          case 't': options = { hour: '2-digit', minute: '2-digit' }; break;
+          case 'T': options = { hour: '2-digit', minute: '2-digit', second: '2-digit' }; break;
+          case 'd': options = { day: '2-digit', month: '2-digit', year: 'numeric' }; break;
+          case 'D': options = { day: '2-digit', month: 'long', year: 'numeric' }; break;
+          case 'f': options = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }; break;
+          case 'F': options = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }; break;
+          case 'R': 
+            let diff = Math.round((date - new Date()) / 1000);
+            if (diff > 0) return `<span title="${date.toISOString()}">in ${diff} seconds</span>`;
+            return `<span title="${date.toISOString()}">${-diff} seconds ago</span>`;
+          default: options = { year: 'numeric', month: 'long', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+        }
+    
+        return date.toLocaleString('en-US', options);
+      });
+    
+      // Convert URLs into clickable links
+      text = text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+    
+      // Line breaks
+      text = text.replace(/\n/g, "<br>");
+    
+      return text;
+    }    
   
     function renderMessage(msg) {
       const { author, content, pfp, embeds = [], stickers = [], attachments = [] } = msg
