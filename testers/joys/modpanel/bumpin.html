@@ -63,6 +63,7 @@
       display: flex;
     }
     
+    /* Sidebar */
     .sidebar {
       width: 240px;
       background-color: var(--sidebar);
@@ -186,6 +187,7 @@
       color: var(--text-muted);
     }
     
+    /* Main Content */
     .main {
       flex: 1;
       margin-left: 240px;
@@ -211,6 +213,7 @@
       gap: 0.75rem;
     }
     
+    /* Cards */
     .card {
       background-color: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -262,6 +265,7 @@
       gap: 0.75rem;
     }
     
+    /* Grid */
     .grid {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
@@ -273,6 +277,7 @@
     .col-span-4 { grid-column: span 4; }
     .col-span-3 { grid-column: span 3; }
     
+    /* Stats Cards */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -341,6 +346,7 @@
       color: var(--text-secondary);
     }
     
+    /* Forms */
     .form-group {
       margin-bottom: 1rem;
     }
@@ -423,6 +429,7 @@
       border-left: none;
     }
     
+    /* Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -506,6 +513,7 @@
       width: 100%;
     }
     
+    /* Badges */
     .badge {
       display: inline-flex;
       align-items: center;
@@ -546,6 +554,7 @@
       border: 1px solid currentColor;
     }
     
+    /* Avatars */
     .avatar {
       width: 2.5rem;
       height: 2.5rem;
@@ -577,6 +586,7 @@
       font-size: 1.25rem;
     }
     
+    /* Lists */
     .list {
       display: flex;
       flex-direction: column;
@@ -613,6 +623,7 @@
       color: var(--text-secondary);
     }
     
+    /* Tabs */
     .tabs {
       display: flex;
       border-bottom: 1px solid var(--card-border);
@@ -654,6 +665,7 @@
       background-color: var(--primary);
     }
     
+    /* Modals */
     .modal-backdrop {
       position: fixed;
       top: 0;
@@ -730,6 +742,7 @@
       gap: 0.75rem;
     }
     
+    /* Toasts */
     .toast-container {
       position: fixed;
       bottom: 1.5rem;
@@ -810,6 +823,7 @@
       color: var(--text);
     }
     
+    /* Dropdown */
     .dropdown {
       position: relative;
     }
@@ -860,6 +874,7 @@
       margin: 0.5rem 0;
     }
     
+    /* Custom Dropdown */
     .custom-dropdown {
       position: relative;
       width: 100%;
@@ -924,6 +939,7 @@
       color: var(--primary);
     }
     
+    /* Scrollbar */
     ::-webkit-scrollbar {
       width: 8px;
       height: 8px;
@@ -943,6 +959,7 @@
       background: rgba(255, 255, 255, 0.2);
     }
     
+    /* Utilities */
     .d-flex {
       display: flex;
     }
@@ -1142,6 +1159,7 @@
       to { transform: rotate(360deg); }
     }
     
+    /* Mobile Styles */
     .mobile-menu-toggle {
       display: none;
       background: none;
@@ -1192,6 +1210,7 @@
       }
     }
     
+    /* Loading Overlay */
     .loading-overlay {
       position: fixed;
       top: 0;
@@ -1221,6 +1240,7 @@
       font-size: 1rem;
     }
     
+    /* Punishment Item Styles */
     .punishment-item {
       position: relative;
       border-left: 3px solid var(--danger);
@@ -1243,6 +1263,7 @@
       background-color: var(--danger-light);
     }
     
+    /* Fix for username text scaling */
     .username {
       font-size: 0.95rem;
       max-width: 100%;
@@ -1253,11 +1274,13 @@
   </style>
 </head>
 <body>
+  <!-- Loading Overlay -->
   <div id="loadingOverlay" class="loading-overlay">
     <div class="loading-spinner"></div>
     <p class="loading-text">Loading...</p>
   </div>
   
+  <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="sidebar-logo">
@@ -1329,6 +1352,7 @@
     </div>
   </div>
   
+  <!-- Main Content -->
   <div class="main">
     <div class="header">
       <div class="d-flex align-center gap-3">
@@ -1349,6 +1373,7 @@
       </div>
     </div>
     
+    <!-- Server Selection View -->
     <div id="serverSelectionView">
       <div class="card mb-4">
         <div class="card-body">
@@ -1380,7 +1405,9 @@
       </div>
     </div>
     
+    <!-- Moderation Panel View -->
     <div id="moderationPanelView" style="display: none;">
+      <!-- Tabs -->
       <div class="tabs" id="tabsContainer">
         <div class="tab active" data-tab="punishments">Punishments</div>
         <div class="tab" data-tab="shifts">Shifts</div>
@@ -1388,6 +1415,7 @@
         <div class="tab" data-tab="automations">Automations</div>
       </div>
       
+      <!-- Punishments Tab -->
       <div id="punishmentsTab" class="tab-content">
         <div class="grid">
           <div class="col-span-6 col-md-12">
@@ -1411,7 +1439,7 @@
                         <i class="fas fa-chevron-down"></i>
                       </div>
                       <div class="custom-dropdown-menu" id="punishmentTypeMenu">
-                        <!-- dont edit this, nor remove it -->
+                        <!-- Populated by JS -->
                       </div>
                     </div>
                     <input type="hidden" id="punishmentType" required>
@@ -1500,6 +1528,7 @@
         </div>
       </div>
       
+      <!-- Shifts Tab -->
       <div id="shiftsTab" class="tab-content" style="display: none;">
         <div class="grid">
           <div class="col-span-6 col-md-12">
@@ -1525,7 +1554,7 @@
                           <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="custom-dropdown-menu" id="shiftTypeMenu">
-                          <!-- dont edit this, nor remove it -->
+                          <!-- Populated by JS -->
                         </div>
                       </div>
                       <input type="hidden" id="shiftType" value="patrol">
@@ -1598,6 +1627,7 @@
         </div>
       </div>
       
+      <!-- ER:LC Integration Tab -->
       <div id="erlcTab" class="tab-content" style="display: none;">
         <div class="card mb-4">
           <div class="card-header">
@@ -1658,7 +1688,7 @@
                 <div id="discordCheckResults" style="display: none;">
                   <h3 class="font-semibold mb-3">Results</h3>
                   <div id="discordCheckList" class="grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">
-                    <!-- dont edit this, nor remove it -->
+                    <!-- Populated by JS -->
                   </div>
                 </div>
               </div>
@@ -1691,6 +1721,7 @@
         </div>
       </div>
       
+      <!-- Automations Tab -->
       <div id="automationsTab" class="tab-content" style="display: none;">
         <div class="card">
           <div class="card-header">
@@ -1706,7 +1737,7 @@
                   <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="custom-dropdown-menu" id="automationMenu">
-                  <!-- dont edit this, nor remove it -->
+                  <!-- Populated by JS -->
                 </div>
               </div>
               <input type="hidden" id="selectedAutomationId">
@@ -1738,6 +1769,7 @@
     </div>
   </div>
   
+  <!-- Confirmation Modal -->
   <div id="confirmationModal" class="modal-backdrop">
     <div class="modal">
       <div class="modal-header">
@@ -1756,9 +1788,11 @@
     </div>
   </div>
   
+  <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>
   
   <script>
+    // Global Variables
     let discordToken = null;
     let discordUser = null;
     let selectedServerId = null;
@@ -1768,6 +1802,7 @@
     let lastPunishmentTime = 0;
     const PUNISHMENT_COOLDOWN = 5000;
     
+    // Shift Variables
     let shiftStatus = 'inactive';
     let shiftStartTime = 0;
     let shiftElapsedTime = 0;
@@ -1775,12 +1810,15 @@
     let currentUserShift = null;
     let currentPunishmentToDelete = null;
     
+    // Discord Check Variables
     let discordCheckCooldowns = {};
     const DISCORD_CHECK_COOLDOWN = 5 * 60 * 1000;
     
+    // Automations Variables
     let serverAutomations = [];
     let currentTab = 'punishments';
     
+    // DOM Elements
     const loadingOverlay = document.getElementById('loadingOverlay');
     const sidebar = document.getElementById('sidebar');
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
@@ -1791,11 +1829,13 @@
     const serverGrid = document.getElementById('serverGrid');
     const tabsContainer = document.getElementById('tabsContainer');
     
+    // Tab Elements
     const punishmentsTab = document.getElementById('punishmentsTab');
     const shiftsTab = document.getElementById('shiftsTab');
     const erlcTab = document.getElementById('erlcTab');
     const automationsTab = document.getElementById('automationsTab');
     
+    // Punishment Elements
     const punishmentForm = document.getElementById('punishmentForm');
     const punishmentTypeToggle = document.getElementById('punishmentTypeToggle');
     const punishmentTypeMenu = document.getElementById('punishmentTypeMenu');
@@ -1807,8 +1847,10 @@
     const punishmentHistory = document.getElementById('punishmentHistory');
     const punishmentFilter = document.getElementById('punishmentFilter');
     
+    // BOLO Elements
     const boloForm = document.getElementById('boloForm');
     
+    // Shift Elements
     const shiftTypeToggle = document.getElementById('shiftTypeToggle');
     const shiftTypeMenu = document.getElementById('shiftTypeMenu');
     const shiftType = document.getElementById('shiftType');
@@ -1822,6 +1864,7 @@
     const recentShifts = document.getElementById('recentShifts');
     const recentUserShifts = document.getElementById('recentUserShifts');
     
+    // ERLC Elements
     const erlcServerInfo = document.getElementById('erlcServerInfo');
     const erlcPlayersList = document.getElementById('erlcPlayersList');
     const erlcLastUpdated = document.getElementById('erlcLastUpdated');
@@ -1833,6 +1876,7 @@
     const discordCheckList = document.getElementById('discordCheckList');
     const commandForm = document.getElementById('commandForm');
     
+    // Automation Elements
     const automationToggle = document.getElementById('automationToggle');
     const automationMenu = document.getElementById('automationMenu');
     const selectedAutomationId = document.getElementById('selectedAutomationId');
@@ -1844,6 +1888,7 @@
     const automationRoleLabel = document.getElementById('automationRoleLabel');
     const automationAuthor = document.getElementById('automationAuthor');
     
+    // Modal Elements
     const confirmationModal = document.getElementById('confirmationModal');
     const modalTitle = document.getElementById('modalTitle');
     const confirmationMessage = document.getElementById('confirmationMessage');
@@ -1851,18 +1896,23 @@
     const confirmBtn = document.getElementById('confirmBtn');
     const modalClose = document.getElementById('modalClose');
     
+    // Toast Container
     const toastContainer = document.getElementById('toastContainer');
     
+    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
       initEventListeners();
       loadServers();
     });
     
+    // Event Listeners
     function initEventListeners() {
+      // Mobile Menu Toggle
       mobileMenuToggle.addEventListener('click', () => {
         sidebar.classList.toggle('active');
       });
       
+      // Back to Servers Button
       backToServersBtn.addEventListener('click', () => {
         moderationPanelView.style.display = 'none';
         serverSelectionView.style.display = 'block';
@@ -1875,12 +1925,14 @@
         clearPreviousServerData();
       });
       
+      // Server Selection Nav Item
       document.getElementById('serverSelectionNav').addEventListener('click', () => {
         if (selectedServerId) {
           backToServersBtn.click();
         }
       });
       
+      // Tab Navigation
       tabsContainer.addEventListener('click', (e) => {
         if (e.target.classList.contains('tab')) {
           const tabId = e.target.dataset.tab;
@@ -1888,6 +1940,7 @@
         }
       });
       
+      // Sidebar Tab Navigation
       document.querySelectorAll('.nav-item[data-tab]').forEach(item => {
         item.addEventListener('click', () => {
           const tabId = item.dataset.tab;
@@ -1895,48 +1948,61 @@
         });
       });
       
+      // Custom Dropdowns
       initCustomDropdowns();
       
+      // Forms
       punishmentForm.addEventListener('submit', handlePunishmentSubmit);
       boloForm.addEventListener('submit', handleBoloSubmit);
       commandForm.addEventListener('submit', handleCommandSubmit);
       
+      // Shift Controls
       startShiftBtn.addEventListener('click', handleStartShift);
       pauseShiftBtn.addEventListener('click', handlePauseShift);
       endShiftBtn.addEventListener('click', handleEndShift);
       
+      // ERLC Controls
       refreshERLCBtn.addEventListener('click', () => loadERLCData());
       runDiscordCheckBtn.addEventListener('click', runDiscordCheck);
       
+      // Automation Controls
       runAutomationBtn.addEventListener('click', runAutomation);
       
+      // Modal Controls
       cancelBtn.addEventListener('click', closeModal);
       modalClose.addEventListener('click', closeModal);
       
+      // Filter
       punishmentFilter.addEventListener('input', filterPunishmentHistory);
     }
     
+    // Custom Dropdowns
     function initCustomDropdowns() {
+      // Punishment Type Dropdown
       punishmentTypeToggle.addEventListener('click', () => {
         punishmentTypeMenu.classList.toggle('active');
         punishmentTypeToggle.classList.toggle('active');
       });
       
+      // Duration Unit Dropdown
       durationUnitToggle.addEventListener('click', () => {
         durationUnitMenu.classList.toggle('active');
         durationUnitToggle.classList.toggle('active');
       });
       
+      // Shift Type Dropdown
       shiftTypeToggle.addEventListener('click', () => {
         shiftTypeMenu.classList.toggle('active');
         shiftTypeToggle.classList.toggle('active');
       });
       
+      // Automation Dropdown
       automationToggle.addEventListener('click', () => {
         automationMenu.classList.toggle('active');
         automationToggle.classList.toggle('active');
       });
       
+      // Close dropdowns when clicking outside
       document.addEventListener('click', (e) => {
         if (!e.target.closest('.custom-dropdown')) {
           document.querySelectorAll('.custom-dropdown-menu').forEach(menu => {
@@ -1949,7 +2015,9 @@
       });
     }
     
+    // Tab Switching
     function switchTab(tabId) {
+      // Update tabs
       document.querySelectorAll('.tab').forEach(tab => {
         if (tab.dataset.tab === tabId) {
           tab.classList.add('active');
@@ -1958,6 +2026,7 @@
         }
       });
       
+      // Update sidebar nav
       document.querySelectorAll('.nav-item[data-tab]').forEach(item => {
         if (item.dataset.tab === tabId) {
           item.classList.add('active');
@@ -1966,6 +2035,7 @@
         }
       });
       
+      // Update tab content
       document.querySelectorAll('.tab-content').forEach(content => {
         content.style.display = 'none';
       });
@@ -1973,12 +2043,14 @@
       document.getElementById(`${tabId}Tab`).style.display = 'block';
       currentTab = tabId;
       
+      // Save current tab to localStorage
       if (selectedServerId) {
         const savedServer = JSON.parse(localStorage.getItem('selectedServerId') || '{}');
         savedServer.tab = tabId;
         localStorage.setItem('selectedServerId', JSON.stringify(savedServer));
       }
       
+      // Load tab-specific data if needed
       if (tabId === 'shifts' && activeShifts.innerHTML.includes('Loading')) {
         loadShifts();
       } else if (tabId === 'erlc') {
@@ -1987,10 +2059,12 @@
       }
     }
     
+    // Authentication
     function getDiscordToken() {
       return document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
     }
     
+    // Server Loading
     async function loadServers() {
       discordToken = getDiscordToken();
       
@@ -2015,6 +2089,7 @@
       }
       
       try {
+        // Load user data
         const userResponse = await fetch('https://discord.com/api/users/@me', {
           headers: { authorization: `Bearer ${discordToken}` }
         });
@@ -2041,6 +2116,7 @@
           profileAvatar.appendChild(profileImg);
         }
         
+        // Load servers
         const response = await fetch("https://api.duckybot.xyz/guilds", {
           headers: { "Discord-Code": discordToken }
         });
@@ -2109,6 +2185,7 @@
           if (savedServerValid && savedServerData) {
             selectServer(savedServerData.id, savedServerData.name, savedServerData.icon, savedServerData.config);
             
+            // Set the active tab based on saved state
             switchTab(currentTab);
           }
         }
@@ -2127,6 +2204,7 @@
       }
     }
     
+    // Server Selection
     function selectServer(serverId, serverName, serverIcon, serverConfig) {
       clearPreviousServerData();
       
@@ -2148,29 +2226,34 @@
         tab: currentTab
       }));
       
+      // Setup punishment types
       let punishmentTypes = [];
       if (serverConfig && serverConfig.punishmenttypes && serverConfig.punishmenttypes.length > 0) {
         punishmentTypes = [...serverConfig.punishmenttypes];
       }
       setupPunishmentTypeDropdown(punishmentTypes);
       
+      // Setup shift types
       let shiftTypes = [];
       if (serverConfig && serverConfig.shifttypes && serverConfig.shifttypes.length > 0) {
         shiftTypes = serverConfig.shifttypes;
       }
       setupShiftTypeDropdown(shiftTypes);
       
+      // Setup automations
       if (serverConfig && serverConfig.automations) {
         setupAutomationsDropdown(serverConfig.automations);
       } else {
         setupAutomationsDropdown([]);
       }
       
+      // Load data for current tab
       loadPunishments();
       loadBOLOs();
       checkActiveShift();
       updateDiscordCheckCooldown();
       
+      // Set active tab in sidebar
       document.querySelectorAll('.nav-item[data-tab]').forEach(item => {
         if (item.dataset.tab === currentTab) {
           item.classList.add('active');
@@ -2180,6 +2263,7 @@
       });
     }
     
+    // Clear Previous Server Data
     function clearPreviousServerData() {
       punishmentHistory.innerHTML = '<div class="text-center p-4"><div class="spinner mx-auto mb-3"></div><p class="text-secondary">Loading punishment history...</p></div>';
       
@@ -2195,20 +2279,25 @@
       resetShiftUI();
     }
     
+    // Setup Punishment Type Dropdown
     function setupPunishmentTypeDropdown(types) {
       punishmentTypeMenu.innerHTML = '';
       
+      // Ensure BOLO and TempBan are always included
       let hasTypes = Array.isArray(types) && types.length > 0;
       let processedTypes = hasTypes ? [...types] : [];
       
+      // Check if TempBan is already in the list (case-insensitive)
       if (!processedTypes.some(type => type.toLowerCase() === 'tempban')) {
         processedTypes.push('TempBan');
       }
       
+      // Check if BOLO is already in the list (case-insensitive)
       if (!processedTypes.some(type => type.toLowerCase() === 'bolo')) {
         processedTypes.push('BOLO');
       }
       
+      // If no types were provided, add some defaults
       if (processedTypes.length === 0) {
         processedTypes = ['Warning', 'Kick', 'Ban', 'TempBan', 'BOLO'];
       }
@@ -2216,11 +2305,11 @@
       processedTypes.forEach((type) => {
         const option = document.createElement('div');
         option.className = 'custom-dropdown-item';
-        option.dataset.value = type; 
+        option.dataset.value = type; // Store the original case
         option.textContent = type;
         
         option.addEventListener('click', () => {
-          punishmentType.value = type; 
+          punishmentType.value = type; // Store the original case
           punishmentTypeToggle.querySelector('span').textContent = type;
           
           document.querySelectorAll('#punishmentTypeMenu .custom-dropdown-item').forEach(opt => {
@@ -2238,6 +2327,7 @@
       });
     }
     
+    // Setup Shift Type Dropdown
     function setupShiftTypeDropdown(types) {
       shiftTypeMenu.innerHTML = '';
       
@@ -2280,6 +2370,7 @@
       });
     }
     
+    // Setup Automations Dropdown
     function setupAutomationsDropdown(automations) {
       serverAutomations = automations || [];
       automationMenu.innerHTML = '';
@@ -2333,6 +2424,7 @@
       });
     }
     
+    // Show Automation Details
     function showAutomationDetails(automation) {
       automationTrigger.textContent = automation.trigger ? automation.trigger.name : 'Unknown';
       
@@ -2373,6 +2465,7 @@
       automationDetails.style.display = 'block';
     }
     
+    // Run Automation
     async function runAutomation() {
       if (!discordToken || !selectedServerId || selectedAutomationId.value === '') {
         showToast('Please select an automation to run', 'error');
@@ -2417,6 +2510,7 @@
       }
     }
     
+    // Fetch User Data
     async function fetchUserData(userId, forceRefresh = false) {
       if (!forceRefresh && userCache.has(userId)) {
         return userCache.get(userId);
@@ -2442,11 +2536,13 @@
       }
     }
     
+    // Format Date
     function formatDate(timestamp) {
       const date = new Date(timestamp * 1000);
       return date.toLocaleString();
     }
     
+    // Format Duration
     function formatDuration(seconds) {
       if (seconds < 60) return `${seconds} second${seconds !== 1 ? 's' : ''}`;
       
@@ -2471,6 +2567,7 @@
       return durationString;
     }
     
+    // Format Shift Time
     function formatShiftTime(seconds) {
       const hours = Math.floor(seconds / 3600);
       const minutes = Math.floor((seconds % 3600) / 60);
@@ -2479,6 +2576,7 @@
       return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
     
+    // Show Toast
     function showToast(message, type = 'success') {
       const toast = document.createElement('div');
       toast.className = 'toast';
@@ -2516,10 +2614,12 @@
       
       toastContainer.appendChild(toast);
       
+      // Show toast with animation
       setTimeout(() => {
         toast.classList.add('show');
       }, 10);
       
+      // Add close button functionality
       toast.querySelector('.toast-close').addEventListener('click', () => {
         toast.classList.remove('show');
         setTimeout(() => {
@@ -2527,6 +2627,7 @@
         }, 300);
       });
       
+      // Auto close after 5 seconds
       setTimeout(() => {
         if (toast.parentNode) {
           toast.classList.remove('show');
@@ -2539,6 +2640,7 @@
       }, 5000);
     }
     
+    // Modal Functions
     function openModal(title, message, confirmCallback) {
       modalTitle.textContent = title;
       confirmationMessage.textContent = message;
@@ -2550,6 +2652,7 @@
       confirmationModal.classList.remove('active');
     }
     
+    // Load Punishments
     async function loadPunishments() {
       punishmentHistory.innerHTML = `
         <div class="text-center p-4">
@@ -2639,6 +2742,7 @@
       }
     }
     
+    // Filter Punishment History
     function filterPunishmentHistory() {
       const filter = punishmentFilter.value.trim().toLowerCase();
       const items = punishmentHistory.querySelectorAll('.punishment-item');
@@ -2658,6 +2762,7 @@
         }
       });
       
+      // Show no matches message if needed
       const noMatchesEl = punishmentHistory.querySelector('.no-matches');
       if (!hasMatches && !noMatchesEl && filter) {
         const noMatches = document.createElement('div');
@@ -2669,6 +2774,7 @@
       }
     }
     
+    // Delete Punishment
     async function deletePunishment(punishmentId) {
       if (!punishmentId || !selectedServerId || !discordToken) {
         showToast('Error: Missing information for deletion', 'error');
@@ -2718,6 +2824,7 @@
       }
     }
     
+    // Load BOLOs
     async function loadBOLOs() {
       if (!discordToken || !selectedServerId) {
         return;
@@ -2775,6 +2882,7 @@
           approveBtn.addEventListener('click', () => approveBOLO(bolo.user));
           deleteBtn.addEventListener('click', () => deleteBOLO(bolo.user));
           
+          // Insert at the top of the punishment history
           if (punishmentHistory.firstChild) {
             punishmentHistory.insertBefore(item, punishmentHistory.firstChild);
           } else {
@@ -2787,6 +2895,7 @@
       }
     }
     
+    // Approve BOLO
     async function approveBOLO(robloxId) {
       if (!discordToken || !selectedServerId) {
         showToast('Authentication error. Please log in again.', 'error');
@@ -2836,6 +2945,7 @@
       }
     }
     
+    // Delete BOLO
     async function deleteBOLO(robloxId) {
       if (!discordToken || !selectedServerId) {
         showToast('Authentication error. Please log in again.', 'error');
@@ -2885,6 +2995,7 @@
       }
     }
     
+    // Handle Punishment Submit
     async function handlePunishmentSubmit(e) {
       e.preventDefault();
       
@@ -2975,6 +3086,7 @@
       }
     }
     
+    // Handle BOLO Submit
     async function handleBoloSubmit(e) {
       e.preventDefault();
       
@@ -3030,6 +3142,7 @@
       }
     }
     
+    // Handle Command Submit
     async function handleCommandSubmit(e) {
       e.preventDefault();
       
@@ -3079,6 +3192,7 @@
       }
     }
     
+    // Load Shifts
     async function loadShifts() {
       activeShifts.innerHTML = `
         <div class="text-center p-4">
@@ -3111,6 +3225,7 @@
         
         const { data } = await response.json();
         
+        // Process active shifts
         if (!data.activeshifts || data.activeshifts.length === 0) {
           activeShifts.innerHTML = '<div class="text-center p-4"><i class="fas fa-user-clock text-muted text-4xl mb-3"></i><p class="text-secondary">No active shifts found.</p></div>';
         } else {
@@ -3125,6 +3240,7 @@
             
             const avatarUrl = userData.avatar;
             
+            // Show paused status for paused shifts
             const isPaused = shift.paused === true;
             const statusBadgeClass = isPaused ? 'badge-warning' : 'badge-success';
             const statusText = isPaused ? 'Paused' : 'Active';
@@ -3149,6 +3265,7 @@
           }
         }
         
+        // Process recent shifts
         if (!data.shifts || data.shifts.length === 0) {
           recentShifts.innerHTML = '<div class="text-center p-4"><i class="fas fa-history text-muted text-4xl mb-3"></i><p class="text-secondary">No recent shifts found.</p></div>';
         } else {
@@ -3192,6 +3309,7 @@
           }
         }
         
+        // Process user's recent shifts
         if (discordUser) {
           const userId = discordUser.id;
           const userShifts = data.shifts?.filter(shift => shift.user === userId).slice(0, 3) || [];
@@ -3225,6 +3343,7 @@
             }
           }
           
+          // Check for user's active shift
           const userActiveShift = data.activeshifts?.find(shift => shift.user === userId && shift.type === shiftType.value);
           
           if (userActiveShift) {
@@ -3247,6 +3366,7 @@
       }
     }
     
+    // Check Active Shift
     async function checkActiveShift() {
       if (!discordToken || !discordUser) return;
       
@@ -3289,6 +3409,7 @@
       }
     }
     
+    // Reset Shift UI
     function resetShiftUI() {
       if (shiftTimerInterval) {
         clearInterval(shiftTimerInterval);
@@ -3303,6 +3424,7 @@
       updateShiftUI();
     }
     
+    // Update Shift UI
     function updateShiftUI() {
       if (shiftStatus === 'paused') {
         startShiftBtn.disabled = false;
@@ -3336,6 +3458,7 @@
       }
     }
     
+    // Start Shift Timer
     function startShiftTimer() {
       if (shiftTimerInterval) {
         clearInterval(shiftTimerInterval);
@@ -3350,6 +3473,7 @@
       }, 1000);
     }
     
+    // Handle Start Shift
     async function handleStartShift() {
       if (!discordToken || !selectedServerId) {
         showToast('Authentication error. Please log in again.', 'error');
@@ -3420,6 +3544,7 @@
       }
     }
     
+    // Handle Pause Shift
     async function handlePauseShift() {
       if (!discordToken || !selectedServerId) {
         showToast('Authentication error. Please log in again.', 'error');
@@ -3517,6 +3642,7 @@
       }
     }
     
+    // Load ERLC Data
     async function loadERLCData() {
       erlcServerInfo.innerHTML = `
         <div class="text-center p-4 col-span-12">
@@ -3767,3 +3893,4 @@
   </script>
 </body>
 </html>
+
