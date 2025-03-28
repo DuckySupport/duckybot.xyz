@@ -203,53 +203,70 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function formatDiscordMarkdown(text) {
-    if (!text) return ""
-    
-    text = escapeHTML(text)
-    
-    text = text.replace(/<:(\w+):(\d+)>/g, '<img src="https://cdn.discordapp.com/emojis/$2.png" alt=":$1:" class="inline-block h-5 w-5 align-middle" />')
-    text = text.replace(/<a:(\w+):(\d+)>/g, '<img src="https://cdn.discordapp.com/emojis/$2.gif" alt=":$1:" class="inline-block h-5 w-5 align-middle" />')
-    
-    text = text.replace(/<@!?(\d+)>/g, '<span class="mention">@user</span>')
-    text = text.replace(/<@&(\d+)>/g, '<span class="role-mention">@role</span>')
-    text = text.replace(/<#(\d+)>/g, '<span class="channel-mention">#channel</span>')
-    
-    text = text.replace(/```(\w+)?\n([\s\S]*?)```/g, function(match, language, code) {
-      return `<pre><code class="${language || ''}">${escapeHTML(code)}</code></pre>`
-    })
-    
-    text = text.replace(/`([^`]+)`/g, '<code>$1</code>')
-    
-    text = text.replace(/\*\*\*([^*]+)\*\*\*/g, "<strong><em>$1</em></strong>")
-    text = text.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-    text = text.replace(/\*([^*]+)\*/g, "<em>$1</em>")
-    text = text.replace(/_([^_]+)_/g, "<em>$1</em>")
-    text = text.replace(/__(.*?)__/g, "<u>$1</u>")
-    text = text.replace(/~~(.*?)~~/g, "<s>$1</s>")
-    
-    text = text.replace(/\|\|(.*?)\|\|/g, '<span class="spoiler">$1</span>')
-    
-    text = text.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
-    text = text.replace(/^>>> ([\s\S]*)/gm, '<blockquote>$1</blockquote>')
-    
-    text = text.replace(/^# (.*?)$/gm, "<h1>$1</h1>")
-    text = text.replace(/^## (.*?)$/gm, "<h2>$1</h2>")
-    text = text.replace(/^### (.*?)$/gm, "<h3>$1</h3>")
-    
-    text = text.replace(/^- (.*)$/gm, "<li>$1</li>")
-    text = text.replace(/^\* (.*)$/gm, "<li>$1</li>")
-    text = text.replace(/^\d+\. (.*)$/gm, "<li>$1</li>")
-    
+    if (!text) return "";
+  
+    text = escapeHTML(text);
+  
+    // Convert Discord emoji
+    text = text.replace(/<:(\w+):(\d+)>/g, '<img src="https://cdn.discordapp.com/emojis/$2.png" alt=":$1:" class="inline-block h-5 w-5 align-middle" />');
+    text = text.replace(/<a:(\w+):(\d+)>/g, '<img src="https://cdn.discordapp.com/emojis/$2.gif" alt=":$1:" class="inline-block h-5 w-5 align-middle" />');
+  
+    // Mentions
+    text = text.replace(/<@!?(\d+)>/g, '<span class="mention">@user</span>');
+    text = text.replace(/<@&(\d+)>/g, '<span class="role-mention">@role</span>');
+    text = text.replace(/<#(\d+)>/g, '<span class="channel-mention">#channel</span>');
+  
+    // Code blocks
+    text = text.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, language, code) => {
+      return `<pre><code class="${language || ''}">${escapeHTML(code)}</code></pre>`;
+    });
+  
+    text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+  
+    // Text formatting
+    text = text.replace(/\*\*\*([^*]+)\*\*\*/g, "<strong><em>$1</em></strong>");
+    text = text.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    text = text.replace(/\*([^*]+)\*/g, "<em>$1</em>");
+    text = text.replace(/_([^_]+)_/g, "<em>$1</em>");
+    text = text.replace(/__(.*?)__/g, "<u>$1</u>");
+    text = text.replace(/~~(.*?)~~/g, "<s>$1</s>");
+  
+    // Spoilers
+    text = text.replace(/\|\|(.*?)\|\|/g, '<span class="spoiler">$1</span>');
+  
+    // Blockquotes (single-line and multi-line)
+    text = text.replace(/^>>> ([\s\S]*)/gm, (match, content) => {
+      return `<blockquote>${content.replace(/\n/g, '<br>')}</blockquote>`;
+    });
+
+    // Handles `>` blockquotes spanning multiple lines
+    text = text.replace(/^> (.*(?:\n> .*)*)/gm, (match) => {
+      return `<blockquote>${match.replace(/^> /gm, '').replace(/\n/g, '<br>')}</blockquote>`;
+    });
+  
+    // Headers
+    text = text.replace(/^# (.*?)$/gm, "<h1>$1</h1>");
+    text = text.replace(/^## (.*?)$/gm, "<h2>$1</h2>");
+    text = text.replace(/^### (.*?)$/gm, "<h3>$1</h3>");
+  
+    // Lists
+    text = text.replace(/^- (.*)$/gm, "<li>$1</li>");
+    text = text.replace(/^\* (.*)$/gm, "<li>$1</li>");
+    text = text.replace(/^\d+\. (.*)$/gm, "<li>$1</li>");
+  
+    // Discord timestamps
     text = text.replace(/<t:(\d+)(?::(\w))?>/g, (match, timestamp, format) => {
-      const date = new Date(timestamp * 1000)
-      return `<span class="timestamp" title="${date.toISOString()}">${formatDiscordTimestamp(date, format)}</span>`
-    })
-    
-    text = text.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-[#00aff4] hover:underline">$1</a>')
-    
-    text = text.replace(/\n/g, "<br>")
-    
-    return text
+      const date = new Date(timestamp * 1000);
+      return `<span class="timestamp" title="${date.toISOString()}">${formatDiscordTimestamp(date, format)}</span>`;
+    });
+  
+    // Hyperlinks
+    text = text.replace(/(?<!["'>])\b(https?:\/\/[^\s<]+)\b/g, '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-[#00aff4] hover:underline">$1</a>');
+  
+    // Newlines to <br>
+    text = text.replace(/\n/g, "<br>");
+  
+    return text;
   }
   
   function formatDiscordTimestamp(date, format) {
