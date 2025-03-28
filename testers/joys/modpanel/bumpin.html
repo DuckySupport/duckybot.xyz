@@ -1680,6 +1680,37 @@
         const notifyBolo = document.getElementById('notifyBolo');
         const saveSettingsBtn = document.getElementById('saveSettingsBtn');
 
+        function showToast(title, message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 
+                                 type === 'error' ? 'times-circle' : 
+                                 type === 'warning' ? 'exclamation-triangle' : 
+                                 'info-circle'} toast-icon"></i>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+        
+            const toastContainer = document.getElementById('toastContainer');
+            toastContainer.appendChild(toast);
+        
+            toast.querySelector('.toast-close').addEventListener('click', () => {
+                toast.remove();
+            });
+        
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+        
+
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             guildID = urlParams.get('guild') || '';
