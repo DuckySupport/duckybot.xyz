@@ -209,3 +209,69 @@ body {
     opacity: 0.4;
     pointer-events: none;
   }
+  
+  .affiliate-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    height: 100%;
+    justify-content: space-between;
+  }
+  
+  .affiliate-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(245, 255, 130, 0.3);
+  }
+  
+  .card-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  
+  .card-content {
+    text-align: center;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .button-container {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    padding-top: 1.5rem;
+  }
+  
+  .card-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .affiliate-button {
+    background: rgba(245, 255, 130, 0.1);
+    border: 1px solid rgba(245, 255, 130, 0.2);
+    color: #fff;
+  }
+  
+  .affiliate-button:hover {
+    background: rgba(245, 255, 130, 0.2);
+    border-color: rgba(245, 255, 130, 0.3);
+  }
+  
+  .fixed-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
