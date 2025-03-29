@@ -1,0 +1,211 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0a0a0a;
+    color: #fff;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
+  }
+  
+  .glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.08;
+    z-index: -1;
+    will-change: transform;
+  }
+  
+  .floating-nav {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(245, 255, 130, 0.1);
+    will-change: transform;
+  }
+  
+  .nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: #F5FF82;
+  }
+  
+  .card {
+    background: rgba(18, 18, 18, 0.5);
+    border: 1px solid rgba(245, 255, 130, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    will-change: transform;
+  }
+  
+  .card:hover {
+    border-color: rgba(245, 255, 130, 0.3);
+  }
+  
+  .btn-primary {
+    background: rgba(245, 255, 130, 0.3);
+    border: 1px solid rgba(245, 255, 130, 0.2);
+    color: #fff;
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  
+  .btn-primary:hover {
+    background: rgba(245, 255, 130, 0.4);
+    border-color: rgba(245, 255, 130, 0.5);
+  }
+  
+  .btn-secondary {
+    background: rgba(18, 18, 18, 0.5);
+    border: 1px solid rgba(245, 255, 130, 0.2);
+    color: #fff;
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  
+  .btn-secondary:hover {
+    background: rgba(245, 255, 130, 0.1);
+  }
+  
+  .star-filled {
+    color: #F5FF82;
+  }
+  
+  .star-empty {
+    color: rgba(245, 255, 130, 0.2);
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+  
+  .animate-slide-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 0.8s ease-out forwards;
+  }
+  
+  @keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInSlide {
+    0% {
+        opacity: 0;
+        transform: translateX(50px) scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+  }
+  
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  
+  .mobile-menu.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .glass-card {
+    background: rgba(18, 18, 18, 0.5);
+    border: 1px solid rgba(245, 255, 130, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .glass-card:hover {
+    border-color: rgba(245, 255, 130, 0.3);
+  }
+  
+  .stats-counter {
+    display: inline-block;
+    will-change: contents;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(245, 255, 130, 0.3);
+    border-radius: 3px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(245, 255, 130, 0.5);
+  }
+  
+  @media (max-width: 768px) {
+    .desktop-nav {
+        display: none;
+    }
+    .mobile-nav-toggle {
+        display: block;
+    }
+  }
+  
+  @media (min-width: 769px) {
+    .mobile-nav-toggle {
+        display: none;
+    }
+  }
+  
+  .bg-pattern {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(rgba(245, 255, 130, 0.03) 1px, transparent 1px),
+        radial-gradient(rgba(245, 255, 130, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px, 20px 20px;
+    background-position: 0 0, 20px 20px;
+    z-index: -2;
+    opacity: 0.4;
+    pointer-events: none;
+  }
