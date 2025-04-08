@@ -1,146 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Link Roblox</title>
-    <meta name="description" content="Power your server with Ducky, a multi-purpose bot focused on moderating your Discord and ER:LC server.">
-    <link rel="icon" type="image/x-icon" href="/Ducky.svg">
+    <meta
+      name="description"
+      content="Power your server with Ducky, a multi-purpose bot focused on moderating your Discord and ER:LC server."
+    />
+    <link rel="icon" type="image/x-icon" href="/Ducky.svg" />
     <meta content="Ducky Roblox Link" property="og:title" />
-    <meta content="Link your Roblox account with Ducky, and unlock even more amazing features of Ducky." property="og:description" />
+    <meta
+      content="Link your Roblox account with Ducky, and unlock even more amazing features of Ducky."
+      property="og:description"
+    />
     <meta content="https://duckybot.xyz/link" property="og:url" />
     <meta content="https://duckybot.xyz/Ducky.svg" property="og:image" />
     <meta content="#F5FF82," data-react-helmet="true" name="theme-color" />
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <div class="container" id="cont">
-        <div class="card loading" id="card">
-            <h1 id="title">Loading...</h1>
-            <div class="divider" id="divider"></div>
-            <p id="text">We're fetching data from our API.</p>
-            <p><small id="subtext">This may take a moment.</small></p>
-        </div>
+      <div class="card loading" id="card">
+        <h1 id="title">Loading...</h1>
+        <div class="divider" id="divider"></div>
+        <p id="text">We're fetching data from our API.</p>
+        <p><small id="subtext">This may take a moment.</small></p>
+      </div>
     </div>
-</body>
-<script>
+  </body>
+  <script>
     window.onload = () => {
-        const card = document.getElementById("card")
-        const title = document.getElementById("title")
-        const text = document.getElementById("text")
-        const subtext = document.getElementById("subtext")
+      const card = document.getElementById("card");
+      const title = document.getElementById("title");
+      const text = document.getElementById("text");
+      const subtext = document.getElementById("subtext");
 
-        function loadingStatus(lstat) {
-            card.className = "card loading";
-            title.innerHTML = "Loading...";
-            text.innerHTML = lstat;
-            subtext.innerHTML = "This may take a moment.";
-        }
+      function loadingStatus(lstat) {
+        card.className = "card loading";
+        title.innerHTML = "Loading...";
+        text.innerHTML = lstat;
+        subtext.innerHTML = "This may take a moment.";
+      }
 
-        function success(successTitle, successString) {
-            card.className = "card success";
-            title.innerHTML = successTitle;
-            text.innerHTML = successString;
-            subtext.innerHTML = "You may now return back to Discord.";
-        }
-        
-        function fail(errorTitle, errorString) {
-            card.className = "card fail";
-            title.innerHTML = errorTitle;
-            text.innerHTML = errorString;
-            subtext.innerHTML = "For more assistance, contact Ducky Support.";
-        }
+      function success(successTitle, successString) {
+        card.className = "card success";
+        title.innerHTML = successTitle;
+        text.innerHTML = successString;
+        subtext.innerHTML = "You may now return back to Discord.";
+      }
 
-        function getCookie(name) {
-            let value = `; ${document.cookie}`;
-            let parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        }
+      function fail(errorTitle, errorString) {
+        card.className = "card fail";
+        title.innerHTML = errorTitle;
+        text.innerHTML = errorString;
+        subtext.innerHTML = "For more assistance, contact Ducky Support.";
+      }
 
-        const loggedin = getCookie('discord')
-        if (loggedin) {
-            const params = new URLSearchParams(window.location.search);
-            const authcode = params.get("code");
+      function getCookie(name) {
+        let value = `; ${document.cookie}`;
+        let parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(";").shift();
+      }
 
-            if (authcode) {
-                console.log("Exchanging code and linking account...");
-                loadingStatus("Exchanging authorization code and linking...");
+      const loggedin = getCookie("discord");
+      if (loggedin) {
+        const params = new URLSearchParams(window.location.search);
+        const authcode = params.get("code");
 
-                fetch("https://api.duckybot.xyz/links", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Discord-Code": loggedin,
-                            "Roblox-Code": authcode
-                        }
-                    })
-                .then(result => result.json())
-                .then(response => {
-                    if (response.code === 200) {
-                        success("Successfully Linked", `You've been successfully linked with <b>${response.data.robloxUser.username}</b>.`);
-                    } else {
-                        fail("API Error", response.message);
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                    fail("Error", "An error occurred while linking your account. Please try again.");
-                });
-            } else {
-                fetch('https://discord.com/api/users/@me', {
-                    headers: {
-                        authorization: `Bearer ${loggedin}`,
-                    },
-                })
-                .then(result => {
-                    if (!result.ok) {
-                        console.error("Discord API did not return 200. Clearing cookie.");
-                        document.cookie = "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-                        loadingStatus("Redirecting to Discord...");
-                        console.log("Redirecting to login page...");
-                        window.location.href = "/login?redirect=link";
-                        return null;
-                    }
-                    return result.json();
-                })
-                .then(response => {
-                    if (response) {
-                        const DiscordID = response.id;
+        if (authcode) {
+          console.log("Exchanging code and linking account...");
+          loadingStatus("Exchanging authorization code and linking...");
 
-                        fetch('https://api.duckybot.xyz/links/' + DiscordID, {
-                                method: "GET"
-                            })
-                        .then(result => result.json())
-                        .then(response => {
-                            const link = response.data;
-
-                            if (link) {
-                                success("Already Linked", `You're already linked with <b>${link.data.robloxUser.name}</b>.`);
-                            } else {
-                                console.log("Redirecting to Roblox for authentication...");
-                                loadingStatus("Redirecting to Roblox...");
-                                window.location.href = "https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid";
-                            }
-                        })
-                        .catch(error => {
-                            console.error(error);
-                            fail("Error", "An error occurred while fetching your link status. Please try again.");
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                    document.cookie = "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-                    loadingStatus("Redirecting to Discord...");
-                    console.log("Redirecting to login page...");
-                    window.location.href = "/login?redirect=link";
-                });
-            }
+          fetch("https://api.duckybot.xyz/links", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Discord-Code": loggedin,
+              "Roblox-Code": authcode,
+            },
+          })
+            .then((result) => result.json())
+            .then((response) => {
+              if (response.code === 200) {
+                success(
+                  "Successfully Linked",
+                  `You've been successfully linked with <b>${response.data.robloxUser.username}</b>.`
+                );
+              } else {
+                fail("API Error", response.message);
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              fail(
+                "Error",
+                "An error occurred while linking your account. Please try again."
+              );
+            });
         } else {
-            console.log("Not logged in | Redirecting to Discord...");
-            loadingStatus("Redirecting to Discord...");
-            window.location.href = "/login?redirect=link";
+          fetch("https://discord.com/api/users/@me", {
+            headers: {
+              authorization: `Bearer ${loggedin}`,
+            },
+          })
+            .then((result) => {
+              if (!result.ok) {
+                console.error(
+                  "Discord API did not return 200. Clearing cookie."
+                );
+                document.cookie =
+                  "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+                loadingStatus("Redirecting to Discord...");
+                console.log("Redirecting to login page...");
+                window.location.href = "/login?redirect=link";
+                return null;
+              }
+              return result.json();
+            })
+            .then((response) => {
+              if (response) {
+                const DiscordID = response.id;
+
+                fetch("https://api.duckybot.xyz/links/" + DiscordID, {
+                  method: "GET",
+                })
+                  .then((result) => result.json())
+                  .then((response) => {
+                    const link = response.data;
+
+                    if (link) {
+                      success(
+                        "Already Linked",
+                        `You're already linked with <b>${link.data.robloxUser.name}</b>.`
+                      );
+                    } else {
+                      console.log(
+                        "Redirecting to Roblox for authentication..."
+                      );
+                      loadingStatus("Redirecting to Roblox...");
+                      window.location.href =
+                        "https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid";
+                    }
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                    fail(
+                      "Error",
+                      "An error occurred while fetching your link status. Please try again."
+                    );
+                  });
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              document.cookie =
+                "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+              loadingStatus("Redirecting to Discord...");
+              console.log("Redirecting to login page...");
+              window.location.href = "/login?redirect=link";
+            });
         }
-    }
-</script>
+      } else {
+        console.log("Not logged in | Redirecting to Discord...");
+        loadingStatus("Redirecting to Discord...");
+        window.location.href = "/login?redirect=link";
+      }
+    };
+  </script>
 </html>
