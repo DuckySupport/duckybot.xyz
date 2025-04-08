@@ -79,13 +79,20 @@
             <div class="flex items-center justify-between">
                 <a href="/" class="flex items-center gap-3">
                     <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
-                    <span class="text-2xl font-bold text-[#F5FF82]">Ducky Game</span>
+                    <span class="text-2xl font-bold text-[#F5FF82]">Ducky</span>
                 </a>
-                <div class="hidden md:flex items-center gap-6 nav-links">
-                    <a href="/" class="text-gray-300 hover:text-[#F5FF82] transition">Home</a>
-                    <a href="#" class="text-gray-300 hover:text-[#F5FF82] transition" id="restartBtn">Restart Game</a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="/team" class="text-gray-300 hover:text-[#F5FF82] transition">Team</a>
+                    <a href="/docs" class="text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
+                    <a href="/plus" class="text-gray-300 hover:text-[#F5FF82] transition">Ducky Plus+</a>
+                    <a href="/status" class="text-gray-300 hover:text-[#F5FF82] transition">Status</a>
+                    <a href="/support" class="text-gray-300 hover:text-[#F5FF82] transition">Support</a>
+                    <a href="/invite"
+                        class="px-4 py-2 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
+                        Invite
+                    </a>
                 </div>
-                <button class="md:hidden text-2xl text-[#F5FF82] hover:opacity-80 transition" onclick="toggleMenu()">
+                <button id="menuBtn" class="md:hidden text-2xl text-[#F5FF82] hover:opacity-80 transition">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
@@ -93,11 +100,18 @@
     </nav>
 
     <div id="mobileMenu" class="mobile-menu flex-col items-center justify-center gap-8">
-        <button class="absolute top-6 right-6 text-2xl" onclick="toggleMenu()">
+        <button class="absolute top-6 right-6 text-2xl" id="closeMenuBtn">
             <i class="fas fa-times"></i>
         </button>
-        <a href="/" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" onclick="toggleMenu()">Home</a>
-        <a href="#" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" id="mobileRestartBtn" onclick="resetGame(); toggleMenu();">Restart Game</a>
+        <a href="/team" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Team</a>
+        <a href="/docs" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
+        <a href="/plus" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Ducky Plus+</a>
+        <a href="/status" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Status</a>
+        <a href="/support" class="text-xl text-gray-300 hover:text-[#F5FF82] transition">Support</a>
+        <a href="/invite"
+            class="px-6 py-3 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
+            Invite
+        </a>
     </div>
 
     <main class="max-w-7xl mx-auto px-4 py-12">
