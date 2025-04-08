@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ducky Login</title>
+     <link rel="icon" type="image/x-icon" href="/images/Ducky.svg" />
+    <meta name="description" content="Power your server with Ducky, a multi-purpose bot focused on moderating your Discord and ER:LC server.">
+    <link rel="icon" type="image/x-icon" href="/Ducky.svg">
+    <meta content="Ducky Login" property="og:title" />
+    <meta content="Power your server with Ducky, a multi-purpose bot focused on moderating your Discord and ER:LC server." property="og:description" />
+    <meta content="https://duckybot.xyz/login" property="og:url" />
+    <meta content="https://duckybot.xyz/Ducky.svg" property="og:image" />
+    <meta content="#F5FF82," data-react-helmet="true" name="theme-color" />
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div class="container" id="cont">
+        <div class="card loading" id="card">
+            <h1 id="title">Loading...</h1>
+            <div class="divider" id="divider"></div>
+            <p id="text">We're checking if you're logged in.</p>
+            <p><small id="subtext">This may take a moment.</small></p>
+        </div>
+    </div>
+</body>
+<script>
+    window.onload = () => {
+        const card = document.getElementById("card")
+        const title = document.getElementById("title")
+        const text = document.getElementById("text")
+        const subtext = document.getElementById("subtext")
+
+        function loadingStatus(lstat) {
+            card.className = "card loading";
+            title.innerHTML = "Loading...";
+            text.innerHTML = lstat;
+            subtext.innerHTML = "This may take a moment.";
+        }
+
+        function success(successTitle, successString, successSubtext) {
+            card.className = "card success";
+            title.innerHTML = successTitle;
+            text.innerHTML = successString;
+            subtext.innerHTML = successSubtext || "";
+        }
+
+        function fail(errorTitle, errorString) {
+            card.className = "card fail";
+            title.innerHTML = errorTitle;
+            text.innerHTML = errorString;
+            subtext.innerHTML = "For more assistance, contact Ducky Support.";
+        }
+
+        function setSub(subtext) {
+            subtext.innerHTML = subtext
+        }
+
+        const params = new URLSearchParams(window.location.search)
+        function getCookie(name) {
+            let value = `; ${document.cookie}`;
+            let parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+        const redirectAfter = params.get('redirect')
+        const loggedin = getCookie('discord')
+        if (loggedin) {
+            fetch('https://discord.com/api/users/@me', {
+                headers: {
+                    authorization: `Bearer ${loggedin}`,
+                },
+            })
+            .then(result => {
+                if (!result.ok) {
+                    console.error("Discord API did not return 200, clearing cookie.");
+                    document.cookie = "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+                    fail("Login Required", "Your session has expired or is invalid. Please log in again.");
+                    const oauthurl = "https://discord.com/oauth2/authorize?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flogin&scope=identify+guilds";
+                    loadingStatus("Redirecting you to Discord...");
+                    console.log("Redirecting to " + oauthurl + "...");
+                    window.location.href = oauthurl;
+                } else {
+                    return result.json();
+                }
+            })
+            .then(response => {
+                if (response) {
+                    success("Logged In", `You're already logged in as <bold>${response.global_name || response.username}</bold>.`);
+                    if (redirectAfter) {
+                        setSub(`Redirecting you to https://duckybot.xyz/${redirectAfter}...`);
+                        console.log("Redirecting to https://duckybot.xyz/" + redirectAfter + "...");
+                        window.location.href = `https://duckybot.xyz/${redirectAfter}`;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                document.cookie = "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+                fail("Login Error", "An error occurred while verifying your login. Please try logging in again.");
+                const oauthurl = "https://discord.com/oauth2/authorize?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flogin&scope=identify+guilds";
+                loadingStatus("Redirecting you to Discord...");
+                console.log("Redirecting to " + oauthurl + "...");
+                window.location.href = oauthurl;
+            });
+            return;
+        }
+        const fragment = new URLSearchParams(window.location.hash.slice(1))
+        const [accessToken, tokenType, state] = [fragment.get('access_token'), fragment.get('token_type'), fragment.get('state')]
+        
+        if (!accessToken) {
+            let oauthurl = "https://discord.com/oauth2/authorize?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flogin&scope=identify+guilds"
+            
+            
+            if (redirectAfter) {
+                oauthurl = oauthurl + "&state=" + redirectAfter
+            }
+            loadingStatus("Redirecting you to Discord...")
+            console.log("Redirecting to " + oauthurl + "...");
+            window.location.href = oauthurl
+            return
+        }
+
+        fetch('https://discord.com/api/users/@me', {
+            headers: {
+                authorization: `${tokenType} ${accessToken}`,
+            },
+        })
+        .then(result => result.json())
+        .then(response => {
+            document.cookie = `discord=${accessToken}; path=/`
+            console.log("Cookie saved.")
+            console.log("Logged in as @" + response.username)
+            success("Logged In", `You've been successfully logged in as <bold>${response.global_name || response.username}</bold>.`)
+            if (state) {
+                console.log("Redirecting to https://duckybot.xyz/" + state)
+                setSub("Redirecting you to https://duckybot.xyz/" + state + "...")
+                window.location.href = "https://duckybot.xyz/" + state
+            }
+        })
+        .catch(console.error)
+    }
+</script>
+</html>
