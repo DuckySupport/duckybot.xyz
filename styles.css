@@ -17,6 +17,7 @@ html {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
   position: sticky;
   top: 0;
+  margin: 1px;
   z-index: 1000;
 }
 
