@@ -66,13 +66,14 @@
                 console.log("Exchanging code and linking account...");
                 loadingStatus("Exchanging authorization code and linking...");
 
-                fetch("https://api.duckybot.xyz/link", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ auth_code: authcode, discord_code: loggedin })
-                })
+                fetch("https://api.duckybot.xyz/links", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Discord-Code": loggedin,
+                            "Roblox-Code": authcode
+                        }
+                    })
                 .then(result => result.json())
                 .then(response => {
                     if (response.code === 200) {
