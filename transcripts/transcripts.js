@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return
   }
   
-  document.cookie = `lastTicket=${encodeURIComponent(`${guildId}-${ticketId}`)}; path=/; max-age=604800` // 7 days
+  document.cookie = `lastTicket=${encodeURIComponent(`${guildId}-${ticketId}`)}; path=/; max-age=120`
   
   const discordToken = document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1]
   
