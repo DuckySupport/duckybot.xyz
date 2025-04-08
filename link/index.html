@@ -107,9 +107,9 @@
                     if (response) {
                         const DiscordID = response.id;
 
-                        fetch('https://api.duckybot.xyz/link/' + DiscordID, {
-                            method: "GET"
-                        })
+                        fetch('https://api.duckybot.xyz/links/' + DiscordID, {
+                                method: "GET"
+                            })
                         .then(result => result.json())
                         .then(response => {
                             const link = response.data;
