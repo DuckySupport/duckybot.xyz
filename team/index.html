@@ -1,340 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Power your server with Ducky, a multi-purpose bot focused on moderating your Discord and ER:LC server.">
-    <meta content="Ducky Bot" property="og:title">
-    <meta content="Power your server with Ducky, a multi-purpose discord bot focused on moderating your Discord and ER:LC server." property="og:description">
-    <meta content="https://duckybot.xyz" property="og:url">
-    <meta content="https://duckybot.xyz/Ducky.svg" property="og:image">
-    <meta content="#F5FF82" name="theme-color">
-    <link rel="icon" href="https://duckybot.xyz/images/Ducky.svg">
-    <title>Ducky ・ Team</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ducky - Meet the Team</title>
+    <link rel="icon" type="image/x-icon" href="../images/Ducky.svg" />
+    <meta
+      name="description"
+      content="Get to know the dedicated team behind Ducky, the multi-purpose Discord bot making servers better worldwide."
+    />
+    <meta content="Ducky Bot Team" property="og:title" />
+    <meta
+      content="Meet the brilliant team behind Ducky, working tirelessly to deliver cutting-edge features and seamless integration."
+      property="og:description"
+    />
+    <meta content="https://duckybot.xyz/team" property="og:url" />
+    <meta content="../images/Ducky.webp" property="og:image" />
+    <meta content="#F5FF82" data-react-helmet="true" name="theme-color" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="canonical" href="https://duckybot.xyz/team" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0f0f0f;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .glass-card {
-            border-radius: 16px;
-            transition: border 0.3s ease;
-            box-sizing: border-box;
-        }
-        .glass-card.dev {
-            background: rgba(86, 188, 255, 0.03);
-            border: 1px solid rgba(86, 188, 255, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.dev:hover {
-            border: 1px solid rgba(86, 188, 255, 0.8);
-        }
-        .glass-card.web {
-            background: rgba(91, 215, 255, 0.03);
-            border: 1px solid rgba(91, 215, 255, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.web:hover {
-            border: 1px solid rgba(91, 215, 255, 0.8);
-        }
-        .glass-card.exec {
-            background: rgba(255, 196, 101, 0.03);
-            border: 1px solid rgba(255, 196, 101, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.exec:hover {
-            border: 1px solid rgba(255, 196, 101, 0.8);
-        }
-        .glass-card.cm {
-            background: rgba(230, 126, 34, 0.03);
-            border: 1px solid rgba(230, 126, 34, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.cm:hover {
-            border: 1px solid rgba(230, 126, 34, 0.8);
-        }
-        .glass-card.admin {
-            background: rgba(170, 170, 221, 0.03);
-            border: 1px solid rgba(170, 170, 221, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.admin:hover {
-            border: 1px solid rgba(170, 170, 221, 0.8);
-        }
-        .glass-card.support {
-            background: rgba(255, 203, 72, 0.03);
-            border: 1px solid rgba(255, 203, 72, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.support:hover {
-            border: 1px solid rgba(255, 203, 72, 0.8);
-        }
-        .glass-card.mod {
-            background: rgba(126, 238, 255, 0.03);
-            border: 1px solid rgba(126, 238, 255, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.mod:hover {
-            border: 1px solid rgba(126, 238, 255, 0.8);
-        }
-        .glass-card.doc {
-            background: rgba(35, 154, 165, 0.03);
-            border: 1px solid rgba(35, 154, 165, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.doc:hover {
-            border: 1px solid rgba(35, 154, 165, 0.8);
-        }
-        .animate-fade {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .glow {
-            position: absolute;
-            width: 100%;
-            height: 300px;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.08;
-            z-index: -1;
-        }
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(15, 15, 15, 0.95);
-            z-index: 40;
-            opacity: 0;
-            transform: translateY(-100%);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-        .mobile-menu.active {
-            display: flex;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-            }
-            .container {
-                padding: 1rem;
-            }
-            .grid-cols-3 {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body class="text-white">
-    <div class="glow bg-[#F5FF82] top-0 left-0"></div>
-    <div class="glow bg-[#F5FF82] bottom-0 right-0"></div>
+      .hero-content,
+      .team-grid {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+      }
 
-    <nav class="sticky top-0 z-50 backdrop-blur-sm border-b border-white/5 bg-[#0f0f0f]/30">
-        <div class="max-w-7xl mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <a href="/" class="flex items-center gap-3">
-                    <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
-                    <span class="text-2xl font-bold text-[#F5FF82]">Ducky</span>
-                </a>
-                <div class="hidden md:flex items-center gap-6">
-                    <a href="/team" class="text-gray-300 hover:text-[#F5FF82] transition">Team</a>
-                    <a href="/docs" class="text-gray-300 hover:text-[#F5FF82] transition">Docs</a>
-                    <a href="/plus" class="text-gray-300 hover:text-[#F5FF82] transition">Ducky Plus+</a>
-                    <a href="/status" class="text-gray-300 hover:text-[#F5FF82] transition">Status</a>
-                    <a href="/support" class="text-gray-300 hover:text-[#F5FF82] transition">Support</a>
-                    <a href="/invite"
-                        class="px-4 py-2 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition">
-                        Invite
-                    </a>
-                </div>
-                <button class="md:hidden text-2xl text-[#F5FF82] hover:opacity-80 transition" onclick="toggleMenu()">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </div>
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        text-align: center;
+        gap: 5px;
+      }
+
+      .team-card {
+        background-color: transparent;
+        text-align: center;
+      }
+
+      .team-card .username {
+        font-size: 15px;
+        margin-top: 2px;
+        margin-bottom: 5px;
+        font-family: 'Inter';
+        color: #777777;
+      }
+
+      .team-card .role {
+        margin-top: 0px;
+        font-size: 15px;
+        font-family: 'Inter';
+      }
+
+      .team-photo {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .team-photo:hover {
+        box-shadow: 0px 0px 16px 2px rgba(245, 255, 130, 0.5);
+        transform: scale(1.05);
+        border-color: white;
+      }
+
+      .card-name h3 {
+        margin-bottom: 0px;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .card-name h3:hover {
+        color: #F5FF82;
+        transform: scale(1.05);
+        text-shadow: 2px 2px 8px rgba(245, 255, 130, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="/" class="logo">
+          <img
+            src="../images/Ducky.svg"
+            alt="DuckyBot Logo"
+            style="height: 30px"
+          />
+          <img
+            src="../images/DuckyText.svg"
+            alt="Duckybot Text"
+            style="height: 50px"
+          />
+        </a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/status">Status</a></li>
+          <li><a href="/docs">Documentation</a></li>
+          <li><a href="/plus">Ducky Plus+</a></li>
+          <li><a href="/invite">Invite</a></li>
+          <li><a href="/team">Team</a></li>
+        </ul>
+        <a href="/support" class="cta-btn">Support</a>
+      </div>
     </nav>
 
-    <div id="mobileMenu" class="mobile-menu flex-col items-center justify-center gap-8">
-        <button class="absolute top-6 right-6 text-2xl" onclick="toggleMenu()">
-            <i class="fas fa-times"></i>
-        </button>
-        <a href="/team" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" onclick="toggleMenu()">Team</a>
-        <a href="/docs" class="text-xl text-gray-300 hover:text-[#F5FF82] transition" onclick="toggleMenu()">Docs</a>
-        <a href="/plus" class="text-xl text-gray-300 hover:text-[#F5FF82] transition"
-            onclick="toggleMenu()">Ducky Plus+</a>
-        <a href="/status" class="text-xl text-gray-300 hover:text-[#F5FF82] transition"
-            onclick="toggleMenu()">Status</a>
-        <a href="/support" class="text-xl text-gray-300 hover:text-[#F5FF82] transition"
-            onclick="toggleMenu()">Support</a>
-        <a href="/invite" class="px-6 py-3 bg-[#F5FF82] text-[#12131a] rounded-lg font-medium hover:opacity-90 transition"
-            onclick="toggleMenu()">
-            Invite
-        </a>
-    </div>
+    <section class="team-hero-section">
+      <div class="hero-content">
+        <h1>Meet the Team Behind <b class="cool-text">Ducky</b></h1>
+        <p>
+          Dedicated innovators and passionate developers powering the most
+          advanced Discord bot for your server.
+        </p>
+      </div>
+    </section>
 
-    <main class="max-w-7xl mx-auto px-4 py-24">
-        <section class="text-center mb-24 animate-fade">
-            <h1 class="text-4xl md:text-7xl font-bold mb-8">
-                Meet the Team Behind <span class="text-[#F5FF82]">Ducky</span>
-            </h1>
-            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12">
-                Dedicated innovators and passionate developers powering the most advanced Discord bot for your server.
-            </p>
-        </section>
-        <section class="py-12">
-            <h2 class="text-3xl font-bold text-center mb-12">Developers</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center items-center max-w-6xl mx-auto">
-                <div class="glass-card dev p-8 w-full max-w-md">
-                    <img src="https://duckybot.xyz/images/discordpfps/bobbibones.png" alt="@bobbibones" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#56bcff] group-hover:scale-105 transition-transform"/>
-                    <a href="https://discord.com/users/782235114858872854" class="block text-center">
-                        <h3 class="text-2xl font-bold mb-2 hover:text-[#56bcff] transition-colors">bobbibones</h3>
-                    </a>
-                    <p class="text-gray-400 text-center mb-3">@bobbibones</p>
-                    <p class="text-[#56bcff] font-semibold text-xl text-center">Senior Bot Developer</p>
-                </div>
-
-                <div class="glass-card dev p-8 w-full max-w-md">
-                    <img src="https://duckybot.xyz/images/discordpfps/troptop.png" alt="@literally.nick" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#56bcff] group-hover:scale-105 transition-transform"/>
-                    <a href="https://discord.com/users/598958193032560642" class="block text-center">
-                        <h3 class="text-2xl font-bold mb-2 hover:text-[#56bcff] transition-colors">Troptop</h3>
-                    </a>
-                    <p class="text-gray-400 text-center mb-3">@literally.nick</p>
-                    <p class="text-[#56bcff] font-semibold text-xl text-center">Lead Bot Developer</p>
-                </div>
-
-                <div class="glass-card dev p-8 w-full max-w-md">
-                    <img src="https://duckybot.xyz/images/discordpfps/joy.png" alt="@joyclens" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#5BD7FF] group-hover:scale-105 transition-transform"/>
-                    <a href="https://discord.com/users/1057310810440994967" class="block text-center">
-                        <h3 class="text-2xl font-bold mb-2 hover:text-[#5BD7FF] transition-colors">joy</h3>
-                    </a>
-                    <p class="text-gray-400 text-center mb-3">@joyclens</p>
-                    <p class="text-[#5BD7FF] font-semibold text-xl text-center">Lead Web Developer</p>
-                </div>
-            </div>
-        </section>
-        <section class="py-12">
-            <h2 class="text-3xl font-bold text-center mb-12">Ducky Executives</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center max-w-3xl mx-auto">
-                <div class="glass-card exec p-8 w-full max-w-md md:col-span-2 justify-self-center">
-                    <img src="https://duckybot.xyz/images/discordpfps/brainy.png" alt="@mr_brain34578" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#FFC465] group-hover:scale-105 transition-transform"/>
-                    <a href="https://discord.com/users/1017977993051787265" class="block text-center">
-                        <h3 class="text-2xl font-bold mb-2 hover:text-[#FFC465] transition-colors">Brain</h3>
-                    </a>
-                    <p class="text-gray-400 text-center mb-3">@mr_brain34578</p>
-                    <p class="text-[#FFC465] font-semibold text-xl text-center">Executive</p>
-                </div>
-            </div>
-        </section>
-        <section class="py-12">
-            <h2 class="text-3xl font-bold text-center mb-12">Community Management</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center max-w-3xl mx-auto">
-                <div class="glass-card cm p-8 w-full max-w-md md:col-span-2 justify-self-center">
-                    <img src="https://duckybot.xyz/images/discordpfps/spooderman.gif" alt="@syink" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#e67e22] group-hover:scale-105 transition-transform"/>
-                    <a href="https://discord.com/users/995664658038005772" class="block text-center">
-                        <h3 class="text-2xl font-bold mb-2 hover:text-[#e67e22] transition-colors">spoderman</h3>
-                    </a>
-                    <p class="text-gray-400 text-center mb-3">@syink</p>
-                    <p class="text-[#e67e22] font-semibold text-xl text-center">Community Manager</p>
-                </div>
-            </div>
-        </section>
-        <section class="py-12">
-            <h2 class="text-3xl font-bold text-center mb-12">Administration</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center max-w-3xl mx-auto">
-                <div class="glass-card admin p-8 w-full max-w-md md:col-span-2 justify-self-center">
-                    <img src="https://duckybot.xyz/images/discordpfps/electron.png" alt="@robloxkiller1340_4" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#aaaadd] group-hover:scale-105 transition-transform"/>
-                    <a href="https://discord.com/users/1286141131398320139" class="block text-center">
-                        <h3 class="text-2xl font-bold mb-2 hover:text-[#aaaadd] transition-colors">Electron</h3>
-                    </a>
-                    <p class="text-gray-400 text-center mb-3">@robloxkiller1340_4</p>
-                    <p class="text-[#aaaadd] font-semibold text-xl text-center">Administrator</p>
-                </div>
-            </div>
-        </section>
-        <section class="py-12">
-            <h2 class="text-3xl font-bold text-center mb-12">Support Team</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center items-center max-w-3xl mx-auto">
-                <div class="glass-card support p-8 w-full max-w-md">
-                    <img src="https://duckybot.xyz/images/discordpfps/lilkid.png" alt="@thatlilkidb0k" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#ffcb48] group-hover:scale-105 transition-transform"/>
-                    <a href="https://discord.com/users/445152230132154380" class="block text-center">
-                        <h3 class="text-2xl font-bold mb-2 hover:text-[#ffcb48] transition-colors">Lilkid</h3>
-                    </a>
-                    <p class="text-gray-400 text-center mb-3">@thatlilkidb0k</p>
-                    <p class="text-[#ffcb48] font-semibold text-xl text-center">Support Team Member</p>
-                </div>
-                <div class="glass-card support p-8 w-full max-w-md">
-                    <img src="https://duckybot.xyz/images/discordpfps/vakx3n.gif" alt="@vakx3n" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#ffcb48] group-hover:scale-105 transition-transform"/>
-                    <a href="https://discord.com/users/529443410772492288" class="block text-center">
-                        <h3 class="text-2xl font-bold mb-2 hover:text-[#ffcb48] transition-colors">𝙑𝙖𝙠𝙭3𝙣</h3>
-                    </a>
-                    <p class="text-gray-400 text-center mb-3">@vakx3n</p>
-                    <p class="text-[#ffcb48] font-semibold text-xl text-center">Support Team Member</p>
-                </div>
-            </div>
-        </section>
-        <section class="py-12">
-            <h2 class="text-3xl font-bold text-center mb-12">Moderators</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center max-w-7xl mx-auto">
-                <div class="glass-card mod p-8 w-full max-w-md">
-                    <img src="https://duckybot.xyz/images/discordpfps/pixelcat.png" alt="@pixelpops" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#7eeeff] group-hover:scale-105 transition-transform"/>
-                    <a href="https://discord.com/users/749103334908231791" class="block text-center">
-                        <h3 class="text-2xl font-bold mb-2 hover:text-[#7eeeff] transition-colors">pixelcat</h3>
-                    </a>
-                    <p class="text-gray-400 text-center mb-3">@pixelpops</p>
-                    <p class="text-[#7eeeff] font-semibold text-xl text-center">Junior Moderator</p>
-                </div>
-                <div class="glass-card mod p-8 w-full max-w-md">
-                    <img src="https://duckybot.xyz/images/discordpfps/thtman.gif" alt="@thtman" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#7eeeff] group-hover:scale-105 transition-transform"/>
-                    <a href="https://discord.com/users/930845244382134283" class="block text-center">
-                        <h3 class="text-2xl font-bold mb-2 hover:text-[#7eeeff] transition-colors">thtman</h3>
-                    </a>
-                    <p class="text-gray-400 text-center mb-3">@thtman</p>
-                    <p class="text-[#7eeeff] font-semibold text-xl text-center">Moderator</p>
-                </div>
-                <div class="glass-card mod p-8 w-full max-w-md">
-                    <img src="https://duckybot.xyz/images/discordpfps/dan.png" alt="Dan" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#7eeeff] group-hover:scale-105 transition-transform"/>
-                    <a href="https://discord.com/users/799042081602666507" class="block text-center">
-                        <h3 class="text-2xl font-bold mb-2 hover:text-[#7eeeff] transition-colors">Dan</h3>
-                    </a>
-                    <p class="text-gray-400 text-center mb-3">@dvan6392</p>
-                    <p class="text-[#7eeeff] font-semibold text-xl text-center">Moderator</p>
-                </div>
-            </div>
-        </section>        
-    </main>    
-    <footer class="border-t border-[#F5FF82]/10">
-        <div class="max-w-7xl mx-auto px-4 py-12">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
-                <div class="flex items-center gap-3">
-                    <img src="https://duckybot.xyz/images/Ducky.svg" alt="Ducky" class="w-8 h-8">
-                    <span class="text-xl font-bold text-[#F5FF82]">Ducky</span>
-                </div>
-                <div class="flex gap-6">
-                    <a href="/legal/privacy/" class="text-gray-400 hover:text-[#F5FF82] transition">Privacy</a>
-                    <a href="/legal/terms/" class="text-gray-400 hover:text-[#F5FF82] transition">Terms</a>
-                    <a href="/support" class="text-gray-400 hover:text-[#F5FF82] transition">Support</a>
-                </div>
-            </div>
-            <p class="text-center text-gray-400 mt-8">© 2025 Ducky Bot. All rights reserved.</p>
+    <section class="team-section">
+      <h2 class="team-title" style="text-align: center">
+        Bot Developers
+      </h2>
+      <div class="team-grid">
+        <div class="team-card">
+          <img
+            src="https://cdn.discordapp.com/avatars/782235114858872854/c573a9f6923aefd26a447f7c83a24049.webp?size=1024&width=1024&height=1024"
+            alt="@bobbibones"
+            class="team-photo"
+          />
+          <a
+            href="https://discord.com/users/782235114858872854"
+            style="text-decoration: none; color: white"
+            class="card-name"
+            ><h3>bobbibones</h3></a
+          >
+          <p class="username">@bobbibones</p>
+          <p class="role">Senior Developer</p>
         </div>
-    </footer>
+        <div class="team-card">
+          <img
+            src="https://cdn.discordapp.com/avatars/598958193032560642/fd4c2fdb5aae2e3d018e5ec87f410f07.webp?size=1024&width=1024&height=1024"
+            alt="@literally.nick"
+            class="team-photo"
+          />
+          <a
+            href="https://discord.com/users/598958193032560642"
+            style="text-decoration: none; color: white"
+            class="card-name"
+            ><h3>Troptop</h3></a
+          >
+          <p class="username">@literally.nick</p>
+          <p class="role">Founder/Lead Developer</p>
+        </div>
+        <div class="team-card">
+          <img
+            src="https://cdn.discordapp.com/avatars/1096369071961952377/eb01514de24a99381022a164d36ae7c6.webp?size=1024&width=1024&height=1024"
+            alt="@devs_des1re"
+            class="team-photo"
+          />
+          <a
+            href="https://discord.com/users/1096369071961952377"
+            style="text-decoration: none; color: white"
+            class="card-name"
+            ><h3>devs_des1re</h3></a
+          >
+          <p class="username">@devs_des1re</p>
+          <p class="role">Trial Developer</p>
+        </div>
+      </div>
+    </section>
 
-    <script>
-        function toggleMenu() {
-            document.getElementById('mobileMenu').classList.toggle('active');
-            document.body.style.overflow = document.body.style.overflow === 'hidden' ? '' : 'hidden';
-        }
-    </script>
-</body>
+    <section class="team-section">
+      <h2 class="team-title" style="text-align: center">
+        Infrastructure Admin
+      </h2>
+      <div class="team-grid">
+        <div class="team-card">
+          <img
+            src="https://cdn.discordapp.com/avatars/635834352172793877/d823c89143b85b94fd47c880651b55a6.webp?size=1024&width=1024&height=1024"
+            alt="@lugab"
+            class="team-photo"
+          />
+          <a
+            href="https://discord.com/users/635834352172793877"
+            style="text-decoration: none; color: white"
+            class="card-name"
+            ><h3>Lugab</h3></a
+          >
+          <p class="username">@lugab</p>
+          <p class="role">Infrastructure Admin, Web Developer</p>
+        </div>
+    </section>
+
+    <section class="team-section">
+      <h2 class="team-title" style="text-align: center">
+        Web Developers
+      </h2>
+      <div class="team-grid">
+        <div class="team-card">
+          <img
+            src="../images/discordpfps/frinklx.jpg"
+            alt="@frinklx"
+            class="team-photo"
+          />
+          <a
+            href="https://discord.com/users/1241605075047153776"
+            style="text-decoration: none; color: white"
+            class="card-name"
+            ><h3>frinklx</h3></a
+          >
+          <p class="username">@frinklx</p>
+          <p class="role">Web Developer</p>
+        </div>
+        <div class="team-card">
+          <img
+            src="https://cdn.discordapp.com/avatars/1263353397554188331/5f5e6b290d2cd56e7122ae7203c00b16.webp?size=1024&width=1024&height=1024"
+            alt="@frinklx"
+            class="team-photo"
+          />
+          <a
+            href="https://discord.com/users/1263353397554188331"
+            style="text-decoration: none; color: white"
+            class="card-name"
+            ><h3>Cody</h3></a
+          >
+          <p class="username">@stxr_dev</p>
+          <p class="role">Web Developer</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="team-section">
+      <h2 class="team-title" style="text-align: center">Ducky Executives</h2>
+      <div class="team-grid">
+        <div class="team-card">
+          <img
+            src="https://cdn.discordapp.com/avatars/1017977993051787265/460cabf24c14ff0ac6afcc1e610fb529.webp?size=1024&width=1024&height=1024"
+            alt="@mr_brain34578"
+            class="team-photo"
+          />
+          <a
+            href="https://discord.com/users/1017977993051787265"
+            style="text-decoration: none; color: white"
+            class="card-name"
+            ><h3>Brain</h3></a
+          >
+          <p class="username">@mr_brain34578</p>
+          <p class="role">Executive</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-links">
+          <a href="/legal/privacy/" class="footer-link">Privacy Policy</a>
+          <a href="/legal/terms/" class="footer-link">Terms of Service</a>
+          <a href="/support" class="footer-link">Contact Us</a>
+          <a href="/docs" class="footer-link">Docs</a>
+          <a href="/team" class="footer-link">Our Team</a>
+
+        </div>
+        <div class="footer-socials">
+          <a
+            href="https://x.com/duckydiscordbot"
+            class="social-link"
+            target="_blank"
+          >
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a
+            href="https://github.com/DuckySupport/duckybot.xyz"
+            class="social-link"
+            target="_blank"
+          >
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="/support/" class="social-link" target="_blank">
+            <i class="fab fa-discord"></i>
+          </a>
+        </div>
+        <p class="footer-text">&copy; 2025 Ducky. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
 </html>
