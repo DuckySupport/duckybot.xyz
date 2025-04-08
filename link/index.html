@@ -115,7 +115,7 @@
                             const link = response.data;
 
                             if (link) {
-                                success("Already Linked", `You're already linked with <b>${link.robloxUser.username}</b>.`);
+                                success("Already Linked", `You're already linked with <b>${link.data.robloxUser.name}</b>.`);
                             } else {
                                 console.log("Redirecting to Roblox for authentication...");
                                 loadingStatus("Redirecting to Roblox...");
