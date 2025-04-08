@@ -20,18 +20,29 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
   const hash = window.location.hash.substring(1)
-  const [guildId, ticketId] = hash.split("-")
-
+  let [guildId, ticketId] = hash.split("-")
+  
+  if (!guildId || !ticketId) {
+    const saved = document.cookie.split('; ').find(row => row.startsWith('lastTicket='))
+    if (saved) {
+      const [savedGuild, savedTicket] = decodeURIComponent(saved.split('=')[1]).split("-")
+      guildId = guildId || savedGuild
+      ticketId = ticketId || savedTicket
+    }
+  }
+  
   if (!guildId || !ticketId) {
     loadingElement.style.display = "none"
     errorElement.style.display = "block"
     return
   }
-
+  
+  document.cookie = `lastTicket=${encodeURIComponent(`${guildId}-${ticketId}`)}; path=/; max-age=604800` // 7 days
+  
   const discordToken = document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1]
-
+  
   if (!discordToken) {
-    window.location.href = `/login?redirect=transcripts#${guildId}-${ticketId}`
+    window.location.href = `/login?redirect=transcripts`
     return
   }
 
