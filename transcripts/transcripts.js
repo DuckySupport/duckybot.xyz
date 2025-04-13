@@ -206,7 +206,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!text) return "";
   
     // Convert custom emoji
-    text = text.replace(/<:(\w+):(\d+)>/g, "https://cdn.discordapp.com/emojis/$1.png");
+    text = text.replace(/<:(\w+):(\d+)>/g, (match, name, id) => {
+      return `<img src="https://cdn.discordapp.com/emojis/${id}.png" alt="${name}" style="height: 1.2em; vertical-align: middle;">`;
+    });
   
     // Convert mentions
     text = text.replace(/<@!?(\d+)>/g, (match, id) => `@${id}`);
@@ -232,6 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
     text = text.replace(/^> (.+)/gm, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>');
   
     // Headers
+    text = text.replace(/^-# (.*?)$/gm, '<span style="font-size: 0.8em; opacity: 0.5;">$1</span>');
     text = text.replace(/^# (.*?)$/gm, "<h1>$1</h1>");
     text = text.replace(/^## (.*?)$/gm, "<h2>$1</h2>");
     text = text.replace(/^### (.*?)$/gm, "<h3>$1</h3>");
