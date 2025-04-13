@@ -209,6 +209,9 @@ document.addEventListener("DOMContentLoaded", () => {
     text = text.replace(/<:(\w+):(\d+)>/g, (match, name, id) => {
       return `<img src="https://cdn.discordapp.com/emojis/${id}.png" class="custom-emoji" />`
     });
+    text = text.replace(/<a:(\w+):(\d+)>/g, (match, name, id) => {
+      return `<img src="https://cdn.discordapp.com/emojis/${id}.gif" class="custom-emoji" />`
+    });
   
     // Convert mentions
     text = text.replace(/<@!?(\d+)>/g, (match, id) => `@${id}`);
