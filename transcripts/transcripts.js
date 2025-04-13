@@ -206,12 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!text) return "";
   
     // Convert custom emoji
-    text = text.replace(/<:(\w+):(\d+)>/g, (match, name, id) => {
-      return `<img src="https://cdn.discordapp.com/emojis/${id}.png" class="custom-emoji" />`
-    });
-    text = text.replace(/<a:(\w+):(\d+)>/g, (match, name, id) => {
-      return `<img src="https://cdn.discordapp.com/emojis/${id}.gif" class="custom-emoji" />`
-    });
+    text = text.replace(/<:(\w+):(\d+)>/g, ":$1:")
   
     // Convert mentions
     text = text.replace(/<@!?(\d+)>/g, (match, id) => `@${id}`);
