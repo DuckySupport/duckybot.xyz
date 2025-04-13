@@ -1,83 +1,114 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap");
-
 * {
-    font-family: "Inter";
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
 }
 
 body {
-    background-color: rgb(15, 15, 15);
-    display: grid;
-    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
 }
 
-.container {
-    width: 100%;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
+.redirect-container {
     display: flex;
-}
-
-.card {
-    background-color: rgb(35, 35, 35);
-    width: 50%;
-    height: 70%;
-    border-radius: 10px;
-    border-style: solid;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
     text-align: center;
-    color: #fff;
-    background-repeat: no-repeat;
-    background-size: 200px 200px;
-    background-position: center 25px;
+    padding: 20px;
+    background: linear-gradient(180deg, #101010 0%, #080808 100%);
 }
 
-.loading {
-    background-image: url("Loading.gif");
-    border-color: rgb(75,75,75);
+.redirect-content {
+    max-width: 600px;
+    animation: fadeIn 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.success {
-    background-image: url("Success.svg");
-    border-color: #66ff66;
+.redirect-icon {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 30px;
+    object-fit: contain;
+    display: block;
+    animation: float 3s ease-in-out infinite;
 }
 
-.fail {
-    background-image: url("Fail.svg");
-    border-color: #ff6666;
+.redirect-title {
+    color: #F5FF82;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(245, 255, 130, 0.3);
 }
 
-h1 {
-    padding-top: 35%;
-    font-size: 45px;
-    font-family: "Inter";
-    margin: 5px;
+.redirect-text {
+    color: #fafafa;
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+    font-weight: 400;
 }
 
-.divider {
-    width: 75%;
-    height: 2px;
-    background: white;
-    margin: 10px auto;
+.redirect-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #F5FF82;
+    border-top: 4px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+    box-shadow: 0 0 15px rgba(245, 255, 130, 0.2);
 }
 
-p {
-    font-size: 18px;
-    font-family: "Inter";
-    margin: 2px;
+.manual-redirect {
+    margin-top: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
 }
 
-bold {
-    font-family: "Inter";
-    font-weight: bold;
+.manual-redirect.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-black {
-    font-family: "Inter";
-    font-weight: bolder;
+.manual-redirect a {
+    color: #F5FF82;
+    text-decoration: none;
+    padding: 12px 24px;
+    border: 2px solid #F5FF82;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    backdrop-filter: blur(5px);
+    background: rgba(245, 255, 130, 0.1);
 }
 
-small {
-    font-size: 14px;
-    opacity: 50%;
-    font-weight: normal;
+.manual-redirect a:hover {
+    background: #F5FF82;
+    color: #080808;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(245, 255, 130, 0.3);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
 }
