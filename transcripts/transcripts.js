@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // Convert custom emoji
     text = text.replace(/<:(\w+):(\d+)>/g, (match, name, id) => {
-      return `<img src="https://cdn.discordapp.com/emojis/${id}.png" alt="${name}" style="height: 1.2em; vertical-align: middle;">`;
+      return `<img src="https://cdn.discordapp.com/emojis/${id}.png" class="custom-emoji" />`
     });
   
     // Convert mentions
