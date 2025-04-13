@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!text) return "";
   
     // Convert custom emoji
-    text = text.replace(/<:(\w+):(\d+)>/g, ":$1:");
+    text = text.replace(/<:(\w+):(\d+)>/g, "https://cdn.discordapp.com/emojis/$1.png");
   
     // Convert mentions
     text = text.replace(/<@!?(\d+)>/g, (match, id) => `@${id}`);
