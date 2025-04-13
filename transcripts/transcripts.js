@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="message-header">
         <img src="${pfp || 'https://cdn.discordapp.com/embed/avatars/0.png'}" alt="${author}'s avatar" class="message-avatar" />
         <div class="flex items-center">
-          <span class="message-author">${escapeHTML(author)}</span>
+          <span class="message-author">${author}</span>
           ${bot ? '<span class="bot-tag">BOT</span>' : ''}
           <span class="message-timestamp">${formatTimestamp(messages[0].timestamp)}</span>
         </div>
@@ -330,13 +330,13 @@ document.addEventListener("DOMContentLoaded", () => {
       ? `
           <div class="embed-author">
               ${author.icon_url ? `<img src="${author.icon_url}" class="embed-author-icon" />` : ''}
-              <span class="embed-author-name">${escapeHTML(author.name)}</span>
+              <span class="embed-author-name">${author.name}</span>
           </div>
         `
       : ''
     
     const titleHtml = title
-      ? `<div class="embed-title">${url ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-[#00aff4] hover:underline">${escapeHTML(title)}</a>` : escapeHTML(title)}</div>`
+      ? `<div class="embed-title">${url ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-[#00aff4] hover:underline">${title}</a>` : title}</div>`
       : ''
     
     const descriptionHtml = description
@@ -352,7 +352,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="embed-fields">
               ${fields.map(field => `
                   <div class="embed-field ${field.inline ? 'inline' : ''}">
-                      <div class="embed-field-name">${escapeHTML(field.name)}</div>
+                      <div class="embed-field-name">${field.name}</div>
                       <div class="embed-field-value">${formatDiscordMarkdown(field.value)}</div>
                   </div>
               `).join('')}
@@ -368,7 +368,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ? `
           <div class="embed-footer">
               ${footer.icon_url ? `<img src="${footer.icon_url}" class="embed-footer-icon" />` : ''}
-              <span>${escapeHTML(footer.text)}</span>
+              <span>${footer.text}</span>
           </div>
         `
       : ''
@@ -391,7 +391,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (content_type && content_type.startsWith('image/')) {
       return `
         <div class="attachment">
-          <img src="${proxy_url || url}" alt="${escapeHTML(filename)}" />
+          <img src="${proxy_url || url}" alt="${filename}" />
         </div>
       `
     }
@@ -420,7 +420,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <i class="fas fa-file"></i>
         </div>
         <div class="attachment-details">
-          <div class="attachment-filename">${escapeHTML(filename)}</div>
+          <div class="attachment-filename">${filename}</div>
           <div class="attachment-filesize">${fileSize}</div>
         </div>
         <a href="${url}" target="_blank" rel="noopener noreferrer" class="attachment-download">
@@ -435,8 +435,8 @@ document.addEventListener("DOMContentLoaded", () => {
     
     return `
       <div class="sticker">
-        <img src="${url}" alt="${escapeHTML(name)}" title="${escapeHTML(name)}" />
-        <div class="sticker-name">${escapeHTML(name)}</div>
+        <img src="${url}" alt="${name}" title="${name}" />
+        <div class="sticker-name">${name}</div>
       </div>
     `
   }
