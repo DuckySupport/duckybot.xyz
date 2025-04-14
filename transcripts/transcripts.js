@@ -20,18 +20,29 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
   const hash = window.location.hash.substring(1)
-  const [guildId, ticketId] = hash.split("-")
-
+  let [guildId, ticketId] = hash.split("-")
+  
+  if (!guildId || !ticketId) {
+    const saved = document.cookie.split('; ').find(row => row.startsWith('lastTicket='))
+    if (saved) {
+      const [savedGuild, savedTicket] = decodeURIComponent(saved.split('=')[1]).split("-")
+      guildId = guildId || savedGuild
+      ticketId = ticketId || savedTicket
+    }
+  }
+  
   if (!guildId || !ticketId) {
     loadingElement.style.display = "none"
     errorElement.style.display = "block"
     return
   }
-
+  
+  document.cookie = `lastTicket=${encodeURIComponent(`${guildId}-${ticketId}`)}; path=/; max-age=120`
+  
   const discordToken = document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1]
-
+  
   if (!discordToken) {
-    window.location.href = `/login?redirect=transcripts#${guildId}-${ticketId}`
+    window.location.href = `/login?redirect=transcripts`
     return
   }
 
@@ -143,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="message-header">
         <img src="${pfp || 'https://cdn.discordapp.com/embed/avatars/0.png'}" alt="${author}'s avatar" class="message-avatar" />
         <div class="flex items-center">
-          <span class="message-author">${author}</span>
+          <span class="message-author">${escapeHTML(author)}</span>
           ${bot ? '<span class="bot-tag">BOT</span>' : ''}
           <span class="message-timestamp">${formatTimestamp(messages[0].timestamp)}</span>
         </div>
@@ -206,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!text) return "";
   
     // Convert custom emoji
-    text = text.replace(/<:(\w+):(\d+)>/g, ":$1:")
+    text = text.replace(/<:(\w+):(\d+)>/g, ":$1:");
   
     // Convert mentions
     text = text.replace(/<@!?(\d+)>/g, (match, id) => `@${id}`);
@@ -232,7 +243,6 @@ document.addEventListener("DOMContentLoaded", () => {
     text = text.replace(/^> (.+)/gm, '<blockquote class="break-words whitespace-pre-wrap">$1</blockquote>');
   
     // Headers
-    text = text.replace(/^-# (.*?)$/gm, '<span style="font-size: 0.8em; opacity: 0.5;">$1</span>');
     text = text.replace(/^# (.*?)$/gm, "<h1>$1</h1>");
     text = text.replace(/^## (.*?)$/gm, "<h2>$1</h2>");
     text = text.replace(/^### (.*?)$/gm, "<h3>$1</h3>");
@@ -328,13 +338,13 @@ document.addEventListener("DOMContentLoaded", () => {
       ? `
           <div class="embed-author">
               ${author.icon_url ? `<img src="${author.icon_url}" class="embed-author-icon" />` : ''}
-              <span class="embed-author-name">${author.name}</span>
+              <span class="embed-author-name">${escapeHTML(author.name)}</span>
           </div>
         `
       : ''
     
     const titleHtml = title
-      ? `<div class="embed-title">${url ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-[#00aff4] hover:underline">${title}</a>` : title}</div>`
+      ? `<div class="embed-title">${url ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-[#00aff4] hover:underline">${escapeHTML(title)}</a>` : escapeHTML(title)}</div>`
       : ''
     
     const descriptionHtml = description
@@ -350,7 +360,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="embed-fields">
               ${fields.map(field => `
                   <div class="embed-field ${field.inline ? 'inline' : ''}">
-                      <div class="embed-field-name">${field.name}</div>
+                      <div class="embed-field-name">${escapeHTML(field.name)}</div>
                       <div class="embed-field-value">${formatDiscordMarkdown(field.value)}</div>
                   </div>
               `).join('')}
@@ -366,7 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ? `
           <div class="embed-footer">
               ${footer.icon_url ? `<img src="${footer.icon_url}" class="embed-footer-icon" />` : ''}
-              <span>${footer.text}</span>
+              <span>${escapeHTML(footer.text)}</span>
           </div>
         `
       : ''
@@ -389,7 +399,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (content_type && content_type.startsWith('image/')) {
       return `
         <div class="attachment">
-          <img src="${proxy_url || url}" alt="${filename}" />
+          <img src="${proxy_url || url}" alt="${escapeHTML(filename)}" />
         </div>
       `
     }
@@ -418,7 +428,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <i class="fas fa-file"></i>
         </div>
         <div class="attachment-details">
-          <div class="attachment-filename">${filename}</div>
+          <div class="attachment-filename">${escapeHTML(filename)}</div>
           <div class="attachment-filesize">${fileSize}</div>
         </div>
         <a href="${url}" target="_blank" rel="noopener noreferrer" class="attachment-download">
@@ -433,8 +443,8 @@ document.addEventListener("DOMContentLoaded", () => {
     
     return `
       <div class="sticker">
-        <img src="${url}" alt="${name}" title="${name}" />
-        <div class="sticker-name">${name}</div>
+        <img src="${url}" alt="${escapeHTML(name)}" title="${escapeHTML(name)}" />
+        <div class="sticker-name">${escapeHTML(name)}</div>
       </div>
     `
   }
