@@ -3307,7 +3307,7 @@ async function loadPunishments(serverId) {
                     throw new Error(errorData.message || 'Failed to create BOLO');
                 }
 
-                boloForm.reset();
+                punishmentForm.reset();
                 showToast(`Successfully created BOLO for ${robloxUsername}`);
 
                 loadBOLOs(selectedServerId);
