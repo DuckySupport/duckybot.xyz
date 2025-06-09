@@ -2985,43 +2985,6 @@ async function loadPunishments(serverId) {
             erlcPlayersList.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-exclamation-triangle"></i><p>Failed to load players. Please try again.</p></div>';
         }
     }
-        
-        const submitBtn = document.getElementById('submitBoloBtn');
-        const originalBtnText = submitBtn.innerHTML;
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
-        
-        try {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/bolos`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Discord-Code': discordToken
-                },
-                body: JSON.stringify({
-                    username: username,
-                    reason: reason
-                })
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to create BOLO');
-            }
-            
-            boloForm.reset();
-            showToast(`Successfully created BOLO for ${username}`);
-            
-            loadBOLOs(selectedServerId);
-            loadERLCData(selectedServerId);
-            
-        } catch (error) {
-            showToast(error.message || 'Failed to create BOLO. Please try again.', 'error');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalBtnText;
-        }
-    }
     
     async function loadBOLOs(serverId) {
     if (!discordToken) {
