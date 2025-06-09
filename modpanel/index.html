@@ -2242,20 +2242,6 @@
         issuePunishment();
     });
     
-    if (boloForm) {
-        boloForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            createBOLO();
-        });
-    }
-    
-    if (commandForm) {
-        commandForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            executeCommand();
-        });
-    }
-    
     startShiftBtn.addEventListener('click', startShift);
     pauseShiftBtn.addEventListener('click', pauseShift);
     endShiftBtn.addEventListener('click', endShift);
@@ -3334,14 +3320,20 @@ async function loadPunishments(serverId) {
             showToast('Please select a punishment type', 'error');
             return;
         }
-        
+
+        // If type is BOLO, call createBOLO and exit
+        if (type === 'BOLO') {
+            await createBOLO(robloxUsername, reason);
+            return;
+        }
+
         let expires = null;
-        
+
         const submitBtn = document.getElementById('submitBtn');
         const originalBtnText = submitBtn.innerHTML;
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
-        
+
         try {
             const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments`, {
                 method: 'POST',
@@ -3356,25 +3348,25 @@ async function loadPunishments(serverId) {
                     expires
                 })
             });
-            
+
             const data = await response.json();
-            
+
             if (!response.ok) {
                 throw new Error(data.message || 'Failed to issue punishment');
             }
-            
+
             punishmentForm.reset();
             durationContainer.classList.add('hidden');
             punishmentTypeSelected.querySelector('span').textContent = 'Select type...';
             document.querySelectorAll('#punishmentTypeOptions .dropdown-option').forEach(opt => {
                 opt.classList.remove('selected');
             });
-            
+
             showToast(`Successfully issued ${type} to ${robloxUsername}`);
             lastPunishmentTime = now;
-            
+
             loadPunishments(selectedServerId);
-            
+
         } catch (error) {
             showToast(error.message || 'Failed to issue punishment. Please try again.', 'error');
         } finally {
@@ -3382,6 +3374,7 @@ async function loadPunishments(serverId) {
             submitBtn.innerHTML = originalBtnText;
         }
     }
+
     
     async function checkActiveShift(serverId) {
         if (!discordToken || !discordUser) return;
