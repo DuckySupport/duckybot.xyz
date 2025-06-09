@@ -3283,57 +3283,82 @@ async function loadPunishments(serverId) {
             return;
         }
 
-        // If type is BOLO, call createBOLO and exit
-        if (type === 'BOLO') {
-            await createBOLO(robloxUsername, reason);
-            return;
-        }
-
-        let expires = null;
-
         const submitBtn = document.getElementById('submitBtn');
         const originalBtnText = submitBtn.innerHTML;
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
 
-        try {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Discord-Code': discordToken
-                },
-                body: JSON.stringify({
-                    username: robloxUsername,
-                    type,
-                    reason,
-                    expires
-                })
-            });
+        if (type === 'BOLO') {
+            try {
+                const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/bolos`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Discord-Code': discordToken
+                    },
+                    body: JSON.stringify({
+                        username: robloxUsername,
+                        reason: reason
+                    })
+                });
 
-            const data = await response.json();
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to create BOLO');
+                }
 
-            if (!response.ok) {
-                throw new Error(data.message || 'Failed to issue punishment');
+                boloForm.reset();
+                showToast(`Successfully created BOLO for ${robloxUsername}`);
+
+                loadBOLOs(selectedServerId);
+                loadERLCData(selectedServerId);
+
+            } catch (error) {
+                showToast(error.message || 'Failed to create BOLO. Please try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
             }
 
-            punishmentForm.reset();
-            durationContainer.classList.add('hidden');
-            punishmentTypeSelected.querySelector('span').textContent = 'Select type...';
-            document.querySelectorAll('#punishmentTypeOptions .dropdown-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
+        } else {
+            try {
+                const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Discord-Code': discordToken
+                    },
+                    body: JSON.stringify({
+                        username: robloxUsername,
+                        type,
+                        reason
+                    })
+                });
 
-            showToast(`Successfully issued ${type} to ${robloxUsername}`);
-            lastPunishmentTime = now;
+                const data = await response.json();
 
-            loadPunishments(selectedServerId);
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to issue punishment');
+                }
 
-        } catch (error) {
-            showToast(error.message || 'Failed to issue punishment. Please try again.', 'error');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalBtnText;
+                punishmentForm.reset();
+                durationContainer.classList.add('hidden');
+                punishmentTypeSelected.querySelector('span').textContent = 'Select type...';
+                document.querySelectorAll('#punishmentTypeOptions .dropdown-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+
+                showToast(`Successfully issued ${type} to ${robloxUsername}`);
+                lastPunishmentTime = now;
+
+                loadPunishments(selectedServerId);
+
+            } catch (error) {
+                showToast(error.message || 'Failed to issue punishment. Please try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
         }
     }
 
