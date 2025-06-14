@@ -2518,7 +2518,7 @@ async function loadPunishments(serverId) {
             const userTextDiv = document.createElement('div');
             userTextDiv.innerHTML = `
                 <div class="font-medium">${punishment.robloxUser.name}</div>
-                <div class="text-sm text-gray-400">@${punishment.robloxUser.name}</div>
+                <div class="text-sm text-gray-400">@${punishment.robloxUser.name} (${punishment.robloxUser.id})</div>
             `;
             
             userInfoDiv.appendChild(avatarDiv);
