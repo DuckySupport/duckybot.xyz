@@ -1379,30 +1379,6 @@
                             </div>
                         </div>
 
-                        <div class="grid-item mb-6">
-                            <div class="grid-item-header">
-                                <h3>BOLO Management</h3>
-                            </div>
-                            <div class="grid-item-content">
-                                <form id="boloForm" class="space-y-4">
-                                    <div>
-                                        <label for="boloUsername" class="input-label">Roblox Username</label>
-                                        <input type="text" id="boloUsername" class="input-field" placeholder="Enter username" required>
-                                    </div>
-                                    <div>
-                                        <label for="boloReason" class="input-label">Reason</label>
-                                        <textarea id="boloReason" rows="2" class="input-field" placeholder="Enter reason" required></textarea>
-                                    </div>
-                                    <div class="flex justify-end">
-                                        <button type="submit" id="submitBoloBtn" class="btn btn-primary">
-                                            Create BOLO
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        
-                        
                     </div>
                     
                     <div class="col-span-6 lg:col-span-6">
@@ -1668,7 +1644,6 @@
                     </div>
                 </div>
             </div>
-        </main>
 
         <footer class="border-t border-[#F5FF82]/10 mt-8">
             <div class="max-w-7xl mx-auto px-4 py-12">
@@ -1702,7 +1677,7 @@
         <p id="toastMessage"></p>
     </div>
 
-    <script>
+    <script type="module">
     const loadingOverlay = document.getElementById('loadingOverlay');
     const serverGrid = document.getElementById('serverGrid');
     const serverSelectionView = document.getElementById('serverSelectionView');
@@ -2091,16 +2066,12 @@
         let hasTypes = Array.isArray(types) && types.length > 0;
         let processedTypes = hasTypes ? [...types] : [];
         
-        if (!processedTypes.some(type => type.toLowerCase() === 'tempban')) {
-            processedTypes.push('TempBan');
-        }
-        
         if (!processedTypes.some(type => type.toLowerCase() === 'bolo')) {
             processedTypes.push('BOLO');
         }
         
         if (processedTypes.length === 0) {
-            processedTypes = ['Warning', 'Kick', 'Ban', 'TempBan', 'BOLO'];
+            processedTypes = ['Warning', 'Kick', 'Ban', 'BOLO'];
         }
         
         processedTypes.forEach((type, index) => {
@@ -2269,20 +2240,6 @@
         e.preventDefault();
         issuePunishment();
     });
-    
-    if (boloForm) {
-        boloForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            createBOLO();
-        });
-    }
-    
-    if (commandForm) {
-        commandForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            executeCommand();
-        });
-    }
     
     startShiftBtn.addEventListener('click', startShift);
     pauseShiftBtn.addEventListener('click', pauseShift);
@@ -2561,7 +2518,7 @@ async function loadPunishments(serverId) {
             const userTextDiv = document.createElement('div');
             userTextDiv.innerHTML = `
                 <div class="font-medium">${punishment.robloxUser.name}</div>
-                <div class="text-sm text-gray-400">@${punishment.robloxUser.name}</div>
+                <div class="text-sm text-gray-400">${punishment.robloxUser.id}</div>
             `;
             
             userInfoDiv.appendChild(avatarDiv);
@@ -3027,7 +2984,7 @@ async function loadPunishments(serverId) {
             erlcServerInfo.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load ER:LC data. Please try again.</p></div>';
             erlcPlayersList.innerHTML = '<div class="empty-state col-span-full"><i class="fas fa-exclamation-triangle"></i><p>Failed to load players. Please try again.</p></div>';
         }
-    }    
+    }
     
     async function loadBOLOs(serverId) {
     if (!discordToken) {
@@ -3082,7 +3039,7 @@ async function loadPunishments(serverId) {
             const userTextDiv = document.createElement('div');
             userTextDiv.innerHTML = `
                 <div class="font-medium">${robloxUser.name}</div>
-                <div class="text-sm text-gray-400">@${robloxUser.name}</div>
+                <div class="text-sm text-gray-400">${robloxUser.id}</div>
             `;
             
             userInfoDiv.appendChild(avatarDiv);
@@ -3140,14 +3097,11 @@ async function loadPunishments(serverId) {
     }
 }
     
-    async function createBOLO() {
+    async function createBOLO(username, reason) {
         if (!discordToken || !selectedServerId) {
             showToast('Authentication error. Please log in again.', 'error');
             return;
         }
-        
-        const username = document.getElementById('boloUsername').value;
-        const reason = document.getElementById('boloReason').value;
         
         if (!username || !reason) {
             showToast('Please fill in all fields', 'error');
@@ -3328,73 +3282,86 @@ async function loadPunishments(serverId) {
             showToast('Please select a punishment type', 'error');
             return;
         }
-        
-        let expires = null;
-        if (type.toLowerCase() === 'tempban') {
-            const durationValue = document.getElementById('durationValue').value;
-            const durationUnit = document.getElementById('durationUnit').value;
-            
-            if (!durationValue || durationValue <= 0) {
-                showToast('Please enter a valid duration', 'error');
-                return;
-            }
-            
-            const multipliers = {
-                minutes: 60,
-                hours: 3600,
-                days: 86400,
-                weeks: 604800
-            };
-            
-            const duration = durationValue * multipliers[durationUnit];
-            expires = Math.floor(Date.now() / 1000) + duration;
-        }
-        
+
         const submitBtn = document.getElementById('submitBtn');
         const originalBtnText = submitBtn.innerHTML;
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
-        
-        try {
-            const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Discord-Code': discordToken
-                },
-                body: JSON.stringify({
-                    username: robloxUsername,
-                    type,
-                    reason,
-                    expires
-                })
-            });
-            
-            const data = await response.json();
-            
-            if (!response.ok) {
-                throw new Error(data.message || 'Failed to issue punishment');
+
+        if (type === 'BOLO') {
+            try {
+                const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/bolos`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Discord-Code': discordToken
+                    },
+                    body: JSON.stringify({
+                        username: robloxUsername,
+                        reason: reason
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to create BOLO');
+                }
+
+                punishmentForm.reset();
+                showToast(`Successfully created BOLO for ${robloxUsername}`);
+
+                loadBOLOs(selectedServerId);
+                loadERLCData(selectedServerId);
+
+            } catch (error) {
+                showToast(error.message || 'Failed to create BOLO. Please try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
             }
-            
-            punishmentForm.reset();
-            durationContainer.classList.add('hidden');
-            punishmentTypeSelected.querySelector('span').textContent = 'Select type...';
-            document.querySelectorAll('#punishmentTypeOptions .dropdown-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            
-            showToast(`Successfully issued ${type} to ${robloxUsername}`);
-            lastPunishmentTime = now;
-            
-            loadPunishments(selectedServerId);
-            
-        } catch (error) {
-            showToast(error.message || 'Failed to issue punishment. Please try again.', 'error');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalBtnText;
+
+        } else {
+            try {
+                const response = await fetch(`https://api.duckybot.xyz/guilds/${selectedServerId}/punishments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Discord-Code': discordToken
+                    },
+                    body: JSON.stringify({
+                        username: robloxUsername,
+                        type,
+                        reason
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to issue punishment');
+                }
+
+                punishmentForm.reset();
+                durationContainer.classList.add('hidden');
+                punishmentTypeSelected.querySelector('span').textContent = 'Select type...';
+                document.querySelectorAll('#punishmentTypeOptions .dropdown-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+
+                showToast(`Successfully issued ${type} to ${robloxUsername}`);
+                lastPunishmentTime = now;
+
+                loadPunishments(selectedServerId);
+
+            } catch (error) {
+                showToast(error.message || 'Failed to issue punishment. Please try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
         }
     }
+
     
     async function checkActiveShift(serverId) {
         if (!discordToken || !discordUser) return;
