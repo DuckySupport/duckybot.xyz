@@ -47,6 +47,15 @@
         opacity: 0.08;
         z-index: -1;
     }
+    .discord-inline-code {
+        background-color: #2f3136;
+        color: #ffffff;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 0.9em;
+        padding: 2px 6px;
+        border-radius: 3px;
+        user-select: text;
+    }
     .mobile-menu {
         display: none;
         position: fixed;
@@ -189,7 +198,7 @@
 
     <div class="policy-info text-center mb-8">
         <p><strong>Effective Date:</strong> September 29, 2024</p>
-        <p><strong>Last Updated:</strong> March 29, 2025</p>
+        <p><strong>Last Updated:</strong> July 1, 2025</p>
     </div>
 
     <div class="section-card">
@@ -275,6 +284,7 @@
             <p>The Ducky team may modify or discontinue the Bot at any time without notice. The User agrees that the Ducky team shall not be liable to the User or any third party for any modification, suspension, or discontinuance of the Bot.</p>
         </div>
     </div>
+
     <div class="section-card">
         <div class="section-header" onclick="toggleSection(this)">
             <h2 class="text-xl font-semibold">Ducky Plus+ Subscription</h2>
@@ -285,27 +295,29 @@
                 <div class="feature-item">
                     <h3 class="text-lg font-semibold">Subscription</h3>
                     <ul class="list-disc pl-5">
-                        <li>Purchased through the Roblox game</li>
-                        <li>Each purchase extends the user subscription by 30 days</li>
-                        <li>1 slot is granted per purchase</li>
-                        <li>Slots can grant Ducky Plus+ to servers</li>
-                        <li>Slots expire with user subscription</li>
-                        <li>Multiple purchases stack duration and slots</li>
-                        <li>Slots cannot be used on servers with an active subscription</li>
+                        <li>Purchased through the <code class="discord-inline-code">/plus manage</code> command</li>
+                        <li>Each purchase grants 1 Ducky Plus+ slot</li>
+                        <li>Slots apply Ducky Plus+ permanently to one server</li>
+                        <li>Only the server owner can apply a slot to their server</li>
+                        <li>Slots can be gifted to others, but not sold or traded</li>
+                        <li>Once applied, the slot is bound to the server until refunded</li>
+                        <li>Additional slots can be used on other servers or gifted</li>
                     </ul>
                 </div>
                 <div class="feature-item">
                     <h3 class="text-lg font-semibold">Terms & Conditions</h3>
                     <ul class="list-disc pl-5">
-                        <li>Subscriptions are non-transferable</li>
-                        <li>Subscriptions may not be sold</li>
-                        <li>Subscriptions may not be assigned, or shared with any third party</li>
-                        <li>We may terminate your subscription upon violate of our Terms of Service</li>
+                        <li>Slots are permanently applied to a server until refunded by the server owner</li>
+                        <li>Refunding a slot removes it from the server and wipes all associated data</li>
+                        <li>After refund, the slot can be gifted or applied to another server</li>
+                        <li>Slots may not be sold or traded</li>
+                        <li>Only the server owner can apply or refund a slot</li>
+                        <li>We may revoke access upon violations of our Terms of Service</li>
                         <li>Terminations can be appealed through our Support Server</li>
                     </ul>
                 </div>
             </div>
-            <p class="refunds-notice"><strong>Refunds Policy:</strong> All purchases are final and non-refundable. Slot refunds will only be considered if the server has no existing data affected by the subscription. Any refunded slots will expire when the user subscription expires.</p>
+            <p class="refunds-notice"><strong>Refunds Policy:</strong> All purchases are final and non-refundable. Slot refunds are only processed if requested by the server owner. Refunding will wipe all server data associated with the subscription. Once refunded, the slot can be reused or gifted.</p>
         </div>
     </div>
 
