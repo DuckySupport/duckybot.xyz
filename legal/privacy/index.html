@@ -23,6 +23,10 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        .heading {
+            color: #F5FF82;
+        }
+
         .glass-card {
             background: rgba(245, 255, 130, 0.03);
             border: 1px solid rgba(245, 255, 130, 0.1);
@@ -93,58 +97,6 @@
                 grid-template-columns: 1fr;
             }
         }
-
-        .section-card {
-            background: rgba(245, 255, 130, 0.03);
-            border: 1px solid rgba(245, 255, 130, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .section-header {
-            padding: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(245, 255, 130, 0.02);
-        }
-
-        .section-header:hover {
-            background: rgba(245, 255, 130, 0.05);
-        }
-
-        .section-content {
-            height: 0;
-            overflow: hidden;
-            transition: height 0.3s ease-in-out;
-            padding: 0 1.5rem;
-        }
-
-        .section-content.active {
-            height: auto;
-            padding: 1.5rem;
-            border-top: 1px solid rgba(245, 255, 130, 0.1);
-        }
-
-        .toggle-icon {
-            transition: transform 0.3s ease;
-            color: #F5FF82;
-        }
-
-        .section-header.active .toggle-icon {
-            transform: rotate(180deg);
-        }
-
-        .tos-container {
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 2rem;
-        }
-
         .ducky-logo {
             width: 80px;
             height: 80px;
@@ -216,117 +168,51 @@
         <h1 class="text-4xl font-bold text-[#F5FF82] text-center mb-8">Privacy Policy</h1>
 
         <div class="policy-info text-center mb-8">
+            <p><strong>Terms of Service:</strong> <a href="https://duckybot.xyz/legal/tos">duckybot.xyz/legal/tos</a></p>
             <p><strong>Effective Date:</strong> September 29, 2024</p>
             <p><strong>Last Updated:</strong> July 5, 2025</p>
         </div>
 
-        <div class="section-card" id = "definitions">
-            <div class="section-header" onclick="toggleSection(this)">
-                <h2 class="text-xl font-semibold">Definitions</h2>
-                <i class="fas fa-chevron-down toggle-icon"></i>
-            </div>
-            <div class="section-content">
-                <p>For the purposes of this Privacy Policy:</p>
-                <ul class="list-disc pl-5">
-                    <li><strong>Bot</strong> refers to the Ducky Discord bot and any services provided by it within Discord.</li>
-                    <li><strong>Ducky Developers</strong> (also referred to as "We," "Us," or "Our") means the individuals responsible for creating, maintaining, and supporting the Ducky bot, including Troptop (<a href="https://discord.com/users/598958193032560642">@literally.nick</a>) and bobbibones (<a href="https://discord.com/users/782235114858872854">@bobbibones</a>).</li>
-                    <li><strong>Server</strong> means a community space within Discord where Ducky operates, containing various channels, members, roles, and configuration settings.</li>
-                    <li><strong>Server Data</strong> refers to information Ducky collects from a Discord server, such as Server ID, Server Name, Member Count, and Role Count.</li>
-                    <li><strong>User Data</strong> refers to any information that identifies an individual using Ducky, such as User ID, Username, and data collected during interactions.</li>
-                    <li><strong>Interaction</strong> refers to an action initiated by a user to perform a function with Ducky, like using a slash or text command, button press, text input, and select menu selection.</li>
-                    <li><strong>Command</strong> refers to a trigger by the user to the bot, executing a specific function.</li>
-                    <li><strong>Audit Logging</strong> refers to Ducky's collection of certain server events for record-keeping purposes, including message edits, deletions, role changes, and channel activity.</li>
-                    <li><strong>Support Ticket</strong> means a request made by a user through the Ducky Support server to obtain assistance, including requests for data access or deletion.</li>
-                    <li><strong>You</strong> refers to the individual using Ducky, or the server owner or representative who configures Ducky for a server.</li>
-                </ul>
-            </div>
-        </div>
+        <section id="introduction">
+            <h2 class="text-2xl font-bold heading mb-4">1. Introduction</h2>
+            <p class="mb-4">Welcome to the Privacy Policy of Ducky. If you haven't already, read our Terms of Service first and then this Privacy Policy. I will try to be as transparent as possible about how Ducky uses information it receives from users. Whenever this Privacy Policy mentions <strong>giving us consent</strong> or similar phrases, it refers to giving Ducky your consent. "Us" and "Ducky" are used interchangeably, and both mean the same thing in this context.</p>
+        </section>
 
-        <div class="section-card" id="agreement">
-            <div class="section-header" onclick="toggleSection(this)">
-                <h2 class="text-xl font-semibold">Agreement</h2>
-                <i class="fas fa-chevron-down toggle-icon"></i>
-            </div>
-            <div class="section-content">
-                <p>By using Ducky, you agree to the terms of this Privacy Policy.</p>
-            </div>
-        </div>
+        <section id="website">
+            <h2 class="text-2xl font-bold heading mb-4">2. Using the Ducky website</h2>
+            <p class="mb-4">We currently support 2 features on our website that collect and process information. This includes Discord login and Roblox login; these are both done through an OAuth2 flow. For Discord login, the website stores a cookie with the provided authentication code from Discord. For Roblox login, the authentication code from Roblox is send to our API, which can link your Discord account with your Roblox account. More information about linking with Ducky can be found in section 3.1. Our domain is managed by Cloudflare, which provides basic statistical information about traffic on our domain. For information about how Cloudflare handles data, please view their <a href="https://www.cloudflare.com/privacypolicy/" class="text-blue-600 underline">privacy policy</a>.</p>
+        </section>
 
-        <div class="section-card" id="data">
-            <div class="section-header" onclick="toggleSection(this)">
-                <h2 class="text-xl font-semibold">Data Processing/Collection</h2>
-                <i class="fas fa-chevron-down toggle-icon"></i>
-            </div>
-            <div class="section-content">
-                <ul class="list-disc pl-5">
-                    <li>Ducky collects data to support the bot's purpose and functionality. Any data provided during an interaction may be processed and stored. Interacting with a server that uses Ducky may result in the processing of that interaction depending on which features are enabled.</li>
-                    <li>When a server enables the <strong>"Use Bloxlink"</strong> feature, Ducky uses Bloxlink's private API (which requires a server key and the user to be a member of the server) to check if your Discord account is linked to a Roblox account.</li>
-                    <li>This information is <strong>only stored</strong> after you confirm it in a direct message (DM) with Ducky.</li>
-                    <li>Once confirmed, your Roblox link becomes <strong>publicly accessible</strong> through Ducky commands or the public API when a valid Discord or Roblox ID is provided. This also applies if you link manually with Ducky through the link command or through the website.</li>
-                    <li>If you have questions, please join our support server and create a support ticket.</li>
-                </ul>
-            </div>
-        </div>
+        <section id="discord">
+            <h2 class="text-2xl font-bold heading mb-4">3. Using Ducky in Discord</h2>
+            <p class="mb-4">When using Ducky in your Discord server, you give us consent to see and process information about your server and you Ducky has access to. Additionally, Ducky may store and use information you give it to make it do what it's supposed to. Extra information on specific topics can be found below.</p>
 
-        <div class="section-card" id="access">
-            <div class="section-header" onclick="toggleSection(this)">
-                <h2 class="text-xl font-semibold">Access to Data</h2>
-                <i class="fas fa-chevron-down toggle-icon"></i>
-            </div>
-            <div class="section-content">
-                <ul class="list-disc pl-5">
-                    <li>Your data is not shared or sold to third parties.</li>
-                    <li>Ducky Developers may access your data for development, debugging, and maintenance purposes. Sensitive credentials such as your PRC API key are never viewed or accessed.</li>
-                    <li>Roblox link information is publicly accessible via our API when a valid Discord or Roblox ID is provided, either through a Ducky command or API request.</li>
-                    <li>If you would like a copy of your data, please open a support ticket in the <a href="https://duckybot.xyz/support">Ducky Support server</a>.</li>
-                </ul>
-            </div>
-        </div>
+            <h3 class="text-xl font-semibold mt-4 mb-2">3.1. Roblox Linking</h3>
+            <p class="mb-4">There are 2 ways you can get linked with Ducky. First is manually linking yourself. This can be done through the website or with the legacy verification method through a Discord command. The second possibility is when joining a server that has the <strong>Use Bloxlink</strong> feature enabled. This will use the Bloxlink "private" API (which requires a server key and the user to be a member of the server) to see if you have Roblox information on Bloxlink. If it does find Roblox information, it will DM you with confirmation and will not store the information from the Bloxlink API until you authorize this. If you don't want to receive this DM anymore, you can click the third option <strong>Deny, and don't ask again</strong>. Ducky will store your preference in usersettings, which can be managed with the <code>/usersettings</code> command. With that command you can also disable this feature in advance, and Ducky will not look up Roblox information using the Bloxlink API for you. Once linked with Ducky, using any way, anyone can get your Roblox ID using your Discord ID and the other way around. You can unlink from Ducky at any time using the <code>/link</code> command and click <strong>Unlink</strong>.</p>
 
-        <div class="section-card" id="logs">
-            <div class="section-header" onclick="toggleSection(this)">
-                <h2 class="text-xl font-semibold">Command Usage and Server Activity Logs</h2>
-                <i class="fas fa-chevron-down toggle-icon"></i>
-            </div>
-            <div class="section-content">
-                <p>For debugging purposes, Ducky logs command usage details, including:</p>
-                <ul class="list-disc pl-5">
-                    <li>Username and User ID of the user executing the command</li>
-                    <li>Command name and prefix or slash indicator</li>
-                    <li>Timestamp of the command execution</li>
-                    <li>Server name where the command was executed</li>
-                </ul>
-                <p>Ducky also logs server activity when it is added to or removed from a server, including:</p>
-                <ul class="list-disc pl-5">
-                    <li>Server logo</li>
-                    <li>Server name and Server ID</li>
-                    <li>Server owner's name and User ID</li>
-                    <li>Server member count at the time of addition or removal</li>
-                </ul>
-            </div>
-        </div>
+            <h3 class="text-xl font-semibold mt-4 mb-2">3.2. ER:LC API Key</h3>
+            <p class="mb-4">When providing Ducky with an API key, you give us consent to see and process information about your ER:LC server. This doesn't mean we are going to spy on your ER:LC server; this means you give us, but in reality, Ducky, permission to see and process the information it gets using the ER:LC API. Ducky will automate requests to the PRC API, required for many of its features. Abiding by the <a href="https://apidocs.policeroleplay.community/api-information/api-use-guidelines" class="text-blue-600 underline">PRC Private Server API Use Guidelines</a>, once Ducky is removed from your server, it will not make any requests to the PRC API using your API key. For information about data retention, including the retention of your ER:LC API key, see section x.</p>
+        </section>
 
-        <div class="section-card" id="storage">
-            <div class="section-header" onclick="toggleSection(this)">
-                <h2 class="text-xl font-semibold">Storage of Data</h2>
-                <i class="fas fa-chevron-down toggle-icon"></i>
-            </div>
-            <div class="section-content">
-                <p>Your data is securely stored in an SQL database file, accessible only by Ducky Developers, including Troptop (<a href="https://discord.com/users/598958193032560642">@literally.nick</a>) and bobbibones (<a href="https://discord.com/users/782235114858872854">@bobbibones</a>).</p>
-                <p>Server Data is retained for up to 7 days after Ducky is removed from a server. After this period, all associated Server Data is permanently deleted from our systems.</p>
-            </div>
-        </div>
+        <section id="storage">
+            <h2 class="text-2xl font-bold heading mb-4">4. Storage of Data</h2>
+            <p class="mb-4">Ducky stores data in an SQL database. The raw data files are only accessible by Ducky Developers, which currently include bobbibones (Discord ID: 782235114858872854) and troptopreal (Discord ID: 598958193032560642). Access to data through any Ducky service will ensure the user has the required authorization to access that data. Ducky frequently makes a backup of the raw data file, and this will only be used for disaster recovery.</p>
+        </section>
 
-        <div class="section-card" id="removal">
-            <div class="section-header" onclick="toggleSection(this)">
-                <h2 class="text-xl font-semibold">Data Removal Requests</h2>
-                <i class="fas fa-chevron-down toggle-icon"></i>
-            </div>
-            <div class="section-content">
-                <p>If you would like to request the permanent deletion of your data, please open a support ticket in the <a href="https://duckybot.xyz/support">Ducky Support server</a>. This action is irreversible.</p>
-                <p>Requesting data deletion will also remove any associated subscription data for the user. Refunds are not available for deleted subscription data.</p>
-            </div>
-        </div>
+        <section id="security">
+            <h2 class="text-2xl font-bold heading mb-4">5. Security of Data</h2>
+            <p class="mb-4">We care about keeping your data safe. We do our best to protect it using reasonable technical and organizational measures. However, no system is perfect, and things can still go wrong, like unexpected bugs or attacks. We implement reasonable security measures to protect your data. However, no system is completely secure, and we cannot guarantee prevention of unauthorized access, loss, or breaches. To the fullest extent permitted by law, we disclaim liability for any damages resulting from such incidents.</p>
+        </section>
+
+        <section id="retention">
+            <h2 class="text-2xl font-bold heading mb-4">6. Retention and Deletion of Data</h2>
+            <p class="mb-4">Server data is removed 7 days after removing Ducky from the server. You can manually wipe all server data on the first page of <code>/setup</code>. As stated in section 4, we make backups of the raw data file; this includes all data. Backups are deleted after 14 days.</p>
+        </section>
+
+        <section id="requests">
+            <h2 class="text-2xl font-bold heading mb-4">7. Data Requests</h2>
+            <p class="mb-4">If you would like to request all data we have about you or request deletion of all data, you can create a development ticket in our support server (Discord ID: 1228508072289370172, accessible at <a href="https://discord.gg/FChsKWG3ra" class="text-blue-600 underline">https://discord.gg/FChsKWG3ra</a>) or DM bobbibones (Discord ID: 782235114858872854). We do not allow this through any other communication channel, as we cannot confirm ownership on any other communication channel.</p>
+        </section>
 
         <footer class="border-t border-[#F5FF82]/10">
             <div class="max-w-7xl mx-auto px-4 py-12">
@@ -350,53 +236,6 @@
                 document.getElementById('mobileMenu').classList.toggle('active');
                 document.body.style.overflow = document.body.style.overflow === 'hidden' ? '' : 'hidden';
             }
-
-            function toggleSection(header) {
-                const content = header.nextElementSibling;
-                header.classList.toggle("active");
-                content.classList.toggle("active");
-            }
-
-            function highlightText(container, search) {
-                if (!search) return;
-
-                const regex = new RegExp(search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
-                const walk = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
-
-                while (walk.nextNode()) {
-                    const node = walk.currentNode;
-                    if (regex.test(node.nodeValue)) {
-                        const span = document.createElement("span");
-                        span.innerHTML = node.nodeValue.replace(regex, match => `<mark class="bg-yellow-400 text-black">${match}</mark>`);
-                        node.parentNode.replaceChild(span, node);
-                    }
-                }
-            }
-
-            window.addEventListener("DOMContentLoaded", () => {
-                const params = new URLSearchParams(window.location.hash.slice(1).replace(/\?/g, "&"));
-                const sectionId = params.get("section");
-                const highlight = params.get("highlight");
-
-                if (sectionId) {
-                    const section = document.getElementById(sectionId);
-                    if (section) {
-                        const header = section.querySelector(".section-header");
-                        const content = section.querySelector(".section-content");
-
-                        header.classList.add("active");
-                        content.classList.add("active");
-
-                        // Scroll into view
-                        section.scrollIntoView({ behavior: "smooth", block: "start" });
-
-                        // Optional: Highlight text
-                        if (highlight) {
-                            highlightText(content, decodeURIComponent(highlight.replace(/\+/g, " ")));
-                        }
-                    }
-                }
-            });
         </script>
 </body>
 
