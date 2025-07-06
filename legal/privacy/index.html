@@ -220,7 +220,7 @@
             <p><strong>Last Updated:</strong> July 5, 2025</p>
         </div>
 
-        <div class="section-card">
+        <div class="section-card" id = "definitions">
             <div class="section-header" onclick="toggleSection(this)">
                 <h2 class="text-xl font-semibold">Definitions</h2>
                 <i class="fas fa-chevron-down toggle-icon"></i>
@@ -242,7 +242,7 @@
             </div>
         </div>
 
-        <div class="section-card">
+        <div class="section-card" id="agreement">
             <div class="section-header" onclick="toggleSection(this)">
                 <h2 class="text-xl font-semibold">Agreement</h2>
                 <i class="fas fa-chevron-down toggle-icon"></i>
@@ -252,23 +252,23 @@
             </div>
         </div>
 
-        <div class="section-card">
+        <div class="section-card" id="data">
             <div class="section-header" onclick="toggleSection(this)">
                 <h2 class="text-xl font-semibold">Data Processing/Collection</h2>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
-                <p>Ducky collects data to support the bot's purpose and functionality. Any data provided during an interaction may be processed and stored. Interacting with a server that uses Ducky may result in the processing of that interaction depending on which features are enabled.</p>
-                <p><strong>Ducky and Bloxlink Integration</strong></p>
-                <p>When a server enables the <strong>"Use Bloxlink"</strong> feature, Ducky uses Bloxlink's private API (which requires a server key and the user to be a member of the server) to check if your Discord account is linked to a Roblox account.</p>
-                <p>This information is <strong>only stored</strong> after you confirm it in a direct message (DM) with Ducky.</p>
-                <p>Once confirmed, your Roblox link becomes <strong>publicly accessible</strong> through Ducky commands or the public API when a valid Discord or Roblox ID is provided. This also applies if you link manually with Ducky through the link command or through the website.</p>
-
-                <p>If you have questions, please join our support server and create a support ticket.</p>
+                <ul class="list-disc pl-5">
+                    <li>Ducky collects data to support the bot's purpose and functionality. Any data provided during an interaction may be processed and stored. Interacting with a server that uses Ducky may result in the processing of that interaction depending on which features are enabled.</li>
+                    <li>When a server enables the <strong>"Use Bloxlink"</strong> feature, Ducky uses Bloxlink's private API (which requires a server key and the user to be a member of the server) to check if your Discord account is linked to a Roblox account.</li>
+                    <li>This information is <strong>only stored</strong> after you confirm it in a direct message (DM) with Ducky.</li>
+                    <li>Once confirmed, your Roblox link becomes <strong>publicly accessible</strong> through Ducky commands or the public API when a valid Discord or Roblox ID is provided. This also applies if you link manually with Ducky through the link command or through the website.</li>
+                    <li>If you have questions, please join our support server and create a support ticket.</li>
+                </ul>
             </div>
         </div>
 
-        <div class="section-card">
+        <div class="section-card" id="access">
             <div class="section-header" onclick="toggleSection(this)">
                 <h2 class="text-xl font-semibold">Access to Data</h2>
                 <i class="fas fa-chevron-down toggle-icon"></i>
@@ -283,7 +283,7 @@
             </div>
         </div>
 
-        <div class="section-card">
+        <div class="section-card" id="logs">
             <div class="section-header" onclick="toggleSection(this)">
                 <h2 class="text-xl font-semibold">Command Usage and Server Activity Logs</h2>
                 <i class="fas fa-chevron-down toggle-icon"></i>
@@ -306,7 +306,7 @@
             </div>
         </div>
 
-        <div class="section-card">
+        <div class="section-card" id="storage">
             <div class="section-header" onclick="toggleSection(this)">
                 <h2 class="text-xl font-semibold">Storage of Data</h2>
                 <i class="fas fa-chevron-down toggle-icon"></i>
@@ -317,7 +317,7 @@
             </div>
         </div>
 
-        <div class="section-card">
+        <div class="section-card" id="removal">
             <div class="section-header" onclick="toggleSection(this)">
                 <h2 class="text-xl font-semibold">Data Removal Requests</h2>
                 <i class="fas fa-chevron-down toggle-icon"></i>
@@ -352,23 +352,50 @@
             }
 
             function toggleSection(header) {
-                header.classList.toggle('active');
                 const content = header.nextElementSibling;
-                content.classList.toggle('active');
+                header.classList.toggle("active");
+                content.classList.toggle("active");
+            }
 
-                if (content.classList.contains('active')) {
-                    content.style.height = content.scrollHeight + "px";
-                } else {
-                    content.style.height = "0";
+            function highlightText(container, search) {
+                if (!search) return;
+
+                const regex = new RegExp(search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                const walk = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
+
+                while (walk.nextNode()) {
+                    const node = walk.currentNode;
+                    if (regex.test(node.nodeValue)) {
+                        const span = document.createElement("span");
+                        span.innerHTML = node.nodeValue.replace(regex, match => `<mark class="bg-yellow-400 text-black">${match}</mark>`);
+                        node.parentNode.replaceChild(span, node);
+                    }
                 }
             }
 
-            // Initialize all sections as closed
-            document.addEventListener('DOMContentLoaded', function () {
-                const sections = document.querySelectorAll('.section-content');
-                sections.forEach(section => {
-                    section.style.height = "0";
-                });
+            window.addEventListener("DOMContentLoaded", () => {
+                const params = new URLSearchParams(window.location.hash.slice(1).replace(/\?/g, "&"));
+                const sectionId = params.get("section");
+                const highlight = params.get("highlight");
+
+                if (sectionId) {
+                    const section = document.getElementById(sectionId);
+                    if (section) {
+                        const header = section.querySelector(".section-header");
+                        const content = section.querySelector(".section-content");
+
+                        header.classList.add("active");
+                        content.classList.add("active");
+
+                        // Scroll into view
+                        section.scrollIntoView({ behavior: "smooth", block: "start" });
+
+                        // Optional: Highlight text
+                        if (highlight) {
+                            highlightText(content, decodeURIComponent(highlight.replace(/\+/g, " ")));
+                        }
+                    }
+                }
             });
         </script>
 </body>
