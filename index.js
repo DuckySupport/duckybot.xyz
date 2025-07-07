@@ -164,7 +164,7 @@ function fetchStats() {
         });
 }
 
-(function loadInitialVersion() {
+function loadInitialVersion() {
     const versionElement = document.getElementById('duckyVersionText');
     if (!versionElement) return;
 
@@ -175,7 +175,7 @@ function fetchStats() {
             versionElement.textContent = 'v1.0.0 Stable';
         }
     });
-})();
+};
 
 
 function animateStats() {
@@ -236,6 +236,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupMobileMenuLinks();
     
     loadFeedback();
+
+    loadInitialVersion();
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
