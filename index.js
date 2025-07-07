@@ -147,30 +147,55 @@ function closeReviewPopup(popup) {
     setTimeout(() => popup.remove(), 300);
 }
 
-function animateStats() {
-    const stats = {
-        servers: 1700,
-        users: 250000,
-        links: 6000
-    };
+let cachedStats = null;
 
-    fetch('https://api.duckybot.xyz/statistics')
+function fetchStats() {
+    if (cachedStats) return Promise.resolve(cachedStats);
+
+    return fetch('https://api.duckybot.xyz/statistics')
         .then(response => response.ok ? response.json() : Promise.reject('Failed to fetch stats'))
         .then(data => {
-            if (data && data.data) {
-                stats.servers = data.data.guilds || stats.servers;
-                stats.users = data.data.users || stats.users;
-                stats.links = data.data.links || stats.links;
-            }
+            cachedStats = data && data.data ? data.data : null;
+            return cachedStats;
         })
         .catch(error => {
             console.error('Stats fetch failed:', error);
-        })
-        .finally(() => {
-            animateCounter('serverCount', stats.servers);
-            animateCounter('userCount', stats.users);
-            animateCounter('linkCount', stats.links);
+            return null;
         });
+}
+
+function loadInitialVersion() {
+    const versionElement = document.getElementById('duckyVersionText');
+    if (!versionElement) return;
+
+    fetchStats().then(data => {
+        if (data && data.version) {
+            versionElement.textContent = data.version;
+        } else {
+            versionElement.textContent = 'v1.0.0 Stable';
+        }
+    });
+};
+
+
+function animateStats() {
+    const stats = {
+        servers: 3000,
+        users: 300000,
+        links: 14000
+    };
+
+    fetchStats().then(data => {
+        if (data) {
+            stats.servers = data.guilds || stats.servers;
+            stats.users = data.users || stats.users;
+            stats.links = data.links || stats.links;
+        }
+    }).finally(() => {
+        animateCounter('serverCount', stats.servers);
+        animateCounter('userCount', stats.users);
+        animateCounter('linkCount', stats.links);
+    });
 }
 
 function animateCounter(id, target) {
@@ -211,6 +236,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupMobileMenuLinks();
     
     loadFeedback();
+
+    loadInitialVersion();
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
