@@ -149,9 +149,10 @@ function closeReviewPopup(popup) {
 
 function animateStats() {
     const stats = {
-        servers: 1700,
-        users: 250000,
-        links: 6000
+        servers: 3000,
+        users: 300000,
+        links: 14000,
+        version: 'v1.0.0 Stable'
     };
 
     fetch('https://api.duckybot.xyz/statistics')
@@ -161,12 +162,14 @@ function animateStats() {
                 stats.servers = data.data.guilds || stats.servers;
                 stats.users = data.data.users || stats.users;
                 stats.links = data.data.links || stats.links;
+                stats.version = data.data.version || stats.version
             }
         })
         .catch(error => {
             console.error('Stats fetch failed:', error);
         })
         .finally(() => {
+            document.getElementById('duckyVersion').textContent = stats.version;
             animateCounter('serverCount', stats.servers);
             animateCounter('userCount', stats.users);
             animateCounter('linkCount', stats.links);
