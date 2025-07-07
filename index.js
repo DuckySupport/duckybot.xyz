@@ -169,7 +169,7 @@ function animateStats() {
             console.error('Stats fetch failed:', error);
         })
         .finally(() => {
-            document.getElementById('duckyVersion').innerHTML = stats.version;
+            document.getElementById('duckyVersionText').textContent = stats.version;
             animateCounter('serverCount', stats.servers);
             animateCounter('userCount', stats.users);
             animateCounter('linkCount', stats.links);
