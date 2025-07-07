@@ -238,6 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadFeedback();
 
     loadInitialVersion();
+    // huhh?
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
