@@ -152,7 +152,7 @@ function animateStats() {
         servers: 3000,
         users: 300000,
         links: 14000,
-        version: 'v1.0.0 Stable'
+        version: 'v1.0.0 TEST'
     };
 
     fetch('https://api.duckybot.xyz/statistics')
