@@ -65,8 +65,8 @@ async function loadFeedback() {
             card.style.animation = `fadeInSlide 0.5s ease-out ${delay}s forwards`;
 
             const starSize = isMobile() ? 'w-5 h-5' : 'w-6 h-6';
-            const filledStars = `<img src="https://duckybot.xyz/images/star.png" class="${starSize} inline-block mx-[2px]">`.repeat(review.rating);
-            const emptyStars = `<img src="https://duckybot.xyz/images/star-empty.png" class="${starSize} inline-block mx-[2px]">`.repeat(5 - review.rating);
+            const filledStars = `<img src="https://duckybot.xyz/images/icons/starfill.svg" class="${starSize} inline-block mx-[2px]">`.repeat(review.rating);
+            const emptyStars = `<img src="https://duckybot.xyz/images/icons/star.svg" class="${starSize} inline-block mx-[2px]">`.repeat(5 - review.rating);
 
             const avatarSize = isMobile() ? 'w-16 h-16' : 'w-20 h-20';
             const usernameMaxWidth = isMobile() ? 'max-w-[150px]' : 'max-w-[200px]';
@@ -238,7 +238,6 @@ document.addEventListener('DOMContentLoaded', function() {
     loadFeedback();
 
     loadInitialVersion();
-    // huhh?
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
