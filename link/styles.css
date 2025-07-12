@@ -32,17 +32,17 @@ body {
 }
 
 .loading {
-    background-image: url("Loading.gif");
+    background-image: url("https://duckybot.xyz/images/icons/loading.gif");
     border-color: rgb(75,75,75);
 }
 
 .success {
-    background-image: url("Success.svg");
+    background-image: url("https://duckybot.xyz/images/icons/success.svg");
     border-color: #66ff66;
 }
 
 .fail {
-    background-image: url("Fail.svg");
+    background-image: url("https://duckybot.xyz/images/icons/fail.svg");
     border-color: #ff6666;
 }
 
