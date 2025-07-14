@@ -282,7 +282,13 @@
                     mod: document.getElementById("team-mod")
                 };
 
-                data.data.forEach(member => {
+                data.data
+                .sort((a, b) => {
+                    if (a.category < b.category) return -1;
+                    if (a.category > b.category) return 1;
+                    return b.position - a.position;
+                })
+                .forEach(member => {
                     const color = member.color || "#ffffff";
 
                     const card = document.createElement("div");
