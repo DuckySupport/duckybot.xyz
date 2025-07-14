@@ -24,86 +24,47 @@
             border-radius: 16px;
             transition: border 0.3s ease;
             box-sizing: border-box;
+            backdrop-filter: blur(20px);
         }
         .glass-card.dev {
             background: rgba(86, 188, 255, 0.03);
             border: 1px solid rgba(86, 188, 255, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.dev:hover {
-            border: 1px solid rgba(86, 188, 255, 0.8);
         }
         .glass-card.web {
             background: rgba(91, 215, 255, 0.03);
             border: 1px solid rgba(91, 215, 255, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.web:hover {
-            border: 1px solid rgba(91, 215, 255, 0.8);
         }
         .glass-card.exec {
             background: rgba(255, 196, 101, 0.03);
             border: 1px solid rgba(255, 196, 101, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.exec:hover {
-            border: 1px solid rgba(255, 196, 101, 0.8);
         }
         .glass-card.cm {
             background: rgba(230, 126, 34, 0.03);
             border: 1px solid rgba(230, 126, 34, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.cm:hover {
-            border: 1px solid rgba(230, 126, 34, 0.8);
         }
         .glass-card.mgmt {
             background: rgba(104, 248, 120, 0.03);
             border: 1px solid rgba(104, 248, 120, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.mgmt:hover {
-            border: 1px solid rgba(104, 248, 120, 0.8);
         }
         .glass-card.admin {
             background: rgba(170, 170, 221, 0.03);
             border: 1px solid rgba(170, 170, 221, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.admin:hover {
-            border: 1px solid rgba(170, 170, 221, 0.8);
         }
         .glass-card.support {
             background: rgba(255, 203, 72, 0.03);
             border: 1px solid rgba(255, 203, 72, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.support:hover {
-            border: 1px solid rgba(255, 203, 72, 0.8);
         }
         .glass-card.jrsupport {
             background: rgba(250, 255, 154, 0.03);
             border: 1px solid rgba(250, 255, 154, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.jrsupport:hover {
-            border: 1px solid rgba(250, 255, 154, 0.8);
         }
         .glass-card.mod {
             background: rgba(126, 238, 255, 0.03);
             border: 1px solid rgba(126, 238, 255, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.mod:hover {
-            border: 1px solid rgba(126, 238, 255, 0.8);
         }
         .glass-card.doc {
             background: rgba(35, 154, 165, 0.03);
             border: 1px solid rgba(35, 154, 165, 0.1);
-            backdrop-filter: blur(20px);
-        }
-        .glass-card.doc:hover {
-            border: 1px solid rgba(35, 154, 165, 0.8);
         }
         .animate-fade {
             animation: fadeIn 0.5s ease-out forwards;
@@ -205,7 +166,7 @@
                 Meet the Team Behind <span class="text-[#F5FF82]">Ducky</span>
             </h1>
             <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12">
-                Dedicated innovators and passionate developers powering the most advanced Discord bot for your server.
+                Dedicated innovators and passionate developers powering the best bot for ER:LC automation.
             </p>
         </section>
         <section class="py-12">
@@ -266,7 +227,7 @@
             document.body.style.overflow = document.body.style.overflow === 'hidden' ? '' : 'hidden';
         }
     </script>
-    
+
     <script>
         async function loadTeam() {
             try {
@@ -275,7 +236,6 @@
 
                 const sections = {
                     dev: document.getElementById("team-dev"),
-                    // exec: document.getElementById("team-exec"),
                     mgmt: document.getElementById("team-mgmt"),
                     admin: document.getElementById("team-admin"),
                     support: document.getElementById("team-support"),
@@ -283,44 +243,51 @@
                 };
 
                 data.data
-                .sort((a, b) => {
-                    if (a.category < b.category) return -1;
-                    if (a.category > b.category) return 1;
-                    return b.position - a.position;
-                })
-                .forEach(member => {
-                    const color = member.color || "#ffffff";
+                    .sort((a, b) => {
+                        if (a.category < b.category) return -1;
+                        if (a.category > b.category) return 1;
+                        return b.position - a.position;
+                    })
+                    .forEach(member => {
+                        const color = member.color || "#ffffff";
 
-                    const card = document.createElement("div");
-                    card.className = `glass-card ${member.category} p-8 w-full max-w-md`;
+                        const card = document.createElement("div");
+                        card.className = `glass-card ${member.category} p-8 w-full max-w-md`;
+                        card.style.borderColor = "rgba(255,255,255,0.1)";
 
-                    card.innerHTML = `
-                        <img src="${member.avatar}" alt="${member.username}" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[${color}] group-hover:scale-105 transition-transform"/>
-                        <a href="https://discord.com/users/${member.discord_id}" class="block text-center">
-                            <h3 class="text-2xl font-bold mb-2 hover:text-[${color}] transition-colors">${member.name}</h3>
-                        </a>
-                        <p class="text-gray-400 text-center mb-3">${member.username}</p>
-                        <p class="text-[${color}] font-semibold text-xl text-center">${member.role}</p>
-                    `;
+                        card.onmouseenter = () => {
+                            card.style.borderColor = color;
+                        };
+                        card.onmouseleave = () => {
+                            card.style.borderColor = "rgba(255,255,255,0.1)";
+                        };
 
-                    if (sections[member.category]) {
+                        card.innerHTML = `
+                            <img src="${member.avatar}" alt="${member.username}" 
+                                class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[${color}] group-hover:scale-105 transition-transform"/>
+                            <a href="https://discord.com/users/${member.discord_id}" class="block text-center">
+                                <h3 class="text-2xl font-bold mb-2 hover:text-[${color}] transition-colors">${member.name}</h3>
+                            </a>
+                            <p class="text-gray-400 text-center mb-3">${member.username}</p>
+                            <p class="text-[${color}] font-semibold text-xl text-center">${member.role}</p>
+                        `;
+
                         const section = sections[member.category];
-                        section.appendChild(card);
+                        if (section) {
+                            section.appendChild(card);
 
-                        const count = section.childElementCount;
+                            const count = section.childElementCount;
+                            section.classList.remove("md:grid-cols-1", "md:grid-cols-2", "md:grid-cols-3", "place-items-center");
 
-                        if (count === 1) {
-                            section.classList.remove("md:grid-cols-3");
-                            section.classList.add("md:grid-cols-1", "place-items-center");
-                        } else if (count === 2) {
-                            section.classList.remove("md:grid-cols-1");
-                            section.classList.add("md:grid-cols-2");
-                        } else {
-                            section.classList.remove("md:grid-cols-1", "md:grid-cols-2");
-                            section.classList.add("md:grid-cols-3");
+                            if (count === 1) {
+                                section.classList.add("md:grid-cols-1", "place-items-center");
+                            } else if (count === 2) {
+                                section.classList.add("md:grid-cols-2");
+                            } else {
+                                section.classList.add("md:grid-cols-3");
+                            }
                         }
-                    }
-                });
+                    });
 
             } catch (err) {
                 console.error("Failed to load team data", err);
