@@ -298,7 +298,21 @@
                     `;
 
                     if (sections[member.category]) {
-                        sections[member.category].appendChild(card);
+                        const section = sections[member.category];
+                        section.appendChild(card);
+
+                        const count = section.childElementCount;
+
+                        if (count === 1) {
+                            section.classList.remove("md:grid-cols-3");
+                            section.classList.add("md:grid-cols-1", "place-items-center");
+                        } else if (count === 2) {
+                            section.classList.remove("md:grid-cols-1");
+                            section.classList.add("md:grid-cols-2");
+                        } else {
+                            section.classList.remove("md:grid-cols-1", "md:grid-cols-2");
+                            section.classList.add("md:grid-cols-3");
+                        }
                     }
                 });
 
