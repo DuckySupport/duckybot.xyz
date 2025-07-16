@@ -1212,8 +1212,8 @@ const loadingOverlay = document.getElementById('loadingOverlay');
             return;
         }
 
-        fetch('https://api.duckybot.xyz/users/@me', {
-            headers: { 'Discord-Code': discordToken }
+        fetch('https://discord.com/api/users/@me', {
+            headers: { authorization: `Bearer ${loggedin}`, }
         }).then(res => {
             if (!res.ok) throw new Error('Invalid session');
             return res.json();
