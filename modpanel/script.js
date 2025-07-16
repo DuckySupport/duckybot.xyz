@@ -294,9 +294,9 @@ const loadingOverlay = document.getElementById('loadingOverlay');
         });
     }
 
-    function getDiscordToken() {
+    function getCookie(name) {
         let value = `; ${document.cookie}`;
-        let parts = value.split(`; discord=`);
+        let parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
@@ -1206,9 +1206,9 @@ const loadingOverlay = document.getElementById('loadingOverlay');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        discordToken = getDiscordToken();
+        discordToken = getCookie('discord');
         if (!discordToken) {
-            window.location.href = '/login';
+            window.location.href = '/login?redirect=modpanel';
             return;
         }
 
