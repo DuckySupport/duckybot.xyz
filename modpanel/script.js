@@ -295,7 +295,9 @@ const loadingOverlay = document.getElementById('loadingOverlay');
     }
 
     function getDiscordToken() {
-        return document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
+        let value = `; ${document.cookie}`;
+        let parts = value.split(`; discord=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
     function formatDuration(seconds) {
