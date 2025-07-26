@@ -294,10 +294,8 @@ const loadingOverlay = document.getElementById('loadingOverlay');
         });
     }
 
-    function getCookie(name) {
-        let value = `; ${document.cookie}`;
-        let parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
+    function getDiscordToken() {
+        return document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1];
     }
 
     function formatDuration(seconds) {
@@ -1206,14 +1204,14 @@ const loadingOverlay = document.getElementById('loadingOverlay');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        discordToken = getCookie('discord');
+        discordToken = getDiscordToken();
         if (!discordToken) {
-            window.location.href = '/login?redirect=modpanel';
+            window.location.href = '/login';
             return;
         }
 
-        fetch('https://discord.com/api/users/@me', {
-            headers: { authorization: `Bearer ${loggedin}`, }
+        fetch('https://api.duckybot.xyz/users/@me', {
+            headers: { 'Discord-Code': discordToken }
         }).then(res => {
             if (!res.ok) throw new Error('Invalid session');
             return res.json();
