@@ -185,12 +185,12 @@
                 const profile = await profileResponse.json();
                 
                 if (profile.code === 200) {
-                    const {discordUser, robloxUser} = profile.data;
+                    const {discord, roblox} = profile.data;
                     
-                    document.getElementById('discord-avatar').src = discordUser.avatar;
-                    document.getElementById('roblox-avatar').src = robloxUser.avatar;
-                    document.getElementById('username').textContent = `${discordUser.name} • ${robloxUser.displayName}`;
-                    document.getElementById('roblox-info').innerHTML = `<a href="${robloxUser.profile}" class="text-[#F5FF82] hover:underline">@${robloxUser.name}</a>`;
+                    document.getElementById('discord-avatar').src = discord.avatar;
+                    document.getElementById('roblox-avatar').src = roblox.avatar;
+                    document.getElementById('username').textContent = `${discord.name} • ${roblox.displayName}`;
+                    document.getElementById('roblox-info').innerHTML = `<a href="${roblox.profile}" class="text-[#F5FF82] hover:underline">@${roblox.name}</a>`;
                     
                     document.getElementById('loading-state').classList.add('hidden');
                     document.getElementById('profile-content').classList.remove('hidden');

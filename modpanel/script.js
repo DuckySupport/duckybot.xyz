@@ -357,12 +357,12 @@ const loadingOverlay = document.getElementById('loadingOverlay');
             return avatarCache.get(userId);
         }
         try {
-            const response = await fetch(`https://api.duckybot.xyz/roblox/avatar/${userId}`);
+            const response = await fetch(`https://api.duckybot.xyz/user/${userId}`);
             if (!response.ok) throw new Error('Avatar not found');
             const data = await response.json();
-            const avatarUrl = data.avatarUrl;
-            avatarCache.set(userId, avatarUrl);
-            return avatarUrl;
+            const avatar = data.data.avatar;
+            avatarCache.set(userId, avatar);
+            return avatar;
         } catch (error) {
             return 'https://duckybot.xyz/images/icons/Ducky.svg';
         }
@@ -370,7 +370,7 @@ const loadingOverlay = document.getElementById('loadingOverlay');
 
     async function getRobloxUser(username) {
         try {
-            const response = await fetch(`https://api.duckybot.xyz/roblox/user/${username}`);
+            const response = await fetch(`https://api.duckybot.xyz/user/${username}`);
             if (!response.ok) throw new Error('User not found');
             return await response.json();
         } catch (error) {
