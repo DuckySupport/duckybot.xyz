@@ -189,7 +189,7 @@
                     
                     document.getElementById('discord-avatar').src = discord.avatar;
                     document.getElementById('roblox-avatar').src = roblox.avatar;
-                    document.getElementById('username').textContent = `${discord.name} • ${roblox.displayName}`;
+                    document.getElementById('username').textContent = `@${discord.username} • @${roblox.name}`;
                     document.getElementById('roblox-info').innerHTML = `<a href="${roblox.profile}" class="text-[#F5FF82] hover:underline">@${roblox.name}</a>`;
                     
                     document.getElementById('loading-state').classList.add('hidden');
