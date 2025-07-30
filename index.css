@@ -55,10 +55,6 @@ body {
     will-change: transform;
   }
   
-  .card:hover {
-    border-color: rgba(245, 255, 130, 0.3);
-  }
-  
   @media (max-width: 768px) {
     .card {
       padding: 1.25rem !important;
@@ -176,16 +172,26 @@ body {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: 16px;
-    transition: border-color 0.3s ease;
+    transition: transform 0.3s ease, border-color 0.3s ease;
   }
   
-  .glass-card:hover {
-    border-color: rgba(245, 255, 130, 0.3);
+  .glass-card.review-card {
+    display: flex;
+    align-items: center;
+    background: rgba(18, 18, 18, 0.5);
+    border: 1px solid rgba(245, 255, 130, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .glass-card.review:hover {
+    transform: translateX(-5px);
   }
   
   @media (max-width: 768px) {
     .glass-card {
-      padding: 1.25rem !important;
+      padding: 1.5rem !important;
     }
   }
   
@@ -288,7 +294,6 @@ body {
   
   .affiliate-card:hover {
     transform: translateY(-5px);
-    border-color: rgba(245, 255, 130, 0.3);
   }
   
   .card-icon {
