@@ -32,7 +32,7 @@ http.request(function(success, response)
 		for _, review in pairs(response.data) do if review.rating >= 4 then table.insert(filtered, review) end end
 
 		filtered = utils.shuffle(filtered)
-		filtered = utils.chop(filtered, mobile and 3 or 6)
+		filtered = utils.chop(filtered, mobile and 3 or 5)
 
 		elements.feedback.className = "flex flex-col gap-[10px]"
 		elements.feedback.innerHTML = ""
