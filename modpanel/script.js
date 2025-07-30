@@ -364,7 +364,7 @@ const loadingOverlay = document.getElementById('loadingOverlay');
             avatarCache.set(userId, avatar);
             return avatar;
         } catch (error) {
-            return 'https://duckybot.xyz/images/icons/Ducky.svg';
+            return '/images/icons/Ducky.svg';
         }
     }
 
@@ -475,7 +475,7 @@ const loadingOverlay = document.getElementById('loadingOverlay');
                 serverCard.className = 'server-card';
                 serverCard.onclick = () => selectServer(server.id);
                 serverCard.innerHTML = `
-                    <img src="${server.icon ? `https://cdn.discordapp.com/icons/${server.id}/${server.icon}.png` : 'https://duckybot.xyz/images/icons/Ducky.svg'}" alt="${server.name}">
+                    <img src="${server.icon ? `https://cdn.discordapp.com/icons/${server.id}/${server.icon}.png` : '/images/icons/Ducky.svg'}" alt="${server.name}">
                     <span class="text-sm font-medium text-center">${server.name}</span>
                 `;
                 serverGrid.appendChild(serverCard);
@@ -504,7 +504,7 @@ const loadingOverlay = document.getElementById('loadingOverlay');
             selectedServerConfig = await response.json();
 
             document.getElementById('serverName').textContent = selectedServerConfig.name;
-            document.getElementById('serverIcon').src = selectedServerConfig.icon ? `https://cdn.discordapp.com/icons/${serverId}/${selectedServerConfig.icon}.png` : 'https://duckybot.xyz/images/icons/Ducky.svg';
+            document.getElementById('serverIcon').src = selectedServerConfig.icon ? `https://cdn.discordapp.com/icons/${serverId}/${selectedServerConfig.icon}.png` : '/images/icons/Ducky.svg';
 
             setupPunishmentTypes(selectedServerConfig.punishments);
             setupShiftTypes(selectedServerConfig.shifts?.types);

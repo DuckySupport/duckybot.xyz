@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderTranscript(data) {
     const { guild, channel, messages } = data
 
-    guildIconElement.src = guild.icon || 'https://duckybot.xyz/images/icons/Ducky.svg'
+    guildIconElement.src = guild.icon || '/images/icons/Ducky.svg'
     guildNameElement.textContent = guild.name
     channelNameElement.textContent = channel.name
 
