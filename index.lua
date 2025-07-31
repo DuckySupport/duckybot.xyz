@@ -93,8 +93,6 @@ elseif location == "/team/" then
 	http.request(function(success, response)
 		if success and response and response.data then
 			table.sort(response.data, function(a, b)
-				console:log(a)
-				console:log(b)
 				return (a and a.position or 0) > b.position
 			end)
 
