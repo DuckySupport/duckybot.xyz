@@ -141,13 +141,13 @@ body {
 }
 
 @keyframes fadeInSlide {
-    0% {
+    from {
         opacity: 0;
-        transform: translateX(50px) scale(0.8);
+        transform: translateY(20px);
     }
-    100% {
+    to {
         opacity: 1;
-        transform: translateX(0) scale(1);
+        transform: translateY(0);
     }
 }
 
