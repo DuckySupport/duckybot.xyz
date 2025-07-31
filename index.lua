@@ -39,6 +39,12 @@ local elements = {
 		title = document:getElementById("linkTitle"),
 		text = document:getElementById("linkText"),
 		buttons = document:getElementById("linkButtons")
+	},
+	login = {
+		icon = document:getElementById("loginIcon"),
+		title = document:getElementById("loginTitle"),
+		text = document:getElementById("loginText"),
+		buttons = document:getElementById("loginButtons")
 	}
 }
 
@@ -158,29 +164,53 @@ elseif location == "/link/" then
 			if success and response and response.data then
 				local DiscordID = response.data.id
 
-				update("loading", "Loading...", "Fetching your Roblox profile from our API...", false)
+				if parameters.unlink == "true" then
+					update("loading", "Loading...", "Unlinking your Roblox account from Ducky...", false)
 
-				http.request(function(success, response)
-					if success and response and response.data then
-						update("success", "Already Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-primary font-semibold">@' .. response.data.roblox.name .. '</a>, is linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-primary font-semibold">@' .. response.data.discord.username .. '</a>.', true)
-					elseif parameters.code then
-						http.request(function(success, response)
-							if success and response and response.data then
-								update("success", "Successfully Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-primary font-semibold">@' .. response.data.roblox.name .. '</a>, has been successfully linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-primary font-semibold">@' .. response.data.discord.username .. '</a>.', true)
-							elseif response and response.code == 409 then
-								update("fail", "Already Linked", response.message)
-							else
-								update("fail", "API Error", response.message)
+					http.request(function(success, response)
+						if success and response and response.data then
+							update("success", "Successfully Unlinked", "Your Roblox account has been successfully unlinked from Ducky.")
+							time.sleep(3000)
+							utils.redirect("link")
+						else
+							update("fail", "API Error", response.message)
+						end
+					end, "DELETE", "https://api.duckybot.xyz/links/" .. DiscordID, {
+						["Discord-Code"] = cookie
+					})
+				else
+					update("loading", "Loading...", "Fetching your Roblox profile from our API...", false)
+
+					http.request(function(success, response)
+						if success and response and response.data then
+							update("success", "Already Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-primary font-semibold">@' .. response.data.roblox.name .. '</a>, is linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-primary font-semibold">@' .. response.data.discord.username .. '</a>.', true)
+
+							if parameters.redirect or parameters.state then
+								utils.redirect(parameters.redirect or parameters.state)
 							end
-						end, "POST", "https://api.duckybot.xyz/links", {
-							["Discord-Code"] = cookie,
-							["Roblox-Code"] = parameters.code
-						})
-					else
-						update("loading", "Redirecting...", "You are being redirected to Roblox.")
-						utils.redirect("https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid")
-					end
-				end, "GET", "https://api.duckybot.xyz/links/" .. DiscordID)
+						elseif parameters.code then
+							http.request(function(success, response)
+								if success and response and response.data then
+									update("success", "Successfully Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-primary font-semibold">@' .. response.data.roblox.name .. '</a>, has been successfully linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-primary font-semibold">@' .. response.data.discord.username .. '</a>.', true)
+									
+									if parameters.redirect or parameters.state then
+										utils.redirect(parameters.redirect or parameters.state)
+									end
+								elseif response and response.code == 409 then
+									update("fail", "Already Linked", response.message)
+								else
+									update("fail", "API Error", response.message)
+								end
+							end, "POST", "https://api.duckybot.xyz/links", {
+								["Discord-Code"] = cookie,
+								["Roblox-Code"] = parameters.code
+							})
+						else
+							update("loading", "Redirecting...", "You are being redirected to Roblox.")
+							utils.redirect("https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid" .. ((parameters.redirect and ("&state=" .. parameters.redirect)) or ""))
+						end
+					end, "GET", "https://api.duckybot.xyz/links/" .. DiscordID)
+				end
 			else
 				update("fail", "API Error", "Failed to fetch your Discord profile from our API. Please try again later.")
 			end
@@ -189,14 +219,87 @@ elseif location == "/link/" then
 		})
 	else
 		update("loading", "Redirecting...", "You are being redirected to Discord.", false)
-		utils.redirect("/login?redirect=link")
+		utils.redirect("login/?redirect=link")
+	end
+elseif location == "/login/" then
+	local function update(icon, title, text, showButtons)
+		local key = {
+			loading = "/images/icons/loading.gif",
+			success = "/images/icons/success.svg",
+			fail = "/images/icons/fail.svg"
+		}
+
+		elements.login.icon.src = key[icon] or icon
+		elements.login.title.textContent = title
+		elements.login.text.innerHTML = text
+
+		if showButtons then
+			elements.login.buttons.classList:remove("hidden")
+		else
+			elements.login.buttons.classList:add("hidden")
+		end
+	end
+
+	update("loading", "Loading...", "Checking if you're logged in...", false)
+
+	local cookie = utils.cookie("discord")
+	local parameters = utils.parameters()
+
+	if parameters.logout == "true" then
+		if cookie then
+			utils.cookie("discord", "delete")
+			update("success", "Logged Out", "You have been successfully logged out.")
+			coroutine.wrap(function()
+				time.sleep(3000)
+				utils.redirect("login")
+			end)()
+		else
+			update("fail", "Not Logged In", "You are not logged in.")
+			utils.redirect("login")
+		end
+	elseif cookie then
+		update("loading", "Loading...", "Fetching your Discord profile from our API...", false)
+
+		http.request(function(success, response)
+			if success and response and response.data then
+				update("success", "Already Logged In", 'You are already logged in as <span class="text-primary font-semibold">@' .. response.data.username .. '</span>.', true)
+
+				if parameters.redirect or parameters.state then
+					utils.redirect(parameters.redirect or parameters.state)
+				end
+			else
+				update("fail", "API Error", "Failed to fetch your Discord profile from our API. Please try again later.")
+			end
+		end, "GET", "https://api.duckybot.xyz/users/@me", {
+			["Discord-Code"] = cookie
+		})
+	elseif parameters.access_token then
+		update("loading", "Loading...", "Fetching your Discord profile from our API...", false)
+
+		http.request(function(success, response)
+			if success and response and response.data then
+				utils.cookie("discord", parameters.access_token)
+				update("success", "Logged In", 'You have been logged in as <span class="text-primary font-semibold">@' .. response.data.username .. '</span>.', true)
+
+				if parameters.redirect or parameters.state then
+					utils.redirect(parameters.redirect or parameters.state)
+				end
+			else
+				update("fail", "API Error", "Failed to fetch your Discord profile from our API. Please try again later.")
+			end
+		end, "GET", "https://api.duckybot.xyz/users/@me", {
+			["Discord-Code"] = parameters.access_token
+		})
+	else
+		update("loading", "Redirecting...", "You are being redirected to Discord.", false)
+		utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flogin&scope=identify+guilds" .. ((parameters.redirect and ("&state=" .. parameters.redirect)) or ""))
 	end
 elseif location == "/docs/" then
 	utils.redirect("https://docs.duckybot.xyz/")
 elseif location == "/status/" then
 	utils.redirect("https://status.duckybot.xyz/")
 elseif location == "/invite/" then
-	utils.redirect("https://discord.com/oauth2/authorize?client_id=1257389588910182411")
+	utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411")
 elseif location == "/support/" then
 	utils.redirect("https://discord.gg/w2dNr7vuKP")
 end
