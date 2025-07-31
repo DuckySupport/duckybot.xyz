@@ -33,6 +33,12 @@ local elements = {
 		admin = document:getElementById("team-admin"),
 		support = document:getElementById("team-support"),
 		mod = document:getElementById("team-mod")
+	},
+	link = {
+		icon = document:getElementById("linkIcon"),
+		title = document:getElementById("linkTitle"),
+		text = document:getElementById("linkText"),
+		buttons = document:getElementById("linkButtons")
 	}
 }
 
@@ -78,7 +84,7 @@ if location == "/" or location == "/index.html" then
 							%s%s
 							</div>
 						</div>
-						<p class="text-white/60 text-base max-w-full break-words">%s</p>
+						<p class="text-white/60 text-base overflow-hidden" style="-webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical;">%s</p>
 						</div>
 					</div>
 					]], review.submitter.avatar, review.submitter.username, mobile and "w-16 h-16" or "w-20 h-20", review.submitter.username, filledStars, emptyStars, review.feedback)
@@ -121,6 +127,70 @@ elseif location == "/team/" then
 			end
 		end
 	end, "GET", "https://api.duckybot.xyz/team")
+elseif location == "/link/" then
+	local function update(icon, title, text, showButtons)
+		local key = {
+			loading = "/images/icons/loading.gif",
+			success = "/images/icons/success.svg",
+			fail = "/images/icons/fail.svg"
+		}
+
+		elements.link.icon.src = key[icon] or icon
+		elements.link.title.textContent = title
+		elements.link.text.innerHTML = text
+
+		if showButtons then
+			elements.link.buttons.classList:remove("hidden")
+		else
+			elements.link.buttons.classList:add("hidden")
+		end
+	end
+
+	update("loading", "Loading...", "Checking if you're logged in...", false)
+
+	local cookie = utils.cookie("discord")
+	local parameters = utils.parameters()
+
+	if cookie then
+		update("loading", "Loading...", "Fetching your Discord profile from our API...", false)
+
+		http.request(function(success, response)
+			if success and response and response.data then
+				local DiscordID = response.data.id
+
+				update("loading", "Loading...", "Fetching your Roblox profile from our API...", false)
+
+				http.request(function(success, response)
+					if success and response and response.data then
+						update("success", "Already Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-primary font-semibold">@' .. response.data.roblox.name .. '</a>, is linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-primary font-semibold">@' .. response.data.discord.username .. '</a>.', true)
+					elseif parameters.code then
+						http.request(function(success, response)
+							if success and response and response.data then
+								update("success", "Successfully Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-primary font-semibold">@' .. response.data.roblox.name .. '</a>, has been successfully linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-primary font-semibold">@' .. response.data.discord.username .. '</a>.', true)
+							elseif response and response.code == 409 then
+								update("fail", "Already Linked", response.message)
+							else
+								update("fail", "API Error", response.message)
+							end
+						end, "POST", "https://api.duckybot.xyz/links", {
+							["Discord-Code"] = cookie,
+							["Roblox-Code"] = parameters.code
+						})
+					else
+						update("loading", "Redirecting...", "You are being redirected to Roblox.")
+						utils.redirect("https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid")
+					end
+				end, "GET", "https://api.duckybot.xyz/links/" .. DiscordID)
+			else
+				update("fail", "API Error", "Failed to fetch your Discord profile from our API. Please try again later.")
+			end
+		end, "GET", "https://api.duckybot.xyz/users/@me", {
+			["Discord-Code"] = cookie
+		})
+	else
+		update("loading", "Redirecting...", "You are being redirected to Discord.", false)
+		utils.redirect("/login?redirect=link")
+	end
 elseif location == "/docs/" then
 	utils.redirect("https://docs.duckybot.xyz/")
 elseif location == "/status/" then
