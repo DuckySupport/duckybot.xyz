@@ -6,6 +6,7 @@ local utils = require("utils")
 
 local global = js.global
 local document = global.document
+local body = document.body
 local window = global.window
 local location = window.location.href
 local console = global.console
@@ -20,6 +21,11 @@ local elements = {
 	footer = {
 		version = document:getElementById("footerVersion"),
 		status = document:getElementById("footerStatus")
+	},
+	mobile = {
+		menu = document:getElementById("mobileMenu"),
+		open = document:getElementById("mobileMenuOpen"),
+		close = document:getElementById("mobileMenuClose")
 	}
 }
 
@@ -92,3 +98,27 @@ http.request(function(success, response)
 		elements.footer.statusDot.className = "w-2 h-2 bg-[#FF6666] rounded-full"
 	end
 end, "GET", "https://api.duckybot.xyz/")
+
+elements.mobile.open:addEventListener("click", function()
+    if not elements.mobile.menu then return end
+    
+    elements.mobile.menu.classList:toggle("active")
+
+    if elements.mobile.menu.classList:contains("active") then
+        body.style.overflow = "hidden"
+    else
+        body.style.overflow = ""
+    end
+end)
+
+elements.mobile.close:addEventListener("click", function()
+    if not elements.mobile.menu then return end
+    
+    elements.mobile.menu.classList:toggle("active")
+
+    if elements.mobile.menu.classList:contains("active") then
+        body.style.overflow = "hidden"
+    else
+        body.style.overflow = ""
+    end
+end)

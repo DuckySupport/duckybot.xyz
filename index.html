@@ -8,12 +8,12 @@
     <meta content="Ducky" property="og:title">
     <meta content="Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ER:LC server automation for effortless management." property="og:description">
     <meta content="https://duckybot.xyz" property="og:url">
-    <meta content="/images/icons/Ducky.svg" property="og:image">
-    <meta content="/images/icons/Ducky.svg" property="og:image:url">
+    <meta content="/images/icons/Ducky.png" property="og:image">
+    <meta content="/images/icons/Ducky.png" property="og:image:url">
     <meta content="300" property="og:image:width">
     <meta content="300" property="og:image:height">
     <meta content="#F5FF82" name="theme-color">
-    <link rel="icon" href="/images/icons/Ducky.svg">
+    <link rel="icon" href="/images/icons/Ducky.png">
     <title>Ducky</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -25,7 +25,7 @@
                 extend: {
                     colors: {
                         primary: '#F5FF82',
-                        secondary: '#121212',
+                        secondary: '#111111',
                         dark: '#0a0a0a'
                     },
                     fontFamily: {
@@ -59,15 +59,15 @@
                         Plus+</a>
                 <a href="/status" class="nav-link text-sm text-white/70">Status</a>
                 <a href="/support" class="nav-link text-sm text-white/70">Support</a>
-                <a href="/invite" class="btn-primary px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Invite</a>
+                <a href="/invite" class="btn-primary px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add Ducky</a>
             </div>
-            <button class="md:hidden text-primary" onclick="toggleMobileMenu()" aria-label="Toggle mobile menu">
+            <button id="mobileMenuOpen" class="md:hidden text-primary" aria-label="Toggle mobile menu">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
         </nav>
     </div>
     <div id="mobileMenu" class="mobile-menu">
-        <button class="absolute top-6 right-6 text-white/70" onclick="toggleMobileMenu()" aria-label="Close mobile menu">
+        <button id="mobileMenuClose" class="absolute top-6 right-6 text-white/70" aria-label="Close mobile menu">
                 <i class="fas fa-times text-2xl"></i>
             </button>
         <div class="flex flex-col items-center gap-6 sm:gap-8">
@@ -77,7 +77,8 @@
                     Plus+</a>
             <a href="/status" class="nav-link text-xl text-white/70">Status</a>
             <a href="/support" class="nav-link text-xl text-white/70">Support</a>
-            <a href="/invite" class="btn-primary px-8 py-2 rounded-full mt-4">Invite</a>
+            <a href="/invite" class="btn-primary text-xl px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add
+                    Ducky</a>
         </div>
     </div>
     <section class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
@@ -329,7 +330,7 @@
                 </p>
             </div>
             <div>
-                <h3 class="font-semibold text-white mb-3">Ducky</h3>
+                <h3 class="font-semibold text-white mb-3">Resources</h3>
                 <ul class="space-y-1 text-sm text-white/70">
                     <li>
                         <a href="/team" class="hover:text-white">Team</a>
@@ -338,7 +339,8 @@
                         <a href="/docs" class="hover:text-white">Documentation</a>
                     </li>
                     <li>
-                        <a href="/plus" class="hover:text-white">Ducky Plus+</a>
+                        <a href="/plus" class="hover:text-white">Ducky
+                                    Plus+</a>
                     </li>
                     <li>
                         <a href="/plus" class="hover:text-white">Status</a>
@@ -347,7 +349,8 @@
                         <a href="/support" class="hover:text-white">Support</a>
                     </li>
                     <li>
-                        <a href="/invite" class="hover:text-white">Add Ducky</a>
+                        <a href="/invite" class="hover:text-white">Add
+                                    Ducky</a>
                     </li>
                 </ul>
             </div>
@@ -355,7 +358,8 @@
                 <h3 class="font-semibold text-white mb-3">Legal</h3>
                 <ul class="space-y-1 text-sm text-white/70">
                     <li>
-                        <a href="/legal/terms" class="hover:text-white">Terms of Service</a>
+                        <a href="/legal/terms" class="hover:text-white">Terms of
+                                    Service</a>
                     </li>
                     <li>
                         <a href="/legal/privacy" class="hover:text-white">Privacy Policy</a>
@@ -366,7 +370,8 @@
         <div class="border-t border-white/10 mt-10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/40 px-6 py-6 max-w-7xl mx-auto">
             <p>© 2025 Ducky Bot. All rights reserved.</p>
             <div class="flex items-center gap-4">
-                <a href="https://discord.com/channels/1228508072289370172/1258891581583528098" id="footerVersion" class="text-white/50">v1.0.0 Stable</a>
+                <a href="https://discord.com/channels/1228508072289370172/1258891581583528098" id="footerVersion" class="text-white/50">v1.0.0
+                            Stable</a>
                 <a href="/status" id="footerStatus" class="flex items-center gap-1 px-2 py-0.5 bg-white/10 rounded-full text-[#FFFFFF] text-xs">
                     <span class="w-2 h-2 bg-[#FFFFFF] rounded-full"></span> Status: Loading...
                 </a>

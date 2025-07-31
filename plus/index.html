@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ER:LC server automation for effortless management.">
+    <meta name="description" content="Unlock endless possibilities with increased limits, giveaway requirements, less ratelimits, and so much more for 1,000 robux per server.">
     <meta content="Ducky Plus+" property="og:title">
-    <meta content="Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ER:LC server automation for effortless management." property="og:description">
+    <meta content="Unlock endless possibilities with increased limits, giveaway requirements, less ratelimits, and so much more for 1,000 robux per server." property="og:description">
     <meta content="https://duckybot.xyz" property="og:url">
-    <meta content="/images/icons/Plus.svg" property="og:image">
-    <meta content="/images/icons/Plus.svg" property="og:image:url">
+    <meta content="/images/icons/Plus.png" property="og:image">
+    <meta content="/images/icons/Plus.png" property="og:image:url">
     <meta content="300" property="og:image:width">
     <meta content="300" property="og:image:height">
-    <meta content="#F5FF82" name="theme-color">
-    <link rel="icon" href="/images/icons/Plus.svg">
+    <meta content="#FF54F9" name="theme-color">
+    <link rel="icon" href="/images/icons/Plus.png">
     <title>Ducky Plus+</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -25,7 +25,7 @@
                 extend: {
                     colors: {
                         primary: '#FFFFFF',
-                        secondary: '#121212',
+                        secondary: '#111111',
                         dark: '#0a0a0a'
                     },
                     fontFamily: {
@@ -47,35 +47,35 @@
             <img src="/images/misc/fullDucky.png" alt="Ducky" class="w-32 sm:w-32 h-auto object-contain">
         </a>
         <div class="hidden md:flex items-center gap-4 sm:gap-8">
-            <a href="/team" class="nav-link text-sm text-white/70">Team</a>
-            <a href="/docs" class="nav-link text-sm text-white/70">Docs</a>
-            <a href="/plus" class="nav-link text-sm text-white/70">Ducky Plus+</a>
-            <a href="/status" class="nav-link text-sm text-white/70">Status</a>
-            <a href="/support" class="nav-link text-sm text-white/70">Support</a>
-            <a href="/invite" class="btn-glass px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Invite</a>
+            <a href="/team" class="nav-link white text-sm text-white/70">Team</a>
+            <a href="/docs" class="nav-link white text-sm text-white/70">Docs</a>
+            <a href="/plus" class="nav-link white text-sm text-white/70">Ducky Plus+</a>
+            <a href="/status" class="nav-link white text-sm text-white/70">Status</a>
+            <a href="/support" class="nav-link white text-sm text-white/70">Support</a>
+            <a href="/invite" class="btn-glass px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add Ducky</a>
         </div>
-        <button class="md:hidden text-primary" onclick="toggleMobileMenu()" aria-label="Toggle mobile menu">
+        <button id="mobileMenuOpen" class="md:hidden text-primary" aria-label="Toggle mobile menu">
                 <i class="fas fa-bars text-xl"></i>
             </button>
     </nav>
 </div>
 <div id="mobileMenu" class="mobile-menu">
-    <button class="absolute top-6 right-6 text-white/70" onclick="toggleMobileMenu()" aria-label="Close mobile menu">
+    <button id="mobileMenuClose" class="absolute top-6 right-6 text-white/70" aria-label="Close mobile menu">
             <i class="fas fa-times text-2xl"></i>
         </button>
     <div class="flex flex-col items-center gap-6 sm:gap-8">
-        <a href="/team" class="nav-link text-xl text-white/70">Team</a>
-        <a href="/docs" class="nav-link text-xl text-white/70">Docs</a>
-        <a href="/plus" class="nav-link text-xl text-white/70">Ducky Plus+</a>
-        <a href="/status" class="nav-link text-xl text-white/70">Status</a>
-        <a href="/support" class="nav-link text-xl text-white/70">Support</a>
-        <a href="/invite" class="btn-primary px-8 py-2 rounded-full mt-4">Invite</a>
+        <a href="/team" class="nav-link white text-xl text-white/70">Team</a>
+        <a href="/docs" class="nav-link white text-xl text-white/70">Docs</a>
+        <a href="/plus" class="nav-link white text-xl text-white/70">Ducky Plus+</a>
+        <a href="/status" class="nav-link white text-xl text-white/70">Status</a>
+        <a href="/support" class="nav-link white text-xl text-white/70">Support</a>
+        <a href="/invite" class="btn-glass text-xl px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add Ducky</a>
     </div>
 </div>
 <section class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
     <div class="max-w-5xl mx-auto text-center">
         <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 animate-fade-in">
-            Ducky Plus+
+            <img src="/images/icons/Plus.svg" alt="Ducky Plus+ Icon" class="inline w-auto h-[1.2em] align-text-bottom"> Ducky Plus+
         </h1>
         <p class="text-white/60 text-sm sm:text-lg mb-6 sm:mb-8 max-w-3xl mx-auto">
             Unlock endless possibilities with increased limits, giveaway requirements, less ratelimits, and so much more for
@@ -242,7 +242,7 @@
             </p>
         </div>
         <div>
-            <h3 class="font-semibold text-white mb-3">Ducky</h3>
+            <h3 class="font-semibold text-white mb-3">Resources</h3>
             <ul class="space-y-1 text-sm text-white/70">
                 <li>
                     <a href="/team" class="hover:text-white">Team</a>
