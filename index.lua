@@ -26,10 +26,19 @@ local elements = {
 		menu = document:getElementById("mobileMenu"),
 		open = document:getElementById("mobileMenuOpen"),
 		close = document:getElementById("mobileMenuClose")
+	},
+	team = {
+		dev = document:getElementById("team-dev"),
+		mgmt = document:getElementById("team-mgmt"),
+		admin = document:getElementById("team-admin"),
+		support = document:getElementById("team-support"),
+		mod = document:getElementById("team-mod")
 	}
 }
 
-if location == "/" then
+print("Location: " .. location)
+
+if location == "/" or location == "/index.html" then
 	http.request(function(success, response)
 		if success and response and response.data then
 			elements.counters.guilds.textContent = utils.formatNumber(response.data.guilds) .. " communities"
@@ -80,6 +89,33 @@ if location == "/" then
 			end
 		end
 	end, "GET", "https://api.duckybot.xyz/feedback")
+elseif location == "/team/" then
+	http.request(function(success, response)
+		if success and response and response.data then
+			table.sort(response.data, function(a, b)
+				console:log(a)
+				console:log(b)
+				return (a and a.position or 0) > b.position
+			end)
+
+			for _, member in pairs(response.data) do
+				local container = elements.team[member.category]
+
+				if container then
+					local card = document:createElement("div")
+					card.className = "w-64 border-[1px] border-[" .. member.color .. "] aspect-square bg-secondary/40 rounded-xl text-white text-center p-6 flex flex-col items-center justify-center relative hover:shadow-[0_0_5px_" .. member.color .. "] hover:-translate-y-[5px] transform transition duration-300"
+
+					card.innerHTML = string.format([[
+						<a href="https://discord.com/users/%s"><img src="%s" alt="%s" class="w-24 h-24 rounded-full object-cover mb-4"></a>
+                        <a href="https://discord.com/users/%s"><h3 class="text-xl font-semibold">%s</h3></a>
+                        <p class="text-sm text-white/60">%s</p>
+					]], member.discord_id, member.avatar, member.name, member.discord_id, member.name, member.role)
+
+					container:appendChild(card)
+				end
+			end
+		end
+	end, "GET", "https://api.duckybot.xyz/team")
 end
 
 http.request(function(success, response)
