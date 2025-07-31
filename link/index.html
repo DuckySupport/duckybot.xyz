@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -20,6 +21,7 @@
             background-color: #0f0f0f;
             -webkit-tap-highlight-color: transparent;
         }
+        
         .glass-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -27,17 +29,21 @@
             border-radius: 16px;
             transition: all 0.3s ease;
         }
+        
         .glass-card.loading {
             border-color: rgba(255, 255, 255, 0.2);
         }
+        
         .glass-card.success {
             background: rgba(134, 239, 172, 0.03);
             border-color: rgba(134, 239, 172, 0.2);
         }
+        
         .glass-card.fail {
             background: rgba(252, 165, 165, 0.03);
             border-color: rgba(252, 165, 165, 0.2);
         }
+        
         .glow {
             position: absolute;
             width: 100%;
@@ -49,6 +55,7 @@
         }
     </style>
 </head>
+
 <body class="text-white min-h-screen flex items-center justify-center">
     <div id="glow-container">
         <div class="glow bg-red-300 top-0 left-0"></div>
@@ -62,7 +69,7 @@
             <p id="text" class="text-gray-400 mb-2">We're fetching data from our API.</p>
             <p><small id="subtext" class="text-gray-500">This may take a moment.</small></p>
             <div id="profile-button" class="hidden mt-6">
-                <a href="https://duckybot.xyz/link/profile" class="inline-block px-6 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-all duration-200">View Profile</a>
+                <a href="/link/profile" class="inline-block px-6 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-all duration-200">View Profile</a>
             </div>
         </div>
     </div>
@@ -79,7 +86,7 @@
             const referrer = document.referrer;
             if (referrer && !referrer.includes('duckybot.xyz') && !referrer.includes('discord.com') && !referrer.includes('roblox.com') && !referrer.includes('127.0.0.1')) {
                 fail("Access Denied", "Access from this domain is not permitted.");
-                
+
                 const deniedInfo = document.createElement('div');
                 deniedInfo.className = 'glass-card p-6 text-center mt-4';
                 deniedInfo.innerHTML = `
@@ -91,21 +98,22 @@
 
                 let timeLeft = 5;
                 const countdownElement = deniedInfo.querySelector('#countdown');
-                
+
                 const timer = setInterval(() => {
                     timeLeft--;
                     countdownElement.textContent = timeLeft;
-                    
+
                     if (timeLeft <= 0) {
                         clearInterval(timer);
                         window.location.href = 'https://duckybot.xyz';
                     }
                 }, 1000);
-                
+
                 return;
-            }      
+            }
+
             function updateGlowColor(isLoggedIn) {
-                const glowHtml = isLoggedIn ? 
+                const glowHtml = isLoggedIn ?
                     `<div class="glow bg-green-200 top-0 left-0"></div>
                      <div class="glow bg-green-200 bottom-0 right-0"></div>` :
                     `<div class="glow bg-red-300 top-0 left-0"></div>
@@ -128,7 +136,7 @@
                 subtext.innerHTML = "You may now return back to Discord.";
                 profileButton.classList.remove("hidden");
             }
-            
+
             function fail(errorTitle, errorString) {
                 card.className = "glass-card p-8 text-center fail";
                 title.innerHTML = errorTitle;
@@ -155,76 +163,76 @@
                     loadingStatus("Exchanging authorization code and linking...");
 
                     fetch("https://api.duckybot.xyz/links", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Discord-Code": loggedin,
-                            "Roblox-Code": authcode
-                        }
-                    })
-                    .then(result => result.json())
-                    .then(response => {
-                        if (response.code === 200) {
-                            success("Successfully Linked", `You've been successfully linked with <b>${response.data.robloxUser.name}</b>.`);
-                        } else {
-                            fail("Already Linked", response.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        fail("Internal Error", "An unexpected error occurred while linking your account. Please try again.");
-                    });
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Discord-Code": loggedin,
+                                "Roblox-Code": authcode
+                            }
+                        })
+                        .then(result => result.json())
+                        .then(response => {
+                            if (response.code === 200) {
+                                success("Successfully Linked", `You've been successfully linked with <b>${response.data.robloxUser.name}</b>.`);
+                            } else {
+                                fail("Already Linked", response.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            fail("Internal Error", "An unexpected error occurred while linking your account. Please try again.");
+                        });
                 } else {
                     fetch('https://discord.com/api/users/@me', {
-                        headers: {
-                            authorization: `Bearer ${loggedin}`,
-                        },
-                    })
-                    .then(result => {
-                        if (!result.ok) {
-                            console.error("Discord API did not return 200. Clearing cookie.");
+                            headers: {
+                                authorization: `Bearer ${loggedin}`,
+                            },
+                        })
+                        .then(result => {
+                            if (!result.ok) {
+                                console.error("Discord API did not return 200. Clearing cookie.");
+                                document.cookie = "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+                                loadingStatus("Redirecting to Discord...");
+                                console.log("Redirecting to login page...");
+                                updateGlowColor(false);
+                                window.location.href = "/login?redirect=link";
+                                return null;
+                            }
+                            return result.json();
+                        })
+                        .then(response => {
+                            if (response) {
+                                const DiscordID = response.id;
+
+                                fetch('https://api.duckybot.xyz/links/' + DiscordID, {
+                                        method: "GET"
+                                    })
+                                    .then(result => result.json())
+                                    .then(response => {
+                                        const link = response.data;
+
+                                        if (link) {
+                                            success("Already Linked", `You're already linked with <b>${link.roblox.name}</b>.`);
+                                        } else {
+                                            console.log("Redirecting to Roblox for authentication...");
+                                            loadingStatus("Redirecting to Roblox...");
+                                            window.location.href = "https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid";
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error(error);
+                                        fail("Error", "An error occurred while fetching your link status. Please try again.");
+                                    });
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
                             document.cookie = "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
                             loadingStatus("Redirecting to Discord...");
                             console.log("Redirecting to login page...");
                             updateGlowColor(false);
                             window.location.href = "/login?redirect=link";
-                            return null;
-                        }
-                        return result.json();
-                    })
-                    .then(response => {
-                        if (response) {
-                            const DiscordID = response.id;
-
-                            fetch('https://api.duckybot.xyz/links/' + DiscordID, {
-                                method: "GET"
-                            })
-                            .then(result => result.json())
-                            .then(response => {
-                                const link = response.data;
-
-                                if (link) {
-                                    success("Already Linked", `You're already linked with <b>${link.roblox.name}</b>.`);
-                                } else {
-                                    console.log("Redirecting to Roblox for authentication...");
-                                    loadingStatus("Redirecting to Roblox...");
-                                    window.location.href = "https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid";
-                                }
-                            })
-                            .catch(error => {
-                                console.error(error);
-                                fail("Error", "An error occurred while fetching your link status. Please try again.");
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        document.cookie = "discord=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-                        loadingStatus("Redirecting to Discord...");
-                        console.log("Redirecting to login page...");
-                        updateGlowColor(false);
-                        window.location.href = "/login?redirect=link";
-                    });
+                        });
                 }
             } else {
                 console.log("Not logged in | Redirecting to Discord...");
@@ -234,4 +242,5 @@
         }
     </script>
 </body>
+
 </html>
