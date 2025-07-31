@@ -99,7 +99,6 @@ elseif location == "/team/" then
 
 			for category, members in pairs(categories) do
 				table.sort(members, function(a, b) return a.position > b.position end)
-
 				for i, member in pairs(members) do
 					local container = elements.team[category]
 
