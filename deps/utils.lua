@@ -61,4 +61,39 @@ function utils.redirect(url)
     global.window.location.href = url
 end
 
+function utils.truncate(str, len)
+    return str:sub(1, len - 3) .. "..."
+end
+
+function utils.cookie(name)
+    local cookies = global.document.cookie
+    if not cookies then return end
+
+    for cookie in cookies:gmatch("([^;]+)") do
+        local k, v = cookie:match("^%s*(.-)%s*=%s*(.*)%s*$")
+        if k == name then
+            return v
+        end
+    end
+end
+
+function utils.parameters()
+    local params = {}
+    local query = global.window.location.search
+
+    if query and #query > 1 then
+        query = query:sub(2)
+        for pair in query:gmatch("[^&]+") do
+            local key, value = pair:match("([^=]+)=?(.*)")
+            if key then
+                key = global:decodeURIComponent(key)
+                value = global:decodeURIComponent(value)
+                params[key] = value
+            end
+        end
+    end
+
+    return params
+end
+
 return utils
