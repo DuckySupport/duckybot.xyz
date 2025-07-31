@@ -36,8 +36,6 @@ local elements = {
 	}
 }
 
-print("Location: " .. location)
-
 if location == "/" or location == "/index.html" then
 	http.request(function(success, response)
 		if success and response and response.data then
@@ -103,8 +101,6 @@ elseif location == "/team/" then
 				table.sort(members, function(a, b)
 					return a.position > b.position
 				end)
-
-				print("sorted")
 				
 				for i, member in pairs(members) do
 					local container = elements.team[category]
