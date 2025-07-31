@@ -1,3 +1,4 @@
+print("Loading index.lua...")
 package.path = "/deps/?.lua;" .. package.path
 local js = require("js")
 local http = require("http")
