@@ -8,7 +8,7 @@ function http.request(callback, method, url, headers, body)
     local jsonPromise = promise["then"](promise, function(_, response) return response:json() end)
 
     jsonPromise["then"](jsonPromise, function(_, body)
-        return coroutine.wrap(callback)(true, body)
+        return coroutine.wrap(callback)(body.code == 200, body)
     end)
 end
 

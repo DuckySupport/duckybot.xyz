@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description"
-        content="A powerful bot crafted for seamless server management, featuring advanced Roblox Moderation, ER:LC Integration, and Automation">
+        content="Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ER:LC server automation for effortless management.">
     <meta content="Ducky" property="og:title">
     <meta
-        content="A powerful bot crafted for seamless server management, featuring advanced Roblox Moderation, ER:LC Integration, and Automation"
+        content="Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ER:LC server automation for effortless management."
         property="og:description">
     <meta content="https://duckybot.xyz" property="og:url">
     <meta content="/images/icons/Ducky.svg" property="og:image">
@@ -22,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="/index.css">
     <script>
         tailwind.config = {
             theme: {
@@ -57,8 +57,7 @@
         <nav
             class="floating-nav flex items-center justify-between py-2 sm:py-2 px-4 sm:px-6 rounded-full bg-secondary/30">
             <a href="/" class="flex items-center gap-2 sm:gap-3">
-                <img src="/images/icons/Ducky.svg" alt="Ducky" class="w-7 h-7 sm:w-8 sm:h-8">
-                <span class="text-lg sm:text-xl font-bold text-primary">Ducky</span>
+                <img src="/images/misc/fullDucky.png" alt="Ducky" class="w-32 sm:w-32 h-auto object-contain">
             </a>
 
             <div class="hidden md:flex items-center gap-4 sm:gap-8">
@@ -95,9 +94,9 @@
         <div class="max-w-5xl mx-auto text-center">
             <a id="duckyVersion" href="https://discord.com/channels/1228508072289370172/1258891581583528098"
                 target="_blank" rel="noopener noreferrer"
-                class="inline-flex items-center px-4 sm:px-6 py-1.5 sm:py-2 rounded-full bg-primary/10 border border-primary/10 text-white/90 text-xs sm:text-sm font-medium mb-6 sm:mb-8 hover:bg-primary/10 transition">
+                class="group inline-flex items-center px-4 sm:px-6 py-1.5 sm:py-2 rounded-full bg-primary/10 border border-primary/10 text-white/90 text-xs sm:text-sm font-medium mb-6 sm:mb-8 hover:bg-primary/10 transition">
                 Ducky&nbsp;<span id="duckyVersionText">v1.2.0 Stable</span>&nbsp;is now live!
-                <i class="fas fa-chevron-right ml-2 text-xs"></i>
+                <i class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i>
             </a>
 
 
@@ -123,31 +122,34 @@
     <section class="py-16 sm:py-20 px-4 relative">
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             <div class="card p-6 sm:p-8 animate-slide-up" style="animation-delay: 0.1s">
-                <i class="fas fa-shield-alt text-primary text-2xl sm:text-3xl mb-4 sm:mb-6"></i>
+                <i class="fas fa-shield-alt text-2xl sm:text-3xl mb-4 sm:mb-6"></i>
                 <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Staff Management</h3>
-                <p class="text-white/60 text-sm sm:text-base">Flawlessly manage your whole staff team with tracking,
-                    leave of absences, infractions, and much more</p>
+                <p class="text-white/60 text-sm sm:text-base">Manage your staff team with ease using infractions,
+                    promotions, LOAs, feedback, and more</p>
             </div>
             <div class="card p-6 sm:p-8 animate-slide-up" style="animation-delay: 0.2s">
-                <i class="fas fa-robot text-primary text-2xl sm:text-3xl mb-4 sm:mb-6"></i>
-                <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Smart Automation</h3>
-                <p class="text-white/60 text-sm sm:text-base">Automate tasks and workflows with ease using our intuitive
-                    command system</p>
+                <img src="/images/icons/automation.svg" alt="Automation Icon"
+                    class="inline w-auto h-[2.25rem] mb-4 sm:mb-6">
+                <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Automation</h3>
+                <p class="text-white/60 text-sm sm:text-base">Seamless ER:LC automation with over 30+ triggers, actions,
+                    and conditions for effortless management</p>
             </div>
             <div class="card p-6 sm:p-8 animate-slide-up" style="animation-delay: 0.3s">
-                <i class="fas fa-code text-primary text-2xl sm:text-3xl mb-4 sm:mb-6"></i>
-                <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">ER:LC Integration</h3>
-                <p class="text-white/60 text-sm sm:text-base">Seamless integration with Emergency Response: Liberty
-                    County for role management</p>
+                <i class="fas fa-code text-2xl sm:text-3xl mb-4 sm:mb-6"></i>
+                <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Multipurpose</h3>
+                <p class="text-white/60 text-sm sm:text-base">Features for every server, such as Discord Moderation,
+                    Roblox Verification, Reaction Boards, and more</p>
             </div>
         </div>
     </section>
 
     <section class="relative py-20 px-4 max-w-5xl mx-auto text-center overflow-visible">
-        <img src="/images/misc/fannedlogos.png" alt="fanned logos" class="absolute top-[-75px] left-1/2 -translate-x-1/2 w-full max-w-none pointer-events-none select-none" style="height: 400px; object-fit: contain; z-index: 0;">
+        <img src="/images/misc/fannedlogos.png" alt="fanned logos"
+            class="absolute top-[-75px] left-1/2 -translate-x-1/2 w-full max-w-none pointer-events-none select-none"
+            style="height: 400px; object-fit: contain; z-index: 0;">
         <div class="relative z-10">
             <h1 class="text-white text-4xl sm:text-5xl leading-tight max-w-3xl mx-auto">
-                Trusted by <span class="text-primary font-bold" id="userCount">300,000+ users</span><br />
+                <br>Trusted by <span class="text-primary font-bold" id="userCount">300,000+ users</span><br />
                 across <span class="text-primary font-bold" id="guildCount">3,200+ communities</span>.
             </h1>
         </div>
@@ -162,10 +164,11 @@
             </div>
             <div class="text-center mt-3 sm:mt-4">
                 <a href="/reviews"
-                    class="px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base">
+                    class="group px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base">
                     See all reviews
-                    <i class="fas fa-chevron-right ml-2 text-xs"></i>
+                    <i class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-[5px]"></i>
                 </a>
+
             </div>
         </div>
 
@@ -305,10 +308,12 @@
                 </div>
                 <div class="text-center mt-3 sm:mt-4">
                     <a href="/affiliates"
-                        class="px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base">
+                        class="group px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base">
                         View all affiliates
-                        <i class="fas fa-chevron-right ml-2 text-xs"></i>
+                        <i
+                            class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-[5px]"></i>
                     </a>
+
                 </div>
             </div>
     </section>
@@ -357,7 +362,7 @@
         </div>
     </footer>
     <script>
-        fetch("index.lua")
+        fetch("/index.lua")
             .then(res => res.text())
             .then(lua => {
                 fengari.load(lua)();
