@@ -1,4 +1,3 @@
-print("Loading index.lua...")
 package.path = "/deps/?.lua;" .. package.path
 local js = require("js")
 local http = require("http")
@@ -9,7 +8,7 @@ local global = js.global
 local document = global.document
 local body = document.body
 local window = global.window
-local location = window.location.href
+local location = window.location.pathname
 local console = global.console
 
 local elements = {
