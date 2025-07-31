@@ -183,7 +183,7 @@ elseif location == "/link/" then
 
 					http.request(function(success, response)
 						if success and response and response.data then
-							update("success", "Already Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-primary font-semibold">@' .. response.data.roblox.name .. '</a>, is linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-primary font-semibold">@' .. response.data.discord.username .. '</a>.', true)
+							update("success", "Already Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-white font-semibold">@' .. response.data.roblox.name .. '</a>, is linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-white font-semibold">@' .. response.data.discord.username .. '</a>.', true)
 
 							if parameters.redirect or parameters.state then
 								utils.redirect(parameters.redirect or parameters.state)
@@ -191,7 +191,7 @@ elseif location == "/link/" then
 						elseif parameters.code then
 							http.request(function(success, response)
 								if success and response and response.data then
-									update("success", "Successfully Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-primary font-semibold">@' .. response.data.roblox.name .. '</a>, has been successfully linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-primary font-semibold">@' .. response.data.discord.username .. '</a>.', true)
+									update("success", "Successfully Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-white font-semibold">@' .. response.data.roblox.name .. '</a>, has been successfully linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-white font-semibold">@' .. response.data.discord.username .. '</a>.', true)
 									
 									if parameters.redirect or parameters.state then
 										utils.redirect(parameters.redirect or parameters.state)
@@ -262,7 +262,7 @@ elseif location == "/login/" then
 
 		http.request(function(success, response)
 			if success and response and response.data then
-				update("success", "Already Logged In", 'You are already logged in as <span class="text-white font-semibold">@' .. response.data.username .. '</span>.', true)
+				update("success", "Already Logged In", 'You are already logged in as <a href="https://discord.com/users/' .. response.data.id .. '" class="text-white font-semibold">@' .. response.data.username .. '</a>.', true)
 
 				if parameters.redirect or parameters.state then
 					utils.redirect(parameters.redirect or parameters.state)
@@ -279,7 +279,7 @@ elseif location == "/login/" then
 		http.request(function(success, response)
 			if success and response and response.data then
 				utils.cookie("discord", parameters.access_token)
-				update("success", "Logged In", 'You have been logged in as <span class="text-white font-semibold">@' .. response.data.username .. '</span>.', true)
+				update("success", "Logged In", 'You have been logged in as <a href="https://discord.com/users/' .. response.data.id .. '" class="text-white font-semibold">@' .. response.data.username .. '</a>.', true)
 
 				if parameters.redirect or parameters.state then
 					utils.redirect(parameters.redirect or parameters.state)
