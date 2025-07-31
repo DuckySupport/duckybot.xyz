@@ -33,7 +33,10 @@ body {
 
 @media (max-width: 768px) {
     .floating-nav {
-        padding: 0.5rem 1rem !important;
+        height: 60px;
+    }
+    body {
+        padding-top: 60px;
     }
 }
 
