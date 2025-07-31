@@ -4,12 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description"
-        content="Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ER:LC server automation for effortless management.">
+    <meta name="description" content="Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ER:LC server automation for effortless management.">
     <meta content="Ducky" property="og:title">
-    <meta
-        content="Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ER:LC server automation for effortless management."
-        property="og:description">
+    <meta content="Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ER:LC server automation for effortless management." property="og:description">
     <meta content="https://duckybot.xyz" property="og:url">
     <meta content="/images/icons/Ducky.svg" property="og:image">
     <meta content="/images/icons/Ducky.svg" property="og:image:url">
@@ -19,10 +16,9 @@
     <link rel="icon" href="/images/icons/Ducky.svg">
     <title>Ducky</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="/styles.css">
     <script>
         tailwind.config = {
             theme: {
@@ -47,135 +43,128 @@
 
 <body>
     <div class="bg-pattern"></div>
-
     <div class="glow bg-primary top-0 left-[10%] w-[500px] h-[500px]"></div>
     <div class="glow bg-primary bottom-0 right-[10%] w-[500px] h-[500px]"></div>
     <div class="glow bg-purple-500 top-[40%] right-[20%] w-[300px] h-[300px] opacity-[0.04]"></div>
     <div class="glow bg-blue-500 bottom-[30%] left-[15%] w-[250px] h-[250px] opacity-[0.03]"></div>
-
     <div class="fixed top-4 sm:top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-5xl px-4">
-        <nav
-            class="floating-nav flex items-center justify-between py-2 sm:py-2 px-4 sm:px-6 rounded-full bg-secondary/30">
+        <nav class="floating-nav flex items-center justify-between py-2 sm:py-2 px-4 sm:px-6 rounded-full bg-secondary/30">
             <a href="/" class="flex items-center gap-2 sm:gap-3">
                 <img src="/images/misc/fullDucky.png" alt="Ducky" class="w-32 sm:w-32 h-auto object-contain">
             </a>
-
             <div class="hidden md:flex items-center gap-4 sm:gap-8">
                 <a href="/team" class="nav-link text-sm text-white/70">Team</a>
                 <a href="/docs" class="nav-link text-sm text-white/70">Docs</a>
-                <a href="/plus" class="nav-link text-sm text-white/70">Ducky Plus+</a>
+                <a href="/plus" class="nav-link text-sm text-white/70">Ducky
+                        Plus+</a>
                 <a href="/status" class="nav-link text-sm text-white/70">Status</a>
                 <a href="/support" class="nav-link text-sm text-white/70">Support</a>
                 <a href="/invite" class="btn-primary px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Invite</a>
             </div>
-
             <button class="md:hidden text-primary" onclick="toggleMobileMenu()" aria-label="Toggle mobile menu">
-                <i class="fas fa-bars text-xl"></i>
-            </button>
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
         </nav>
     </div>
-
     <div id="mobileMenu" class="mobile-menu">
-        <button class="absolute top-6 right-6 text-white/70" onclick="toggleMobileMenu()"
-            aria-label="Close mobile menu">
-            <i class="fas fa-times text-2xl"></i>
-        </button>
+        <button class="absolute top-6 right-6 text-white/70" onclick="toggleMobileMenu()" aria-label="Close mobile menu">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
         <div class="flex flex-col items-center gap-6 sm:gap-8">
             <a href="/team" class="nav-link text-xl text-white/70">Team</a>
             <a href="/docs" class="nav-link text-xl text-white/70">Docs</a>
-            <a href="/plus" class="nav-link text-xl text-white/70">Ducky Plus+</a>
+            <a href="/plus" class="nav-link text-xl text-white/70">Ducky
+                    Plus+</a>
             <a href="/status" class="nav-link text-xl text-white/70">Status</a>
             <a href="/support" class="nav-link text-xl text-white/70">Support</a>
             <a href="/invite" class="btn-primary px-8 py-2 rounded-full mt-4">Invite</a>
         </div>
     </div>
-
     <section class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
         <div class="max-w-5xl mx-auto text-center">
-            <a id="duckyVersion" href="https://discord.com/channels/1228508072289370172/1258891581583528098"
-                target="_blank" rel="noopener noreferrer"
-                class="group inline-flex items-center px-4 sm:px-6 py-1.5 sm:py-2 rounded-full bg-primary/10 border border-primary/10 text-white/90 text-xs sm:text-sm font-medium mb-6 sm:mb-8 hover:bg-primary/10 transition">
-                Ducky&nbsp;<span id="duckyVersionText">v1.2.0 Stable</span>&nbsp;is now live!
-                <i class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i>
-            </a>
-
-
+            <a id="duckyVersion" href="https://discord.com/channels/1228508072289370172/1258891581583528098" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center px-4 sm:px-6 py-1.5 sm:py-2 rounded-full bg-primary/10 border border-primary/10 text-white/90 text-xs sm:text-sm font-medium mb-6 sm:mb-8 hover:bg-primary/10 transition">
+                    Ducky&nbsp;
+                    <span id="duckyVersionText">v1.2.0 Stable</span>
+                    &nbsp;is now live!
+                    <i
+                        class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i>
+                </a>
             <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 animate-fade-in">
-                Power Your Server with <span class="text-primary">Ducky</span>
+                Power Your Server with
+                <span class="text-primary">Ducky</span>
             </h1>
             <p class="text-white/60 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-12 animate-slide-up">
-                A multipurpose bot focused on seamlessly integrating <span class="text-primary">Discord</span> and <span
-                    class="text-primary">ER:LC</span> server automation for <span class="text-primary">effortless</span>
-                management.
+                A multipurpose bot focused on seamlessly integrating
+                <span class="text-primary">Discord</span> and
+                <span class="text-primary">ER:LC</span> server automation for
+                <span class="text-primary">effortless</span> management.
             </p>
             <div class="flex flex-wrap justify-center gap-3 sm:gap-4 animate-slide-up" style="animation-delay: 0.2s">
                 <a href="/invite" class="btn-primary px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base">
-                    Add Ducky
-                </a>
+                        Add Ducky
+                    </a>
                 <a href="/support" class="btn-secondary px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base">
-                    Support
-                </a>
+                        Support
+                    </a>
             </div>
         </div>
     </section>
-
     <section class="py-16 sm:py-20 px-4 relative">
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             <div class="card p-6 sm:p-8 animate-slide-up" style="animation-delay: 0.1s">
                 <i class="fas fa-shield-alt text-2xl sm:text-3xl mb-4 sm:mb-6"></i>
-                <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Staff Management</h3>
-                <p class="text-white/60 text-sm sm:text-base">Manage your staff team with ease using infractions,
-                    promotions, LOAs, feedback, and more</p>
+                <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Staff Management
+                </h3>
+                <p class="text-white/60 text-sm sm:text-base">
+                    Manage your staff team with ease using infractions, promotions, LOAs, feedback, and more
+                </p>
             </div>
             <div class="card p-6 sm:p-8 animate-slide-up" style="animation-delay: 0.2s">
-                <img src="/images/icons/automation.svg" alt="Automation Icon"
-                    class="inline w-auto h-[2.25rem] mb-4 sm:mb-6">
+                <img src="/images/icons/automation.svg" alt="Automation Icon" class="inline w-auto h-[2.25rem] mb-4 sm:mb-6">
                 <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Automation</h3>
-                <p class="text-white/60 text-sm sm:text-base">Seamless ER:LC automation with over 30+ triggers, actions,
-                    and conditions for effortless management</p>
+                <p class="text-white/60 text-sm sm:text-base">
+                    Seamless ER:LC automation with over 30+ triggers, actions, and conditions for effortless management
+                </p>
             </div>
             <div class="card p-6 sm:p-8 animate-slide-up" style="animation-delay: 0.3s">
                 <i class="fas fa-code text-2xl sm:text-3xl mb-4 sm:mb-6"></i>
                 <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Multipurpose</h3>
-                <p class="text-white/60 text-sm sm:text-base">Features for every server, such as Discord Moderation,
-                    Roblox Verification, Reaction Boards, and more</p>
+                <p class="text-white/60 text-sm sm:text-base">
+                    Features for every server, such as Discord Moderation, Roblox Verification, Reaction Boards, and more
+                </p>
             </div>
         </div>
     </section>
-
     <section class="relative py-20 px-4 max-w-5xl mx-auto text-center overflow-visible">
-        <img src="/images/misc/fannedlogos.png" alt="fanned logos"
-            class="absolute top-[-75px] left-1/2 -translate-x-1/2 w-full max-w-none pointer-events-none select-none"
-            style="height: 400px; object-fit: contain; z-index: 0;">
+        <img src="/images/misc/fannedlogos.png" alt="fanned logos" class="absolute top-[-75px] left-1/2 -translate-x-1/2 w-full max-w-none pointer-events-none select-none" style="height: 400px; object-fit: contain; z-index: 0;">
         <div class="relative z-10">
             <h1 class="text-white text-4xl sm:text-5xl leading-tight max-w-3xl mx-auto">
-                <br>Trusted by <span class="text-primary font-bold" id="userCount">300,000+ users</span><br />
-                across <span class="text-primary font-bold" id="guildCount">3,200+ communities</span>.
+                <br> Trusted by
+                <span class="text-primary font-bold" id="userCount">300,000+
+                        users</span>
+                <br> across
+                <span class="text-primary font-bold" id="guildCount">3,200+
+                        communities</span> .
             </h1>
         </div>
     </section>
-
-
-
     <section class="py-16 sm:py-20 px-4 relative">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-2xl sm:text-3xl font-bold text-center mb-4 sm:mb-6">Our Reviews</h2>
-            <div id="feedbackSlider" class="flex flex-col gap-[5px]">
-            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-center mb-4 sm:mb-6">Our Reviews
+            </h2>
+            <div id="feedbackSlider" class="flex flex-col gap-[5px]"></div>
             <div class="text-center mt-3 sm:mt-4">
-                <a href="/reviews"
-                    class="group px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base">
-                    See all reviews
-                    <i class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-[5px]"></i>
-                </a>
-
+                <a href="/reviews" class="group px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base">
+                        See all reviews
+                        <i
+                            class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-[5px]"></i>
+                    </a>
             </div>
         </div>
-
         <div class="max-w-6xl mx-auto mt-16 sm:mt-20">
-            <h2 class="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">Our Affiliates</h2>
+            <h2 class="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">Our Affiliates
+            </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-
                 <!-- Collier County Roleplay -->
                 <div class="card affiliate-card">
                     <div class="flex justify-center">
@@ -185,18 +174,17 @@
                     </div>
                     <div class="card-content">
                         <h3 class="text-lg sm:text-xl font-bold text-center mb-3 sm:mb-4">Collier County Roleplay</h3>
-                        <p class="text-gray-300 text-center text-sm sm:text-base">A roleplay server delivering an
-                            immersive roleplay experience, built by the community.</p>
+                        <p class="text-gray-300 text-center text-sm sm:text-base">
+                            A roleplay server delivering an immersive roleplay experience, built by the community.
+                        </p>
                         <div class="button-container">
-                            <a href="https://discord.gg/FamWC7D4kC" target="_blank"
-                                class="bg-primary/10 text-white border border-primary/30 px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base font-semibold hover:bg-primary/30 transition">
+                            <a href="https://discord.gg/FamWC7D4kC" target="_blank" class="bg-primary/10 text-white border border-primary/30 px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base font-semibold hover:bg-primary/30 transition">
                                 <i class="fab fa-discord fixed-icon"></i>
                                 <span>Join Discord</span>
                             </a>
                         </div>
                     </div>
                 </div>
-
                 <!-- London Croydon Roleplay -->
                 <div class="card affiliate-card">
                     <div class="flex justify-center">
@@ -206,18 +194,17 @@
                     </div>
                     <div class="card-content">
                         <h3 class="text-lg sm:text-xl font-bold text-center mb-3 sm:mb-4">London Croydon Roleplay</h3>
-                        <p class="text-gray-300 text-center text-sm sm:text-base">We are a new London based ERLC server
-                            with over +200 custom liveries and several custom uniforms.</p>
+                        <p class="text-gray-300 text-center text-sm sm:text-base">
+                            We are a new London based ERLC server with over +200 custom liveries and several custom uniforms.
+                        </p>
                         <div class="button-container">
-                            <a href="https://discord.gg/U9YYUDAUt5" target="_blank"
-                                class="bg-primary/10 text-white border border-primary/30 px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base font-semibold hover:bg-primary/30 transition">
+                            <a href="https://discord.gg/U9YYUDAUt5" target="_blank" class="bg-primary/10 text-white border border-primary/30 px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base font-semibold hover:bg-primary/30 transition">
                                 <i class="fab fa-discord fixed-icon"></i>
                                 <span>Join Discord</span>
                             </a>
                         </div>
                     </div>
                 </div>
-
                 <!-- Alabama State Roleplay -->
                 <div class="card affiliate-card">
                     <div class="flex justify-center">
@@ -227,79 +214,75 @@
                     </div>
                     <div class="card-content">
                         <h3 class="text-lg sm:text-xl font-bold text-center mb-3 sm:mb-4">Alabama State Roleplay</h3>
-                        <p class="text-gray-300 text-center text-sm sm:text-base">Hello! We are Alabama State Roleplay.
-                            Offering many departments including: Pine Hallow PD, Pine CSO, Pine Hallow FD, and AHP.</p>
+                        <p class="text-gray-300 text-center text-sm sm:text-base">
+                            Hello! We are Alabama State Roleplay. Offering many departments including: Pine Hallow PD, Pine CSO, Pine Hallow FD, and AHP.
+                        </p>
                         <div class="button-container">
-                            <a href="https://discord.gg/uVttRQFB7d" target="_blank"
-                                class="bg-primary/10 text-white border border-primary/30 px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base font-semibold hover:bg-primary/30 transition">
+                            <a href="https://discord.gg/uVttRQFB7d" target="_blank" class="bg-primary/10 text-white border border-primary/30 px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base font-semibold hover:bg-primary/30 transition">
                                 <i class="fab fa-discord fixed-icon"></i>
                                 <span>Join Discord</span>
                             </a>
                         </div>
                     </div>
                 </div>
-
             </div>
-
             <div class="max-w-6xl mx-auto mt-16 sm:mt-20">
                 <div class="card affiliate-card md:col-span-2 lg:col-span-3 p-6 sm:p-8">
                     <div class="flex justify-center">
                         <div class="card-icon">
-                            <img src="/images/partners/vertuo.png" alt="Vertuo Hosting"
-                                class="h-full w-full object-cover">
+                            <img src="/images/partners/vertuo.png" alt="Vertuo Hosting" class="h-full w-full object-cover">
                         </div>
                     </div>
                     <div class="card-content">
-                        <h3 class="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Vertuo Hosting</h3>
-
+                        <h3 class="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Vertuo Hosting
+                        </h3>
                         <div class="content-area">
                             <p class="text-gray-300 text-center max-w-3xl mx-auto mb-6 sm:mb-8 text-sm sm:text-base">
-                                Vertuo Hosting is home to efficient and affordable hosting for all your specified needs
-                                offering a variety of services such as Discord Bot hosting, Game Server hosting, VPS
-                                Nodes, Dedicated Servers and even Web hosting!
+                                Vertuo Hosting is home to efficient and affordable hosting for all your specified needs offering a variety of services such as Discord Bot hosting, Game Server hosting, VPS Nodes, Dedicated Servers and even Web hosting!
                             </p>
-
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 max-w-5xl mx-auto mb-6 sm:mb-8">
                                 <div class="glass-card p-4 sm:p-6">
-                                    <h4 class="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Why Choose Vertuo Hosting?
+                                    <h4 class="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">
+                                        Why Choose Vertuo Hosting?
                                     </h4>
                                     <ul class="list-disc pl-5 text-gray-300 space-y-1 text-sm sm:text-base">
                                         <li>Reliable and affordable hosting for any budget</li>
                                         <li>Ever-expanding development and service upgrades</li>
-                                        <li>24/7 support via live chat and tickets</li>
-                                        <li>Active staff members ready to help</li>
+                                        <li>24/7 support via live chat and tickets
+                                        </li>
+                                        <li>Active staff members ready to help
+                                        </li>
                                     </ul>
                                 </div>
-
                                 <div class="glass-card p-4 sm:p-6">
-                                    <h4 class="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Available Game Servers
+                                    <h4 class="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">
+                                        Available Game Servers
                                     </h4>
                                     <ul class="list-disc pl-5 text-gray-300 space-y-1 text-sm sm:text-base">
-                                        <li>Garry's Mod, Minecraft, Rust</li>
-                                        <li>Palworld, Arma 3, Arma Reforger</li>
-                                        <li>BeamMP, ARK Survival Evolved</li>
-                                        <li>Unturned, Satisfactory, Space Engineers</li>
+                                        <li>Garry's Mod, Minecraft, Rust
+                                        </li>
+                                        <li>Palworld, Arma 3, Arma Reforger
+                                        </li>
+                                        <li>BeamMP, ARK Survival Evolved
+                                        </li>
+                                        <li>Unturned, Satisfactory, Space Engineers
+                                        </li>
                                         <li>And many more!</li>
                                     </ul>
                                 </div>
                             </div>
-
                             <div class="flex justify-center">
-                                <div
-                                    class="inline-block bg-[#F5FF82]/10 text-[#F5FF82] px-3 py-1.5 sm:px-4 sm:py-2 rounded-full font-bold mb-4 sm:mb-6 text-center text-sm sm:text-base">
+                                <div class="inline-block bg-[#F5FF82]/10 text-[#F5FF82] px-3 py-1.5 sm:px-4 sm:py-2 rounded-full font-bold mb-4 sm:mb-6 text-center text-sm sm:text-base">
                                     USE CODE: DUCKY25 FOR 25% OFF YOUR FIRST MONTH
                                 </div>
                             </div>
                         </div>
-
                         <div class="flex flex-col sm:flex-row justify-center gap-3 sm:gap-6">
-                            <a href="https://vertuohosting.com/" target="_blank"
-                                class="bg-primary/10 px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center justify-center gap-2 text-sm sm:text-base">
+                            <a href="https://vertuohosting.com/" target="_blank" class="bg-primary/10 px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center justify-center gap-2 text-sm sm:text-base">
                                 <i class="fas fa-globe"></i>
                                 <span>Website</span>
                             </a>
-                            <a href="https://discord.gg/7hZVXBFuac" target="_blank"
-                                class="btn-secondary px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center justify-center gap-2 text-sm sm:text-base">
+                            <a href="https://discord.gg/7hZVXBFuac" target="_blank" class="btn-secondary px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center justify-center gap-2 text-sm sm:text-base">
                                 <i class="fab fa-discord"></i>
                                 <span>Discord</span>
                             </a>
@@ -307,58 +290,98 @@
                     </div>
                 </div>
                 <div class="text-center mt-3 sm:mt-4">
-                    <a href="/affiliates"
-                        class="group px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base">
-                        View all affiliates
-                        <i
-                            class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-[5px]"></i>
-                    </a>
-
+                    <a href="/affiliates" class="group px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base">
+                            View all affiliates
+                            <i
+                                class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-[5px]"></i>
+                        </a>
                 </div>
             </div>
     </section>
-
     <section class="py-16 sm:py-20 px-4 relative">
         <div class="max-w-6xl mx-auto">
             <div class="card p-8 sm:p-12 text-center relative overflow-hidden bg-cover bg-center">
-                <div
-                    class="absolute inset-0 bg-[url('/images/banners/footers/plus.png')] bg-cover bg-center blur opacity-60 z-0">
-                </div>
+                <div class="absolute inset-0 bg-[url('/images/banners/footers/plus.png')] bg-cover bg-center blur opacity-60 z-0"></div>
                 <div class="relative z-10">
                     <h2 class="text-2xl sm:text-4xl font-bold mb-4 sm:mb-6 text-white">
-                        <img src="/images/icons/Plus.svg" alt="Ducky Icon"
-                            class="inline h-[1.2em] w-auto align-text-bottom">
-                        Ducky Plus+
+                        <img src="/images/icons/Plus.svg" alt="Ducky Icon" class="inline h-[1.2em] w-auto align-text-bottom"> Ducky Plus+
                     </h2>
                     <p class="text-white/60 text-sm sm:text-lg mb-6 sm:mb-8 max-w-3xl mx-auto">
-                        Unlock endless possibilities with increased limits, giveaway requirements, less ratelimits, and
-                        so much more for <img src="/images/icons/robux.svg" alt="Robux Icon"
-                            class="inline w-auto h-[1.2em] align-text-bottom"> <b>1,000</b> per server.
+                        Unlock endless possibilities with increased limits, giveaway requirements, less ratelimits, and so much more for
+                        <img src="/images/icons/robux.svg" alt="Robux Icon" class="inline w-auto h-[1.2em] align-text-bottom">
+                        <b>1,000</b> per server.
                     </p>
-                    <a href="/plus"
-                        class="bg-white/10 text-white border border-white/30 px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base font-semibold hover:bg-white/30 transition">
-                        Upgrade to Ducky Plus+
-                    </a>
+                    <a href="/plus" class="bg-white/10 text-white border border-white/30 px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base font-semibold hover:bg-white/30 transition">
+                                Upgrade to Ducky Plus+
+                            </a>
                 </div>
             </div>
         </div>
     </section>
-
-    <footer class="border-t border-primary/10 py-8 sm:py-12 px-4">
-        <div class="max-w-6xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6 sm:gap-8">
-                <div class="flex items-center gap-3">
-                    <img src="/images/icons/Ducky.svg" alt="Ducky" class="w-7 h-7 sm:w-8 sm:h-8">
-                    <span class="text-lg sm:text-xl font-bold text-primary">Ducky</span>
+    <footer class="bg-secondary/30 backdrop-blur-md border-t border-white/10 text-white px-6 py-12">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-10">
+            <div class="md:col-span-1">
+                <div class="flex items-center gap-2 mb-4">
+                    <img src="/images/misc/fullDucky.png" alt="Ducky" class="w-28 h-auto object-contain">
                 </div>
-                <div class="flex gap-4 sm:gap-6">
-                    <a href="/legal/privacy" class="nav-link text-sm sm:text-base text-white/60">Privacy</a>
-                    <a href="/legal/terms" class="nav-link text-sm sm:text-base text-white/60">Terms</a>
-                    <a href="/support" class="nav-link text-sm sm:text-base text-white/60">Support</a>
+                <p class="text-sm text-white/60 leading-relaxed">
+                    Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ER:LC server automation for effortless management.
+                </p>
+            </div>
+            <div>
+                <h3 class="font-semibold text-white mb-3">Ducky</h3>
+                <ul class="space-y-1 text-sm text-white/70">
+                    <li>
+                        <a href="/team" class="hover:text-white">Team</a>
+                    </li>
+                    <li>
+                        <a href="/docs" class="hover:text-white">Documentation</a>
+                    </li>
+                    <li>
+                        <a href="/plus" class="hover:text-white">Ducky Plus+</a>
+                    </li>
+                    <li>
+                        <a href="/plus" class="hover:text-white">Status</a>
+                    </li>
+                    <li>
+                        <a href="/support" class="hover:text-white">Support</a>
+                    </li>
+                    <li>
+                        <a href="/invite" class="hover:text-white">Add Ducky</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-semibold text-white mb-3">Legal</h3>
+                <ul class="space-y-1 text-sm text-white/70">
+                    <li>
+                        <a href="/legal/terms" class="hover:text-white">Terms of Service</a>
+                    </li>
+                    <li>
+                        <a href="/legal/privacy" class="hover:text-white">Privacy Policy</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-white/10 mt-10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/40 px-6 py-6 max-w-7xl mx-auto">
+            <p>© 2025 Ducky Bot. All rights reserved.</p>
+            <div class="flex items-center gap-4">
+                <a href="https://discord.com/channels/1228508072289370172/1258891581583528098" id="footerVersion" class="text-white/50">v1.0.0 Stable</a>
+                <a href="/status" id="footerStatus" class="flex items-center gap-1 px-2 py-0.5 bg-white/10 rounded-full text-[#FFFFFF] text-xs">
+                    <span class="w-2 h-2 bg-[#FFFFFF] rounded-full"></span> Status: Loading...
+                </a>
+                <div class="flex gap-3 text-white/50">
+                    <a href="/support">
+                        <i class="fa-brands fa-discord"></i>
+                    </a>
+                    <a href="https://github.com/orgs/DuckySupport">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <a href="mailto:support@duckybot.xyz">
+                        <i class="fa-solid fa-envelope"></i>
+                    </a>
                 </div>
             </div>
-            <p class="text-center text-white/40 mt-6 sm:mt-8 text-xs sm:text-sm">© 2025 Ducky Bot. All rights reserved.
-            </p>
         </div>
     </footer>
     <script>
