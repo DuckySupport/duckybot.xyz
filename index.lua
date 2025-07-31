@@ -92,24 +92,36 @@ if location == "/" or location == "/index.html" then
 elseif location == "/team/" then
 	http.request(function(success, response)
 		if success and response and response.data then
-			table.sort(response.data, function(a, b)
-				return (a and a.position or 0) > b.position
-			end)
+			local categories = {}
 
-			for _, member in pairs(response.data) do
-				local container = elements.team[member.category]
+			for i, member in pairs(response.data) do
+				categories[member.category] = categories[member.category] or {}
+				table.insert(categories[member.category], member)
+			end
 
-				if container then
-					local card = document:createElement("div")
-					card.className = "w-64 border-[1px] border-[" .. member.color .. "] aspect-square bg-secondary/40 rounded-xl text-white text-center p-6 flex flex-col items-center justify-center relative hover:shadow-[0_0_5px_" .. member.color .. "] hover:-translate-y-[5px] transform transition duration-300"
+			for category, members in pairs(categories) do
+				table.sort(members, function(a, b)
+					return a.position > b.position
+				end)
 
-					card.innerHTML = string.format([[
-						<a href="https://discord.com/users/%s"><img src="%s" alt="%s" class="w-24 h-24 rounded-full object-cover mb-4"></a>
-                        <a href="https://discord.com/users/%s"><h3 class="text-xl font-semibold">%s</h3></a>
-                        <p class="text-sm text-white/60">%s</p>
-					]], member.discord_id, member.avatar, member.name, member.discord_id, member.name, member.role)
+				print("sorted")
+				
+				for i, member in pairs(members) do
+					local container = elements.team[category]
 
-					container:appendChild(card)
+					if container then
+						local card = document:createElement("div")
+						card.className = "w-64 border-[1px] border-[" .. member.color .. "] aspect-square bg-secondary/40 rounded-xl text-white text-center p-6 flex flex-col items-center justify-center relative hover:shadow-[0_0_5px_" .. member.color .. "] hover:-translate-y-[5px] transform transition duration-300 opacity-0"
+						card.style.animation = "fadeInSlide 0.5s ease-out " .. (i * 0.15) .. "s forwards"
+
+						card.innerHTML = string.format([[
+							<a href="https://discord.com/users/%s"><img src="%s" alt="%s" class="w-24 h-24 rounded-full object-cover mb-4"></a>
+							<a href="https://discord.com/users/%s"><h3 class="text-xl font-semibold">%s</h3></a>
+							<p class="text-sm text-white/60">%s</p>
+						]], member.discord_id, member.avatar, member.name, member.discord_id, member.name, member.role)
+
+						container:appendChild(card)
+					end
 				end
 			end
 		end
