@@ -1,5 +1,6 @@
 local js = require("js")
 local global = js.global
+local document = global.document
 
 local utils = {}
 
@@ -58,6 +59,9 @@ function utils.hexToRGBA(hex, alpha)
 end
 
 function utils.redirect(url)
+    if url:sub(1, 4) ~= "http" then
+        url = "/" .. url
+    end
     global.window.location.href = url
 end
 
@@ -65,33 +69,46 @@ function utils.truncate(str, len)
     return str:sub(1, len - 3) .. "..."
 end
 
-function utils.cookie(name)
-    local cookies = global.document.cookie
-    if not cookies then return end
+function utils.cookie(name, value)
+    if value == nil then
+        local cookies = document.cookie
+        if not cookies then return end
 
-    for cookie in cookies:gmatch("([^;]+)") do
-        local k, v = cookie:match("^%s*(.-)%s*=%s*(.*)%s*$")
-        if k == name then
-            return v
+        for cookie in cookies:gmatch("([^;]+)") do
+            local k, v = cookie:match("^%s*(.-)%s*=%s*(.*)%s*$")
+            if k == name then
+                return v
+            end
         end
+    elseif value == "delete" then
+        document.cookie = name .. "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/"
+    else
+        document.cookie = name .. "=" .. value .. "; path=/"
     end
 end
 
 function utils.parameters()
     local params = {}
-    local query = global.window.location.search
+    local location = global.window.location
+    local query = location.search or ""
+    local hash = location.hash or ""
 
-    if query and #query > 1 then
-        query = query:sub(2)
-        for pair in query:gmatch("[^&]+") do
-            local key, value = pair:match("([^=]+)=?(.*)")
-            if key then
-                key = global:decodeURIComponent(key)
-                value = global:decodeURIComponent(value)
-                params[key] = value
+    local function parse(str)
+        if str and #str > 1 then
+            str = str:sub(2)
+            for pair in str:gmatch("[^&]+") do
+                local key, value = pair:match("([^=]+)=?(.*)")
+                if key then
+                    key = global:decodeURIComponent(key)
+                    value = global:decodeURIComponent(value)
+                    params[key] = value
+                end
             end
         end
     end
+
+    parse(query)
+    parse(hash)
 
     return params
 end
