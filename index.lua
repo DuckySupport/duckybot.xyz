@@ -108,6 +108,7 @@ elseif location == "/team/" then
 						card.className = "team-card w-64 aspect-square text-white text-center p-6 flex flex-col items-center justify-center relative transform transition duration-300 opacity-0"
 						card.style.animation = "fadeInSlide 0.5s ease-out " .. (i * 0.15) .. "s forwards"
 						card.style:setProperty("--member-color", utils.hexToRGBA(member.color, 0.5))
+						card.style:setProperty("--member-color-nuh", utils.hexToRGBA(member.color, 0.2))
 
 						card.innerHTML = string.format([[
 						<a href="https://discord.com/users/%s" class="z-10"><img src="%s" alt="%s" class="w-24 h-24 rounded-full object-cover mb-4"></a>

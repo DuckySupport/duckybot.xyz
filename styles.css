@@ -211,7 +211,7 @@ body {
     left: 0;
     width: 100%;
     height: 50%;
-    background: linear-gradient(to top, var(--member-color), transparent);
+    background: linear-gradient(to top, var(--member-color-nuh), transparent);
     transition: height 0.3s ease;
     pointer-events: none;
     z-index: 0;
@@ -220,6 +220,7 @@ body {
 
 .team-card:hover::before {
     height: 100%;
+    background: linear-gradient(to top, var(--member-color), transparent);
 }
 
 .team-card:hover {
