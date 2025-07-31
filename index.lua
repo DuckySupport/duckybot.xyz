@@ -98,22 +98,21 @@ elseif location == "/team/" then
 			end
 
 			for category, members in pairs(categories) do
-				table.sort(members, function(a, b)
-					return a.position > b.position
-				end)
-				
+				table.sort(members, function(a, b) return a.position > b.position end)
+
 				for i, member in pairs(members) do
 					local container = elements.team[category]
 
 					if container then
 						local card = document:createElement("div")
-						card.className = "w-64 border-[1px] border-[" .. member.color .. "] aspect-square bg-secondary/40 rounded-xl text-white text-center p-6 flex flex-col items-center justify-center relative hover:shadow-[0_0_5px_" .. member.color .. "] hover:-translate-y-[5px] transform transition duration-300 opacity-0"
+						card.className = "team-card w-64 aspect-square text-white text-center p-6 flex flex-col items-center justify-center relative transform transition duration-300 opacity-0"
 						card.style.animation = "fadeInSlide 0.5s ease-out " .. (i * 0.15) .. "s forwards"
+						card.style:setProperty("--member-color", utils.hexToRGBA(member.color, 0.5))
 
 						card.innerHTML = string.format([[
-							<a href="https://discord.com/users/%s"><img src="%s" alt="%s" class="w-24 h-24 rounded-full object-cover mb-4"></a>
-							<a href="https://discord.com/users/%s"><h3 class="text-xl font-semibold">%s</h3></a>
-							<p class="text-sm text-white/60">%s</p>
+						<a href="https://discord.com/users/%s" class="z-10"><img src="%s" alt="%s" class="w-24 h-24 rounded-full object-cover mb-4"></a>
+						<a href="https://discord.com/users/%s" class="z-10"><h3 class="text-xl font-semibold">%s</h3></a>
+						<p class="text-sm text-white/60 z-10">%s</p>
 						]], member.discord_id, member.avatar, member.name, member.discord_id, member.name, member.role)
 
 						container:appendChild(card)
@@ -126,9 +125,7 @@ end
 
 http.request(function(success, response)
 	if success and response and response.data then
-		if location == "/" then
-			elements.version.textContent = response.data.version
-		end
+		if location == "/" then elements.version.textContent = response.data.version end
 
 		elements.footer.version.textContent = response.data.version
 		elements.footer.status.innerHTML = '<span class="w-2 h-2 bg-[#66FF66] rounded-full"></span> Status: Operational'
@@ -142,25 +139,25 @@ http.request(function(success, response)
 end, "GET", "https://api.duckybot.xyz/")
 
 elements.mobile.open:addEventListener("click", function()
-    if not elements.mobile.menu then return end
-    
-    elements.mobile.menu.classList:toggle("active")
+	if not elements.mobile.menu then return end
 
-    if elements.mobile.menu.classList:contains("active") then
-        body.style.overflow = "hidden"
-    else
-        body.style.overflow = ""
-    end
+	elements.mobile.menu.classList:toggle("active")
+
+	if elements.mobile.menu.classList:contains("active") then
+		body.style.overflow = "hidden"
+	else
+		body.style.overflow = ""
+	end
 end)
 
 elements.mobile.close:addEventListener("click", function()
-    if not elements.mobile.menu then return end
-    
-    elements.mobile.menu.classList:toggle("active")
+	if not elements.mobile.menu then return end
 
-    if elements.mobile.menu.classList:contains("active") then
-        body.style.overflow = "hidden"
-    else
-        body.style.overflow = ""
-    end
+	elements.mobile.menu.classList:toggle("active")
+
+	if elements.mobile.menu.classList:contains("active") then
+		body.style.overflow = "hidden"
+	else
+		body.style.overflow = ""
+	end
 end)
