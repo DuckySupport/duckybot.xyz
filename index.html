@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description"
-        content="A powerful bot crafted for seamless server management, featuring advanced Roblox Moderation, ER:LC Integration, and Automation">
+        content="Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ER:LC server automation for effortless management.">
     <meta content="Ducky" property="og:title">
     <meta
-        content="A powerful bot crafted for seamless server management, featuring advanced Roblox Moderation, ER:LC Integration, and Automation"
+        content="Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ER:LC server automation for effortless management."
         property="og:description">
     <meta content="https://duckybot.xyz" property="og:url">
     <meta content="/images/icons/Ducky.svg" property="og:image">
@@ -22,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="/index.css">
     <script>
         tailwind.config = {
             theme: {
@@ -362,7 +362,7 @@
         </div>
     </footer>
     <script>
-        fetch("index.lua")
+        fetch("/index.lua")
             .then(res => res.text())
             .then(lua => {
                 fengari.load(lua)();
