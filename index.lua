@@ -262,7 +262,7 @@ elseif location == "/login/" then
 
 		http.request(function(success, response)
 			if success and response and response.data then
-				update("success", "Already Logged In", 'You are already logged in as <span class="text-primary font-semibold">@' .. response.data.username .. '</span>.', true)
+				update("success", "Already Logged In", 'You are already logged in as <span class="text-white font-semibold">@' .. response.data.username .. '</span>.', true)
 
 				if parameters.redirect or parameters.state then
 					utils.redirect(parameters.redirect or parameters.state)
@@ -279,7 +279,7 @@ elseif location == "/login/" then
 		http.request(function(success, response)
 			if success and response and response.data then
 				utils.cookie("discord", parameters.access_token)
-				update("success", "Logged In", 'You have been logged in as <span class="text-primary font-semibold">@' .. response.data.username .. '</span>.', true)
+				update("success", "Logged In", 'You have been logged in as <span class="text-white font-semibold">@' .. response.data.username .. '</span>.', true)
 
 				if parameters.redirect or parameters.state then
 					utils.redirect(parameters.redirect or parameters.state)
