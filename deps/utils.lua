@@ -57,4 +57,8 @@ function utils.hexToRGBA(hex, alpha)
     return string.format("rgba(%d, %d, %d, %.2f)", r, g, b, alpha or 1)
 end
 
+function utils.redirect(url)
+    global.window.location.href = url
+end
+
 return utils

@@ -121,6 +121,14 @@ elseif location == "/team/" then
 			end
 		end
 	end, "GET", "https://api.duckybot.xyz/team")
+elseif location == "/docs" then
+	utils.redirect("https://docs.duckybot.xyz/")
+elseif location == "/status" then
+	utils.redirect("https://status.duckybot.xyz/")
+elseif location == "/invite" then
+	utils.redirect("https://discord.com/oauth2/authorize?client_id=1257389588910182411")
+elseif location == "/support" then
+	utils.redirect("https://discord.gg/w2dNr7vuKP")
 end
 
 http.request(function(success, response)
