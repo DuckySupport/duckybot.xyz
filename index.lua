@@ -9,6 +9,8 @@ local document = global.document
 local body = document.body
 local window = global.window
 local location = window.location.pathname
+local path = utils.split(location, "/")
+table.remove(path, 1)
 local console = global.console
 
 local elements = {
@@ -45,10 +47,17 @@ local elements = {
 		title = document:getElementById("loginTitle"),
 		text = document:getElementById("loginText"),
 		buttons = document:getElementById("loginButtons")
+	},
+	servers = {
+		ducky = document:getElementById("serversDucky"),
+		refresh = document:getElementById("serversRefresh")
 	}
 }
 
-if location == "/" or location == "/index.html" then
+if location:find("/index%.html") then
+	location = location:gsub("/index%.html", "")
+	utils.redirect(location)
+elseif path[1] == "" then
 	http.request(function(success, response)
 		if success and response and response.data then
 			elements.counters.guilds.textContent = utils.formatNumber(response.data.guilds) .. " communities"
@@ -59,17 +68,15 @@ if location == "/" or location == "/index.html" then
 	http.request(function(success, response)
 		if success and response and response.data then
 			local mobile = utils.mobile()
-			local filtered = {}
 
-			for _, review in pairs(response.data) do if review.rating >= 4 then table.insert(filtered, review) end end
-
-			filtered = utils.shuffle(filtered)
-			filtered = utils.chop(filtered, mobile and 3 or 5)
+			if mobile then
+				response.data = utils.chop(response.data, 3)
+			end
 
 			elements.feedback.className = "flex flex-col gap-[10px]"
 			elements.feedback.innerHTML = ""
 
-			for i, review in pairs(filtered) do
+			for i, review in pairs(response.data) do
 				local card = document:createElement("div")
 				card.className = "glass-card review-card p-4 opacity-0 w-full max-h-100 rounded-full"
 				card.style.animation = "fadeInSlide 0.5s ease-out " .. ((mobile and i * 0.15) or i * 0.2) .. "s forwards"
@@ -99,7 +106,7 @@ if location == "/" or location == "/index.html" then
 			end
 		end
 	end, "GET", "https://api.duckybot.xyz/feedback")
-elseif location == "/team/" then
+elseif path[1] == "team" then
 	http.request(function(success, response)
 		if success and response and response.data then
 			local categories = {}
@@ -133,7 +140,7 @@ elseif location == "/team/" then
 			end
 		end
 	end, "GET", "https://api.duckybot.xyz/team")
-elseif location == "/link/" then
+elseif path[1] == "link" then
 	local function update(icon, title, text, showButtons)
 		local key = {
 			loading = "/images/icons/loading.gif",
@@ -185,17 +192,13 @@ elseif location == "/link/" then
 						if success and response and response.data then
 							update("success", "Already Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-white font-semibold">@' .. response.data.roblox.name .. '</a>, is linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-white font-semibold">@' .. response.data.discord.username .. '</a>.', true)
 
-							if parameters.redirect or parameters.state then
-								utils.redirect(parameters.redirect or parameters.state)
-							end
+							if parameters.redirect or parameters.state then utils.redirect(parameters.redirect or parameters.state) end
 						elseif parameters.code then
 							http.request(function(success, response)
 								if success and response and response.data then
 									update("success", "Successfully Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-white font-semibold">@' .. response.data.roblox.name .. '</a>, has been successfully linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-white font-semibold">@' .. response.data.discord.username .. '</a>.', true)
-									
-									if parameters.redirect or parameters.state then
-										utils.redirect(parameters.redirect or parameters.state)
-									end
+
+									if parameters.redirect or parameters.state then utils.redirect(parameters.redirect or parameters.state) end
 								elseif response and response.code == 409 then
 									update("fail", "Already Linked", response.message)
 								else
@@ -221,7 +224,7 @@ elseif location == "/link/" then
 		update("loading", "Redirecting...", "You are being redirected to Discord.", false)
 		utils.redirect("login/?redirect=link")
 	end
-elseif location == "/login/" then
+elseif path[1] == "login" then
 	local function update(icon, title, text, showButtons)
 		local key = {
 			loading = "/images/icons/loading.gif",
@@ -264,9 +267,7 @@ elseif location == "/login/" then
 			if success and response and response.data then
 				update("success", "Already Logged In", 'You are already logged in as <a href="https://discord.com/users/' .. response.data.id .. '" class="text-white font-semibold">@' .. response.data.username .. '</a>.', true)
 
-				if parameters.redirect or parameters.state then
-					utils.redirect(parameters.redirect or parameters.state)
-				end
+				if parameters.redirect or parameters.state then utils.redirect(parameters.redirect or parameters.state) end
 			else
 				update("fail", "API Error", "Failed to fetch your Discord profile from our API. Please try again later.")
 			end
@@ -281,9 +282,7 @@ elseif location == "/login/" then
 				utils.cookie("discord", parameters.access_token)
 				update("success", "Logged In", 'You have been logged in as <a href="https://discord.com/users/' .. response.data.id .. '" class="text-white font-semibold">@' .. response.data.username .. '</a>.', true)
 
-				if parameters.redirect or parameters.state then
-					utils.redirect(parameters.redirect or parameters.state)
-				end
+				if parameters.redirect or parameters.state then utils.redirect(parameters.redirect or parameters.state) end
 			else
 				update("fail", "API Error", "Failed to fetch your Discord profile from our API. Please try again later.")
 			end
@@ -294,13 +293,98 @@ elseif location == "/login/" then
 		update("loading", "Redirecting...", "You are being redirected to Discord.", false)
 		utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flogin&scope=identify+guilds" .. ((parameters.redirect and ("&state=" .. parameters.redirect)) or ""))
 	end
-elseif location == "/docs/" then
+elseif path[1] == "servers" then
+	local cookie = utils.cookie("discord")
+
+	if cookie then
+		if (not path[2]) or (path[2] == "") then
+			local function loadServers()
+				elements.servers.ducky.innerHTML = '<span class="text-white/50">Loading...</span>'
+				http.request(function(success, response)
+					if success and response and response.data then
+						elements.servers.ducky.innerHTML = ""
+
+						table.sort(response.data, function(a, b) return (a and a.members or 0) > b.members end)
+
+						for _, guild in ipairs(response.data) do
+							if guild.role then
+								local container = elements.servers.ducky
+
+								local card = document:createElement("div")
+								card.className = "glass-card p-4 rounded-lg flex flex-col"
+
+								local plusBadge = (guild.plus and guild.plus.active and [[
+									<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-white whitespace-nowrap"
+										style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/images/misc/rainbow.webp') no-repeat center center; background-size: cover; backdrop-filter: blur(4px); flex-shrink: 0; min-width: max-content;">
+										<img src="/images/icons/Plus.svg" alt="Plus" class="w-4 h-4">
+										Ducky Plus+
+									</span>
+								]]) or ""
+
+								card.innerHTML = string.format([[
+									<div class="flex items-start gap-3 flex-grow">
+										<img src="%s" alt="%s" class="w-[60px] h-[60px] rounded-full object-contain">
+
+										<div class="flex flex-col w-full">
+										<div class="flex items-center justify-between">
+											<p class="font-semibold leading-tight truncate-multiline">
+											%s
+											</p>
+											%s
+										</div>
+
+										<p class="text-sm text-white/50 mt-1 flex items-center">
+											<i class="fa-solid fa-users mr-[5px]"></i> %s・<i class="fa-solid fa-shield-halved mr-[5px]"></i> %s
+										</p>
+										</div>
+									</div>
+
+									<div class="pt-2 mt-auto">
+										<a href="/servers/%s/panel" class="group btn-glass w-full h-[38px] px-5 py-2 rounded-full text-sm inline-flex justify-center items-center">
+										Moderate
+										<i class="fas fa-chevron-right text-xs transition-transform group-hover:translate-x-1 ml-2"></i>
+										</a>
+									</div>
+								]], guild.icon, guild.name, guild.name, plusBadge, utils.formatNumber(guild.members), guild.role, guild.id)
+
+								container:appendChild(card)
+							end
+						end
+
+						if elements.servers.ducky.childElementCount <= 0 then
+							elements.servers.ducky.innerHTML = '<span class="text-white/50">There are no servers to show here.</span>'
+						end
+					end
+				end, "GET", "https://api.duckybot.xyz/guilds", {
+					["Discord-Code"] = cookie
+				})
+			end
+
+			loadServers()
+			elements.servers.refresh:addEventListener("click", loadServers)
+		elseif tonumber(path[2]) and path[3] == "panel" then
+			http.request(function(success, response)
+				if success and response and response.data then
+					print("yaaa")
+				else
+					utils.redirect("servers")
+				end
+			end, "GET", "https://api.duckybot.xyz/guilds/" .. path[2] .. "/config", {
+				["Discord-Code"] = cookie
+			})
+		else
+			utils.redirect("servers")
+		end
+	else
+		utils.redirect("login/?redirect=servers")
+	end
+elseif path[1] == "docs" then
 	utils.redirect("https://docs.duckybot.xyz/")
-elseif location == "/status/" then
+elseif path[1] == "status" then
 	utils.redirect("https://status.duckybot.xyz/")
-elseif location == "/invite/" then
+elseif path[1] == "invite" then
 	utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411")
-elseif location == "/support/" then
+elseif path[1] == "support" then
 	utils.redirect("https://discord.gg/w2dNr7vuKP")
 end
 

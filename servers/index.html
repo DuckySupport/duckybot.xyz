@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="The requested resource was not found in this pond.">
-    <meta content="Ducky・404 Not Found" property="og:title">
-    <meta content="The requested resource was not found in this pond." property="og:description">
+    <meta name="description" content="Manage and moderate your servers with ease from the web panel.">
+    <meta content="Ducky・Your Servers" property="og:title">
+    <meta content="Manage and moderate your servers with ease from the web panel." property="og:description">
     <meta content="https://duckybot.xyz" property="og:url">
     <meta content="/images/icons/Ducky.png" property="og:image">
     <meta content="/images/icons/Ducky.png" property="og:image:url">
@@ -14,7 +14,7 @@
     <meta content="300" property="og:image:height">
     <meta content="#F5FF82" name="theme-color">
     <link rel="icon" href="/images/icons/Ducky.png">
-    <title>Ducky ・ 404 Not Found</title>
+    <title>Ducky ・ Your Servers</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" rel="stylesheet">
@@ -85,32 +85,29 @@
             </div>
         </div>
         <section class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
-            <div class="max-w-5xl mx-auto text-center">
-                <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 animate-fade-in">
-                    404
-                    <span class="text-primary">Not Found</span>
-                </h1>
-                <p class="text-white/60 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-12 animate-slide-up">
-                    The requested resource was not found in this pond.
-                </p>
-                <div class="flex flex-wrap justify-center gap-3 sm:gap-4 animate-slide-up" style="animation-delay: 0.2s">
-                    <a href="/" class="btn-primary px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base">
-                            Home
-                        </a>
-                    <a href="/support" class="group btn-secondary px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base">
-                            Support
-                            <i
-                                class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i>
-                        </a>
+            <div class="max-w-6xl mx-auto text-white">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-2xl sm:text-3xl font-bold">Your Servers
+                    </h2>
+                    <button id="serversRefresh" class="group btn-glass px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base">
+                            <i class="fa-solid fa-refresh"></i> Refresh
+                        </button>
+                </div>
+                <hr class="border-white/10 w-full my-2">
+                <div class="mb-10">
+                    <div id="serversDucky" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <span class="text-white/50">Loading...</span>
+                    </div>
                 </div>
             </div>
+
         </section>
     </main>
     <footer class="bg-secondary/30 backdrop-blur-md border-t border-white/10 text-white px-6 py-12">
         <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-10">
             <div class="md:col-span-1">
                 <div class="flex items-center gap-2 mb-4">
-                    <img src="/images/misc/fullDucky.png" alt="Ducky" class="w-28 h-auto object-contain">
+                    <img src="/images/misc/fullDucky.png " alt="Ducky " class="w-28 h-auto object-contain">
                 </div>
                 <p class="text-sm text-white/60 leading-relaxed">
                     Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ER:LC server automation for effortless management.
@@ -120,20 +117,20 @@
                 <h3 class="font-semibold text-white mb-3">Resources</h3>
                 <ul class="space-y-1 text-sm text-white/70">
                     <li>
-                        <a href="/team" class="hover:text-white">Team</a>
+                        <a href="/team " class="hover:text-white">Team</a>
                     </li>
                     <li>
-                        <a href="/docs" class="hover:text-white">Documentation</a>
+                        <a href="/docs " class="hover:text-white">Documentation</a>
                     </li>
                     <li>
-                        <a href="/plus" class="hover:text-white">Ducky
+                        <a href="/plus " class="hover:text-white">Ducky
                                 Plus+</a>
                     </li>
                     <li>
-                        <a href="/support" class="hover:text-white">Support</a>
+                        <a href="/support " class="hover:text-white">Support</a>
                     </li>
                     <li>
-                        <a href="/invite" class="hover:text-white">Add
+                        <a href="/invite " class="hover:text-white">Add
                                 Ducky</a>
                     </li>
                 </ul>
@@ -142,13 +139,13 @@
                 <h3 class="font-semibold text-white mb-3">Relations</h3>
                 <ul class="space-y-1 text-sm text-white/70">
                     <li>
-                        <a href="/affiliates" class="hover:text-white">Affiliates</a>
+                        <a href="/affiliates " class="hover:text-white">Affiliates</a>
                     </li>
                     <li>
-                        <a href="/partners" class="hover:text-white">Partners</a>
+                        <a href="/partners " class="hover:text-white">Partners</a>
                     </li>
                     <li>
-                        <a href="https://vertuohosting.com/" class="hover:text-white">Vertuo Hosting</a>
+                        <a href="https://vertuohosting.com/ " class="hover:text-white">Vertuo Hosting</a>
                     </li>
                 </ul>
             </div>
@@ -156,14 +153,14 @@
                 <h3 class="font-semibold text-white mb-3">Legal</h3>
                 <ul class="space-y-1 text-sm text-white/70">
                     <li>
-                        <a href="/legal/terms" class="hover:text-white">Terms of
+                        <a href="/legal/terms " class="hover:text-white">Terms of
                                 Service</a>
                     </li>
                     <li>
-                        <a href="/legal/privacy" class="hover:text-white">Privacy Policy</a>
+                        <a href="/legal/privacy " class="hover:text-white">Privacy Policy</a>
                     </li>
                     <li>
-                        <a href="mailto:legal@duckybot.xyz" class="hover:text-white">Contact Us</a>
+                        <a href="mailto:legal@duckybot.xyz " class="hover:text-white">Contact Us</a>
                     </li>
                 </ul>
             </div>
@@ -171,9 +168,9 @@
         <div class="border-t border-white/10 mt-10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/40 px-6 py-6 max-w-7xl mx-auto">
             <p>© 2025 Ducky Bot. All rights reserved.</p>
             <div class="flex items-center gap-4">
-                <a href="https://discord.com/channels/1228508072289370172/1258891581583528098" id="footerVersion" class="text-white/50">v1.0.0
+                <a href="https://discord.com/channels/1228508072289370172/1258891581583528098 " id="footerVersion" class="text-white/50">v1.0.0
                         Stable</a>
-                <a href="/status" id="footerStatus" class="flex items-center gap-1 px-2 py-0.5 bg-white/10 rounded-full text-[#FFFFFF] text-xs">
+                <a href="/status " id="footerStatus" class="flex items-center gap-1 px-2 py-0.5 bg-white/10 rounded-full text-[#FFFFFF] text-xs">
                     <span class="w-2 h-2 bg-[#FFFFFF] rounded-full"></span> Status: Loading...
                 </a>
                 <div class="flex gap-3 text-white/50">
@@ -191,7 +188,7 @@
         </div>
     </footer>
     <script>
-        fetch("/index.lua")
+        fetch("/index.lua ")
             .then(res => res.text())
             .then(lua => {
                 fengari.load(lua)();

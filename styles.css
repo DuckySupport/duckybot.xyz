@@ -441,3 +441,11 @@ body {
         margin-bottom: 1rem !important;
     }
 }
+
+.truncate-multiline {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
