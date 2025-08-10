@@ -3,8 +3,9 @@ local global = js.global
 
 local http = {}
 
-function http.request(callback, method, url, headers, body)
+function http.request(callback, method, url, headers, body, process)
 	coroutine.wrap(function()
+		process = process or "json"
 		local opts = js.new(global.Object)
 		opts.method = method or "GET"
 
@@ -20,12 +21,12 @@ function http.request(callback, method, url, headers, body)
 
 		local status = 408
 
-		local jsonPromise = promise["then"](promise, function(_, response)
+		local processPromise = promise["then"](promise, function(_, response)
 			status = response.status
-			return response:json()
+			return response[process](response)
 		end)
 
-		jsonPromise["then"](jsonPromise, function(_, body, thing) return callback(status == 200, body) end)
+		processPromise["then"](processPromise, function(_, body) return callback(status >= 200 and status < 300, body) end)
 	end)()
 end
 

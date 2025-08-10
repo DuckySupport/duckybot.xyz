@@ -20,10 +20,7 @@ local elements = {
 	},
 	feedback = document:getElementById("feedbackSlider"),
 	version = document:getElementById("duckyVersionText"),
-	footer = {
-		version = document:getElementById("footerVersion"),
-		status = document:getElementById("footerStatus")
-	},
+	footer = document:getElementById("footer"),
 	mobile = {
 		menu = document:getElementById("mobileMenu"),
 		open = document:getElementById("mobileMenuOpen"),
@@ -53,6 +50,16 @@ local elements = {
 		refresh = document:getElementById("serversRefresh")
 	}
 }
+
+http.request(function(success, response)
+	if success and response then
+		elements.footer.innerHTML = response
+		elements.footer = {
+			version = document:getElementById("footerVersion"),
+			status = document:getElementById("footerStatus")
+		}
+	end
+end, "GET", "/partials/footer.html", nil, nil, "text")
 
 if location:find("/index%.html") then
 	location = location:gsub("/index%.html", "")
