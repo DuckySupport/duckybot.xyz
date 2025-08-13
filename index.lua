@@ -226,8 +226,7 @@ elseif path[1] == "link" then
 
 										if parameters.redirect or parameters.state then utils.redirect(parameters.redirect or parameters.state) end
 									elseif response and response.code == 409 then
-										local message = response.message .. "<br><br>This Roblox account seems to be linked to another Discord account."
-										update("fail", "Already Linked", message, false)
+										update("fail", "Already Linked", response.message, false)
 										
 										local roblox_auth_url = "https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid&state=force-unlink"
 										elements.link.forceUnlinkButton.href = roblox_auth_url
