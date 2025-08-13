@@ -37,7 +37,9 @@ local elements = {
 		icon = document:getElementById("linkIcon"),
 		title = document:getElementById("linkTitle"),
 		text = document:getElementById("linkText"),
-		buttons = document:getElementById("linkButtons")
+		buttons = document:getElementById("linkButtons"),
+		forceUnlinkContainer = document:getElementById("forceUnlinkContainer"),
+		forceUnlinkButton = document:getElementById("forceUnlinkButton")
 	},
 	login = {
 		icon = document:getElementById("loginIcon"),
@@ -164,6 +166,9 @@ elseif path[1] == "link" then
 		else
 			elements.link.buttons.classList:add("hidden")
 		end
+		if elements.link.forceUnlinkContainer then
+			elements.link.forceUnlinkContainer.classList:add("hidden")
+		end
 	end
 
 	update("loading", "Loading...", "Checking if you're logged in...", false)
@@ -196,25 +201,45 @@ elseif path[1] == "link" then
 					update("loading", "Loading...", "Fetching your Roblox profile from our API...", false)
 
 					http.request(function(success, response)
-						if success and response and response.data then
+						if success and response and response.data and response.data.roblox then
 							update("success", "Already Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-white font-semibold">@' .. response.data.roblox.name .. '</a>, is linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-white font-semibold">@' .. response.data.discord.username .. '</a>.', true)
 
 							if parameters.redirect or parameters.state then utils.redirect(parameters.redirect or parameters.state) end
 						elseif parameters.code then
-							http.request(function(success, response)
-								if success and response and response.data then
-									update("success", "Successfully Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-white font-semibold">@' .. response.data.roblox.name .. '</a>, has been successfully linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-white font-semibold">@' .. response.data.discord.username .. '</a>.', true)
+							if parameters.state == "force-unlink" then
+								update("loading", "Unlinking...", "Attempting to unlink your Roblox account from another user...", false)
+								http.request(function(success, response)
+									if success and response and response.data then
+										update("success", "Successfully Unlinked", "Your Roblox account has been unlinked. You can now try linking it again.")
+										time.sleep(3000)
+										utils.redirect("/link")
+									else
+										update("fail", "API Error", response.message or "Failed to unlink your account. Please try again or contact support.")
+									end
+								end, "DELETE", "https://api.duckybot.xyz/links", {
+									["Roblox-Code"] = parameters.code
+								})
+							else
+								http.request(function(success, response)
+									if success and response and response.data then
+										update("success", "Successfully Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-white font-semibold">@' .. response.data.roblox.name .. '</a>, has been successfully linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-white font-semibold">@' .. response.data.discord.username .. '</a>.', true)
 
-									if parameters.redirect or parameters.state then utils.redirect(parameters.redirect or parameters.state) end
-								elseif response and response.code == 409 then
-									update("fail", "Already Linked", response.message)
-								else
-									update("fail", "API Error", response.message)
-								end
-							end, "POST", "https://api.duckybot.xyz/links", {
-								["Discord-Code"] = cookie,
-								["Roblox-Code"] = parameters.code
-							})
+										if parameters.redirect or parameters.state then utils.redirect(parameters.redirect or parameters.state) end
+									elseif response and response.code == 409 then
+										local message = response.message .. "<br><br>This Roblox account seems to be linked to another Discord account."
+										update("fail", "Already Linked", message, false)
+										
+										local roblox_auth_url = "https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid&state=force-unlink"
+										elements.link.forceUnlinkButton.href = roblox_auth_url
+										elements.link.forceUnlinkContainer.classList:remove("hidden")
+									else
+										update("fail", "API Error", response.message)
+									end
+								end, "POST", "https://api.duckybot.xyz/links", {
+									["Discord-Code"] = cookie,
+									["Roblox-Code"] = parameters.code
+								})
+							end
 						else
 							update("loading", "Redirecting...", "You are being redirected to Roblox.")
 							utils.redirect("https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid" .. ((parameters.redirect and ("&state=" .. parameters.redirect)) or ""))
