@@ -3,34 +3,31 @@ local global = js.global
 
 local http = {}
 
-function http.request(callback, method, url, headers, body)
-    local opts = js.new(global.Object)
-    opts.method = method or "GET"
-    
-    if headers then
-        local jsHeaders = js.new(global.Object)
-        for k, v in pairs(headers) do
-            jsHeaders[k] = v
-        end
-        opts.headers = jsHeaders
-    end
+function http.request(callback, method, url, headers, body, process)
+	coroutine.wrap(function()
+		process = process or "json"
+		local opts = js.new(global.Object)
+		opts.method = method or "GET"
 
-    if body then
-        opts.body = body
-    end
+		if headers then
+			local jsHeaders = js.new(global.Object)
+			for k, v in pairs(headers) do jsHeaders[k] = v end
+			opts.headers = jsHeaders
+		end
 
-    local promise = global:fetch(url, opts)
+		if body then opts.body = body end
 
-    local status = 408
+		local promise = global:fetch(url, opts)
 
-    local jsonPromise = promise["then"](promise, function(_, response)
-        status = response.status
-        return response:json()
-    end)
+		local status = 408
 
-    jsonPromise["then"](jsonPromise, function(_, body, thing)
-        return coroutine.wrap(callback)(status == 200, body)
-    end)
+		local processPromise = promise["then"](promise, function(_, response)
+			status = response.status
+			return response[process](response)
+		end)
+
+		processPromise["then"](processPromise, function(_, body) return callback(status >= 200 and status < 300, body) end)
+	end)()
 end
 
 return http

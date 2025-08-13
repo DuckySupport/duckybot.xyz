@@ -17,7 +17,7 @@
     <title>Ducky ・ 404 Not Found</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
     <script>
         tailwind.config = {
@@ -41,153 +41,72 @@
     <script src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
 </head>
 
-<body>
-    <div class="bg-pattern"></div>
-    <div class="glow bg-primary top-0 left-[10%] w-[500px] h-[500px]"></div>
-    <div class="glow bg-primary bottom-0 right-[10%] w-[500px] h-[500px]"></div>
-    <div class="glow bg-purple-500 top-[40%] right-[20%] w-[300px] h-[300px] opacity-[0.04]"></div>
-    <div class="glow bg-blue-500 bottom-[30%] left-[15%] w-[250px] h-[250px] opacity-[0.03]"></div>
-    <div class="fixed top-4 sm:top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-5xl px-4">
-        <nav class="floating-nav flex items-center justify-between py-2 sm:py-2 px-4 sm:px-6 rounded-full bg-secondary/30">
-            <a href="/" class="flex items-center gap-2 sm:gap-3">
-                <img src="/images/misc/fullDucky.png" alt="Ducky" class="w-32 sm:w-32 h-auto object-contain">
-            </a>
-            <div class="hidden md:flex items-center gap-4 sm:gap-8">
-                <a href="/team" class="nav-link text-sm text-white/70">Team</a>
-                <a href="/docs" class="nav-link text-sm text-white/70">Docs</a>
-                <a href="/plus" class="nav-link text-sm text-white/70">Ducky
-                        Plus+</a>
-                <a href="/status" class="nav-link text-sm text-white/70">Status</a>
-                <a href="/support" class="nav-link text-sm text-white/70">Support</a>
-                <a href="/invite" class="group btn-primary px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add
-                        Ducky<i
-                            class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i></a>
-            </div>
-            <button id="mobileMenuOpen" class="md:hidden text-primary" aria-label="Toggle mobile menu">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-        </nav>
-    </div>
-    <div id="mobileMenu" class="mobile-menu">
-        <button id="mobileMenuClose" class="absolute top-6 right-6 text-white/70" aria-label="Close mobile menu">
-                <i class="fas fa-times text-2xl"></i>
-            </button>
-        <div class="flex flex-col items-center gap-6 sm:gap-8">
-            <a href="/team" class="nav-link text-xl text-white/70">Team</a>
-            <a href="/docs" class="nav-link text-xl text-white/70">Docs</a>
-            <a href="/plus" class="nav-link text-xl text-white/70">Ducky
-                    Plus+</a>
-            <a href="/status" class="nav-link text-xl text-white/70">Status</a>
-            <a href="/support" class="nav-link text-xl text-white/70">Support</a>
-            <a href="/invite" class="btn-primary text-xl px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add
-                    Ducky</a>
-        </div>
-    </div>
-    <section class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
-        <div class="max-w-5xl mx-auto text-center">
-            <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 animate-fade-in">
-                404
-                <span class="text-primary">Not Found</span>
-            </h1>
-            <p class="text-white/60 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-12 animate-slide-up">
-                The requested resource was not found in this pond.
-            </p>
-            <div class="flex flex-wrap justify-center gap-3 sm:gap-4 animate-slide-up" style="animation-delay: 0.2s">
-                <a href="/" class="btn-primary px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base">
-                        Home
-                    </a>
-                <a href="/support" class="group btn-secondary px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base">
-                        Support
-                        <i
-                            class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i>
-                    </a>
-            </div>
-        </div>
-    </section>
-    <footer class="bg-secondary/30 backdrop-blur-md border-t border-white/10 text-white px-6 py-12">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-10">
-            <div class="md:col-span-1">
-                <div class="flex items-center gap-2 mb-4">
-                    <img src="/images/misc/fullDucky.png" alt="Ducky" class="w-28 h-auto object-contain">
-                </div>
-                <p class="text-sm text-white/60 leading-relaxed">
-                    Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ER:LC server automation for effortless management.
-                </p>
-            </div>
-            <div>
-                <h3 class="font-semibold text-white mb-3">Resources</h3>
-                <ul class="space-y-1 text-sm text-white/70">
-                    <li>
-                        <a href="/team" class="hover:text-white">Team</a>
-                    </li>
-                    <li>
-                        <a href="/docs" class="hover:text-white">Documentation</a>
-                    </li>
-                    <li>
-                        <a href="/plus" class="hover:text-white">Ducky
-                                Plus+</a>
-                    </li>
-                    <li>
-                        <a href="/support" class="hover:text-white">Support</a>
-                    </li>
-                    <li>
-                        <a href="/invite" class="hover:text-white">Add
-                                Ducky</a>
-                    </li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="font-semibold text-white mb-3">Relations</h3>
-                <ul class="space-y-1 text-sm text-white/70">
-                    <li>
-                        <a href="/affiliates" class="hover:text-white">Affiliates</a>
-                    </li>
-                    <li>
-                        <a href="/partners" class="hover:text-white">Partners</a>
-                    </li>
-                    <li>
-                        <a href="https://vertuohosting.com/" class="hover:text-white">Vertuo Hosting</a>
-                    </li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="font-semibold text-white mb-3">Legal</h3>
-                <ul class="space-y-1 text-sm text-white/70">
-                    <li>
-                        <a href="/legal/terms" class="hover:text-white">Terms of
-                                Service</a>
-                    </li>
-                    <li>
-                        <a href="/legal/privacy" class="hover:text-white">Privacy Policy</a>
-                    </li>
-                    <li>
-                        <a href="mailto:legal@duckybot.xyz" class="hover:text-white">Contact Us</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="border-t border-white/10 mt-10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/40 px-6 py-6 max-w-7xl mx-auto">
-            <p>© 2025 Ducky Bot. All rights reserved.</p>
-            <div class="flex items-center gap-4">
-                <a href="https://discord.com/channels/1228508072289370172/1258891581583528098" id="footerVersion" class="text-white/50">v1.0.0
-                        Stable</a>
-                <a href="/status" id="footerStatus" class="flex items-center gap-1 px-2 py-0.5 bg-white/10 rounded-full text-[#FFFFFF] text-xs">
-                    <span class="w-2 h-2 bg-[#FFFFFF] rounded-full"></span> Status: Loading...
+<body class="min-h-screen flex flex-col">
+    <main class="flex-grow">
+        <div class="bg-pattern"></div>
+        <div class="glow bg-primary top-0 left-[10%] w-[500px] h-[500px]"></div>
+        <div class="glow bg-primary bottom-0 right-[10%] w-[500px] h-[500px]"></div>
+        <div class="glow bg-purple-500 top-[40%] right-[20%] w-[300px] h-[300px] opacity-[0.04]"></div>
+        <div class="glow bg-blue-500 bottom-[30%] left-[15%] w-[250px] h-[250px] opacity-[0.03]"></div>
+        <div class="fixed top-4 sm:top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-5xl px-4">
+            <nav class="floating-nav flex items-center justify-between py-2 sm:py-2 px-4 sm:px-6 rounded-full bg-secondary/30">
+                <a href="/" class="flex items-center gap-2 sm:gap-3">
+                    <img src="/images/misc/fullDucky.png" alt="Ducky" class="w-32 sm:w-32 h-auto object-contain">
                 </a>
-                <div class="flex gap-3 text-white/50">
-                    <a href="/support">
-                        <i class="fa-brands fa-discord"></i>
-                    </a>
-                    <a href="https://github.com/orgs/DuckySupport">
-                        <i class="fa-brands fa-github"></i>
-                    </a>
-                    <a href="mailto:support@duckybot.xyz">
-                        <i class="fa-solid fa-envelope"></i>
-                    </a>
+                <div class="hidden md:flex items-center gap-4 sm:gap-8">
+                    <a href="/team" class="nav-link text-sm text-white/70">Team</a>
+                    <a href="/docs" class="nav-link text-sm text-white/70">Docs</a>
+                    <a href="/plus" class="nav-link text-sm text-white/70">Ducky
+                            Plus+</a>
+                    <a href="/status" class="nav-link text-sm text-white/70">Status</a>
+                    <a href="/support" class="nav-link text-sm text-white/70">Support</a>
+                    <a href="/invite" class="group btn-primary px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add
+                            Ducky<i
+                                class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i></a>
                 </div>
+                <button id="mobileMenuOpen" class="md:hidden text-primary" aria-label="Toggle mobile menu">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+            </nav>
+        </div>
+        <div id="mobileMenu" class="mobile-menu">
+            <button id="mobileMenuClose" class="absolute top-6 right-6 text-white/70" aria-label="Close mobile menu">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            <div class="flex flex-col items-center gap-6 sm:gap-8">
+                <a href="/team" class="nav-link text-xl text-white/70">Team</a>
+                <a href="/docs" class="nav-link text-xl text-white/70">Docs</a>
+                <a href="/plus" class="nav-link text-xl text-white/70">Ducky
+                        Plus+</a>
+                <a href="/status" class="nav-link text-xl text-white/70">Status</a>
+                <a href="/support" class="nav-link text-xl text-white/70">Support</a>
+                <a href="/invite" class="btn-primary text-xl px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add
+                        Ducky</a>
             </div>
         </div>
-    </footer>
+        <section class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
+            <div class="max-w-5xl mx-auto text-center">
+                <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 animate-fade-in">
+                    404
+                    <span class="text-primary">Not Found</span>
+                </h1>
+                <p class="text-white/60 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-12 animate-slide-up">
+                    The requested resource was not found in this pond.
+                </p>
+                <div class="flex flex-wrap justify-center gap-3 sm:gap-4 animate-slide-up" style="animation-delay: 0.2s">
+                    <a href="/" class="btn-primary px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base">
+                            Home
+                        </a>
+                    <a href="/support" class="group btn-secondary px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base">
+                            Support
+                            <i
+                                class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i>
+                        </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <div id="footer"></div>
     <script>
         fetch("/index.lua")
             .then(res => res.text())
