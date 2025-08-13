@@ -39,7 +39,8 @@ local elements = {
 		text = document:getElementById("linkText"),
 		buttons = document:getElementById("linkButtons"),
 		forceUnlinkContainer = document:getElementById("forceUnlinkContainer"),
-		forceUnlinkButton = document:getElementById("forceUnlinkButton")
+		forceUnlinkButton = document:getElementById("forceUnlinkButton"),
+		linkAgainContainer = document:getElementById("linkAgainContainer")
 	},
 	login = {
 		icon = document:getElementById("loginIcon"),
@@ -169,6 +170,9 @@ elseif path[1] == "link" then
 		if elements.link.forceUnlinkContainer then
 			elements.link.forceUnlinkContainer.classList:add("hidden")
 		end
+		if elements.link.linkAgainContainer then
+			elements.link.linkAgainContainer.classList:add("hidden")
+		end
 	end
 
 	update("loading", "Loading...", "Checking if you're logged in...", false)
@@ -182,8 +186,7 @@ elseif path[1] == "link" then
 			http.request(function(success, response)
 				if success then
 					update("success", "Successfully Unlinked", "Your Roblox account has been unlinked. You can now try linking it again.")
-					time.sleep(3000)
-					utils.redirect("/link")
+					elements.link.linkAgainContainer.classList:remove("hidden")
 				else
 					update("fail", "API Error", response.message or "Failed to unlink your account. Please try again or contact support.")
 				end
