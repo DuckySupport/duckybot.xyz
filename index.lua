@@ -167,12 +167,6 @@ elseif path[1] == "link" then
 		else
 			elements.link.buttons.classList:add("hidden")
 		end
-		if elements.link.forceUnlinkContainer then
-			elements.link.forceUnlinkContainer.classList:add("hidden")
-		end
-		if elements.link.linkAgainContainer then
-			elements.link.linkAgainContainer.classList:add("hidden")
-		end
 	end
 
 	update("loading", "Loading...", "Checking if you're logged in...", false)
