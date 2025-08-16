@@ -417,7 +417,7 @@ http.request(function(success, response)
 		elements.footer.status.innerHTML = '<span class="w-2 h-2 bg-[#66FF66] rounded-full"></span> Status: Operational'
 		elements.footer.status.className = "flex items-center gap-1 px-2 py-0.5 bg-[#66FF66]/10 rounded-full text-[#66FF66] text-xs"
 	else
-		elements.footer.version.textContent = "v1.2.0 Stable"
+		elements.footer.version.textContent = "v1.3.0 Stable"
 		elements.footer.status.innerHTML = '<span class="w-2 h-2 bg-[#FF6666] rounded-full"></span> Status: Unavailable'
 		elements.footer.status.className = "flex items-center gap-1 px-2 py-0.5 bg-[#FF6666]/10 rounded-full text-[#FF6666] text-xs"
 		elements.footer.statusDot.className = "w-2 h-2 bg-[#FF6666] rounded-full"
