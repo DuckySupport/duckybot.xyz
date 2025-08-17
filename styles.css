@@ -105,6 +105,13 @@ body {
     background: rgba(255, 255, 255, 0.2);
 }
 
+.btn-transparent {
+    background: transparent;
+    border: none;
+    color: #fff;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
 .btn-success {
     background: rgba(102, 255, 102, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.2);
