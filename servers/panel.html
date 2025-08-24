@@ -96,8 +96,24 @@
                 <!-- Tab Contents -->
                 <div class="py-5" id="tab-contents">
                     <div id="tabPunish" class="tab-content">
-                        <h3 class="text-lg font-medium text-white">Tab 1 Content</h3>
-                        <p class="mt-2 text-sm text-white/60">This is the content for Tab 1.</p>
+                        <div class="flex flex-wrap -mx-4">
+                            <div class="w-full md:w-1/2 px-4">
+                                <div class="bg-secondary/20 p-4 rounded-lg h-full">
+                                     <h3 class="text-lg font-medium text-white">Other stuff here</h3>
+                                     <p class="mt-2 text-sm text-white/60">Other things will go here yep</p>
+                                </div>
+                            </div>
+                            <div class="w-full md:w-1/2 px-4 mt-4 md:mt-0">
+                                <div class="space-y-4">
+                                    <div id="punishment-list" class="max-h-96 overflow-y-auto space-y-4 pr-4">
+                                        <!-- Punishments will be loaded here -->
+                                    </div>
+                                    <div class="text-center pt-4">
+                                        <button id="load-more-punishments" class="group btn-primary px-5 py-2 rounded-full text-sm">Load More <i class="fas fa-chevron-down ml-2 text-xs"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div id="tabShift" class="tab-content hidden">
                         <h3 class="text-lg font-medium text-white">Tab 2 Content</h3>

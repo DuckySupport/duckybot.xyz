@@ -65,6 +65,67 @@ if cookie then
                 button.classList:remove('text-white/50', 'border-transparent', 'hover:text-white/80', 'hover:border-white/30')
             end)
 		end
+
+        local punishmentList = document:getElementById('punishment-list')
+        local loadMoreButton = document:getElementById('load-more-punishments')
+        local currentPage = 1
+        local guildId = path[2]
+
+        local function fetchPunishments(id, page)
+            if not punishmentList then return end
+
+            http.request(function(success, response)
+                if success and response and response.data then
+                    if page == 1 then
+                        punishmentList.innerHTML = ""
+                    end
+
+                    if #response.data == 0 then
+                        loadMoreButton.style.display = 'none'
+                        if page == 1 then
+                            punishmentList.innerHTML = '<p class="text-white/60 text-center">No punishments found.</p>'
+                        end
+                        return
+                    end
+
+                    for i, punishment in ipairs(response.data) do
+                        local punishmentHTML = string.format([[
+                            <div class="bg-secondary/40 p-4 rounded-lg">
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center">
+                                        <img src="%s" alt="%s" class="w-8 h-8 rounded-full mr-3">
+                                        <p class="text-white font-semibold">@%s</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-xs text-white/60 mt-2 flex-wrap">
+                                    <span class="flex items-center"><i class="fas fa-file-alt w-4 mr-1"></i>%s</span>
+                                    <span class="text-white/30 mx-2">・</span>
+                                    <span class="flex items-center"><i class="fas fa-file-alt w-4 mr-1"></i>%s</span>
+                                    <span class="text-white/30 mx-2">・</span>
+                                    <span class="flex items-center"><i class="fas fa-gavel w-4 mr-1"></i>%s</span>
+                                    <span class="text-white/30 mx-2">・</span>
+                                    <span class="flex items-center"><i class="fas fa-calendar-alt w-4 mr-1"></i>%s</span>
+                                </div>
+                            </div>
+                        ]], punishment.player.avatar, punishment.player.name, punishment.player.name, punishment.type, punishment.reason, punishment.moderator.name, os.date("%Y-%m-%d", punishment.timestamp))
+
+                        punishmentList.innerHTML = punishmentList.innerHTML .. punishmentHTML
+                    end
+                else
+                    punishmentList.innerHTML = '<p class="text-white/60 text-center">Failed to load punishments.</p>'
+                    loadMoreButton.style.display = 'none'
+                end
+            end, "GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/punishments/" .. page, {
+                ["Discord-Code"] = cookie
+            })
+        end
+
+        fetchPunishments(guildId, currentPage)
+
+        loadMoreButton:addEventListener('click', function()
+            currentPage = currentPage + 1
+            fetchPunishments(guildId, currentPage)
+        end)
 	else
 		utils.redirect("/servers")
 	end
