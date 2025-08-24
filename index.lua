@@ -383,16 +383,6 @@ elseif path[1] == "servers" then
 
 			loadServers()
 			elements.servers.refresh:addEventListener("click", loadServers)
-		elseif tonumber(path[2]) and path[3] == "panel" then
-			http.request(function(success, response)
-				if success and response and response.data then
-					print("yaaa")
-				else
-					utils.redirect("servers")
-				end
-			end, "GET", "https://api.duckybot.xyz/guilds/" .. path[2] .. "/config", {
-				["Discord-Code"] = cookie
-			})
 		else
 			utils.redirect("servers")
 		end
