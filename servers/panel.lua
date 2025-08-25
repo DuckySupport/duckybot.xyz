@@ -141,8 +141,164 @@ if cookie then
             local punishmentList = document:getElementById('punishment-list')
             if not punishmentList then return end
 
+            -- New punishment form elements
+            local punishmentUsername = document:getElementById('punishment-username')
+            local usernameSuggestions = document:getElementById('username-suggestions')
+            local punishmentType = document:getElementById('punishment-type')
+            local typeSuggestions = document:getElementById('type-suggestions')
+            local punishmentReason = document:getElementById('punishment-reason')
+            local punishmentDurationContainer = document:getElementById('punishment-duration-container')
+            local punishmentDuration = document:getElementById('punishment-duration')
+            local punishmentSubmit = document:getElementById('punishment-submit')
+
             local loadPunishments
             local bindPunishmentEventListeners
+
+            -- Store player names for suggestions
+            local playerNames = {}
+            if erlcInfo then
+                local uniquePlayerNames = {}
+                if erlcInfo.players then
+                    for _, player in pairs(erlcInfo.players) do
+                        uniquePlayerNames[player.Name] = true
+                    end
+                end
+                if erlcInfo.previousPlayers then
+                    for _, player in pairs(erlcInfo.previousPlayers) do
+                        uniquePlayerNames[player.Name] = true
+                    end
+                end
+                for name, _ in pairs(uniquePlayerNames) do
+                    table.insert(playerNames, name)
+                end
+                table.sort(playerNames)
+            end
+
+            -- Handle username input and suggestions
+            local function showUsernameSuggestions()
+                local inputValue = punishmentUsername.value:lower()
+                usernameSuggestions.innerHTML = ''
+                if #inputValue == 0 then
+                    usernameSuggestions.classList:add('hidden')
+                    return
+                end
+
+                local suggestionsCount = 0
+                for _, name in pairs(playerNames) do
+                    if name:lower():find(inputValue, 1, true) then
+                        local li = document:createElement('li')
+                        li.className = 'px-3 py-2 text-white/80 hover:bg-white/10 cursor-pointer'
+                        li.textContent = name
+                        li:addEventListener('click', function()
+                            punishmentUsername.value = name
+                            usernameSuggestions.classList:add('hidden')
+                        end)
+                        usernameSuggestions:appendChild(li)
+                        suggestionsCount = suggestionsCount + 1
+                    end
+                end
+
+                if suggestionsCount > 0 then
+                    usernameSuggestions.classList:remove('hidden')
+                else
+                    usernameSuggestions.classList:add('hidden')
+                end
+            end
+
+            punishmentUsername:addEventListener('input', function()
+                showUsernameSuggestions()
+            end)
+
+            punishmentUsername:addEventListener('click', function()
+                showUsernameSuggestions()
+            end)
+
+            -- Store and handle punishment types
+            local punishmentTypes = {}
+            punishmentType.readOnly = true
+
+            punishmentType:addEventListener('focus', function()
+                typeSuggestions.innerHTML = ''
+                for _, name in pairs(punishmentTypes) do
+                    local li = document:createElement('li')
+                    li.className = 'px-3 py-2 text-white/80 hover:bg-white/10 cursor-pointer'
+                    li.textContent = name
+                    li:addEventListener('click', function()
+                        punishmentType.value = name
+                        typeSuggestions.classList:add('hidden')
+                        if name:lower() == 'tempban' then
+                            punishmentDurationContainer.classList:remove('hidden')
+                        else
+                            punishmentDurationContainer.classList:add('hidden')
+                        end
+                    end)
+                    typeSuggestions:appendChild(li)
+                end
+                typeSuggestions.classList:remove('hidden')
+            end)
+
+            -- Hide suggestions when clicking outside
+            punishmentUsername:addEventListener("focusout", function()
+                time.after(100, function() usernameSuggestions.classList:add('hidden') end)
+            end)
+
+            punishmentType:addEventListener("blur", function()
+                time.after(100, function() typeSuggestions.classList:add("hidden") end)
+            end)
+
+            -- Handle punishment submission
+            punishmentSubmit:addEventListener('click', function()
+                local username = punishmentUsername.value
+                local type = punishmentType.value
+                local reason = punishmentReason.value
+                local duration = punishmentDuration.value
+
+                if not username or #username == 0 then
+                    return utils.notify("Username is required.", "warning")
+                end
+
+                if not type or #type == 0 then
+                    return utils.notify("Please select a punishment type.", "warning")
+                end
+
+                if not reason or #reason == 0 then
+                    return utils.notify("A reason is required.", "warning")
+                end
+
+                type = type:lower()
+
+                local data = {
+                    username = username,
+                    type = type,
+                    reason = reason
+                }
+
+                -- local body
+                if type == 'tempban' then
+                    if not duration or #duration == 0 then
+                        return utils.notify("Duration is required for a tempban.", "warning")
+                    end
+
+                    local convert = utils.convertTimeInput(duration, true)
+                    if not convert then
+                        return utils.notify("Duration input is invalid, learn more at <a href='https://newdocs.duckybot.xyz/misc/timeinputs' target='_blank' class= text-[#F5FF82] hover:underline'>our docs</a>", "fail")
+                    end
+
+                    data.duration = convert
+                end
+
+                http.request(function(success, response)
+                    if success and response then
+                        utils.notify(response.message, "success")
+                        loadPunishments()
+                    else
+                        utils.notify(response and response.message or "Unknown error.", "error")
+                    end
+                end, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildId .. "/punishments/", {
+                    ["Discord-Code"] = cookie,
+                    ["Content-Type"] = "application/json"
+                }, utils.jsonfyBody(data))
+            end)
 
             bindPunishmentEventListeners = function()
                 local editButtons = punishmentList:querySelectorAll('[data-action="edit"]')
@@ -192,7 +348,7 @@ if cookie then
                                 end, "PATCH", "https://devapi.duckybot.xyz/guilds/" .. guildId .. "/punishments/" .. punishmentId, {
                                     ["Discord-Code"] = cookie,
                                     ["Content-Type"] = "application/json"
-                                }, string.format('{"reason": "%s"}', newReason))
+                                }, utils.jsonfyBody({reason = newReason}))
                             else
                                 utils.notify("You did not provide a reason for this punishment.", "warning")
                             end
@@ -256,12 +412,27 @@ if cookie then
             loadPunishments = function()
                 http.request(function(success, response)
                     if success and response and response.data then
-                        if #response.data == 0 then
+                        -- Populate punishment types table
+                        local uniqueTypes = { Tempban = true, BOLO = true }
+                        local apiTypes = response.data.types or {}
+                        for _, type in pairs(apiTypes) do
+                            uniqueTypes[type:gsub("^%l", string.upper)] = true
+                        end
+
+                        punishmentTypes = {}
+                        for name, _ in pairs(uniqueTypes) do
+                            table.insert(punishmentTypes, name)
+                        end
+                        table.sort(punishmentTypes)
+
+                        -- Populate punishment list
+                        local punishments = response.data.punishments or {}
+                        if #punishments == 0 then
                             punishmentList.innerHTML = '<p class="text-white/60 text-center">No punishments found.</p>'
                             return
                         end
                         punishmentList.innerHTML = ""
-                        for _, punishment in pairs(response.data) do
+                        for _, punishment in pairs(punishments) do
                             local buttons = ""
                             if currentUser and permissions and (currentUser.id == punishment.moderator.id or permissions.ERLC_ADMIN) then
                                 buttons = string.format([[
@@ -291,7 +462,7 @@ if cookie then
                                     <span class="flex items-center"><i class="fas fa-calendar-alt w-4 mr-1"></i>%s</span>
                                 </div>
                             </div>
-                        ]], punishment.player.avatar, punishment.player.name, punishment.player.name, buttons, punishment.type, utils.truncate(punishment.reason, 25), punishment.moderator.name, os.date("%Y-%m-%d", punishment.timestamp))
+                        ]], punishment.player.avatar, punishment.player.name, punishment.player.name, buttons, punishment.type:gsub("^%l", string.upper), utils.truncate(punishment.reason, 25), punishment.moderator.name, os.date("%Y-%m-%d", punishment.timestamp))
                         end
                         bindPunishmentEventListeners()
                     else

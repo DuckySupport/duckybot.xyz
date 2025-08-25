@@ -164,8 +164,51 @@
                             <div class="flex flex-wrap -mx-4">
                                 <div class="w-full md:w-1/2 px-4">
                                     <div class="bg-secondary/20 p-4 rounded-lg h-full">
-                                        <h3 class="text-lg font-medium text-white">Other stuff here</h3>
-                                        <p class="mt-2 text-sm text-white/60">Other things will go here yep</p>
+                                        <h3 class="text-lg font-medium text-white mb-4">Create Punishment</h3>
+                                        <div class="space-y-4">
+                                            <div class="relative">
+                                            <input 
+                                                type="text" 
+                                                id="punishment-username"
+                                                class="mt-1 w-full bg-dark/50 border border-white/20 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                                                placeholder="Enter username"
+                                                autocomplete="off"
+                                            >
+
+                                            <ul id="username-suggestions" 
+                                                class="absolute z-10 w-full bg-dark/90 border border-white/20 rounded-md mt-1 hidden max-h-40 overflow-y-auto">
+                                                <!-- Suggestions injected here -->
+                                            </ul>
+                                            </div>
+                                            <div>
+                                            <label for="punishment-type" class="block text-sm font-medium text-white/70">Punishment Type</label>
+                                            <div class="relative">
+                                                <input 
+                                                type="text" 
+                                                id="punishment-type"
+                                                class="mt-1 w-full bg-dark/50 border border-white/20 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                                                placeholder="Select a type..."
+                                                autocomplete="off"
+                                                >
+
+                                                <ul id="type-suggestions" 
+                                                    class="absolute z-10 w-full bg-dark/90 border border-white/20 rounded-md mt-1 hidden max-h-40 overflow-y-auto">
+                                                    <!-- Types injected here -->
+                                                </ul>
+                                            </div>
+                                            </div>
+                                            <div id="punishment-duration-container" class="hidden">
+                                                <label for="punishment-duration" class="block text-sm font-medium text-white/70">Duration</label>
+                                                <input type="text" id="punishment-duration" class="mt-1 w-full bg-dark/50 border border-white/20 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary" placeholder="30m, 1h, 3d, 1w">
+                                            </div>
+                                            <div>
+                                                <label for="punishment-reason" class="block text-sm font-medium text-white/70">Reason</label>
+                                                <input type="text" id="punishment-reason" class="mt-1 w-full bg-dark/50 border border-white/20 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter reason" autocomplete="off">
+                                            </div>
+                                            <div>
+                                                <button id="punishment-submit" class="w-full btn-primary px-4 py-2 rounded-md text-sm font-medium">Create Punishment</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="w-full md:w-1/2 px-4 mt-4 md:mt-0">

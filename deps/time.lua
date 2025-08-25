@@ -32,4 +32,8 @@ function time.sleep(ms)
     coroutine.yield()
 end
 
+function time.after(ms, cb)
+    js.global:setTimeout(cb, ms)
+end
+
 return time
