@@ -80,7 +80,8 @@ end, "GET", "/partials/footer.html", nil, nil, "text")
 local cookie = utils.cookie("discord")
 if cookie then
 	if path[1] == "servers" and tonumber(path[2]) and path[3] == "panel" then
-		elements.tabs = {
+        --[[Tabs Management]]--
+        elements.tabs = {
 			buttons = document:querySelectorAll('button[data-tab-target]'),
 			contents = document:querySelectorAll('.tab-content')
 		}
@@ -111,6 +112,7 @@ if cookie then
             end)
 		end
 
+        --[[Tab: Punishments]]--
         local punishmentList = document:getElementById('punishment-list')
         local guildId = path[2]
 
@@ -246,6 +248,7 @@ if cookie then
             end
         end
 
+        --[[Information Loader]]--
         http.request(function(success, response)
             if success and response and response.data then
                 currentUser = response.data
