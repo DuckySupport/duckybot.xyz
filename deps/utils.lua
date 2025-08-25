@@ -83,7 +83,8 @@ function utils.cookie(name, value)
     elseif value == "delete" then
         document.cookie = name .. "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/"
     else
-        document.cookie = name .. "=" .. value .. "; path=/"
+        local expires = os.date("!%a, %d %b %Y %H:%M:%S GMT", os.time() + 5 * 24 * 60 * 60)
+        document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=/; Secure; SameSite=Lax"
     end
 end
 
