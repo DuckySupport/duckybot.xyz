@@ -151,6 +151,13 @@ elseif path[1] == "team" then
 		end
 	end, "GET", "https://api.duckybot.xyz/team")
 elseif path[1] == "link" then
+	local redirect_uri
+	if global.window.location.hostname == "dev.duckybot.xyz" then
+		redirect_uri = "https%3A%2F%2Fdev.duckybot.xyz%2Flink"
+	else
+		redirect_uri = "https%3A%2F%2Fduckybot.xyz%2Flink"
+	end
+
 	local function update(icon, title, text, showButtons)
 		local key = {
 			loading = "/images/icons/loading.gif",
@@ -218,7 +225,7 @@ elseif path[1] == "link" then
 										if parameters.redirect or parameters.state then utils.redirect(parameters.redirect or parameters.state) end
 									elseif response and response.code == 409 then
 										update("fail", "Already Linked", response.message, false)
-										local roblox_auth_url = "https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid&state=force-unlink"
+										local roblox_auth_url = "https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=" .. redirect_uri .. "&scope=openid&state=force-unlink"
 										elements.link.forceUnlinkButton.href = roblox_auth_url
 										elements.link.forceUnlinkContainer.classList:remove("hidden")
 									else
@@ -230,7 +237,7 @@ elseif path[1] == "link" then
 								})
 							else
 								update("loading", "Redirecting...", "You are being redirected to Roblox.")
-								utils.redirect("https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid" .. ((parameters.redirect and ("&state=" .. parameters.redirect)) or ""))
+								utils.redirect("https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=" .. redirect_uri .. "&scope=openid" .. ((parameters.redirect and ("&state=" .. parameters.redirect)) or ""))
 							end
 						end, "GET", "https://api.duckybot.xyz/links/" .. DiscordID)
 					end
@@ -246,6 +253,13 @@ elseif path[1] == "link" then
 		utils.redirect("login/?redirect=link")
 	end
 elseif path[1] == "login" then
+	local redirect_uri
+	if global.window.location.hostname == "dev.duckybot.xyz" then
+		redirect_uri = "https%3A%2F%2Fdev.duckybot.xyz%2Flogin"
+	else
+		redirect_uri = "https%3A%2F%2Fduckybot.xyz%2Flogin"
+	end
+
 	local function update(icon, title, text, showButtons)
 		local key = {
 			loading = "/images/icons/loading.gif",
@@ -312,7 +326,7 @@ elseif path[1] == "login" then
 		})
 	else
 		update("loading", "Redirecting...", "You are being redirected to Discord.", false)
-		utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flogin&scope=identify+guilds" .. ((parameters.redirect and ("&state=" .. parameters.redirect)) or ""))
+		utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=token&redirect_uri=" .. redirect_uri .. "&scope=identify+guilds" .. ((parameters.redirect and ("&state=" .. parameters.redirect)) or ""))
 	end
 elseif path[1] == "servers" then
 	local cookie = utils.cookie("discord")
