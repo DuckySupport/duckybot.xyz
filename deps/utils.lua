@@ -66,7 +66,11 @@ function utils.redirect(url)
 end
 
 function utils.truncate(str, len)
-    return str:sub(1, len - 3) .. "..."
+    if #str > len then
+        return str:sub(1, len - 3) .. "..."
+    else
+        return str
+    end
 end
 
 function utils.cookie(name, value)

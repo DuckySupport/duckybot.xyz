@@ -189,14 +189,6 @@ if cookie then
             local loadPunishments
             local bindPunishmentEventListeners
 
-            local function truncate(text, length)
-                length = length or 30
-                if text and #text > length then
-                    return text:sub(1, length) .. "..."
-                end
-                return text or ""
-            end
-
             bindPunishmentEventListeners = function()
                 local editButtons = punishmentList:querySelectorAll('[data-action="edit"]')
                 for i = 0, editButtons.length - 1 do
@@ -344,7 +336,7 @@ if cookie then
                                     <span class="flex items-center"><i class="fas fa-calendar-alt w-4 mr-1"></i>%s</span>
                                 </div>
                             </div>
-                        ]], punishment.player.avatar, punishment.player.name, punishment.player.name, buttons, punishment.type, truncate(punishment.reason, 25), punishment.moderator.name, os.date("%Y-%m-%d", punishment.timestamp))
+                        ]], punishment.player.avatar, punishment.player.name, punishment.player.name, buttons, punishment.type, utils.truncate(punishment.reason, 25), punishment.moderator.name, os.date("%Y-%m-%d", punishment.timestamp))
                         end
                         bindPunishmentEventListeners()
                     else
