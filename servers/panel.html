@@ -134,41 +134,57 @@
         <section class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
             <!-- Start Design -->
             <div class="w-full max-w-6xl mx-auto">
-                <!-- Tab Headers -->
-                <div class="border-b border-white/10">
-                    <nav class="flex flex-wrap justify-center -mb-px space-x-4" id="tab-buttons">
-                        <button data-tab-target="#tabPunish" class="whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm text-primary border-primary">Punishments</button>
-                        <button data-tab-target="#tabShift" class="whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm text-white/50 border-transparent hover:text-white/80 hover:border-white/30">Shifts</button>
-                        <button data-tab-target="#tabERLC" class="whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm text-white/50 border-transparent hover:text-white/80 hover:border-white/30">ER:LC</button>
-                    </nav>
+                <!-- Loading Screen -->
+                <div id="loading-screen">
+                    <div class="bg-secondary/80 border border-white/10 rounded-2xl p-8 shadow-lg max-w-xl mx-auto">
+                        <div class="flex flex-col items-center space-y-3">
+                            <img src="/images/icons/Loading.gif" alt="loading icon" class="w-20 h-20" id="panelIcon">
+                            <h1 class="text-white text-3xl font-semibold text-center" id="panelTitle">Loading...</h1>
+                            <hr class="border-white/10 w-3/4 my-4">
+                            <p class="text-white/70 text-center" id="panelText">
+                                Please wait...
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Tab Contents -->
-                <div class="py-5" id="tab-contents">
-                    <div id="tabPunish" class="tab-content">
-                        <div class="flex flex-wrap -mx-4">
-                            <div class="w-full md:w-1/2 px-4">
-                                <div class="bg-secondary/20 p-4 rounded-lg h-full">
-                                    <h3 class="text-lg font-medium text-white">Other stuff here</h3>
-                                    <p class="mt-2 text-sm text-white/60">Other things will go here yep</p>
+                <div id="panel-content" class="hidden">
+                    <!-- Tab Headers -->
+                    <div class="border-b border-white/10">
+                        <nav class="flex flex-wrap justify-center -mb-px space-x-4" id="tab-buttons">
+                            <button data-tab-target="#tabPunish" class="whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm text-primary border-primary">Punishments</button>
+                            <button data-tab-target="#tabShift" class="whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm text-white/50 border-transparent hover:text-white/80 hover:border-white/30">Shifts</button>
+                            <button data-tab-target="#tabERLC" class="whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm text-white/50 border-transparent hover:text-white/80 hover:border-white/30">ER:LC</button>
+                        </nav>
+                    </div>
+
+                    <!-- Tab Contents -->
+                    <div class="py-5" id="tab-contents">
+                        <div id="tabPunish" class="tab-content">
+                            <div class="flex flex-wrap -mx-4">
+                                <div class="w-full md:w-1/2 px-4">
+                                    <div class="bg-secondary/20 p-4 rounded-lg h-full">
+                                        <h3 class="text-lg font-medium text-white">Other stuff here</h3>
+                                        <p class="mt-2 text-sm text-white/60">Other things will go here yep</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="w-full md:w-1/2 px-4 mt-4 md:mt-0">
-                                <div class="space-y-4">
-                                    <div id="punishment-list" class="max-h-96 overflow-y-auto space-y-4 pr-4">
-                                        <!-- Punishments will be loaded here -->
+                                <div class="w-full md:w-1/2 px-4 mt-4 md:mt-0">
+                                    <div class="space-y-4">
+                                        <div id="punishment-list" class="max-h-96 overflow-y-auto space-y-4 pr-4">
+                                            <!-- Punishments will be loaded here -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div id="tabShift" class="tab-content hidden">
-                        <h3 class="text-lg font-medium text-white">Tab 2 Content</h3>
-                        <p class="mt-2 text-sm text-white/60">This is the content for Tab 2.</p>
-                    </div>
-                    <div id="tabERLC" class="tab-content hidden">
-                        <h3 class="text-lg font-medium text-white">Tab 3 Content</h3>
-                        <p class="mt-2 text-sm text-white/60">This is the content for Tab 3.</p>
+                        <div id="tabShift" class="tab-content hidden">
+                            <h3 class="text-lg font-medium text-white">Tab 2 Content</h3>
+                            <p class="mt-2 text-sm text-white/60">This is the content for Tab 2.</p>
+                        </div>
+                        <div id="tabERLC" class="tab-content hidden">
+                            <h3 class="text-lg font-medium text-white">Tab 3 Content</h3>
+                            <p class="mt-2 text-sm text-white/60">This is the content for Tab 3.</p>
+                        </div>
                     </div>
                 </div>
             </div>
