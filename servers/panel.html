@@ -39,6 +39,56 @@
         }
     </script>
     <script src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
+    <style>
+        @keyframes slide-in-right {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes slide-out-right {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        .slide-in-right {
+            animation: slide-in-right 0.5s forwards;
+        }
+        .slide-out-right {
+            animation: slide-out-right 0.5s forwards;
+        }
+        @keyframes slide-up {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+                max-height: 200px; /* Adjust to fit content */
+            }
+            to {
+                transform: translateY(-20px);
+                opacity: 0;
+                max-height: 0;
+                padding-top: 0;
+                padding-bottom: 0;
+                margin-top: 0;
+                margin-bottom: 0;
+                border: 0;
+            }
+        }
+        .slide-up {
+            animation: slide-up 0.5s forwards;
+            transition: all 0.5s ease-out;
+            overflow: hidden;
+        }
+    </style>
 </head>
 
 <body class="min-h-screen flex flex-col">
@@ -108,9 +158,6 @@
                                     <div id="punishment-list" class="max-h-96 overflow-y-auto space-y-4 pr-4">
                                         <!-- Punishments will be loaded here -->
                                     </div>
-                                    <div class="text-center pt-4">
-                                        <button id="load-more-punishments" class="group btn-primary px-5 py-2 rounded-full text-sm">Load More <i class="fas fa-chevron-down ml-2 text-xs"></i></button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -128,6 +175,7 @@
             <!-- End Design -->
         </section>
     </main>
+    <div id="notification-container" class="w-full flex flex-col items-end p-4 space-y-2"></div>
     <div id="footer"></div>
     <script>
         fetch("/servers/panel.lua")
