@@ -345,7 +345,7 @@ if cookie then
 
             if elements.panel.loadingScreen then elements.panel.loadingScreen:remove() end
             if elements.panel.content then elements.panel.content.classList:remove("hidden") end
-            
+
             startPanel()
             end)()
 	else
