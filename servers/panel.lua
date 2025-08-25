@@ -22,51 +22,6 @@ local elements = {
 	}
 }
 
-local notificationContainer = document:getElementById('notification-container')
-
-local notifications = {}
-
-function notifications.show(type, message)
-    local bgColor, textColor, iconHTML, title
-
-    if type == 'success' then
-        bgColor = 'bg-green-500/10'
-        textColor = 'text-green-400'
-        iconHTML = '<img src="/images/icons/Success.svg" class="w-6 h-6">'
-    elseif type == 'warning' then
-        bgColor = 'bg-yellow-500/10'
-        textColor = 'text-yellow-400'
-        iconHTML = '<i class="fas fa-exclamation-triangle text-xl"></i>'
-    else
-        bgColor = 'bg-red-500/10'
-        textColor = 'text-red-400'
-        iconHTML = '<img src="/images/icons/Fail.svg" class="w-6 h-6">'
-    end
-
-    local notification = document:createElement('div')
-    notification.className = string.format('flex items-start %s %s p-4 rounded-lg shadow-lg w-80', bgColor, textColor)
-    notification.classList:add('slide-in-right')
-
-    notification.innerHTML = string.format([[
-        <div class="flex-shrink-0">
-            %s
-        </div>
-        <div class="ml-3">
-            <p class="text-sm">%s</p>
-        </div>
-    ]], iconHTML, message)
-
-    notificationContainer:appendChild(notification)
-
-    global:setTimeout(function()
-        notification.classList:remove('slide-in-right')
-        notification.classList:add('slide-out-right')
-        global:setTimeout(function()
-            notification:remove()
-        end, 500)
-    end, 5000)
-end
-
 http.request(function(success, response)
 	if success and response then
 		elements.footer.innerHTML = response
@@ -229,17 +184,17 @@ if cookie then
                             if newReason and #newReason > 0 then
                                 http.request(function(success, response)
                                     if success then
-                                        notifications.show('success', 'Punishment updated.')
+                                        utils.notify("That punishment has been successfully updated.", "success")
                                         loadPunishments()
                                     else
-                                        notifications.show('error', response.message or 'Update failed.')
+                                        utils.notify(response.message or "An unexpected error occurred while attempting to update that message.", "fail")
                                     end
                                 end, "PATCH", "https://devapi.duckybot.xyz/guilds/" .. guildId .. "/punishments/" .. punishmentId, {
                                     ["Discord-Code"] = cookie,
                                     ["Content-Type"] = "application/json"
                                 }, string.format('{"reason": "%s"}', newReason))
                             else
-                                notifications.show('warning', 'Reason cannot be empty.')
+                                utils.notify("You did not provide a reason for this punishment.", "warning")
                             end
                         end)
                     end)
@@ -280,13 +235,13 @@ if cookie then
                         punishmentElement:querySelector('[data-action="submit-delete"]'):addEventListener('click', function()
                             http.request(function(success, response)
                                 if success then
-                                    notifications.show('success', 'Punishment successfully deleted.')
+                                    utils.notify("That punishment has been successfully deleted.", "success")
                                     punishmentElement.classList:add('slide-up')
                                     global:setTimeout(function()
                                         punishmentElement:remove()
                                     end, 500)
                                 else
-                                    notifications.show('error', response.message)
+                                    utils.notify(response.message, "fail")
                                     punishmentElement.innerHTML = originalHTML
                                     bindPunishmentEventListeners()
                                 end
