@@ -189,6 +189,14 @@ if cookie then
             local loadPunishments
             local bindPunishmentEventListeners
 
+            local function truncate(text, length)
+                length = length or 30
+                if text and #text > length then
+                    return text:sub(1, length) .. "..."
+                end
+                return text or ""
+            end
+
             bindPunishmentEventListeners = function()
                 local editButtons = punishmentList:querySelectorAll('[data-action="edit"]')
                 for i = 0, editButtons.length - 1 do
@@ -250,20 +258,50 @@ if cookie then
                     local button = deleteButtons[i]
                     button:addEventListener('click', function(event)
                         local punishmentId = event:getAttribute('data-punishment-id')
-                        http.request(function(success, response)
-                            if success then
-                                notifications.show('success', 'Punishment successfully deleted.')
-                                local punishmentElement = button.parentElement.parentElement.parentElement
-                                punishmentElement.classList:add('slide-up')
-                                global:setTimeout(function()
-                                    punishmentElement:remove()
-                                end, 500)
-                            else
-                                notifications.show('error', response.message)
-                            end
-                        end, "DELETE", "https://devapi.duckybot.xyz/guilds/" .. guildId .. "/punishments/" .. punishmentId, {
-                            ["Discord-Code"] = cookie
-                        })
+                        local punishmentElement = button.parentElement.parentElement.parentElement
+                        local originalHTML = punishmentElement.innerHTML
+
+                        local deleteHTML = [[
+                            <div class="p-4">
+                                <div class="flex justify-between items-center">
+                                    <h3 class="text-lg font-medium text-white">Are you sure?</h3>
+                                    <div class="flex items-center space-x-2">
+                                        <button class="p-2 rounded-full hover:bg-white/10" data-action="cancel-delete">
+                                            <img src="/images/icons/Fail.svg" class="w-5 h-5">
+                                        </button>
+                                        <button class="p-2 rounded-full hover:bg-white/10" data-action="submit-delete">
+                                            <img src="/images/icons/Success.svg" class="w-5 h-5">
+                                        </button>
+                                    </div>
+                                </div>
+                                <p class="text-white/60 mt-2">This action cannot be undone.</p>
+                            </div>
+                        ]]
+
+                        punishmentElement.innerHTML = deleteHTML
+
+                        punishmentElement:querySelector('[data-action="cancel-delete"]'):addEventListener('click', function()
+                            punishmentElement.innerHTML = originalHTML
+                            bindPunishmentEventListeners()
+                        end)
+
+                        punishmentElement:querySelector('[data-action="submit-delete"]'):addEventListener('click', function()
+                            http.request(function(success, response)
+                                if success then
+                                    notifications.show('success', 'Punishment successfully deleted.')
+                                    punishmentElement.classList:add('slide-up')
+                                    global:setTimeout(function()
+                                        punishmentElement:remove()
+                                    end, 500)
+                                else
+                                    notifications.show('error', response.message)
+                                    punishmentElement.innerHTML = originalHTML
+                                    bindPunishmentEventListeners()
+                                end
+                            end, "DELETE", "https://devapi.duckybot.xyz/guilds/" .. guildId .. "/punishments/" .. punishmentId, {
+                                ["Discord-Code"] = cookie
+                            })
+                        end)
                     end)
                 end
             end
@@ -306,7 +344,7 @@ if cookie then
                                     <span class="flex items-center"><i class="fas fa-calendar-alt w-4 mr-1"></i>%s</span>
                                 </div>
                             </div>
-                        ]], punishment.player.avatar, punishment.player.name, punishment.player.name, buttons, punishment.type, punishment.reason, punishment.moderator.name, os.date("%Y-%m-%d", punishment.timestamp))
+                        ]], punishment.player.avatar, punishment.player.name, punishment.player.name, buttons, punishment.type, truncate(punishment.reason, 25), punishment.moderator.name, os.date("%Y-%m-%d", punishment.timestamp))
                         end
                         bindPunishmentEventListeners()
                     else
