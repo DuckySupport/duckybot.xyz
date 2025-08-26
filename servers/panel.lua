@@ -249,7 +249,7 @@ if cookie then
             -- Handle punishment submission
             punishmentSubmit:addEventListener('click', function()
                 local username = punishmentUsername.value
-                local type = punishmentType.value
+                local pType = punishmentType.value
                 local reason = punishmentReason.value
                 local duration = punishmentDuration.value
 
@@ -257,7 +257,7 @@ if cookie then
                     return utils.notify("Username is required.", "warning")
                 end
 
-                if not type or #type == 0 then
+                if not pType or #pType == 0 then
                     return utils.notify("Please select a punishment type.", "warning")
                 end
 
@@ -265,16 +265,28 @@ if cookie then
                     return utils.notify("A reason is required.", "warning")
                 end
 
-                type = type:lower()
+                pType = pType:lower()
 
                 local data = {
                     username = username,
-                    type = type,
+                    type = pType,
                     reason = reason
                 }
 
                 -- local body
-                if type == 'tempban' then
+                if pType == "bolo" then
+                    http.request(function(success, response)
+                        if success and response then
+                            utils.notify(response.message, "success")
+                            loadPunishments()
+                        else
+                            utils.notify((response and response.message) or "Unknown error.", "fail")
+                        end
+                    end, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildId .. "/bolos", {
+                        ["Discord-Code"] = cookie,
+                        ["Content-Type"] = "application/json"
+                    }, utils.jsonfyBody(data))
+                elseif pType == "tempban" then
                     if not duration or #duration == 0 then
                         return utils.notify("Duration is required for a tempban.", "warning")
                     end
@@ -285,19 +297,32 @@ if cookie then
                     end
 
                     data.duration = convert
-                end
 
-                http.request(function(success, response)
-                    if success and response then
-                        utils.notify(response.message, "success")
-                        loadPunishments()
-                    else
-                        utils.notify(response and response.message or "Unknown error.", "error")
-                    end
-                end, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildId .. "/punishments/", {
-                    ["Discord-Code"] = cookie,
-                    ["Content-Type"] = "application/json"
-                }, utils.jsonfyBody(data))
+                    http.request(function(success, response)
+                        if success and response then
+                            utils.notify(response.message, "success")
+                            loadPunishments()
+                        else
+                            utils.notify((response and response.message) or "Unknown error.", "fail")
+                        end
+                    end, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildId .. "/tempbans", {
+                        ["Discord-Code"] = cookie,
+                        ["Content-Type"] = "application/json"
+                    }, utils.jsonfyBody(data))
+                else
+                    http.request(function(success, response)
+                        console:log(response)
+                        if success and response then
+                            utils.notify(response.message, "success")
+                            loadPunishments()
+                        else
+                            utils.notify((response and response.message) or "Unknown error.", "fail")
+                        end
+                    end, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildId .. "/punishments", {
+                        ["Discord-Code"] = cookie,
+                        ["Content-Type"] = "application/json"
+                    }, utils.jsonfyBody(data))
+                end
             end)
 
             bindPunishmentEventListeners = function()
@@ -415,8 +440,8 @@ if cookie then
                         -- Populate punishment types table
                         local uniqueTypes = { Tempban = true, BOLO = true }
                         local apiTypes = response.data.types or {}
-                        for _, type in pairs(apiTypes) do
-                            uniqueTypes[type:gsub("^%l", string.upper)] = true
+                        for _, pType in pairs(apiTypes) do
+                            uniqueTypes[pType:gsub("^%l", string.upper)] = true
                         end
 
                         punishmentTypes = {}
