@@ -389,8 +389,10 @@ elseif path[1] == "servers" then
 						if elements.servers.ducky.childElementCount <= 0 then
 							elements.servers.ducky.innerHTML = '<span class="text-white/50">There are no servers to show here.</span>'
 						end
+					else
+						elements.servers.ducky.innerHTML = response and response.message or "Unknown error."
 					end
-				end, "GET", "https://api.duckybot.xyz/guilds", {
+				end, "GET", "https://devapi.duckybot.xyz/guilds", {
 					["Discord-Code"] = cookie
 				})
 			end
