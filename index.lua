@@ -49,6 +49,11 @@ local elements = {
 		buttons = document:getElementById("loginButtons")
 	},
 	servers = {
+		container = document:getElementById("servers"),
+		loadingScreen = document:getElementById("loading-screen"),
+		loadingIcon = document:getElementById("loading-icon"),
+		loadingTitle = document:getElementById("loading-title"),
+		loadingText = document:getElementById("loading-text"),
 		ducky = document:getElementById("serversDucky"),
 		refresh = document:getElementById("serversRefresh")
 	}
@@ -333,8 +338,19 @@ elseif path[1] == "servers" then
 
 	if cookie then
 		if (not path[2]) or (path[2] == "") then
+			local function updateLoading(icon, title, text)
+				local key = {
+					loading = "/images/icons/Loading.gif",
+					fail = "/images/icons/Fail.svg"
+				}
+				if elements.servers.loadingIcon then elements.servers.loadingIcon.src = key[icon] or icon end
+				if elements.servers.loadingTitle then elements.servers.loadingTitle.textContent = title end
+				if elements.servers.loadingText then elements.servers.loadingText.textContent = text end
+			end
+
 			local function loadServers()
-				elements.servers.ducky.innerHTML = '<span class="text-white/50">Loading...</span>'
+				updateLoading("loading", "Loading...", "Getting guilds information...")
+
 				http.request(function(success, response)
 					if success and response and response.data then
 						elements.servers.ducky.innerHTML = ""
@@ -389,8 +405,11 @@ elseif path[1] == "servers" then
 						if elements.servers.ducky.childElementCount <= 0 then
 							elements.servers.ducky.innerHTML = '<span class="text-white/50">There are no servers to show here.</span>'
 						end
+
+						if elements.servers.loadingScreen then elements.servers.loadingScreen:remove() end
+						if elements.servers.container then elements.servers.container.classList:remove("hidden") end
 					else
-						elements.servers.ducky.innerHTML = response and response.message or "Unknown error."
+						updateLoading("fail", "API Error", response and response.message or "Unknown Error.")
 					end
 				end, "GET", "https://devapi.duckybot.xyz/guilds", {
 					["Discord-Code"] = cookie
