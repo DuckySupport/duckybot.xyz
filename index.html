@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ER:LC server automation for effortless management.">
+    <meta name="description" content="Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ERLC server automation for effortless management.">
     <meta content="Ducky" property="og:title">
-    <meta content="Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ER:LC server automation for effortless management." property="og:description">
+    <meta content="Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ERLC server automation for effortless management." property="og:description">
     <meta content="https://duckybot.xyz" property="og:url">
     <meta content="/images/icons/Ducky.png" property="og:image">
     <meta content="/images/icons/Ducky.png" property="og:image:url">
@@ -44,27 +44,7 @@
 <body>
     <div class="glow bg-primary top-0 left-[10%] w-[500px] h-[500px]"></div>
     <div class="glow bg-primary bottom-0 right-[10%] w-[500px] h-[500px]"></div>
-    <div class="fixed top-4 sm:top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-5xl px-4">
-        <nav class="floating-nav flex items-center justify-between py-2 sm:py-2 px-4 sm:px-6 rounded-full bg-secondary/30">
-            <a href="/" class="flex items-center gap-2 sm:gap-3">
-                <img src="/images/misc/fullDucky.png" alt="Ducky" class="w-32 sm:w-32 h-auto object-contain">
-            </a>
-            <div class="hidden md:flex items-center gap-4 sm:gap-8">
-                <a href="/team" class="nav-link text-sm text-white/70">Team</a>
-                <a href="/docs" class="nav-link text-sm text-white/70">Docs</a>
-                <a href="/plus" class="nav-link text-sm text-white/70">Ducky
-                        Plus+</a>
-                <a href="/status" class="nav-link text-sm text-white/70">Status</a>
-                <a href="/support" class="nav-link text-sm text-white/70">Support</a>
-                <a href="/invite" class="group btn-primary px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add
-                        Ducky<i
-                            class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i></a>
-            </div>
-            <button id="mobileMenuOpen" class="md:hidden text-primary" aria-label="Toggle mobile menu">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-        </nav>
-    </div>
+    <div id="navbar"></div>
     <div id="mobileMenu" class="mobile-menu">
         <button id="mobileMenuClose" class="absolute top-6 right-6 text-white/70" aria-label="Close mobile menu">
                 <i class="fas fa-times text-2xl"></i>
@@ -96,7 +76,7 @@
             <p class="text-white/60 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-12 animate-slide-up">
                 A multipurpose bot focused on seamlessly integrating
                 <span class="text-primary">Discord</span> and
-                <span class="text-primary">ER:LC</span> server automation for
+                <span class="text-primary">ERLC</span> server automation for
                 <span class="text-primary">effortless</span> management.
             </p>
             <div class="flex flex-wrap justify-center gap-3 sm:gap-4 animate-slide-up" style="animation-delay: 0.2s">
@@ -113,7 +93,7 @@
     </section>
     <section class="py-16 sm:py-20 px-4 relative">
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            <div class="card p-6 sm:p-8 animate-slide-up" style="animation-delay: 0.1s">
+            <div class="card p-6 sm:p-8 animate-fade-in">
                 <i class="fas fa-shield-alt text-2xl sm:text-3xl mb-4 sm:mb-6"></i>
                 <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Staff Management
                 </h3>
@@ -121,14 +101,14 @@
                     Manage your staff team with ease using infractions, promotions, LOAs, feedback, and more
                 </p>
             </div>
-            <div class="card p-6 sm:p-8 animate-slide-up" style="animation-delay: 0.2s">
+            <div class="card p-6 sm:p-8 animate-fade-in">
                 <img src="/images/icons/automation.svg" alt="Automation Icon" class="inline w-auto h-[2.25rem] mb-4 sm:mb-6">
                 <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Automation</h3>
                 <p class="text-white/60 text-sm sm:text-base">
-                    Seamless ER:LC automation with over 30+ triggers, actions, and conditions for effortless management
+                    Seamless ERLC automation with over 30+ triggers, actions, and conditions for effortless management
                 </p>
             </div>
-            <div class="card p-6 sm:p-8 animate-slide-up" style="animation-delay: 0.3s">
+            <div class="card p-6 sm:p-8 animate-fade-in">
                 <i class="fas fa-code text-2xl sm:text-3xl mb-4 sm:mb-6"></i>
                 <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Multipurpose</h3>
                 <p class="text-white/60 text-sm sm:text-base">
@@ -189,7 +169,7 @@
                     <div class="card-content">
                         <h3 class="text-lg sm:text-xl font-bold text-center mb-3 sm:mb-4">London Croydon Roleplay</h3>
                         <p class="text-gray-300 text-center text-sm sm:text-base">
-                            We are a new London based ER:LC server with over 200+ custom liveries and several custom uniforms.
+                            We are a new London based ERLC server with over 200+ custom liveries and several custom uniforms.
                         </p>
                         <div class="button-container">
                             <a href="https://discord.gg/U9YYUDAUt5" target="_blank" class="bg-primary/10 text-white border border-primary/30 px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base font-semibold hover:bg-primary/30 transition">

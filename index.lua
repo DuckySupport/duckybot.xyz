@@ -20,12 +20,8 @@ local elements = {
 	},
 	feedback = document:getElementById("feedbackSlider"),
 	version = document:getElementById("duckyVersionText"),
+	navbar = document:getElementById("navbar"),
 	footer = document:getElementById("footer"),
-	mobile = {
-		menu = document:getElementById("mobileMenu"),
-		open = document:getElementById("mobileMenuOpen"),
-		close = document:getElementById("mobileMenuClose")
-	},
 	team = {
 		dev = document:getElementById("team-dev"),
 		mgmt = document:getElementById("team-mgmt"),
@@ -69,6 +65,71 @@ http.request(function(success, response)
 	end
 end, "GET", "/partials/footer.html", nil, nil, "text")
 
+http.request(function(success, response)
+	if success and response then
+		elements.navbar.innerHTML = response
+		elements.navbar = {
+			profileButton = document:getElementById("profileButton"),
+			profileImage = document:getElementById("profileImage"),
+			profileMenu = document:getElementById("profileMenu"),
+			addDucky = document:getElementById("addDucky"),
+			links = document:getElementsByClassName("nav-link")
+		}
+
+		elements.mobile = {
+			menu = document:getElementById("mobileMenu"),
+			open = document:getElementById("mobileMenuOpen"),
+			close = document:getElementById("mobileMenuClose")
+		}
+
+		if path[1] == "plus" then
+			elements.navbar.addDucky.classList:add("btn-glass")
+
+			for _, link in pairs(elements.navbar.links) do link.classList:add("white") end
+		else
+			elements.navbar.addDucky.classList:add("btn-primary")
+		end
+
+		local cookie = utils.cookie("discord")
+
+		if cookie then
+			http.request(function(success, response) if success and response then elements.navbar.profileImage.src = response.data.avatar end end, "GET", "https://api.duckybot.xyz/users/@me", {
+				["Discord-Code"] = cookie
+			})
+		else
+			elements.navbar.profileImage.src = "/misc/default.png"
+		end
+
+		elements.navbar.profileButton:addEventListener("click", function(event)
+			if cookie then
+    			elements.navbar.profileMenu.classList:toggle("hidden")
+			else
+				utils.redirect("login")
+			end
+		end)
+
+		elements.mobile.open:addEventListener("click", function()
+			elements.mobile.menu.classList:toggle("active")
+
+			if elements.mobile.menu.classList:contains("active") then
+				body.style.overflow = "hidden"
+			else
+				body.style.overflow = ""
+			end
+		end)
+
+		elements.mobile.close:addEventListener("click", function()
+			elements.mobile.menu.classList:toggle("active")
+
+			if elements.mobile.menu.classList:contains("active") then
+				body.style.overflow = "hidden"
+			else
+				body.style.overflow = ""
+			end
+		end)
+	end
+end, "GET", "/partials/navbar.html", nil, nil, "text")
+
 if location:find("/index%.html") then
 	location = location:gsub("/index%.html", "")
 	utils.redirect(location)
@@ -84,16 +145,14 @@ elseif path[1] == "" then
 		if success and response and response.data then
 			local mobile = utils.mobile()
 
-			if mobile then
-				response.data = utils.chop(response.data, 3)
-			end
+			if mobile then response.data = utils.chop(response.data, 3) end
 
 			elements.feedback.className = "flex flex-col gap-[10px]"
 			elements.feedback.innerHTML = ""
 
 			for i, review in pairs(response.data) do
 				local card = document:createElement("div")
-				card.className = "glass-card review-card p-4 opacity-0 w-full max-h-100 rounded-full"
+				card.className = "glass-card dark review-card p-4 opacity-0 w-full max-h-100 rounded-full"
 				card.style.animation = "fadeInSlide 0.5s ease-out " .. ((mobile and i * 0.15) or i * 0.2) .. "s forwards"
 
 				local filledStar = '<img src="/images/icons/starfill.svg" class="' .. (mobile and "w-5 h-5" or "w-6 h-6") .. ' inline-block mx-[2px]">'
@@ -349,7 +408,7 @@ elseif path[1] == "servers" then
 			end
 
 			local function loadServers()
-				updateLoading("loading", "Loading...", "Getting guilds information...")
+				updateLoading("loading", "Loading...", "Fetching guilds information...")
 
 				http.request(function(success, response)
 					if success and response and response.data then
@@ -362,7 +421,7 @@ elseif path[1] == "servers" then
 								local container = elements.servers.ducky
 
 								local card = document:createElement("div")
-								card.className = "glass-card p-4 rounded-lg flex flex-col"
+								card.className = "glass-card dark p-4 rounded-lg flex flex-col"
 
 								local plusBadge = (guild.plus and guild.plus.active and [[
 									<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-white whitespace-nowrap"
@@ -402,9 +461,7 @@ elseif path[1] == "servers" then
 							end
 						end
 
-						if elements.servers.ducky.childElementCount <= 0 then
-							elements.servers.ducky.innerHTML = '<span class="text-white/50">There are no servers to show here.</span>'
-						end
+						if elements.servers.ducky.childElementCount <= 0 then elements.servers.ducky.innerHTML = '<span class="text-white/50">There are no servers to show here.</span>' end
 
 						if elements.servers.loadingScreen then elements.servers.loadingScreen:remove() end
 						if elements.servers.container then elements.servers.container.classList:remove("hidden") end
@@ -448,27 +505,3 @@ http.request(function(success, response)
 		elements.footer.statusDot.className = "w-2 h-2 bg-[#FF6666] rounded-full"
 	end
 end, "GET", "https://api.duckybot.xyz/")
-
-elements.mobile.open:addEventListener("click", function()
-	if not elements.mobile.menu then return end
-
-	elements.mobile.menu.classList:toggle("active")
-
-	if elements.mobile.menu.classList:contains("active") then
-		body.style.overflow = "hidden"
-	else
-		body.style.overflow = ""
-	end
-end)
-
-elements.mobile.close:addEventListener("click", function()
-	if not elements.mobile.menu then return end
-
-	elements.mobile.menu.classList:toggle("active")
-
-	if elements.mobile.menu.classList:contains("active") then
-		body.style.overflow = "hidden"
-	else
-		body.style.overflow = ""
-	end
-end)

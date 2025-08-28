@@ -15,11 +15,7 @@ local console = global.console
 
 local elements = {
 	footer = document:getElementById("footer"),
-	mobile = {
-		menu = document:getElementById("mobileMenu"),
-		open = document:getElementById("mobileMenuOpen"),
-		close = document:getElementById("mobileMenuClose")
-	}
+	navbar = document:getElementById("navbar")
 }
 
 http.request(function(success, response)
@@ -31,6 +27,65 @@ http.request(function(success, response)
 		}
 	end
 end, "GET", "/partials/footer.html", nil, nil, "text")
+
+http.request(function(success, response)
+	if success and response then
+		elements.navbar.innerHTML = response
+		elements.navbar = {
+			profileButton = document:getElementById("profileButton"),
+			profileImage = document:getElementById("profileImage"),
+			profileMenu = document:getElementById("profileMenu"),
+			addDucky = document:getElementById("addDucky"),
+			links = document:getElementsByClassName("nav-link")
+		}
+
+		elements.mobile = {
+			menu = document:getElementById("mobileMenu"),
+			open = document:getElementById("mobileMenuOpen"),
+			close = document:getElementById("mobileMenuClose")
+		}
+
+		elements.navbar.addDucky.classList:add("btn-primary")
+
+		local cookie = utils.cookie("discord")
+
+		if cookie then
+			http.request(function(success, response) if success and response then elements.navbar.profileImage.src = response.data.avatar end end, "GET", "https://api.duckybot.xyz/users/@me", {
+				["Discord-Code"] = cookie
+			})
+		else
+			elements.navbar.profileImage.src = "/misc/default.png"
+		end
+
+		elements.navbar.profileButton:addEventListener("click", function(event)
+			if cookie then
+    			elements.navbar.profileMenu.classList:toggle("hidden")
+			else
+				utils.redirect("login")
+			end
+		end)
+
+		elements.mobile.open:addEventListener("click", function()
+			elements.mobile.menu.classList:toggle("active")
+
+			if elements.mobile.menu.classList:contains("active") then
+				body.style.overflow = "hidden"
+			else
+				body.style.overflow = ""
+			end
+		end)
+
+		elements.mobile.close:addEventListener("click", function()
+			elements.mobile.menu.classList:toggle("active")
+
+			if elements.mobile.menu.classList:contains("active") then
+				body.style.overflow = "hidden"
+			else
+				body.style.overflow = ""
+			end
+		end)
+	end
+end, "GET", "/partials/navbar.html", nil, nil, "text")
 
 local cookie = utils.cookie("discord")
 if cookie then
@@ -557,23 +612,3 @@ http.request(function(success, response)
 		end
 	end
 end, "GET", "https://api.duckybot.xyz/")
-
-elements.mobile.open:addEventListener("click", function()
-	if not elements.mobile.menu then return end
-	elements.mobile.menu.classList:toggle("active")
-	if elements.mobile.menu.classList:contains("active") then
-		body.style.overflow = "hidden"
-	else
-		body.style.overflow = ""
-	end
-end)
-
-elements.mobile.close:addEventListener("click", function()
-	if not elements.mobile.menu then return end
-	elements.mobile.menu.classList:toggle("active")
-	if elements.mobile.menu.classList:contains("active") then
-		body.style.overflow = "hidden"
-	else
-		body.style.overflow = ""
-	end
-end)

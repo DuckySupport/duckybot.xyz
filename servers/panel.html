@@ -50,6 +50,7 @@
                 opacity: 1;
             }
         }
+        
         @keyframes slide-out-right {
             from {
                 transform: translateX(0);
@@ -60,17 +61,21 @@
                 opacity: 0;
             }
         }
+        
         .slide-in-right {
             animation: slide-in-right 0.5s forwards;
         }
+        
         .slide-out-right {
             animation: slide-out-right 0.5s forwards;
         }
+        
         @keyframes slide-up {
             from {
                 transform: translateY(0);
                 opacity: 1;
-                max-height: 200px; /* Adjust to fit content */
+                max-height: 200px;
+                /* Adjust to fit content */
             }
             to {
                 transform: translateY(-20px);
@@ -83,6 +88,7 @@
                 border: 0;
             }
         }
+        
         .slide-up {
             animation: slide-up 0.5s forwards;
             transition: all 0.5s ease-out;
@@ -95,27 +101,7 @@
     <main class="flex-grow">
         <div class="glow bg-primary top-0 left-[10%] w-[500px] h-[500px]"></div>
         <div class="glow bg-primary bottom-0 right-[10%] w-[500px] h-[500px]"></div>
-        <div class="fixed top-4 sm:top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-5xl px-4">
-            <nav class="floating-nav flex items-center justify-between py-2 sm:py-2 px-4 sm:px-6 rounded-full bg-secondary/30">
-                <a href="/" class="flex items-center gap-2 sm:gap-3">
-                    <img src="/images/misc/fullDucky.png" alt="Ducky" class="w-32 sm:w-32 h-auto object-contain">
-                </a>
-                <div class="hidden md:flex items-center gap-4 sm:gap-8">
-                    <a href="/team" class="nav-link text-sm text-white/70">Team</a>
-                    <a href="/docs" class="nav-link text-sm text-white/70">Docs</a>
-                    <a href="/plus" class="nav-link text-sm text-white/70">Ducky
-                            Plus+</a>
-                    <a href="/status" class="nav-link text-sm text-white/70">Status</a>
-                    <a href="/support" class="nav-link text-sm text-white/70">Support</a>
-                    <a href="/invite" class="group btn-primary px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add
-                            Ducky<i
-                                class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i></a>
-                </div>
-                <button id="mobileMenuOpen" class="md:hidden text-primary" aria-label="Toggle mobile menu">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-            </nav>
-        </div>
+        <div id="navbar"></div>
         <div id="mobileMenu" class="mobile-menu">
             <button id="mobileMenuClose" class="absolute top-6 right-6 text-white/70" aria-label="Close mobile menu">
                     <i class="fas fa-times text-2xl"></i>
@@ -154,7 +140,7 @@
                         <nav class="flex flex-wrap justify-center -mb-px space-x-4" id="tab-buttons">
                             <button data-tab-target="#tabPunish" class="whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm text-primary border-primary">Punishments</button>
                             <button data-tab-target="#tabShift" class="whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm text-white/50 border-transparent hover:text-white/80 hover:border-white/30">Shifts</button>
-                            <button data-tab-target="#tabERLC" class="whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm text-white/50 border-transparent hover:text-white/80 hover:border-white/30">ER:LC</button>
+                            <button data-tab-target="#tabERLC" class="whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm text-white/50 border-transparent hover:text-white/80 hover:border-white/30">ERLC</button>
                         </nav>
                     </div>
 
@@ -167,35 +153,21 @@
                                         <h3 class="text-lg font-medium text-white mb-4">Create Punishment</h3>
                                         <div class="space-y-4">
                                             <div class="relative">
-                                            <input 
-                                                type="text" 
-                                                id="punishment-username"
-                                                class="mt-1 w-full bg-dark/50 border border-white/20 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                                                placeholder="Enter username"
-                                                autocomplete="off"
-                                            >
+                                                <input type="text" id="punishment-username" class="mt-1 w-full bg-dark/50 border border-white/20 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter username" autocomplete="off">
 
-                                            <ul id="username-suggestions" 
-                                                class="absolute z-10 w-full bg-dark/90 border border-white/20 rounded-md mt-1 hidden max-h-40 overflow-y-auto">
-                                                <!-- Suggestions injected here -->
-                                            </ul>
-                                            </div>
-                                            <div>
-                                            <label for="punishment-type" class="block text-sm font-medium text-white/70">Punishment Type</label>
-                                            <div class="relative">
-                                                <input 
-                                                type="text" 
-                                                id="punishment-type"
-                                                class="mt-1 w-full bg-dark/50 border border-white/20 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                                                placeholder="Select a type..."
-                                                autocomplete="off"
-                                                >
-
-                                                <ul id="type-suggestions" 
-                                                    class="absolute z-10 w-full bg-dark/90 border border-white/20 rounded-md mt-1 hidden max-h-40 overflow-y-auto">
-                                                    <!-- Types injected here -->
+                                                <ul id="username-suggestions" class="absolute z-10 w-full bg-dark/90 border border-white/20 rounded-md mt-1 hidden max-h-40 overflow-y-auto">
+                                                    <!-- Suggestions injected here -->
                                                 </ul>
                                             </div>
+                                            <div>
+                                                <label for="punishment-type" class="block text-sm font-medium text-white/70">Punishment Type</label>
+                                                <div class="relative">
+                                                    <input type="text" id="punishment-type" class="mt-1 w-full bg-dark/50 border border-white/20 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Select a type..." autocomplete="off">
+
+                                                    <ul id="type-suggestions" class="absolute z-10 w-full bg-dark/90 border border-white/20 rounded-md mt-1 hidden max-h-40 overflow-y-auto">
+                                                        <!-- Types injected here -->
+                                                    </ul>
+                                                </div>
                                             </div>
                                             <div id="punishment-duration-container" class="hidden">
                                                 <label for="punishment-duration" class="block text-sm font-medium text-white/70">Duration</label>

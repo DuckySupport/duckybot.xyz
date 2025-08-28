@@ -44,27 +44,7 @@
 <body>
     <div class="glow bg-primary top-0 left-[10%] w-[500px] h-[500px]"></div>
     <div class="glow bg-primary bottom-0 right-[10%] w-[500px] h-[500px]"></div>
-    <div class="fixed top-4 sm:top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-5xl px-4">
-        <nav class="floating-nav flex items-center justify-between py-2 sm:py-2 px-4 sm:px-6 rounded-full bg-secondary/30">
-            <a href="/" class="flex items-center gap-2 sm:gap-3">
-                <img src="/images/misc/fullDucky.png" alt="Ducky" class="w-32 sm:w-32 h-auto object-contain">
-            </a>
-            <div class="hidden md:flex items-center gap-4 sm:gap-8">
-                <a href="/team" class="nav-link text-sm text-white/70">Team</a>
-                <a href="/docs" class="nav-link text-sm text-white/70">Docs</a>
-                <a href="/plus" class="nav-link text-sm text-white/70">Ducky
-                        Plus+</a>
-                <a href="/status" class="nav-link text-sm text-white/70">Status</a>
-                <a href="/support" class="nav-link text-sm text-white/70">Support</a>
-                <a href="/invite" class="group btn-primary px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add
-                        Ducky<i
-                            class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i></a>
-            </div>
-            <button id="mobileMenuOpen" class="md:hidden text-primary" aria-label="Toggle mobile menu">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-        </nav>
-    </div>
+    <div id="navbar"></div>
     <div id="mobileMenu" class="mobile-menu">
         <button id="mobileMenuClose" class="absolute top-6 right-6 text-white/70" aria-label="Close mobile menu">
                 <i class="fas fa-times text-2xl"></i>
@@ -125,10 +105,10 @@
                         <code>/link</code> command and clicking
                         <strong>Unlink</strong>.</p>
 
-                    <h3 class="text-xl font-semibold mt-4 mb-2">3.2. ER:LC API Key</h3>
-                    <p class="mb-4">When providing Ducky with an API key, you give us consent to see and process information about your ER:LC server. Ducky will automate requests to the PRC API, required for many of its features. Abiding by the PRC Private Server API
+                    <h3 class="text-xl font-semibold mt-4 mb-2">3.2. ERLC API Key</h3>
+                    <p class="mb-4">When providing Ducky with an API key, you give us consent to see and process information about your ERLC server. Ducky will automate requests to the PRC API, required for many of its features. Abiding by the PRC Private Server API
                         Use Guidelines (accessible at <a href="https://apidocs.policeroleplay.community/api-information/api-use-guidelines" class="text-[#F5FF82] hover:underline">https://apidocs.policeroleplay.community/api-information/api-use-guidelines</a>),
-                        once Ducky is removed from your server, it will not make any requests to the PRC API using your API key. For information about data retention, including the retention of your ER:LC API key, see section 6.</p>
+                        once Ducky is removed from your server, it will not make any requests to the PRC API using your API key. For information about data retention, including the retention of your ERLC API key, see section 6.</p>
                 </section>
 
                 <section id="storage">
