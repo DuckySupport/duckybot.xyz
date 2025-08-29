@@ -298,7 +298,7 @@ if cookie then
             end)
 
             punishmentType:addEventListener("blur", function()
-                time.after(100, function() typeSuggestions.classList:add("hidden") end)
+                time.after(200, function() typeSuggestions.classList:add("hidden") end)
             end)
 
             -- Handle punishment submission
