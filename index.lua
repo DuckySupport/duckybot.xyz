@@ -96,8 +96,6 @@ http.request(function(success, response)
 			http.request(function(success, response) if success and response then elements.navbar.profileImage.src = response.data.avatar end end, "GET", "https://api.duckybot.xyz/users/@me", {
 				["Discord-Code"] = cookie
 			})
-		else
-			elements.navbar.profileImage.src = "/misc/default.png"
 		end
 
 		elements.navbar.profileButton:addEventListener("click", function(event)
