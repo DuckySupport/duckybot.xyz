@@ -14,83 +14,19 @@ table.remove(path, 1)
 local console = global.console
 
 local elements = {
-    navbar = document:getElementById("navbar"),
-    panel = {
-        container = document:getElementById("panelContainer"),
-        glance = {
-            server = {
-                icon = document:getElementById("serverGlanceIcon"),
-                name = document:getElementById("serverGlanceName"),
-                status = {
-                    pill = document:getElementById("serverGlanceStatusPill"),
-                    tooltip = document:getElementById("serverGlanceStatusTooltip")
-                }
-            },
-            statistics = {
-                players = {
-                    label = document:getElementById("serverGlancePlayerCount"),
-                    tooltip = document:getElementById("serverGlancePlayerTooltip")
-                },
-                staff = {
-                    label = document:getElementById("serverGlanceStaffCount"),
-                    tooltip = document:getElementById("serverGlanceStaffTooltip")
-                },
-                modcalls = {
-                    label = document:getElementById("serverGlanceModcallCount"),
-                    tooltip = document:getElementById("serverGlanceModcallTooltip")
-                }
-            }
-        },
-        players = {
-            container = document:getElementById("serverPlayersContainer"),
-            search = document:getElementById("serverPlayersSearch"),
-            searchBtn = document:getElementById("serverPlayerSearchBtn"),
-            internal = {
-                container = document:getElementById("serverPlayersInternal"),
-                icon = document:getElementById("serverPlayersInternalIcon"),
-                text = document:getElementById("serverPlayersInternalText")
-            }
-        },
-        playerPanel = {
-            container = document:getElementById("playerPanel"),
-            dialog = document:getElementById("playerPanelDialog"),
-            avatar = document:getElementById("playerPanelAvatar"),
-            displayName = document:getElementById("playerPanelDisplayName"),
-            username = document:getElementById("playerPanelUsername"),
-            permission = document:getElementById("playerPanelPermission"),
-            team = document:getElementById("playerPanelTeam"),
-            content = document:getElementById("playerPanelContent"),
-            close = document:getElementById("playerPanelClose"),
-            punishments = {
-                list = document:getElementById("punishmentsList"),
-                status = document:getElementById("punishmentsStatus"),
-                reload = document:getElementById("punishmentsReloadBtn")
-            },
-            bolo = {
-                container = document:getElementById("boloContainer"),
-                info = document:getElementById("boloInfo")
-            }
-        },
-        shift = document:getElementById("userShiftPanel")
-    }
+	navbar = document:getElementById("navbar")
 }
 
 http.request(function(success, response)
-    if success and response then
-        elements.navbar.innerHTML = response
-        elements.navbar = {
-            profileButton = document:getElementById("profileButton"),
-            profileImage = document:getElementById("profileImage"),
-            profileMenu = document:getElementById("profileMenu"),
-            addDucky = document:getElementById("addDucky"),
-            links = document:getElementsByClassName("nav-link")
-        }
-
-        elements.mobile = {
-            menu = document:getElementById("mobileMenu"),
-            open = document:getElementById("mobileMenuOpen"),
-            close = document:getElementById("mobileMenuClose")
-        }
+	if success and response then
+		elements.navbar.innerHTML = response
+		elements.navbar = {
+			profileButton = document:getElementById("profileButton"),
+			profileImage = document:getElementById("profileImage"),
+			profileMenu = document:getElementById("profileMenu"),
+			addDucky = document:getElementById("addDucky"),
+			links = document:getElementsByClassName("nav-link")
+		}
 
         elements.navbar.addDucky.classList:add("btn-primary")
 
@@ -926,7 +862,40 @@ coroutine.wrap(function()
         else
             utils.redirect("servers")
         end
-    else
-        utils.redirect("login/?redirect=" .. location)
-    end
-end)()
+
+        --[[Initial Loading]]--
+        coroutine.wrap(function()
+            updatePanel("loading", "Loading...", "Fetching user and guild information...")
+
+            local userSuccess, userResponse = loadUserInfo()
+            if userSuccess and userResponse then
+                currentUser = userResponse.data
+            else
+                return updatePanel("fail", "API Error", (userResponse and userResponse.message) or "Unknown error.")
+            end
+
+            local guildSuccess, guildResponse = loadGuildInfo()
+            if guildSuccess and guildResponse then
+                guildInfo = guildResponse.data
+            else
+                return updatePanel("fail", "API Error", (guildResponse and guildResponse.message) or "Unknown error.")
+            end
+
+            local erlcSuccess, erlcResponse = loadERLCInfo()
+            if erlcSuccess and erlcResponse then
+                erlcInfo = erlcResponse.data
+            elseif not erlcResponse or erlcResponse.code ~= 404 then
+                return updatePanel("fail", "API Error", (erlcResponse and erlcResponse.message) or "Unknown error.")
+            end
+
+            if elements.panel.loadingScreen then elements.panel.loadingScreen:remove() end
+            if elements.panel.content then elements.panel.content.classList:remove("hidden") end
+
+            startPanel()
+            end)()
+	else
+		utils.redirect("/servers")
+	end
+else
+	utils.redirect("/login/?redirect=" .. location)
+end
