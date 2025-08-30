@@ -19,7 +19,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
-    <script src="panel.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F5FF82',
+                        secondary: '#111111',
+                        dark: '#0a0a0a'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    maxHeight: {
+                        '100': '100px'
+                    }
+                }
+            }
+        }
+    </script>
     <script src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
     <style>
         @keyframes slide-in-right {
@@ -190,7 +208,13 @@
     </main>
     <div id="notification-container" class="w-full flex flex-col items-end p-4 space-y-2"></div>
     <div id="footer"></div>
-    
+    <script>
+        fetch("/servers/panel.lua")
+            .then(res => res.text())
+            .then(lua => {
+                fengari.load(lua)();
+            });
+    </script>
 </body>
 
 </html>
