@@ -373,7 +373,7 @@ function utils.erlc(id, cookie)
     cookie = cookie or utils.cookie("discord")
     
     if id then
-        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/erlc", {
+        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/erlc/data", {
             ["Discord-Code"] = cookie
         })
 

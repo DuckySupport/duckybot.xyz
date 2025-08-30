@@ -20,10 +20,7 @@ local elements = {
 			server = {
 				icon = document:getElementById("serverIcon"),
 				name = document:getElementById("serverName"),
-				status = {
-					pill = document:getElementById("serverStatusPill"),
-					dot = document:getElementById("serverStatusDot")	
-				}
+				status = document:getElementById("serverStatusPill")
 			},
 			statistics = {
 				players = {
@@ -100,8 +97,26 @@ coroutine.wrap(function()
 					elements.panel.glance.server.icon.src = Guild.icon
 					elements.panel.glance.server.name.textContent = Guild.name
 
-					if ERLC and ERLC.players and #ERLC.players > 0 then
-						-- continue here gotta push smth else
+					if ERLC and ERLC.server then
+						if ERLC.players then
+							if #ERLC.players > 0 then
+								elements.panel.glance.server.status.classList:add("pill-green")
+                        		elements.panel.glance.server.status.innerHTML = '<span class="h-2 w-2 rounded-full"></span> Calm'
+							end
+
+							elements.panel.glance.statistics.players.label.textContent = #ERLC.players .. "/" .. ERLC.server.MaxPlayers
+							elements.panel.glance.statistics.players.tooltip.textContent = #ERLC.players .. "/" .. ERLC.server.MaxPlayers .. " players are in-game"
+						end
+
+						if ERLC.vehicles then
+							elements.panel.glance.statistics.vehicles.label.textContent = #ERLC.vehicles
+							elements.panel.glance.statistics.vehicles.tooltip.textContent = #ERLC.vehicles .. " vehicles spawned"
+						end
+
+						if ERLC.modcalls then
+							elements.panel.glance.statistics.modcalls.label.textContent = #ERLC.modcalls
+							elements.panel.glance.statistics.modcalls.tooltip.textContent = #ERLC.modcalls .. " pending modcalls"
+						end
 					end
 				else
 					utils.redirect("servers")

@@ -27,7 +27,13 @@ function http.request(callback, method, url, headers, body, process)
 			return response:text()
 		end)
 
-		processPromise["then"](processPromise, function(_, body) return coroutine.wrap(callback)(status >= 200 and status < 300, body) end)
+		processPromise["then"](processPromise, function(_, body)
+			if process == "json" then
+				body = json.decode(body)
+			end
+			
+			return coroutine.wrap(callback)(status >= 200 and status < 300, body)
+		end)
 	end)()
 end
 
