@@ -15,11 +15,11 @@
     <meta content="#FF54F9" name="theme-color">
     <link rel="icon" href="/images/icons/Plus.png">
     <title>Ducky Plus+</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script nonce="{{nonce}}" src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
-    <script>
+    <script nonce="{{nonce}}">
         tailwind.config = {
             theme: {
                 extend: {
@@ -38,29 +38,12 @@
             }
         }
     </script>
-    <script src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
+    <script nonce="{{nonce}}" src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
 </head>
 
 <body>
     <div class="fixed inset-0 z-0 bg-[url('/images/misc/rainbow.webp')] bg-no-repeat bg-center bg-cover blur-xl opacity-60 pointer-events-none"></div>
-    <div class="fixed top-4 sm:top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-5xl px-4">
-        <nav class="floating-nav flex items-center justify-between py-2 sm:py-2 px-4 sm:px-6 rounded-full bg-secondary/30">
-            <a href="/" class="flex items-center gap-2 sm:gap-3">
-                <img src="/images/misc/fullDucky.png" alt="Ducky" class="w-32 sm:w-32 h-auto object-contain">
-            </a>
-            <div class="hidden md:flex items-center gap-4 sm:gap-8">
-                <a href="/team" class="nav-link white text-sm text-white/70">Team</a>
-                <a href="/docs" class="nav-link white text-sm text-white/70">Docs</a>
-                <a href="/plus" class="nav-link white text-sm text-white/70">Ducky Plus+</a>
-                <a href="/status" class="nav-link white text-sm text-white/70">Status</a>
-                <a href="/support" class="nav-link white text-sm text-white/70">Support</a>
-                <a href="/invite" class="group btn-glass px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add Ducky<i class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i></a>
-            </div>
-            <button id="mobileMenuOpen" class="md:hidden text-primary" aria-label="Toggle mobile menu">
-                <i class="fas fa-bars text-xl"></i>
-            </button>
-        </nav>
-    </div>
+    <div id="navbar"></div>
     <div id="mobileMenu" class="mobile-menu">
         <button id="mobileMenuClose" class="absolute top-6 right-6 text-white/70" aria-label="Close mobile menu">
             <i class="fas fa-times text-2xl"></i>
@@ -79,7 +62,7 @@
             <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 animate-fade-in">
                 <img src="/images/icons/Plus.svg" alt="Ducky Plus+ Icon" class="inline w-auto h-[1.2em] align-text-bottom"> Ducky Plus+
             </h1>
-            <p class="text-white/60 text-sm sm:text-lg mb-6 sm:mb-8 max-w-3xl mx-auto">
+            <p class="text-white/60 text-sm sm:text-lg mb-6 sm:mb-8 max-w-3xl mx-auto animate-slide-up">
                 Unlock endless possibilities with increased limits, giveaway requirements, less ratelimits, and so much more for
                 <img src="/images/icons/robux.svg" alt="Robux Icon" class="inline w-auto h-[1.2em] align-text-bottom">
                 <b>1,000</b> per server.
@@ -114,7 +97,7 @@
             </thead>
             <tbody class="divide-y divide-white/20">
                 <tr>
-                    <td class="backdrop-blur-sm border border-white px-4 py-3">ER:LC Player Panel</td>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">ERLC Player Panel</td>
                     <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
                         <img src="/images/icons/fail.svg" alt="yes" class="inline w-auto h-[1.2em] align-text-bottom">
                     </td>
@@ -141,7 +124,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="backdrop-blur-sm border border-white px-4 py-3">ER:LC Command Queueing</td>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">ERLC Command Queueing</td>
                     <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
                         <img src="/images/icons/fail.svg" alt="yes" class="inline w-auto h-[1.2em] align-text-bottom">
                     </td>
@@ -188,9 +171,9 @@
                     <td class="backdrop-blur-sm border border-white text-center px-4 py-3">5 questions on pre-open form</td>
                 </tr>
                 <tr>
-                    <td class="backdrop-blur-sm border border-white px-4 py-3">ER:LC Status Channel Limits</td>
-                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">3 ER:LC status channels</td>
-                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">6 ER:LC status channels</td>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">ERLC Status Channel Limits</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">3 ERLC status channels</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">6 ERLC status channels</td>
                 </tr>
                 <tr>
                     <td class="backdrop-blur-sm border border-white px-4 py-3">AutoDelete Channel Limits</td>
@@ -236,7 +219,7 @@
     </div>
     </div>
     <div id="footer"></div>
-    <script>
+    <script nonce="{{nonce}}">
         fetch("/index.lua")
             .then(res => res.text())
             .then(lua => {

@@ -20,12 +20,8 @@ local elements = {
 	},
 	feedback = document:getElementById("feedbackSlider"),
 	version = document:getElementById("duckyVersionText"),
+	navbar = document:getElementById("navbar"),
 	footer = document:getElementById("footer"),
-	mobile = {
-		menu = document:getElementById("mobileMenu"),
-		open = document:getElementById("mobileMenuOpen"),
-		close = document:getElementById("mobileMenuClose")
-	},
 	team = {
 		dev = document:getElementById("team-dev"),
 		mgmt = document:getElementById("team-mgmt"),
@@ -49,6 +45,11 @@ local elements = {
 		buttons = document:getElementById("loginButtons")
 	},
 	servers = {
+		container = document:getElementById("servers"),
+		loadingScreen = document:getElementById("loading-screen"),
+		loadingIcon = document:getElementById("loading-icon"),
+		loadingTitle = document:getElementById("loading-title"),
+		loadingText = document:getElementById("loading-text"),
 		ducky = document:getElementById("serversDucky"),
 		refresh = document:getElementById("serversRefresh")
 	}
@@ -63,6 +64,69 @@ http.request(function(success, response)
 		}
 	end
 end, "GET", "/partials/footer.html", nil, nil, "text")
+
+http.request(function(success, response)
+	if success and response then
+		elements.navbar.innerHTML = response
+		elements.navbar = {
+			profileButton = document:getElementById("profileButton"),
+			profileImage = document:getElementById("profileImage"),
+			profileMenu = document:getElementById("profileMenu"),
+			addDucky = document:getElementById("addDucky"),
+			links = document:getElementsByClassName("nav-link")
+		}
+
+		elements.mobile = {
+			menu = document:getElementById("mobileMenu"),
+			open = document:getElementById("mobileMenuOpen"),
+			close = document:getElementById("mobileMenuClose")
+		}
+
+		if path[1] == "plus" then
+			elements.navbar.addDucky.classList:add("btn-glass")
+
+			for _, link in pairs(elements.navbar.links) do link.classList:add("white") end
+		else
+			elements.navbar.addDucky.classList:add("btn-primary")
+		end
+
+		local cookie = utils.cookie("discord")
+
+		if cookie then
+			http.request(function(success, response) if success and response then elements.navbar.profileImage.src = response.data.avatar end end, "GET", "https://api.duckybot.xyz/users/@me", {
+				["Discord-Code"] = cookie
+			})
+		end
+
+		elements.navbar.profileButton:addEventListener("click", function(event)
+			if cookie then
+    			elements.navbar.profileMenu.classList:toggle("hidden")
+			else
+				utils.redirect("login")
+			end
+		end)
+
+		elements.mobile.open:addEventListener("click", function()
+			elements.mobile.menu.classList:toggle("active")
+
+			if elements.mobile.menu.classList:contains("active") then
+				body.style.overflow = "hidden"
+			else
+				body.style.overflow = ""
+			end
+		end)
+
+		elements.mobile.close:addEventListener("click", function()
+			elements.mobile.menu.classList:toggle("active")
+
+			if elements.mobile.menu.classList:contains("active") then
+				body.style.overflow = "hidden"
+			else
+				body.style.overflow = ""
+			end
+		end)
+	end
+end, "GET", "/partials/navbar.html", nil, nil, "text")
 
 if location:find("/index%.html") then
 	location = location:gsub("/index%.html", "")
@@ -79,16 +143,14 @@ elseif path[1] == "" then
 		if success and response and response.data then
 			local mobile = utils.mobile()
 
-			if mobile then
-				response.data = utils.chop(response.data, 3)
-			end
+			if mobile then response.data = utils.chop(response.data, 3) end
 
 			elements.feedback.className = "flex flex-col gap-[10px]"
 			elements.feedback.innerHTML = ""
 
 			for i, review in pairs(response.data) do
 				local card = document:createElement("div")
-				card.className = "glass-card review-card p-4 opacity-0 w-full max-h-100 rounded-full"
+				card.className = "glass-card dark review-card p-4 opacity-0 w-full max-h-100 rounded-full"
 				card.style.animation = "fadeInSlide 0.5s ease-out " .. ((mobile and i * 0.15) or i * 0.2) .. "s forwards"
 
 				local filledStar = '<img src="/images/icons/starfill.svg" class="' .. (mobile and "w-5 h-5" or "w-6 h-6") .. ' inline-block mx-[2px]">'
@@ -151,6 +213,13 @@ elseif path[1] == "team" then
 		end
 	end, "GET", "https://api.duckybot.xyz/team")
 elseif path[1] == "link" then
+	local redirect_uri
+	if global.window.location.hostname == "dev.duckybot.xyz" then
+		redirect_uri = "https%3A%2F%2Fdev.duckybot.xyz%2Flink"
+	else
+		redirect_uri = "https%3A%2F%2Fduckybot.xyz%2Flink"
+	end
+
 	local function update(icon, title, text, showButtons)
 		local key = {
 			loading = "/images/icons/loading.gif",
@@ -218,7 +287,7 @@ elseif path[1] == "link" then
 										if parameters.redirect or parameters.state then utils.redirect(parameters.redirect or parameters.state) end
 									elseif response and response.code == 409 then
 										update("fail", "Already Linked", response.message, false)
-										local roblox_auth_url = "https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid&state=force-unlink"
+										local roblox_auth_url = "https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=" .. redirect_uri .. "&scope=openid&state=force-unlink"
 										elements.link.forceUnlinkButton.href = roblox_auth_url
 										elements.link.forceUnlinkContainer.classList:remove("hidden")
 									else
@@ -230,7 +299,7 @@ elseif path[1] == "link" then
 								})
 							else
 								update("loading", "Redirecting...", "You are being redirected to Roblox.")
-								utils.redirect("https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flink&scope=openid" .. ((parameters.redirect and ("&state=" .. parameters.redirect)) or ""))
+								utils.redirect("https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=" .. redirect_uri .. "&scope=openid" .. ((parameters.redirect and ("&state=" .. parameters.redirect)) or ""))
 							end
 						end, "GET", "https://api.duckybot.xyz/links/" .. DiscordID)
 					end
@@ -246,6 +315,13 @@ elseif path[1] == "link" then
 		utils.redirect("login/?redirect=link")
 	end
 elseif path[1] == "login" then
+	local redirect_uri
+	if global.window.location.hostname == "dev.duckybot.xyz" then
+		redirect_uri = "https%3A%2F%2Fdev.duckybot.xyz%2Flogin"
+	else
+		redirect_uri = "https%3A%2F%2Fduckybot.xyz%2Flogin"
+	end
+
 	local function update(icon, title, text, showButtons)
 		local key = {
 			loading = "/images/icons/loading.gif",
@@ -312,15 +388,26 @@ elseif path[1] == "login" then
 		})
 	else
 		update("loading", "Redirecting...", "You are being redirected to Discord.", false)
-		utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=token&redirect_uri=https%3A%2F%2Fduckybot.xyz%2Flogin&scope=identify+guilds" .. ((parameters.redirect and ("&state=" .. parameters.redirect)) or ""))
+		utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=token&redirect_uri=" .. redirect_uri .. "&scope=identify+guilds" .. ((parameters.redirect and ("&state=" .. parameters.redirect)) or ""))
 	end
 elseif path[1] == "servers" then
 	local cookie = utils.cookie("discord")
 
 	if cookie then
 		if (not path[2]) or (path[2] == "") then
+			local function updateLoading(icon, title, text)
+				local key = {
+					loading = "/images/icons/Loading.gif",
+					fail = "/images/icons/Fail.svg"
+				}
+				if elements.servers.loadingIcon then elements.servers.loadingIcon.src = key[icon] or icon end
+				if elements.servers.loadingTitle then elements.servers.loadingTitle.textContent = title end
+				if elements.servers.loadingText then elements.servers.loadingText.textContent = text end
+			end
+
 			local function loadServers()
-				elements.servers.ducky.innerHTML = '<span class="text-white/50">Loading...</span>'
+				updateLoading("loading", "Loading...", "Fetching guilds information...")
+
 				http.request(function(success, response)
 					if success and response and response.data then
 						elements.servers.ducky.innerHTML = ""
@@ -332,7 +419,7 @@ elseif path[1] == "servers" then
 								local container = elements.servers.ducky
 
 								local card = document:createElement("div")
-								card.className = "glass-card p-4 rounded-lg flex flex-col"
+								card.className = "glass-card dark p-4 rounded-lg flex flex-col"
 
 								local plusBadge = (guild.plus and guild.plus.active and [[
 									<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-white whitespace-nowrap"
@@ -372,11 +459,14 @@ elseif path[1] == "servers" then
 							end
 						end
 
-						if elements.servers.ducky.childElementCount <= 0 then
-							elements.servers.ducky.innerHTML = '<span class="text-white/50">There are no servers to show here.</span>'
-						end
+						if elements.servers.ducky.childElementCount <= 0 then elements.servers.ducky.innerHTML = '<span class="text-white/50">There are no servers to show here.</span>' end
+
+						if elements.servers.loadingScreen then elements.servers.loadingScreen:remove() end
+						if elements.servers.container then elements.servers.container.classList:remove("hidden") end
+					else
+						updateLoading("fail", "API Error", response and response.message or "Unknown Error.")
 					end
-				end, "GET", "https://api.duckybot.xyz/guilds", {
+				end, "GET", "https://devapi.duckybot.xyz/guilds", {
 					["Discord-Code"] = cookie
 				})
 			end
@@ -413,27 +503,3 @@ http.request(function(success, response)
 		elements.footer.statusDot.className = "w-2 h-2 bg-[#FF6666] rounded-full"
 	end
 end, "GET", "https://api.duckybot.xyz/")
-
-elements.mobile.open:addEventListener("click", function()
-	if not elements.mobile.menu then return end
-
-	elements.mobile.menu.classList:toggle("active")
-
-	if elements.mobile.menu.classList:contains("active") then
-		body.style.overflow = "hidden"
-	else
-		body.style.overflow = ""
-	end
-end)
-
-elements.mobile.close:addEventListener("click", function()
-	if not elements.mobile.menu then return end
-
-	elements.mobile.menu.classList:toggle("active")
-
-	if elements.mobile.menu.classList:contains("active") then
-		body.style.overflow = "hidden"
-	else
-		body.style.overflow = ""
-	end
-end)

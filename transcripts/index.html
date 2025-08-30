@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ducky Bot - Ticket Transcript</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script nonce="{{nonce}}" src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=gg+sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script nonce="{{nonce}}" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="navbar.css">
 </head>
@@ -82,8 +82,8 @@
 
     <div id="footer"></div>
 
-    <script src="transcripts.js"></script>
-    <script>
+    <script nonce="{{nonce}}" src="transcripts.js"></script>
+    <script nonce="{{nonce}}">
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
             document.getElementById('navbar-links').classList.toggle('active');
         });

@@ -15,11 +15,11 @@
     <meta content="#F5FF82" name="theme-color">
     <link rel="icon" href="/images/icons/Ducky.png">
     <title>Ducky ・ Privacy Policy</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script nonce="{{nonce}}" src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
-    <script>
+    <script nonce="{{nonce}}">
         tailwind.config = {
             theme: {
                 extend: {
@@ -38,33 +38,13 @@
             }
         }
     </script>
-    <script src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
+    <script nonce="{{nonce}}" src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
 </head>
 
 <body>
     <div class="glow bg-primary top-0 left-[10%] w-[500px] h-[500px]"></div>
     <div class="glow bg-primary bottom-0 right-[10%] w-[500px] h-[500px]"></div>
-    <div class="fixed top-4 sm:top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-5xl px-4">
-        <nav class="floating-nav flex items-center justify-between py-2 sm:py-2 px-4 sm:px-6 rounded-full bg-secondary/30">
-            <a href="/" class="flex items-center gap-2 sm:gap-3">
-                <img src="/images/misc/fullDucky.png" alt="Ducky" class="w-32 sm:w-32 h-auto object-contain">
-            </a>
-            <div class="hidden md:flex items-center gap-4 sm:gap-8">
-                <a href="/team" class="nav-link text-sm text-white/70">Team</a>
-                <a href="/docs" class="nav-link text-sm text-white/70">Docs</a>
-                <a href="/plus" class="nav-link text-sm text-white/70">Ducky
-                        Plus+</a>
-                <a href="/status" class="nav-link text-sm text-white/70">Status</a>
-                <a href="/support" class="nav-link text-sm text-white/70">Support</a>
-                <a href="/invite" class="group btn-primary px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add
-                        Ducky<i
-                            class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i></a>
-            </div>
-            <button id="mobileMenuOpen" class="md:hidden text-primary" aria-label="Toggle mobile menu">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-        </nav>
-    </div>
+    <div id="navbar"></div>
     <div id="mobileMenu" class="mobile-menu">
         <button id="mobileMenuClose" class="absolute top-6 right-6 text-white/70" aria-label="Close mobile menu">
                 <i class="fas fa-times text-2xl"></i>
@@ -125,10 +105,10 @@
                         <code>/link</code> command and clicking
                         <strong>Unlink</strong>.</p>
 
-                    <h3 class="text-xl font-semibold mt-4 mb-2">3.2. ER:LC API Key</h3>
-                    <p class="mb-4">When providing Ducky with an API key, you give us consent to see and process information about your ER:LC server. Ducky will automate requests to the PRC API, required for many of its features. Abiding by the PRC Private Server API
+                    <h3 class="text-xl font-semibold mt-4 mb-2">3.2. ERLC API Key</h3>
+                    <p class="mb-4">When providing Ducky with an API key, you give us consent to see and process information about your ERLC server. Ducky will automate requests to the PRC API, required for many of its features. Abiding by the PRC Private Server API
                         Use Guidelines (accessible at <a href="https://apidocs.policeroleplay.community/api-information/api-use-guidelines" class="text-[#F5FF82] hover:underline">https://apidocs.policeroleplay.community/api-information/api-use-guidelines</a>),
-                        once Ducky is removed from your server, it will not make any requests to the PRC API using your API key. For information about data retention, including the retention of your ER:LC API key, see section 6.</p>
+                        once Ducky is removed from your server, it will not make any requests to the PRC API using your API key. For information about data retention, including the retention of your ERLC API key, see section 6.</p>
                 </section>
 
                 <section id="storage">
@@ -156,8 +136,8 @@
                 <section id="requests">
                     <h2 class="text-2xl font-bold heading mb-4">7. Data Requests
                     </h2>
-                    <p class="mb-4">If you would like to request all data we have about you or request deletion of all data, you can create a development ticket in our support server (Discord ID: 1228508072289370172, accessible at <a href="https://discord.gg/FChsKWG3ra"
-                            class="text-[#F5FF82] hover:underline">https://discord.gg/FChsKWG3ra</a>) or DM bobbibones (Discord ID: 782235114858872854). We do not allow this through any other communication channel, as we cannot confirm ownership on any other
+                    <p class="mb-4">If you would like to request all data we have about you or request deletion of all data, you can create a development ticket in our support server (Discord ID: 1228508072289370172, accessible at <a href="https://discord.gg/w2dNr7vuKP"
+                            class="text-[#F5FF82] hover:underline">https://discord.gg/w2dNr7vuKP</a>) or DM bobbibones (Discord ID: 782235114858872854). We do not allow this through any other communication channel, as we cannot confirm ownership on any other
                         communication channel.</p>
                 </section>
 
@@ -167,7 +147,7 @@
                     <p class="mb-4">
                         By continuing to use our service after changes have been posted, you are agreeing to those changes. To receive notifications about updates to our Privacy Policy, updates will be posted in a dedicated thread under the shouts channel (Channel ID: 1258891659874144256,
                         Thread ID: 1394306899653955614). You can join the support server (Discord ID: 1228508072289370172, accessible at
-                        <a href="https://discord.gg/FChsKWG3ra" class="text-[#F5FF82] hover:underline">https://discord.gg/FChsKWG3ra</a>). When joining, you can select the "Legal" role to receive pings about updates posted in this thread for the Privacy
+                        <a href="https://discord.gg/w2dNr7vuKP" class="text-[#F5FF82] hover:underline">https://discord.gg/w2dNr7vuKP</a>). When joining, you can select the "Legal" role to receive pings about updates posted in this thread for the Privacy
                         Policy and our Terms of Service (accessible at <a href="/legal/terms" class="text-[#F5FF82] hover:underline">https://duckybot.xyz/legal/terms</a>). If you are already in the support server, you can obtain the "Legal" role via the
                         "Channels & Roles" tab at the top of the channel list.
                     </p>
@@ -176,7 +156,7 @@
                         <strong>not</strong> to be notified about changes to this Privacy Policy:
                     </p>
                     <ul class="list-disc pl-5">
-                        <li>Not joining the support server (Discord ID: 1228508072289370172, accessible at <a href="https://discord.gg/FChsKWG3ra" class="text-[#F5FF82] hover:underline">https://discord.gg/FChsKWG3ra</a>)
+                        <li>Not joining the support server (Discord ID: 1228508072289370172, accessible at <a href="https://discord.gg/w2dNr7vuKP" class="text-[#F5FF82] hover:underline">https://discord.gg/w2dNr7vuKP</a>)
                         </li>
                         <li>Not selecting the "Legal" ping during onboarding
                         </li>
@@ -188,7 +168,7 @@
             </div>
     </section>
     <div id="footer"></div>
-    <script>
+    <script nonce="{{nonce}}">
         fetch("/index.lua")
             .then(res => res.text())
             .then(lua => {

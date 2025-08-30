@@ -1,6 +1,10 @@
 local js = require("js")
+local time = require("time")
 local global = js.global
 local document = global.document
+local elements = {
+    notifications = document:getElementById("notification-container")
+}
 
 local utils = {}
 
@@ -66,7 +70,11 @@ function utils.redirect(url)
 end
 
 function utils.truncate(str, len)
-    return str:sub(1, len - 3) .. "..."
+    if #str > len then
+        return str:sub(1, len - 3) .. "..."
+    else
+        return str
+    end
 end
 
 function utils.cookie(name, value)
@@ -134,6 +142,103 @@ function utils.split(str, delim)
 	end
 	table.insert(ret, string.sub(str, n))
 	return ret
+end
+
+function utils.notify(message, type, duration)
+    if not elements.notifications then return end
+
+    local notification = document:createElement("div")
+    local icon
+
+    if type == "success" then
+        notification.className = "flex items-start bg-green-500/10 text-green-400 p-4 rounded-lg shadow-lg w-80 slide-in-right"
+        icon = '<img src="/images/icons/Success.svg" class="w-6 h-6">'
+    elseif type == "warning" then
+        notification.className = "flex items-start bg-yellow-500/10 text-yellow-400 p-4 rounded-lg shadow-lg w-80 slide-in-right"
+        icon = '<i class="fas fa-exclamation-triangle text-xl"></i>'
+    elseif type == "fail" then
+        notification.className = "flex items-start bg-red-500/10 text-red-400 p-4 rounded-lg shadow-lg w-80 slide-in-right"
+        icon = '<img src="/images/icons/Fail.svg" class="w-6 h-6">'
+    end
+
+    notification.innerHTML = string.format([[
+        <div class="flex-shrink-0">
+            %s
+        </div>
+        <div class="ml-3">
+            <p class="text-sm">%s</p>
+        </div>
+    ]], icon, message)
+
+    elements.notifications:appendChild(notification)
+
+    coroutine.wrap(function()
+        time.sleep(duration or 5000)
+        notification.classList:remove("slide-in-right")
+        notification.classList:add("slide-out-right")
+        time.sleep(500)
+        notification:remove()
+    end)()
+end
+
+function utils.convertTimeInput(str, denyseconds)
+    if not str then return nil end
+    local units = {
+        s = 1,
+        m = 60,
+        h = 3600,
+        d = 86400,
+        w = 604800,
+        y = 31449600
+    }
+    local matchpattern = ""
+
+    if denyseconds then
+        units.s = nil
+        matchpattern = "(%d+)([mhdwy"
+    else
+        matchpattern = "(%d+)([smhdwy"
+    end
+
+    matchpattern = matchpattern .. "]?)"
+
+    local total = 0
+
+    for i, v in str:gmatch(matchpattern) do
+        local add = tonumber(i) * (units[v] or ((denyseconds and 0) or 1))
+        total = total + add
+    end
+
+    if total == 0 then return nil end
+
+    return total
+end
+
+function utils.jsonfyBody(body)
+    local jsonBody = "{"
+    local first = true
+
+    for key, value in pairs(body) do
+        if not first then
+            jsonBody = jsonBody .. ","
+        end
+        first = false
+
+        local k = string.format("%q", key)
+        local v
+        if type(value) == "string" then
+            v = string.format("%q", value)
+        elseif type(value) == "number" or type(value) == "boolean" then
+            v = tostring(value)
+        else
+            v = "null"
+        end
+
+        jsonBody = jsonBody .. k .. ":" .. v
+    end
+
+    jsonBody = jsonBody .. "}"
+    return jsonBody
 end
 
 

@@ -15,11 +15,11 @@
     <meta content="#F5FF82" name="theme-color">
     <link rel="icon" href="/images/icons/Ducky.png">
     <title>Ducky ・ Moderation Panel</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script nonce="{{nonce}}" src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
-    <script>
+    <script nonce="{{nonce}}">
         tailwind.config = {
             theme: {
                 extend: {
@@ -38,34 +38,70 @@
             }
         }
     </script>
-    <script src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
+    <script nonce="{{nonce}}" src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
+    <style>
+        @keyframes slide-in-right {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slide-out-right {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        .slide-in-right {
+            animation: slide-in-right 0.5s forwards;
+        }
+        
+        .slide-out-right {
+            animation: slide-out-right 0.5s forwards;
+        }
+        
+        @keyframes slide-up {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+                max-height: 200px;
+                /* Adjust to fit content */
+            }
+            to {
+                transform: translateY(-20px);
+                opacity: 0;
+                max-height: 0;
+                padding-top: 0;
+                padding-bottom: 0;
+                margin-top: 0;
+                margin-bottom: 0;
+                border: 0;
+            }
+        }
+        
+        .slide-up {
+            animation: slide-up 0.5s forwards;
+            transition: all 0.5s ease-out;
+            overflow: hidden;
+        }
+    </style>
 </head>
 
 <body class="min-h-screen flex flex-col">
     <main class="flex-grow">
         <div class="glow bg-primary top-0 left-[10%] w-[500px] h-[500px]"></div>
         <div class="glow bg-primary bottom-0 right-[10%] w-[500px] h-[500px]"></div>
-        <div class="fixed top-4 sm:top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-5xl px-4">
-            <nav class="floating-nav flex items-center justify-between py-2 sm:py-2 px-4 sm:px-6 rounded-full bg-secondary/30">
-                <a href="/" class="flex items-center gap-2 sm:gap-3">
-                    <img src="/images/misc/fullDucky.png" alt="Ducky" class="w-32 sm:w-32 h-auto object-contain">
-                </a>
-                <div class="hidden md:flex items-center gap-4 sm:gap-8">
-                    <a href="/team" class="nav-link text-sm text-white/70">Team</a>
-                    <a href="/docs" class="nav-link text-sm text-white/70">Docs</a>
-                    <a href="/plus" class="nav-link text-sm text-white/70">Ducky
-                            Plus+</a>
-                    <a href="/status" class="nav-link text-sm text-white/70">Status</a>
-                    <a href="/support" class="nav-link text-sm text-white/70">Support</a>
-                    <a href="/invite" class="group btn-primary px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add
-                            Ducky<i
-                                class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i></a>
-                </div>
-                <button id="mobileMenuOpen" class="md:hidden text-primary" aria-label="Toggle mobile menu">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-            </nav>
-        </div>
+        <div id="navbar"></div>
         <div id="mobileMenu" class="mobile-menu">
             <button id="mobileMenuClose" class="absolute top-6 right-6 text-white/70" aria-label="Close mobile menu">
                     <i class="fas fa-times text-2xl"></i>
@@ -84,52 +120,95 @@
         <section class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
             <!-- Start Design -->
             <div class="w-full max-w-6xl mx-auto">
-                <!-- Tab Headers -->
-                <div class="border-b border-white/10">
-                    <nav class="flex flex-wrap justify-center -mb-px space-x-4" id="tab-buttons">
-                        <button data-tab-target="#tabPunish" class="whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm text-primary border-primary">Punishments</button>
-                        <button data-tab-target="#tabShift" class="whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm text-white/50 border-transparent hover:text-white/80 hover:border-white/30">Shifts</button>
-                        <button data-tab-target="#tabERLC" class="whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm text-white/50 border-transparent hover:text-white/80 hover:border-white/30">ER:LC</button>
-                    </nav>
+                <!-- Loading Screen -->
+                <div id="loading-screen">
+                    <div class="bg-secondary/80 border border-white/10 rounded-2xl p-8 shadow-lg max-w-xl mx-auto">
+                        <div class="flex flex-col items-center space-y-3">
+                            <img src="/images/icons/Loading.gif" alt="loading icon" class="w-20 h-20" id="panelIcon">
+                            <h1 class="text-white text-3xl font-semibold text-center" id="panelTitle">Loading...</h1>
+                            <hr class="border-white/10 w-3/4 my-4">
+                            <p class="text-white/70 text-center" id="panelText">
+                                Please wait...
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Tab Contents -->
-                <div class="py-5" id="tab-contents">
-                    <div id="tabPunish" class="tab-content">
-                        <div class="flex flex-wrap -mx-4">
-                            <div class="w-full md:w-1/2 px-4">
-                                <div class="bg-secondary/20 p-4 rounded-lg h-full">
-                                     <h3 class="text-lg font-medium text-white">Other stuff here</h3>
-                                     <p class="mt-2 text-sm text-white/60">Other things will go here yep</p>
-                                </div>
-                            </div>
-                            <div class="w-full md:w-1/2 px-4 mt-4 md:mt-0">
-                                <div class="space-y-4">
-                                    <div id="punishment-list" class="max-h-96 overflow-y-auto space-y-4 pr-4">
-                                        <!-- Punishments will be loaded here -->
+                <div id="panel-content" class="hidden">
+                    <!-- Tab Headers -->
+                    <div class="border-b border-white/10">
+                        <nav class="flex flex-wrap justify-center -mb-px space-x-4" id="tab-buttons">
+                            <button data-tab-target="#tabPunish" class="whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm text-primary border-primary">Punishments</button>
+                            <button data-tab-target="#tabShift" class="whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm text-white/50 border-transparent hover:text-white/80 hover:border-white/30">Shifts</button>
+                            <button data-tab-target="#tabERLC" class="whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm text-white/50 border-transparent hover:text-white/80 hover:border-white/30">ERLC</button>
+                        </nav>
+                    </div>
+
+                    <!-- Tab Contents -->
+                    <div class="py-5" id="tab-contents">
+                        <div id="tabPunish" class="tab-content">
+                            <div class="flex flex-wrap -mx-4">
+                                <div class="w-full md:w-1/2 px-4">
+                                    <div class="bg-secondary/20 p-4 rounded-lg h-full">
+                                        <h3 class="text-lg font-medium text-white mb-4">Create Punishment</h3>
+                                        <div class="space-y-4">
+                                            <div class="relative">
+                                                <input type="text" id="punishment-username" class="mt-1 w-full bg-dark/50 border border-white/20 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter username" autocomplete="off">
+
+                                                <ul id="username-suggestions" class="absolute z-10 w-full bg-dark/90 border border-white/20 rounded-md mt-1 hidden max-h-40 overflow-y-auto">
+                                                    <!-- Suggestions injected here -->
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <label for="punishment-type" class="block text-sm font-medium text-white/70">Punishment Type</label>
+                                                <div class="relative">
+                                                    <input type="text" id="punishment-type" class="mt-1 w-full bg-dark/50 border border-white/20 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Select a type..." autocomplete="off">
+
+                                                    <ul id="type-suggestions" class="absolute z-10 w-full bg-dark/90 border border-white/20 rounded-md mt-1 hidden max-h-40 overflow-y-auto">
+                                                        <!-- Types injected here -->
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div id="punishment-duration-container" class="hidden">
+                                                <label for="punishment-duration" class="block text-sm font-medium text-white/70">Duration</label>
+                                                <input type="text" id="punishment-duration" class="mt-1 w-full bg-dark/50 border border-white/20 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary" placeholder="30m, 1h, 3d, 1w">
+                                            </div>
+                                            <div>
+                                                <label for="punishment-reason" class="block text-sm font-medium text-white/70">Reason</label>
+                                                <input type="text" id="punishment-reason" class="mt-1 w-full bg-dark/50 border border-white/20 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter reason" autocomplete="off">
+                                            </div>
+                                            <div>
+                                                <button id="punishment-submit" class="w-full btn-glass px-4 py-2 rounded-full text-sm font-medium">Create Punishment</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="text-center pt-4">
-                                        <button id="load-more-punishments" class="group btn-primary px-5 py-2 rounded-full text-sm">Load More <i class="fas fa-chevron-down ml-2 text-xs"></i></button>
+                                </div>
+                                <div class="w-full md:w-1/2 px-4 mt-4 md:mt-0">
+                                    <div class="space-y-4">
+                                        <div id="punishment-list" class="max-h-96 overflow-y-auto space-y-4 pr-4">
+                                            <!-- Punishments will be loaded here -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div id="tabShift" class="tab-content hidden">
-                        <h3 class="text-lg font-medium text-white">Tab 2 Content</h3>
-                        <p class="mt-2 text-sm text-white/60">This is the content for Tab 2.</p>
-                    </div>
-                    <div id="tabERLC" class="tab-content hidden">
-                        <h3 class="text-lg font-medium text-white">Tab 3 Content</h3>
-                        <p class="mt-2 text-sm text-white/60">This is the content for Tab 3.</p>
+                        <div id="tabShift" class="tab-content hidden">
+                            <h3 class="text-lg font-medium text-white">Tab 2 Content</h3>
+                            <p class="mt-2 text-sm text-white/60">This is the content for Tab 2.</p>
+                        </div>
+                        <div id="tabERLC" class="tab-content hidden">
+                            <h3 class="text-lg font-medium text-white">Tab 3 Content</h3>
+                            <p class="mt-2 text-sm text-white/60">This is the content for Tab 3.</p>
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- End Design -->
         </section>
     </main>
+    <div id="notification-container" class="w-full flex flex-col items-end p-4 space-y-2"></div>
     <div id="footer"></div>
-    <script>
+    <script nonce="{{nonce}}">
         fetch("/servers/panel.lua")
             .then(res => res.text())
             .then(lua => {
