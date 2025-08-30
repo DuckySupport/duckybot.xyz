@@ -24,10 +24,16 @@ function http.request(callback, method, url, headers, body, process)
 
 		local processPromise = promise["then"](promise, function(_, response)
 			status = response.status
-			return response[process](response)
+			return response:text()
 		end)
 
-		processPromise["then"](processPromise, function(_, body) return coroutine.wrap(callback)(status >= 200 and status < 300, body) end)
+		processPromise["then"](processPromise, function(_, body)
+			if process == "json" then
+				body = json.decode(body)
+			end
+			
+			return coroutine.wrap(callback)(status >= 200 and status < 300, body)
+		end)
 	end)()
 end
 
