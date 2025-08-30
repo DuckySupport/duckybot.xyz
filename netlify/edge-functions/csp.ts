@@ -19,6 +19,9 @@ export default async (request: Request, context: any) => {
     `.replace(/\s+/g, " ")
   );
 
+  let body = await response.text();
+  body = body.replace("{{nonce}}", nonce);
+
   return new Response(response.body, {
     status: response.status,
     headers: newHeaders,
