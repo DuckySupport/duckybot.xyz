@@ -6,6 +6,15 @@ local elements = {
     notifications = document:getElementById("notification-container")
 }
 
+local redirectWhitelist = {
+    "/", -- self,
+    "http://localhost:8888", -- local development
+    "https://duckybot.xyz",
+    "https://dev.duckybot.xyz",
+    "https://discord.com",
+    "https://authorize.roblox.com"
+}
+
 local utils = {}
 
 function utils.clamp(n, min, max)
@@ -66,7 +75,13 @@ function utils.redirect(url)
     if url:sub(1, 4) ~= "http" and url:sub(1, 1) ~= "/" then
         url = "/" .. url
     end
-    global.window.location.href = url
+    
+    for _, whitelistedURL in pairs(redirectWhitelist) do
+        if url:sub(1, #whitelistedURL) == whitelistedURL then
+            global.window.location.href = url
+            break
+        end
+    end
 end
 
 function utils.truncate(str, len)

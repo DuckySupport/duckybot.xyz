@@ -14,19 +14,8 @@ table.remove(path, 1)
 local console = global.console
 
 local elements = {
-	footer = document:getElementById("footer"),
 	navbar = document:getElementById("navbar")
 }
-
-http.request(function(success, response)
-	if success and response then
-		elements.footer.innerHTML = response
-		elements.footer = {
-			version = document:getElementById("footerVersion"),
-			status = document:getElementById("footerStatus")
-		}
-	end
-end, "GET", "/partials/footer.html", nil, nil, "text")
 
 http.request(function(success, response)
 	if success and response then
@@ -592,23 +581,3 @@ if cookie then
 else
 	utils.redirect("/login/?redirect=" .. location)
 end
-
-http.request(function(success, response)
-	if success and response and response.data then
-		if elements.footer.version then
-			elements.footer.version.textContent = response.data.version
-		end
-		if elements.footer.status then
-			elements.footer.status.innerHTML = '<span class="w-2 h-2 bg-[#66FF66] rounded-full"></span> Status: Operational'
-			elements.footer.status.className = "flex items-center gap-1 px-2 py-0.5 bg-[#66FF66]/10 rounded-full text-[#66FF66] text-xs"
-		end
-	else
-		if elements.footer.version then
-			elements.footer.version.textContent = "v1.3.0 Stable"
-		end
-		if elements.footer.status then
-			elements.footer.status.innerHTML = '<span class="w-2 h-2 bg-[#FF6666] rounded-full"></span> Status: Unavailable'
-			elements.footer.status.className = "flex items-center gap-1 px-2 py-0.5 bg-[#FF6666]/10 rounded-full text-[#FF6666] text-xs"
-		end
-	end
-end, "GET", "https://api.duckybot.xyz/")
