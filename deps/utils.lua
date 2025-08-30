@@ -9,10 +9,10 @@ local elements = {
 local redirectWhitelist = {
     "/", -- self,
     "http://localhost:8888", -- local development
-    "https://duckybot.xyz",
-    "https://dev.duckybot.xyz",
-    "https://discord.com",
-    "https://authorize.roblox.com"
+    "https://duckybot.xyz/",
+    "https://dev.duckybot.xyz/",
+    "https://discord.com/",
+    "https://authorize.roblox.com/"
 }
 
 local utils = {}
