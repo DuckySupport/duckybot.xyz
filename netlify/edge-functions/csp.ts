@@ -1,4 +1,10 @@
 export default async (request: Request, context: any) => {
+  const url = new URL(request.url);
+
+  if (!url.pathname.endsWith(".html") && !url.pathname.endsWith("/")) {
+    return context.next();
+  }
+
   const nonce = crypto.randomUUID().replace(/-/g, "");
 
   const response = await context.next();
