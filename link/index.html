@@ -15,11 +15,11 @@
     <meta content="#F5FF82" name="theme-color">
     <link rel="icon" href="/images/icons/Ducky.png">
     <title>Ducky ・ Link Roblox</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script nonce="{{nonce}}" src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
-    <script>
+    <script nonce="{{nonce}}">
         tailwind.config = {
             theme: {
                 extend: {
@@ -38,7 +38,7 @@
             }
         }
     </script>
-    <script src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
+    <script nonce="{{nonce}}" src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
 </head>
 
 <body class="min-h-screen flex flex-col">
@@ -103,7 +103,7 @@
         </section>
     </main>
     <div id="footer"></div>
-    <script>
+    <script nonce="{{nonce}}">
         fetch("/index.lua")
             .then(res => res.text())
             .then(lua => {
