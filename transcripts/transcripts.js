@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!text) return "";
   
     // Convert custom emoji
-    text = text.replace(/<:(\w+):(\d+)>/g, ":$1:");
+    text = text.replace(/<:(\w+):(\d+)>/g, "$1");
   
     // Convert mentions
     text = text.replace(/<@!?(\d+)>/g, (match, id) => `@${id}`);
@@ -470,6 +470,9 @@ document.addEventListener("DOMContentLoaded", () => {
       "'": '&#039;'
     }
     
-    return text.replace(/[&<>"']/g, m => map[m])
+    return text.replace(/[&<>'"']/g, m => map[m])
   }
 })
+document.getElementById('mobile-menu-button').addEventListener('click', function() {
+    document.getElementById('navbar-links').classList.toggle('active');
+});
