@@ -22,8 +22,8 @@ function time.now()
 end
 
 function time.sleep(ms)
-    local co = coroutine.running()
-    if not co then error("time.sleep() must be called from a coroutine") end
+    local co, main = coroutine.running()
+    assert(co and not main, "time.sleep must be called from a coroutine")
 
     global:setTimeout(function()
         coroutine.resume(co)

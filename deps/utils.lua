@@ -1,4 +1,5 @@
 local js = require("js")
+local http = require("http")
 local time = require("time")
 local global = js.global
 local document = global.document
@@ -15,7 +16,9 @@ local redirectWhitelist = {
     "https://authorize.roblox.com/"
 }
 
-local utils = {}
+local utils = {
+    cache = {}
+}
 
 function utils.clamp(n, min, max)
 	if n < min then
@@ -196,7 +199,7 @@ function utils.notify(message, type, duration)
     end)()
 end
 
-function utils.convertTimeInput(str, denyseconds)
+function utils.convert(str, denyseconds)
     if not str then return nil end
     local units = {
         s = 1,
@@ -229,32 +232,49 @@ function utils.convertTimeInput(str, denyseconds)
     return total
 end
 
-function utils.jsonfyBody(body)
-    local jsonBody = "{"
-    local first = true
+function utils.user(cookie, refresh)
+    cookie = cookie or utils.cookie("discord")
 
-    for key, value in pairs(body) do
-        if not first then
-            jsonBody = jsonBody .. ","
+    if cookie then
+        if utils.cache.users and utils.cache.users[cookie] and (not refresh) then return utils.cache.users[cookie] end
+        local success, response = http.requestSync("GET", "https://api.duckybot.xyz/users/@me", {
+            ["Discord-Code"] = cookie
+        })
+
+        if success and response and response.data then
+            utils.cache.users = utils.cache.users or {}
+            utils.cache.users[cookie] = response.data
+            return response.data
         end
-        first = false
-
-        local k = string.format("%q", key)
-        local v
-        if type(value) == "string" then
-            v = string.format("%q", value)
-        elseif type(value) == "number" or type(value) == "boolean" then
-            v = tostring(value)
-        else
-            v = "null"
-        end
-
-        jsonBody = jsonBody .. k .. ":" .. v
     end
-
-    jsonBody = jsonBody .. "}"
-    return jsonBody
 end
 
+function utils.guild(id, cookie)
+    cookie = cookie or utils.cookie("discord")
+    
+    if id then
+        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/info", {
+            ["Discord-Code"] = cookie
+        })
+
+        if success and response and response.data then
+            return response.data
+        end
+    end
+end
+
+function utils.erlc(id, cookie)
+    cookie = cookie or utils.cookie("discord")
+    
+    if id then
+        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/erlc", {
+            ["Discord-Code"] = cookie
+        })
+
+        if success and response and response.data then
+            return response.data
+        end
+    end
+end
 
 return utils

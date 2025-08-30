@@ -1,4 +1,5 @@
 local js = require("js")
+local json = require("json")
 local global = js.global
 
 local http = {}
@@ -15,7 +16,7 @@ function http.request(callback, method, url, headers, body, process)
 			opts.headers = jsHeaders
 		end
 
-		if body then opts.body = body end
+		if body then opts.body = (type(body) == "table" and json.encode(body)) or body end
 
 		local promise = global:fetch(url, opts)
 
@@ -26,8 +27,19 @@ function http.request(callback, method, url, headers, body, process)
 			return response[process](response)
 		end)
 
-		processPromise["then"](processPromise, function(_, body) return callback(status >= 200 and status < 300, body) end)
+		processPromise["then"](processPromise, function(_, body) return coroutine.wrap(callback)(status >= 200 and status < 300, body) end)
 	end)()
+end
+
+function http.requestSync(...)
+	local co, main = coroutine.running()
+	assert(co and not main, "http.requestSync must be called from a coroutine")
+
+	http.request(function(success, response)
+		coroutine.resume(co, success, response)
+	end, ...)
+
+	return coroutine.yield()
 end
 
 return http
