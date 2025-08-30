@@ -10,16 +10,15 @@ export default async (request: Request, context: any) => {
   newHeaders.set(
     "Content-Security-Policy",
     `
-      default-src 'self';
-      script-src 'nonce-${nonce}' 'self' 'unsafe-eval' https://cdn.tailwindcss.com https://unpkg.com;
-      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net;
-      font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net;
-      img-src 'self' data: https://cdn.discordapp.com;
-      connect-src 'self' https://api.duckybot.xyz https://devapi.duckybot.xyz;
-      object-src 'none';
-      base-uri 'self';
-      report-uri /.netlify/functions/__csp-violations
-    `.replace(/\s+/g, " ")
+    default-src 'self';
+    script-src 'nonce-${nonce}' 'self' 'unsafe-eval' https://cdn.tailwindcss.com https://unpkg.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net;
+    font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net;
+    img-src 'self' data: https://cdn.discordapp.com https://duckybot.xyz https://dev.duckybot.xyz;
+    connect-src 'self' https://api.duckybot.xyz https://devapi.duckybot.xyz;
+    object-src 'none';
+    base-uri 'self';
+  `.replace(/\s+/g, " ")
   );
 
   return new Response(newBody, {
