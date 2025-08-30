@@ -25,7 +25,9 @@ local redirectWhitelist = {
     "https://authorize.roblox.com"
 }
 
-local utils = {}
+local utils = {
+    cache = {}
+}
 
 function utils.clamp(n, min, max)
 	if n < min then
@@ -303,50 +305,6 @@ function utils.notify(message, type, duration)
     end)()
 end
 
-function utils.readable(seconds, short, ms)
-	local function decompose(value, mult)
-		return math.modf(value / mult), math.fmod(value, mult)
-	end
-	
-    local units = short and {
-        {'y', 31536000000},
-		{'mo', 2592000000},
-		{'w', 604800000},
-		{'d', 86400000},
-		{'h', 3600000},
-		{'m', 60000},
-		{'s', 1000}
-	} or {
-        {'years', 31536000000},
-		{'months', 2592000000},
-		{'weeks', 604800000},
-		{'days', 86400000},
-		{'hours', 3600000},
-		{'minutes', 60000},
-		{'seconds', 1000}
-    }
-
-    if ms then
-        if short then
-            table.insert(units, 1, {'ms', 1})
-        else
-            table.insert(units, 1, {'milliseconds', 1})
-        end
-    end
-
-	local ret = {}
-	local ms = seconds * 1000
-	for _, unit in ipairs(units) do
-		local n
-		n, ms = decompose(ms, unit[2])
-		if n > 0 then
-			table.insert(ret, n .. unit[1])
-		end
-	end
-	return #ret > 0 and table.concat(ret) or "0s"
-end
-
-
 function utils.convert(str, denyseconds)
     if not str then return nil end
     local units = {
@@ -399,145 +357,29 @@ end
 
 function utils.guild(id, cookie)
     cookie = cookie or utils.cookie("discord")
-
+    
     if id then
         local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/info", {
             ["Discord-Code"] = cookie
         })
 
         if success and response and response.data then
-            return true, response.data
-        else
-            return false, response
+            return response.data
         end
     end
-end
-
-function utils.panel(id, cookie)
-    cookie = cookie or utils.cookie("discord")
-
-    if id then
-        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/panel", {
-            ["Discord-Code"] = cookie
-        })
-
-        if success and response and response.data then
-            return true, response.data
-        else
-            return false, response
-        end
-    end
-
-    return false, nil
 end
 
 function utils.erlc(id, cookie)
     cookie = cookie or utils.cookie("discord")
-
+    
     if id then
-        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/erlc/data", {
+        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/erlc", {
             ["Discord-Code"] = cookie
         })
 
         if success and response and response.data then
             return response.data
         end
-    end
-end
-
-function utils.queryUser(query, cookie)
-    cookie = cookie or utils.cookie("discord")
-
-    if query then
-        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/users/" .. query, {
-            ["Discord-Code"] = cookie
-        })
-
-        if success and response and response.data then
-            return response.data
-        end
-    end
-end
-
-function utils.punishments(guildID, targetPlayer, targetModerator, cookie)
-    cookie = cookie or utils.cookie("discord")
-
-    if guildID then
-        local headers = {
-            ["Discord-Code"] = cookie,
-        }
-
-        if targetPlayer then
-            headers["Player"] = targetPlayer
-        end
-
-        if targetModerator then
-            headers["Moderator"] = targetModerator
-        end
-
-        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/punishments", headers)
-        if success and response and response.data and response.data.punishments then
-            return response.data.punishments
-        end
-    end
-end
-
-function utils.bolos(guildID, targetPlayer, cookie)
-    cookie = cookie or utils.cookie("discord")
-
-    if guildID then
-        local targetPlayer = string.format("%.0f", tostring(targetPlayer))
-        local url = "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/bolos" .. ((tostring(targetPlayer) and "/" .. tostring(targetPlayer)) or "")
-        console.log(nil, url)
-        local success, response = http.requestSync("GET", url, {
-            ["Discord-Code"] = cookie
-        })
-
-        if success and response and response.data then
-            return response.data
-        end
-    end
-end
-
-function utils.shifts(id, cookie)
-    cookie = cookie or utils.cookie("discord")
-
-    if id then
-        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/shifts", {
-            ["Discord-Code"] = cookie
-        })
-
-        if success and response and response.data then
-            return response.data
-        end
-    end
-end
-
-function utils.startShift(guildID, shiftType, cookie, callback)
-    cookie = cookie or utils.cookie("discord")
-    if guildID and shiftType then
-        http.request(callback, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/shifts/start", {
-            ["Discord-Code"] = cookie,
-            ["Content-Type"] = "application/json"
-        }, {type = shiftType})
-    end
-end
-
-function utils.pauseShift(guildID, cookie, callback)
-    cookie = cookie or utils.cookie("discord")
-    if guildID then
-        http.request(callback, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/shifts/pause", {
-            ["Discord-Code"] = cookie
-        })
-    end
-end
-
-function utils.endShift(guildID, cookie, callback)
-    cookie = cookie or utils.cookie("discord")
-    if guildID then
-        http.request(callback, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/shifts/end", {
-            ["Discord-Code"] = cookie
-        })
     end
 end
 

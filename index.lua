@@ -176,22 +176,251 @@ coroutine.wrap(function()
 					elements.feedback:appendChild(card)
 				end
 			end
-		end, "GET", "https://api.duckybot.xyz/feedback")
-	elseif path[1] == "plus" then
-		if elements.plus.purchase then
-			elements.plus.purchase:addEventListener("click", function()
-				utils.popup({
-					title = "How to Purchase Ducky Plus+",
-					content = [[
-						<ol class="list-decimal list-inside text-white/80 space-y-2">
-							<li><a target="_blank" href="/invite" class="font-bold text-blue-400">Invite Ducky</a> to your server.</li>
-							<li>Use the <code class="bg-black/20 font-bold px-1.5 py-1 rounded">/plus manage</code> command.</li>
-							<li>Press the <b>Purchase Slot</b> button.</li>
-							<li>Follow the instructions to complete your purchase.</li>
-							<li>Apply the slot to a server by pressing the <b>Use Slot</b> button.</li>
-						</ol>
-					]],
-					blur = true
+		end
+	end, "GET", "https://api.duckybot.xyz/team")
+elseif path[1] == "link" then
+	local redirect_uri
+	if global.window.location.hostname == "dev.duckybot.xyz" then
+		redirect_uri = "https%3A%2F%2Fdev.duckybot.xyz%2Flink"
+	else
+		redirect_uri = "https%3A%2F%2Fduckybot.xyz%2Flink"
+	end
+
+	local function update(icon, title, text, showButtons)
+		local key = {
+			loading = "/images/icons/loading.gif",
+			success = "/images/icons/success.svg",
+			fail = "/images/icons/fail.svg"
+		}
+
+		elements.link.icon.src = key[icon] or icon
+		elements.link.title.textContent = title
+		elements.link.text.innerHTML = text
+
+		if showButtons then
+			elements.link.buttons.classList:remove("hidden")
+		else
+			elements.link.buttons.classList:add("hidden")
+		end
+	end
+
+	update("loading", "Loading...", "Checking if you're logged in...", false)
+
+	local cookie = utils.cookie("discord")
+	local user = utils.user()
+	local parameters = utils.parameters()
+
+	if user then
+		if parameters.code and parameters.state == "force-unlink" then
+			update("loading", "Unlinking...", "Attempting to unlink your Roblox account from another user...", false)
+			http.request(function(success, response)
+				if success then
+					update("success", "Successfully Unlinked", "Your Roblox account has been unlinked. You can now try linking it again.")
+					elements.link.linkAgainContainer.classList:remove("hidden")
+				else
+					update("fail", "API Error", response.message or "Failed to unlink your account. Please try again or contact support.")
+				end
+			end, "DELETE", "https://api.duckybot.xyz/links", {
+				["Roblox-Code"] = parameters.code
+			})
+		elseif user then
+			local DiscordID = user.id
+			if parameters.unlink == "true" then
+				update("loading", "Loading...", "Unlinking your Roblox account from Ducky...", false)
+				http.request(function(success, response)
+					if success then
+						update("success", "Successfully Unlinked", "Your Roblox account has been successfully unlinked from Ducky.")
+						time.after(3000, function()
+							utils.redirect("link")
+						end)
+					else
+						update("fail", "API Error", response.message)
+					end
+				end, "DELETE", "https://api.duckybot.xyz/links/" .. DiscordID, {
+					["Discord-Code"] = cookie
+				})
+			else
+				update("loading", "Loading...", "Fetching your Roblox profile from our API...", false)
+				http.request(function(success, response)
+					if success and response and response.data and response.data.roblox then
+						update("success", "Already Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-white font-semibold">@' .. response.data.roblox.name .. '</a>, is linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-white font-semibold">@' .. response.data.discord.username .. '</a>.', true)
+						if parameters.redirect or parameters.state then utils.redirect(parameters.redirect or parameters.state) end
+					elseif parameters.code then
+						http.request(function(success, response)
+							if success and response and response.data then
+								update("success", "Successfully Linked", 'Your Roblox account, <a href="' .. response.data.roblox.profile .. '" class="text-white font-semibold">@' .. response.data.roblox.name .. '</a>, has been successfully linked with your Discord account, <a href="https://discord.com/users/' .. response.data.discord.id .. '" class="text-white font-semibold">@' .. response.data.discord.username .. '</a>.', true)
+								if parameters.redirect or parameters.state then utils.redirect(parameters.redirect or parameters.state) end
+							elseif response and response.code == 409 then
+								update("fail", "Already Linked", response.message, false)
+								local roblox_auth_url = "https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=" .. redirect_uri .. "&scope=openid&state=force-unlink"
+								elements.link.forceUnlinkButton.href = roblox_auth_url
+								elements.link.forceUnlinkContainer.classList:remove("hidden")
+							else
+								update("fail", "API Error", response.message)
+							end
+						end, "POST", "https://api.duckybot.xyz/links", {
+							["Discord-Code"] = cookie,
+							["Roblox-Code"] = parameters.code
+						})
+					else
+						update("loading", "Redirecting...", "You are being redirected to Roblox.")
+						utils.redirect("https://authorize.roblox.com/?client_id=9159621270656797210&response_type=code&redirect_uri=" .. redirect_uri .. "&scope=openid" .. ((parameters.redirect and ("&state=" .. parameters.redirect)) or ""))
+					end
+				end, "GET", "https://api.duckybot.xyz/links/" .. DiscordID)
+			end
+		end
+	else
+		update("loading", "Redirecting...", "You are being redirected to Discord.", false)
+		utils.redirect("login/?redirect=link")
+	end
+elseif path[1] == "login" then
+	local redirect_uri
+	if global.window.location.hostname == "dev.duckybot.xyz" then
+		redirect_uri = "https%3A%2F%2Fdev.duckybot.xyz%2Flogin"
+	else
+		redirect_uri = "https%3A%2F%2Fduckybot.xyz%2Flogin"
+	end
+
+	local function update(icon, title, text, showButtons)
+		local key = {
+			loading = "/images/icons/loading.gif",
+			success = "/images/icons/success.svg",
+			fail = "/images/icons/fail.svg"
+		}
+
+		elements.login.icon.src = key[icon] or icon
+		elements.login.title.textContent = title
+		elements.login.text.innerHTML = text
+
+		if showButtons then
+			elements.login.buttons.classList:remove("hidden")
+		else
+			elements.login.buttons.classList:add("hidden")
+		end
+	end
+
+	update("loading", "Loading...", "Checking if you're logged in...", false)
+
+	local cookie = utils.cookie("discord")
+	local user = utils.user()
+	local parameters = utils.parameters()
+
+	if parameters.logout == "true" then
+		if cookie then
+			utils.cookie("discord", "delete")
+			update("success", "Logged Out", "You have been successfully logged out.")
+			coroutine.wrap(function()
+				time.sleep(3000)
+				utils.redirect("login")
+			end)()
+		else
+			update("fail", "Not Logged In", "You are not logged in.")
+			utils.redirect("login")
+		end
+	elseif cookie then
+		update("loading", "Loading...", "Fetching your Discord profile from our API...", false)
+
+		if user then
+			update("success", "Already Logged In", 'You are already logged in as <a href="https://discord.com/users/' .. user.id .. '" class="text-white font-semibold">@' .. user.username .. '</a>.', true)
+
+			if parameters.redirect or parameters.state then utils.redirect(parameters.redirect or parameters.state) end
+		else
+			update("fail", "API Error", "Failed to fetch your Discord profile from our API. Please try again later.")
+		end
+	elseif parameters.access_token then
+		update("loading", "Loading...", "Fetching your Discord profile from our API...", false)
+
+		user = utils.user(parameters.access_token)
+
+		if user then
+			utils.cookie("discord", parameters.access_token)
+			update("success", "Logged In", 'You have been logged in as <a href="https://discord.com/users/' .. user.id .. '" class="text-white font-semibold">@' .. user.username .. '</a>.', true)
+			if parameters.redirect or parameters.state then utils.redirect(parameters.redirect or parameters.state) end
+		else
+			update("fail", "API Error", "Failed to fetch your Discord profile from our API. Please try again later.")
+		end
+	else
+		update("loading", "Redirecting...", "You are being redirected to Discord.", false)
+		utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=token&redirect_uri=" .. redirect_uri .. "&scope=identify+guilds" .. ((parameters.redirect and ("&state=" .. parameters.redirect)) or ""))
+	end
+elseif path[1] == "servers" then
+	local cookie = utils.cookie("discord")
+
+	if cookie then
+		if (not path[2]) or (path[2] == "") then
+			local function updateLoading(icon, title, text)
+				local key = {
+					loading = "/images/icons/Loading.gif",
+					fail = "/images/icons/Fail.svg"
+				}
+				if elements.servers.loadingIcon then elements.servers.loadingIcon.src = key[icon] or icon end
+				if elements.servers.loadingTitle then elements.servers.loadingTitle.textContent = title end
+				if elements.servers.loadingText then elements.servers.loadingText.textContent = text end
+			end
+
+			local function loadServers()
+				updateLoading("loading", "Loading...", "Fetching guilds information...")
+
+				http.request(function(success, response)
+					if success and response and response.data then
+						elements.servers.ducky.innerHTML = ""
+
+						table.sort(response.data, function(a, b) return (a and a.members or 0) > b.members end)
+
+						for _, guild in ipairs(response.data) do
+							if guild.role then
+								local container = elements.servers.ducky
+
+								local card = document:createElement("div")
+								card.className = "glass-card dark p-4 rounded-lg flex flex-col"
+
+								local plusBadge = (guild.plus and guild.plus.active and [[
+									<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-white whitespace-nowrap"
+										style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/images/misc/rainbow.webp') no-repeat center center; background-size: cover; backdrop-filter: blur(4px); flex-shrink: 0; min-width: max-content;">
+										<img src="/images/icons/Plus.svg" alt="Plus" class="w-4 h-4">
+										Ducky Plus+
+									</span>
+								]]) or ""
+
+								card.innerHTML = string.format([[
+									<div class="flex items-start gap-3 flex-grow">
+										<img src="%s" alt="%s" class="w-[60px] h-[60px] rounded-full object-contain">
+
+										<div class="flex flex-col w-full">
+										<div class="flex items-center justify-between">
+											<p class="font-semibold leading-tight truncate-multiline">
+											%s
+											</p>
+											%s
+										</div>
+
+										<p class="text-sm text-white/50 mt-1 flex items-center">
+											<i class="fa-solid fa-users mr-[5px]"></i> %s・<i class="fa-solid fa-shield-halved mr-[5px]"></i> %s
+										</p>
+										</div>
+									</div>
+
+									<div class="pt-2 mt-auto">
+										<a href="/servers/%s/panel" class="group btn-glass w-full h-[38px] px-5 py-2 rounded-full text-sm inline-flex justify-center items-center">
+										Moderate
+										<i class="fas fa-chevron-right text-xs transition-transform group-hover:translate-x-1 ml-2"></i>
+										</a>
+									</div>
+								]], guild.icon, guild.name, guild.name, plusBadge, utils.formatNumber(guild.members), guild.role, guild.id)
+
+								container:appendChild(card)
+							end
+						end
+
+						if elements.servers.ducky.childElementCount <= 0 then elements.servers.ducky.innerHTML = '<span class="text-white/50">There are no servers to show here.</span>' end
+
+						if elements.servers.loadingScreen then elements.servers.loadingScreen:remove() end
+						if elements.servers.container then elements.servers.container.classList:remove("hidden") end
+					else
+						updateLoading("fail", "API Error", response and response.message or "Unknown Error.")
+					end
+				end, "GET", "https://devapi.duckybot.xyz/guilds", {
+					["Discord-Code"] = cookie
 				})
 			end)
 		end
