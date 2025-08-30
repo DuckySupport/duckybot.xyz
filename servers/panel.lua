@@ -27,9 +27,9 @@ local elements = {
 					label = document:getElementById("serverPlayerCount"),
 					tooltip = document:getElementById("serverPlayerTooltip")
 				},
-				vehicles = {
-					label = document:getElementById("serverVehicleCount"),
-					tooltip = document:getElementById("serverVehicleTooltip")
+				staff = {
+					label = document:getElementById("serverStaffCount"),
+					tooltip = document:getElementById("serverStaffTooltip")
 				},
 				modcalls = {
 					label = document:getElementById("serverModcallTooltip"),
@@ -110,6 +110,14 @@ coroutine.wrap(function()
 
 					if ERLC and ERLC.server then
 						if ERLC.players then
+							ERLC.staff = {}
+
+							for _, player in pairs(ERLC.players) do
+								if player.Permission ~= "Normal" then
+									table.insert(ERLC.staff, player)
+								end
+							end
+
 							if #ERLC.players > 0 then
 								elements.panel.glance.server.status.classList:add("pill-green")
                         		elements.panel.glance.server.status.innerHTML = '<span class="h-2 w-2 rounded-full"></span> Calm'
@@ -117,11 +125,9 @@ coroutine.wrap(function()
 
 							elements.panel.glance.statistics.players.label.textContent = #ERLC.players .. "/" .. ERLC.server.MaxPlayers
 							elements.panel.glance.statistics.players.tooltip.textContent = #ERLC.players .. "/" .. ERLC.server.MaxPlayers .. " players are in-game"
-						end
 
-						if ERLC.vehicles then
-							elements.panel.glance.statistics.vehicles.label.textContent = #ERLC.vehicles
-							elements.panel.glance.statistics.vehicles.tooltip.textContent = #ERLC.vehicles .. " vehicles spawned"
+							elements.panel.glance.statistics.staff.label.textContent = #ERLC.staff
+							elements.panel.glance.statistics.staff.tooltip.textContent = #ERLC.staff .. " staff members are in-game"
 						end
 
 						if ERLC.modcalls then
