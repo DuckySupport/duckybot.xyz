@@ -94,46 +94,53 @@
 
                     <div class="relative flex items-center gap-3 rounded-full bg-black/60 border border-white/10 shadow-2xl h-12 px-4 text-[14px]">
                         <div class="relative group flex items-center gap-1">
-                            <i class="fa-solid fa-users"></i>
-                            <span id="serverPlayerCount">0/39</span>
+                        <i class="fa-solid fa-users"></i>
+                        <span id="serverPlayerCount">0/39</span>
 
-                            <div class="pointer-events-none absolute bottom-[125%] left-1/2 -translate-x-1/2 hidden group-hover:flex flex-col items-center animate-fade-in quick">
+                        <div class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick">
+                            <div class="relative flex flex-col items-center">
                                 <div class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl" id="serverPlayerTooltip">
                                     0/39 players in-game
                                 </div>
-                                <span class="mt-[-3px] block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
-                            </div>
-                        </div>
-
-                        <span class="opacity-50">•</span>
-
-                        <div class="relative group flex items-center gap-1">
-                            <i class="fa-solid fa-car-side"></i>
-                            <span id="serverVehicleCount">0</span>
-
-                            <div class="pointer-events-none absolute bottom-[125%] left-1/2 -translate-x-1/2 hidden group-hover:flex flex-col items-center animate-fade-in quick">
-                                <div class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl" id="serverVehicleTooltip">
-                                    0 vehicles spawned in-game
-                                </div>
-                                <span class="mt-[-3px] block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
-                            </div>
-                        </div>
-
-                        <span class="opacity-50">•</span>
-
-                        <div class="relative group flex items-center gap-1">
-                            <i class="fa-solid fa-phone"></i>
-                            <span id="serverModcallCount">0</span>
-
-                            <div class="pointer-events-none absolute bottom-[125%] left-1/2 -translate-x-1/2 hidden group-hover:flex flex-col items-center animate-fade-in quick">
-                                <div class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl" id="serverModcallTooltip">
-                                    0 pending modcalls
-                                </div>
-                                <span class="mt-[-3px] block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
+                                <span class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
                             </div>
                         </div>
                     </div>
-                </section>
+
+                    <span class="opacity-50">•</span>
+
+                    <div class="relative group flex items-center gap-1">
+                        <i class="fa-solid fa-car-side"></i>
+                        <span id="serverVehicleCount">0</span>
+
+                        <div class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick">
+                            <div class="relative flex flex-col items-center">
+                                <div class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl" id="serverVehicleTooltip">
+                                    0 vehicles spawned in-game
+                                </div>
+                                <span class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <span class="opacity-50">•</span>
+
+                    <div class="relative group flex items-center gap-1">
+                        <i class="fa-solid fa-phone"></i>
+                        <span id="serverModcallCount">0</span>
+
+                        <div class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick">
+                            <div class="relative flex flex-col items-center">
+                                <div class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl" id="serverModcallTooltip">
+                                    0 pending modcalls
+                                </div>
+                                <span class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    </div>
+                </div>
             </div>
         </section>
     </main>
