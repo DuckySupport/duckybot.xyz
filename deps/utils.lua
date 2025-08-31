@@ -12,6 +12,8 @@ local redirectWhitelist = {
     "http://localhost:8888", -- local development
     "https://duckybot.xyz/",
     "https://dev.duckybot.xyz/",
+    "https://docs.duckybot.xyz/",
+    "https://status.duckybot.xyz/",
     "https://discord.com/",
     "https://authorize.roblox.com/"
 }
