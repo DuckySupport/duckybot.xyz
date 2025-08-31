@@ -343,7 +343,7 @@ coroutine.wrap(function()
 				update("success", "Logged Out", "You have been successfully logged out.")
 				coroutine.wrap(function()
 					time.sleep(3000)
-					utils.redirect("login")
+					utils.redirect("/")
 				end)()
 			else
 				update("fail", "Not Logged In", "You are not logged in.")
