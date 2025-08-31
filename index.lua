@@ -152,15 +152,15 @@ coroutine.wrap(function()
 					card.className = "glass-card dark review-card p-4 opacity-0 w-full max-h-100 rounded-full"
 					card.style.animation = "fadeInSlide 0.5s ease-out " .. ((mobile and i * 0.15) or i * 0.2) .. "s forwards"
 
-					local filledStar = '<img src="/images/icons/starfill.svg" class="' .. (mobile and "w-5 h-5" or "w-6 h-6") .. ' inline-block mx-[2px]">'
-					local emptyStar = '<img src="/images/icons/star.svg" class="' .. (mobile and "w-5 h-5" or "w-6 h-6") .. ' inline-block mx-[2px]">'
+					local filledStar = '<img draggable="false" src="/images/icons/starfill.svg" class="' .. (mobile and "w-5 h-5" or "w-6 h-6") .. ' inline-block mx-[2px]">'
+					local emptyStar = '<img draggable="false" src="/images/icons/star.svg" class="' .. (mobile and "w-5 h-5" or "w-6 h-6") .. ' inline-block mx-[2px]">'
 
 					local filledStars = filledStar:rep(review.rating)
 					local emptyStars = emptyStar:rep(5 - review.rating)
 
 					card.innerHTML = string.format([[
 						<div class="flex items-center gap-4">
-							<img src="%s" alt="%s" class="%s rounded-full flex-shrink-0">
+							<img draggable="false" src="%s" alt="%s" class="%s rounded-full flex-shrink-0">
 							<div class="flex flex-col flex-grow">
 							<div class="flex items-center gap-2 mb-1">
 								<h4 class="font-semibold text-lg truncate">%s</h4>
@@ -447,7 +447,7 @@ elseif path[1] == "servers" then
 							card.style:setProperty("--member-color-nuh", utils.hexToRGBA(member.color, 0.2))
 
 							card.innerHTML = string.format([[
-							<a href="https://discord.com/users/%s" class="z-10"><img src="%s" alt="%s" class="w-24 h-24 rounded-full object-cover mb-4"></a>
+							<a href="https://discord.com/users/%s" class="z-10"><img draggable="false" src="%s" alt="%s" class="w-24 h-24 rounded-full object-cover mb-4"></a>
 							<a href="https://discord.com/users/%s" class="z-10"><h3 class="text-xl font-semibold">%s</h3></a>
 							<p class="text-sm text-white/60 z-10">%s</p>
 							]], member.discord_id, member.avatar, member.name, member.discord_id, member.name, member.role)
@@ -686,14 +686,14 @@ elseif path[1] == "servers" then
 									local plusBadge = (guild.plus and guild.plus.active and [[
 										<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-white whitespace-nowrap"
 											style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/images/misc/rainbow.webp') no-repeat center center; background-size: cover; backdrop-filter: blur(4px); flex-shrink: 0; min-width: max-content;">
-											<img src="/images/icons/Plus.svg" alt="Plus" class="w-4 h-4">
+											<img draggable="false" src="/images/icons/Plus.svg" alt="Plus" class="w-4 h-4">
 											Ducky Plus+
 										</span>
 									]]) or ""
 
 									card.innerHTML = string.format([[
 										<div class="flex items-start gap-3 flex-grow">
-											<img src="%s" alt="%s" class="w-[60px] h-[60px] rounded-full object-contain">
+											<img draggable="false" src="%s" alt="%s" class="w-[60px] h-[60px] rounded-full object-contain">
 
 											<div class="flex flex-col w-full">
 											<div class="flex items-center justify-between">
