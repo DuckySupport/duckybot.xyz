@@ -112,7 +112,10 @@ coroutine.wrap(function()
 					elements.panel.glance.server.name.textContent = Guild.name
 
 					if ERLC and ERLC.server then
+						ERLC.status = 0
+
 						if ERLC.players then
+							print("cycling players")
 							table.sort(ERLC.players, function(a, b)
 								return a.Name < b.Name
 							end)
@@ -121,13 +124,13 @@ coroutine.wrap(function()
 
 							for _, player in pairs(ERLC.players) do
 								if player.Permission ~= "Normal" then
+									ERLC.status = ERLC.status - 1
 									table.insert(ERLC.staff, player)
 								end
 							end
 
 							if #ERLC.players > 0 then
-								elements.panel.glance.server.status.classList:add("pill-green")
-                        		elements.panel.glance.server.status.innerHTML = '<span class="h-2 w-2 rounded-full"></span> Calm'
+								ERLC.online = true
 							end
 
 							elements.panel.glance.statistics.players.label.textContent = #ERLC.players .. "/" .. ERLC.server.MaxPlayers
@@ -136,47 +139,75 @@ coroutine.wrap(function()
 							elements.panel.glance.statistics.staff.label.textContent = #ERLC.staff
 							elements.panel.glance.statistics.staff.tooltip.textContent = #ERLC.staff .. " staff members are in-game"
 
-							for _, player in pairs(ERLC.players) do
-								if player.roblox then
-									local card = document:createElement("div")
-									card.className = "flex items-center justify-between bg-white/10 rounded-full pl-2 pr-4 py-1 animate-slide-right"
+							coroutine.wrap(function()
+								for _, player in pairs(ERLC.players) do
+									if player.roblox then
+										local card = document:createElement("div")
+										card.className = "flex items-center justify-between bg-white/10 rounded-full pl-2 pr-4 py-1 animate-slide-right"
 
-									card.innerHTML = string.format([[
-										<div class="flex items-center gap-3 min-w-0">
-											<img src="%s" class="h-10 w-10 rounded-full">
-											<div class="min-w-0 leading-snug">
-												<div class="text-white font-semibold text-[14px] truncate leading-tight">%s</div>
-												<div class="text-white/50 text-[11px] truncate leading-tight">%s</div>
+										card.innerHTML = string.format([[
+											<div class="flex items-center gap-3 min-w-0">
+												<img src="%s" class="h-10 w-10 rounded-full">
+												<div class="min-w-0 leading-snug">
+													<div class="text-white font-semibold text-[14px] truncate leading-tight">%s</div>
+													<div class="text-white/50 text-[11px] truncate leading-tight">%s</div>
+												</div>
 											</div>
-										</div>
-										<div class="flex items-center gap-2 text-white/50">
-											<button class="btn-glass rounded-full w-8 h-8 flex items-center justify-center" aria-label="Tools">
-												<i class="fa-solid fa-hammer text-sm"></i>
-											</button>
+											<div class="flex items-center gap-2 text-white/50">
+												<button class="btn-glass rounded-full w-8 h-8 flex items-center justify-center" aria-label="Tools">
+													<i class="fa-solid fa-hammer text-sm"></i>
+												</button>
 
-											<button class="btn-glass rounded-full w-8 h-8 flex items-center justify-center" aria-label="Settings">
-												<i class="fa-solid fa-gear text-sm"></i>
-											</button>
-										</div>
-									]], player.roblox.avatar, player.roblox.displayName, "@" .. player.roblox.name)
+												<button class="btn-glass rounded-full w-8 h-8 flex items-center justify-center" aria-label="Settings">
+													<i class="fa-solid fa-gear text-sm"></i>
+												</button>
+											</div>
+										]], player.roblox.avatar, player.roblox.displayName, "@" .. player.roblox.name)
 
-									elements.panel.players.container:appendChild(card)
-									time.sleep(50) -- makes it look cooler trust
+										elements.panel.players.container:appendChild(card)
+										time.sleep(50)
+									end
 								end
-							end
+							end)()
 						end
 
 						if ERLC.modcalls then
+							print("cycling calls")
 							ERLC.pendingModcalls = {}
 
 							for _, modcall in pairs(ERLC.modcalls) do
 								if not modcall.Moderator then
+									ERLC.status = ERLC.status + 2
 									table.insert(ERLC.pendingModcalls, modcall)
 								end
 							end
 
 							elements.panel.glance.statistics.modcalls.label.textContent = #ERLC.pendingModcalls
 							elements.panel.glance.statistics.modcalls.tooltip.textContent = #ERLC.pendingModcalls .. " pending modcalls"
+						end
+
+						if ERLC.kills then
+							print("cycling kills")
+							for _, kill in pairs(ERLC.kills) do
+								if (time.now() - kill.Timestamp) < 300 then
+									ERLC.status = ERLC.status + 1
+									print("    +1")
+								end
+							end
+						end
+
+						if ERLC.online then
+							print("status", ERLC.status)
+							if ERLC.status <= 2 then
+								elements.panel.glance.server.status.classList:add("pill-green")
+                        		elements.panel.glance.server.status.innerHTML = '<span class="h-2 w-2 rounded-full"></span> Calm'
+							elseif ERLC.status >= 3 and ERLC.status <= 5 then
+								elements.panel.glance.server.status.classList:add("pill-yellow")
+                        		elements.panel.glance.server.status.innerHTML = '<span class="h-2 w-2 rounded-full"></span> Busy'
+							elseif ERLC.status >= 6 then
+								elements.panel.glance.server.status.classList:add("pill-red")
+                        		elements.panel.glance.server.status.innerHTML = '<span class="h-2 w-2 rounded-full"></span> Chaotic'
+							end
 						end
 					end
 				else
