@@ -276,13 +276,13 @@ function utils.notify(message, type, duration)
 
     if type == "success" then
         notification.className = "flex items-start bg-green-500/10 text-green-400 p-4 rounded-lg shadow-lg w-80 slide-in-right"
-        icon = '<img draggable="false" src="/images/icons/Success.svg" class="w-6 h-6">'
+        icon = '<img src="/images/icons/Success.svg" class="w-6 h-6">'
     elseif type == "warning" then
         notification.className = "flex items-start bg-yellow-500/10 text-yellow-400 p-4 rounded-lg shadow-lg w-80 slide-in-right"
         icon = '<i class="fas fa-exclamation-triangle text-xl"></i>'
     elseif type == "fail" then
         notification.className = "flex items-start bg-red-500/10 text-red-400 p-4 rounded-lg shadow-lg w-80 slide-in-right"
-        icon = '<img draggable="false" src="/images/icons/Fail.svg" class="w-6 h-6">'
+        icon = '<img src="/images/icons/Fail.svg" class="w-6 h-6">'
     end
 
     notification.innerHTML = string.format([[
