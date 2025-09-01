@@ -1,196 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="overflow-hidden">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Manage and moderate your servers with ease from the web panel.">
-    <meta content="Ducky・Moderation Panel" property="og:title">
-    <meta content="Manage and moderate your servers with ease from the web panel." property="og:description">
-    <meta content="https://duckybot.xyz" property="og:url">
-    <meta content="/images/icons/Ducky.png" property="og:image">
-    <meta content="/images/icons/Ducky.png" property="og:image:url">
-    <meta content="300" property="og:image:width">
-    <meta content="300" property="og:image:height">
-    <meta content="#F5FF82" name="theme-color">
-    <link rel="icon" href="/images/icons/Ducky.png">
-    <title>Ducky ・ Moderation Panel</title>
-    <script nonce="{{nonce}}" src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/styles.css">
-    <script nonce="{{nonce}}">
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#F5FF82',
-                        secondary: '#111111',
-                        dark: '#0a0a0a'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif']
-                    },
-                    maxHeight: {
-                        '100': '100px'
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="description"
+            content="Manage and moderate your servers with ease from the web panel.">
+        <meta content="Ducky・Moderation Panel" property="og:title">
+        <meta
+            content="Manage and moderate your servers with ease from the web panel."
+            property="og:description">
+        <meta content="https://duckybot.xyz" property="og:url">
+        <meta content="/images/icons/Ducky.png" property="og:image">
+        <meta content="/images/icons/Ducky.png" property="og:image:url">
+        <meta content="300" property="og:image:width">
+        <meta content="300" property="og:image:height">
+        <meta content="#F5FF82" name="theme-color">
+        <link rel="icon" href="/images/icons/Ducky.png">
+        <title>Ducky ・ Moderation Panel</title>
+        <script nonce="{{nonce}}" src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+            rel="stylesheet">
+        <link
+            href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css"
+            rel="stylesheet">
+        <link rel="stylesheet" href="/styles.css">
+        <script nonce="{{nonce}}">
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#F5FF82',
+                            secondary: '#111111',
+                            dark: '#0a0a0a'
+                        },
+                        fontFamily: {
+                            sans: ['Inter', 'sans-serif']
+                        },
+                        maxHeight: {
+                            '100': '100px'
+                        }
                     }
                 }
             }
-        }
-    </script>
-    <script nonce="{{nonce}}" src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
-    <style>
-        @keyframes slide-in-right {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes slide-out-right {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-        }
-        
-        .slide-in-right {
-            animation: slide-in-right 0.5s forwards;
-        }
-        
-        .slide-out-right {
-            animation: slide-out-right 0.5s forwards;
-        }
-        
-        @keyframes slide-up {
-            from {
-                transform: translateY(0);
-                opacity: 1;
-                max-height: 200px;
-                /* Adjust to fit content */
-            }
-            to {
-                transform: translateY(-20px);
-                opacity: 0;
-                max-height: 0;
-                padding-top: 0;
-                padding-bottom: 0;
-                margin-top: 0;
-                margin-bottom: 0;
-                border: 0;
-            }
-        }
-        
-        .slide-up {
-            animation: slide-up 0.5s forwards;
-            transition: all 0.5s ease-out;
-            overflow: hidden;
-        }
-    </style>
-</head>
+        </script>
+        <script nonce="{{nonce}}" src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
+    </head>
 
-<body class="min-h-screen flex flex-col">
-    <main class="flex-grow">
-        <div class="glow bg-primary top-0 left-[10%] w-[500px] h-[500px]"></div>
-        <div class="glow bg-primary bottom-0 right-[10%] w-[500px] h-[500px]"></div>
-        <div id="navbar"></div>
-        <div id="mobileMenu" class="mobile-menu">
-            <button id="mobileMenuClose" class="absolute top-6 right-6 text-white/70" aria-label="Close mobile menu">
+    <body class="min-h-screen flex flex-col">
+        <main class="flex-grow">
+            <div
+                class="glow bg-primary top-0 left-[10%] w-[500px] h-[500px]"></div>
+            <div
+                class="glow bg-primary bottom-0 right-[10%] w-[500px] h-[500px]"></div>
+            <div id="navbar"></div>
+            <div id="mobileMenu" class="mobile-menu">
+                <button id="mobileMenuClose"
+                    class="absolute top-6 right-6 text-white/70"
+                    aria-label="Close mobile menu">
                     <i class="fas fa-times text-2xl"></i>
                 </button>
-            <div class="flex flex-col items-center gap-6 sm:gap-8">
-                <a href="/team" class="nav-link text-xl text-white/70">Team</a>
-                <a href="/docs" class="nav-link text-xl text-white/70">Docs</a>
-                <a href="/plus" class="nav-link text-xl text-white/70">Ducky
+                <div class="flex flex-col items-center gap-6 sm:gap-8">
+                    <a href="/team"
+                        class="nav-link text-xl text-white/70">Team</a>
+                    <a href="/docs"
+                        class="nav-link text-xl text-white/70">Docs</a>
+                    <a href="/plus" class="nav-link text-xl text-white/70">Ducky
                         Plus+</a>
-                <a href="/status" class="nav-link text-xl text-white/70">Status</a>
-                <a href="/support" class="nav-link text-xl text-white/70">Support</a>
-                <a href="/invite" class="btn-primary text-xl px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add
+                    <a href="/status"
+                        class="nav-link text-xl text-white/70">Status</a>
+                    <a href="/support"
+                        class="nav-link text-xl text-white/70">Support</a>
+                    <a href="/invite"
+                        class="btn-primary text-xl px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add
                         Ducky</a>
-            </div>
-        </div>
-        <section class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
-            <div class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 select-none">
-                <div class="flex items-center gap-3">
-                    <div class="flex items-center rounded-full bg-black/60 border border-white/10 shadow-2xl px-2 h-12">
-                        <img draggable="false" src="/images/icons/Loading.gif" class="h-8 w-8 rounded-full object-cover" id="serverIcon">
-                        <div class="ml-2 mr-3 leading-tight">
-                            <span class="text-[15px] font-semibold" id="serverName">Loading...</span>
-                        </div>
-                        <span class="flex items-center gap-1 rounded-full px-2 py-0.5 text-[12px] pill-gray" id="serverStatusPill">
-                            <span class="h-2 w-2 rounded-full"></span> Offline
-                        </span>
-                    </div>
-
-                    <div class="relative flex items-center gap-3 rounded-full bg-black/60 border border-white/10 shadow-2xl h-12 px-4 text-[14px]">
-                        <div class="relative group flex items-center gap-1">
-                        <i class="fa-solid fa-users"></i>
-                        <span id="serverPlayerCount">0/39</span>
-
-                        <div class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick">
-                            <div class="relative flex flex-col items-center">
-                                <div class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl" id="serverPlayerTooltip">
-                                    0/39 players are in-game
-                                </div>
-                                <span class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <span class="opacity-50">•</span>
-
-                    <div class="relative group flex items-center gap-1">
-                        <i class="fa-solid fa-shield-alt"></i>
-                        <span id="serverStaffCount">0</span>
-
-                        <div class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick">
-                            <div class="relative flex flex-col items-center">
-                                <div class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl" id="serverStaffTooltip">
-                                    0 staff members are in-game
-                                </div>
-                                <span class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <span class="opacity-50">•</span>
-
-                    <div class="relative group flex items-center gap-1">
-                        <i class="fa-solid fa-phone"></i>
-                        <span id="serverModcallCount">0</span>
-
-                        <div class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick">
-                            <div class="relative flex flex-col items-center">
-                                <div class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl" id="serverModcallTooltip">
-                                    0 pending modcalls
-                                </div>
-                                <span class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    </div>
                 </div>
             </div>
-        </section>
-    </main>
-    <div id="notification-container" class="w-full flex flex-col items-end p-4 space-y-2"></div>
-    <div id="footer"></div>
-    <script nonce="{{nonce}}">
-        fetch("/servers/panel.lua")
-            .then(res => res.text())
-            .then(lua => {
-                fengari.load(lua)();
-            });
-    </script>
-</body>
+            <section
+                class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
+                <div class="max-w-7xl mx-auto px-4">
+                    <div class="bg-black/60 border border-white/10 shadow-2xl rounded-2xl p-5 w-[33%]">
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-users text-4xl"></i>
+                            <div>
+                                <h2 class="text-white font-semibold text-lg leading-tight">Players</h2>
+                                <p class="text-white/60 text-xs">View and manage
+                                    in-game players</p>
+                            </div>
+                        </div>
+                        <div class="border-t border-white/10 mt-3"></div>
+
+                        <div class="mt-3 space-y-3 max-h-[70vh] overflow-y-auto pr-[5px]" id="serverPlayersContainer"></div>
+                    </div>
+
+                    <!-- shift mgmt panel later :heh: -->
+                </div>
+            </section>
+            <section
+                class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
+                <div
+                    class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 select-none">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="flex items-center rounded-full bg-black/60 border border-white/10 shadow-2xl px-2 h-12">
+                            <img
+                                src="/images/icons/Loading.gif"
+                                class="h-8 w-8 rounded-full object-cover"
+                                id="serverGlanceIcon">
+                            <div class="ml-2 mr-3 leading-tight">
+                                <span class="text-[15px] font-semibold"
+                                    id="serverGlanceName">Loading...</span>
+                            </div>
+                            <span
+                                class="flex items-center gap-1 rounded-full px-2 py-0.5 text-[12px] pill-gray"
+                                id="serverGlanceStatusPill">
+                                <span class="h-2 w-2 rounded-full"></span>
+                                Offline
+                            </span>
+                        </div>
+
+                        <div
+                            class="relative flex items-center gap-3 rounded-full bg-black/60 border border-white/10 shadow-2xl h-12 px-4 text-[14px]">
+                            <div class="relative group flex items-center gap-1">
+                                <i class="fa-solid fa-users"></i>
+                                <span id="serverGlancePlayerCount">0/39</span>
+
+                                <div
+                                    class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick">
+                                    <div
+                                        class="relative flex flex-col items-center">
+                                        <div
+                                            class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl"
+                                            id="serverGlancePlayerTooltip">
+                                            0/39 players are in-game
+                                        </div>
+                                        <span
+                                            class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span class="opacity-50">•</span>
+
+                            <div class="relative group flex items-center gap-1">
+                                <i class="fa-solid fa-shield-alt"></i>
+                                <span id="serverGlanceStaffCount">0</span>
+
+                                <div
+                                    class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick">
+                                    <div
+                                        class="relative flex flex-col items-center">
+                                        <div
+                                            class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl"
+                                            id="serverGlanceStaffTooltip">
+                                            0 staff members are in-game
+                                        </div>
+                                        <span
+                                            class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span class="opacity-50">•</span>
+
+                            <div class="relative group flex items-center gap-1">
+                                <i class="fa-solid fa-phone"></i>
+                                <span id="serverGlanceModcallCount">0</span>
+
+                                <div
+                                    class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick">
+                                    <div
+                                        class="relative flex flex-col items-center">
+                                        <div
+                                            class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl"
+                                            id="serverGlanceModcallTooltip">
+                                            0 pending modcalls
+                                        </div>
+                                        <span
+                                            class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <div id="notification-container"
+            class="w-full flex flex-col items-end p-4 space-y-2"></div>
+        <div id="footer"></div>
+        <script nonce="{{nonce}}">
+            fetch("/servers/panel.lua")
+                .then(res => res.text())
+                .then(lua => {
+                    fengari.load(lua)();
+                });
+        </script>
+    </body>
 
 </html>

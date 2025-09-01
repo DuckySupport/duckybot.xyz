@@ -18,24 +18,27 @@ local elements = {
 	panel = {
 		glance = {
 			server = {
-				icon = document:getElementById("serverIcon"),
-				name = document:getElementById("serverName"),
-				status = document:getElementById("serverStatusPill")
+				icon = document:getElementById("serverGlanceIcon"),
+				name = document:getElementById("serverGlanceName"),
+				status = document:getElementById("serverGlanceStatusPill")
 			},
 			statistics = {
 				players = {
-					label = document:getElementById("serverPlayerCount"),
-					tooltip = document:getElementById("serverPlayerTooltip")
+					label = document:getElementById("serverGlancePlayerCount"),
+					tooltip = document:getElementById("serverGlancePlayerTooltip")
 				},
 				staff = {
-					label = document:getElementById("serverStaffCount"),
-					tooltip = document:getElementById("serverStaffTooltip")
+					label = document:getElementById("serverGlanceStaffCount"),
+					tooltip = document:getElementById("serverGlanceStaffTooltip")
 				},
 				modcalls = {
-					label = document:getElementById("serverModcallCount"),
-					tooltip = document:getElementById("serverModcallTooltip")
+					label = document:getElementById("serverGlanceModcallCount"),
+					tooltip = document:getElementById("serverGlanceModcallTooltip")
 				}
 			}
+		},
+		players = {
+			container = document:getElementById("serverPlayersContainer")
 		}
 	}
 }
@@ -110,6 +113,10 @@ coroutine.wrap(function()
 
 					if ERLC and ERLC.server then
 						if ERLC.players then
+							table.sort(ERLC.players, function(a, b)
+								return a.Name < b.Name
+							end)
+
 							ERLC.staff = {}
 
 							for _, player in pairs(ERLC.players) do
@@ -128,6 +135,35 @@ coroutine.wrap(function()
 
 							elements.panel.glance.statistics.staff.label.textContent = #ERLC.staff
 							elements.panel.glance.statistics.staff.tooltip.textContent = #ERLC.staff .. " staff members are in-game"
+
+							for _, player in pairs(ERLC.players) do
+								if player.roblox then
+									local card = document:createElement("div")
+									card.className = "flex items-center justify-between bg-white/10 rounded-full pl-2 pr-4 py-1 animate-slide-right"
+
+									card.innerHTML = string.format([[
+										<div class="flex items-center gap-3 min-w-0">
+											<img src="%s" class="h-10 w-10 rounded-full">
+											<div class="min-w-0 leading-snug">
+												<div class="text-white font-semibold text-[14px] truncate leading-tight">%s</div>
+												<div class="text-white/50 text-[11px] truncate leading-tight">%s</div>
+											</div>
+										</div>
+										<div class="flex items-center gap-2 text-white/50">
+											<button class="btn-glass rounded-full w-8 h-8 flex items-center justify-center" aria-label="Tools">
+												<i class="fa-solid fa-hammer text-sm"></i>
+											</button>
+
+											<button class="btn-glass rounded-full w-8 h-8 flex items-center justify-center" aria-label="Settings">
+												<i class="fa-solid fa-gear text-sm"></i>
+											</button>
+										</div>
+									]], player.roblox.avatar, player.roblox.displayName, "@" .. player.roblox.name)
+
+									elements.panel.players.container:appendChild(card)
+									time.sleep(50) -- makes it look cooler trust
+								end
+							end
 						end
 
 						if ERLC.modcalls then

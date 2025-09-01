@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const messageHeader = `
       <div class="message-header">
-        <img draggable="false" src="${pfp || 'https://cdn.discordapp.com/embed/avatars/0.png'}" alt="${author}'s avatar" class="message-avatar" />
+        <img src="${pfp || 'https://cdn.discordapp.com/embed/avatars/0.png'}" alt="${author}'s avatar" class="message-avatar" />
         <div class="flex items-center">
           <span class="message-author">${escapeHTML(author)}</span>
           ${bot ? '<span class="bot-tag">BOT</span>' : ''}
@@ -337,7 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const authorHtml = author
       ? `
           <div class="embed-author">
-              ${author.icon_url ? `<img draggable="false" src="${author.icon_url}" class="embed-author-icon" />` : ''}
+              ${author.icon_url ? `<img src="${author.icon_url}" class="embed-author-icon" />` : ''}
               <span class="embed-author-name">${escapeHTML(author.name)}</span>
           </div>
         `
@@ -352,7 +352,7 @@ document.addEventListener("DOMContentLoaded", () => {
       : ''
     
     const thumbnailHtml = thumbnail
-      ? `<div class="embed-thumbnail"><img draggable="false" src="${thumbnail.url}" alt="Thumbnail" /></div>`
+      ? `<div class="embed-thumbnail"><img src="${thumbnail.url}" alt="Thumbnail" /></div>`
       : ''
     
     const fieldsHtml = fields.length > 0
@@ -369,13 +369,13 @@ document.addEventListener("DOMContentLoaded", () => {
       : ''
     
     const imageHtml = image
-      ? `<div class="embed-image"><img draggable="false" src="${image.url}" alt="Embed Image" /></div>`
+      ? `<div class="embed-image"><img src="${image.url}" alt="Embed Image" /></div>`
       : ''
     
     const footerHtml = footer
       ? `
           <div class="embed-footer">
-              ${footer.icon_url ? `<img draggable="false" src="${footer.icon_url}" class="embed-footer-icon" />` : ''}
+              ${footer.icon_url ? `<img src="${footer.icon_url}" class="embed-footer-icon" />` : ''}
               <span>${escapeHTML(footer.text)}</span>
           </div>
         `
@@ -399,7 +399,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (content_type && content_type.startsWith('image/')) {
       return `
         <div class="attachment">
-          <img draggable="false" src="${proxy_url || url}" alt="${escapeHTML(filename)}" />
+          <img src="${proxy_url || url}" alt="${escapeHTML(filename)}" />
         </div>
       `
     }
@@ -443,7 +443,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     return `
       <div class="sticker">
-        <img draggable="false" src="${url}" alt="${escapeHTML(name)}" title="${escapeHTML(name)}" />
+        <img src="${url}" alt="${escapeHTML(name)}" title="${escapeHTML(name)}" />
         <div class="sticker-name">${escapeHTML(name)}</div>
       </div>
     `

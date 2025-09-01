@@ -169,6 +169,18 @@ body {
     animation: slideUp 0.8s ease-out forwards;
 }
 
+.animate-slide-left {
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: slideLeft 0.8s ease-out forwards;
+}
+
+.animate-slide-right {
+    opacity: 0;
+    transform: translateX(20px);
+    animation: slideLeft 0.8s ease-out forwards;
+}
+
 .animate-slide-down {
     opacity: 0;
     transform: translateY(-20px);
@@ -192,6 +204,28 @@ body {
     from {
         opacity: 0;
         transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
     }
     to {
         opacity: 1;
@@ -245,7 +279,7 @@ body {
 
 .glass-card.dark {
     background: rgba(18, 18, 18, 0.5);
-    border: 1px solid rgba(245, 255, 130, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .review-card {
@@ -324,8 +358,9 @@ body {
 }
 
  ::-webkit-scrollbar {
-    width: 6px;
+    width: 3px;
     height: 6px;
+    padding-left: 5px;
 }
 
  ::-webkit-scrollbar-track {
@@ -333,12 +368,12 @@ body {
 }
 
  ::-webkit-scrollbar-thumb {
-    background: rgba(245, 255, 130, 0.3);
+    background: rgba(255, 255, 255, 0.3);
     border-radius: 3px;
 }
 
  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(245, 255, 130, 0.5);
+    background: rgba(255, 255, 255, 0.5);
 }
 
 @media (max-width: 768px) {
