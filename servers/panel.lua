@@ -32,7 +32,7 @@ local elements = {
 					tooltip = document:getElementById("serverStaffTooltip")
 				},
 				modcalls = {
-					label = document:getElementById("serverModcallTooltip"),
+					label = document:getElementById("serverModcallCount"),
 					tooltip = document:getElementById("serverModcallTooltip")
 				}
 			}
@@ -120,8 +120,16 @@ coroutine.wrap(function()
 						end
 
 						if ERLC.modcalls then
-							elements.panel.glance.statistics.modcalls.label.textContent = #ERLC.modcalls
-							elements.panel.glance.statistics.modcalls.tooltip.textContent = #ERLC.modcalls .. " pending modcalls"
+							ERLC.pendingModcalls = {}
+
+							for _, modcall in pairs(ERLC.modcalls) do
+								if not modcall.Moderator then
+									table.insert(ERLC.pendingModcalls, modcall)
+								end
+							end
+
+							elements.panel.glance.statistics.modcalls.label.textContent = #ERLC.pendingModcalls
+							elements.panel.glance.statistics.modcalls.tooltip.textContent = #ERLC.pendingModcalls .. " pending modcalls"
 						end
 					end
 				else
