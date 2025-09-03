@@ -91,7 +91,11 @@
                             </div>
                         </div>
                         <hr class="border-t border-white/10 mt-3"></hr>
-                        <div class="mt-3 space-y-3 max-h-[calc(100vh-25rem)] overflow-y-auto pr-[5px]" id="serverPlayersContainer">
+                        <div class="relative mt-3">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-white/30"></i>
+                            <input type="text" id="playerSearch" placeholder="Search players..." class="w-full bg-white/5 border border-white/10 rounded-full h-10 pl-10 pr-4 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-primary/50">
+                        </div>
+                        <div class="mt-3 space-y-3 max-h-[calc(100vh-29rem)] overflow-y-auto pr-[5px]" id="serverPlayersContainer">
                             <div class="mt-3 flex items-center" id="serverPlayersInternal">
                                 <img src="/images/icons/Loading.gif" class="w-[30px]" id="serverPlayersInternalIcon" />
                                 <span class="text-sm pl-[5px]" id="serverPlayersInternalText">Loading...</span>
@@ -197,11 +201,13 @@
             class="w-full flex flex-col items-end p-4 space-y-2"></div>
         <div id="footer"></div>
         <script nonce="{{nonce}}">
-            fetch("/servers/panel.lua")
-                .then(res => res.text())
-                .then(lua => {
-                    fengari.load(lua)();
-                });
+            document.addEventListener("DOMContentLoaded", function() {
+                fetch("/servers/panel.lua")
+                    .then(res => res.text())
+                    .then(lua => {
+                        fengari.load(lua)();
+                    });
+            });
         </script>
     </body>
 
