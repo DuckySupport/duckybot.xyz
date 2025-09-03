@@ -39,6 +39,7 @@ local elements = {
 		},
 		players = {
 			container = document:getElementById("serverPlayersContainer"),
+			search = document:getElementById("playerSearch"),
 			internal = {
 				container = document:getElementById("serverPlayersInternal"),
 				icon = document:getElementById("serverPlayersInternalIcon"),
@@ -95,10 +96,32 @@ coroutine.wrap(function()
 	local cookie = utils.cookie("discord")
 	if cookie then
 		if path[1] == "servers" and tonumber(path[2]) and path[3] == "panel" then
+			local function applyPlayerSearch()
+				if not elements.panel.players.search then return end
+				local query = elements.panel.players.search.value:lower()
+				local players = elements.panel.players.container:getElementsByClassName("player-card")
+
+				for i = 0, players.length - 1 do
+					local playerCard = players[i]
+					local playerName = playerCard:getAttribute("data-name"):lower()
+					local playerUsername = playerCard:getAttribute("data-username"):lower()
+
+					if playerName:find(query, 1, true) or playerUsername:find(query, 1, true) then
+						playerCard.style.display = ""
+					else
+						playerCard.style.display = "none"
+					end
+				end
+			end
+
+			if elements.panel.players.search then
+				elements.panel.players.search:addEventListener("input", applyPlayerSearch)
+			end
+
 			local GuildID = path[2]
 			local User = utils.user()
 			local Guild = utils.guild(GuildID, cookie)
-			
+
 			local function refresh()
 				local ERLC = Guild and utils.erlc(GuildID)
 
@@ -124,10 +147,16 @@ coroutine.wrap(function()
 									end
 								end
 
+								local existingPlayers = elements.panel.players.container:getElementsByClassName("player-card")
+								for i = existingPlayers.length - 1, 0, -1 do
+									existingPlayers[i]:remove()
+								end
+
 								if #ERLC.players > 0 then
 									ERLC.online = true
 									elements.panel.players.internal.container.classList:add("hidden")
 								else
+									elements.panel.players.internal.container.classList:remove("hidden")
 									elements.panel.players.internal.icon.src = "/images/icons/Fail.svg"
 									elements.panel.players.internal.text.textContent = "There are no players in-game."
 								end
@@ -142,7 +171,9 @@ coroutine.wrap(function()
 									for _, player in pairs(ERLC.players) do
 										if player.roblox then
 											local card = document:createElement("div")
-											card.className = "flex items-center justify-between bg-white/10 rounded-full pl-2 pr-4 py-1 animate-slide-right"
+											card.className = "player-card flex items-center justify-between bg-white/10 rounded-full pl-2 pr-4 py-1 animate-slide-right"
+											card:setAttribute("data-name", player.roblox.displayName)
+											card:setAttribute("data-username", player.roblox.name)
 
 											card.innerHTML = string.format([[
 												<div class="flex items-center gap-3 min-w-0">
@@ -167,6 +198,7 @@ coroutine.wrap(function()
 											time.sleep(50)
 										end
 									end
+									applyPlayerSearch()
 								end)()
 							end
 
