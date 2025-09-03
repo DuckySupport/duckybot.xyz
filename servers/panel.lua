@@ -174,7 +174,7 @@ coroutine.wrap(function()
 								ERLC.pendingModcalls = {}
 
 								for _, modcall in pairs(ERLC.modcalls) do
-									if not modcall.Moderator then
+									if not modcall.Moderator and time.now() - modcall.Timestamp < 600 then
 										ERLC.status = ERLC.status + 2
 										table.insert(ERLC.pendingModcalls, modcall)
 									end
