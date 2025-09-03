@@ -617,3 +617,12 @@ img {
     user-select: none;
     -webkit-user-drag: none;
 }
+
+input {
+    transition: border-color 0.2s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: rgba(245, 255, 130, 1);
+}
