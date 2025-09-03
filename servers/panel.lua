@@ -20,7 +20,10 @@ local elements = {
 			server = {
 				icon = document:getElementById("serverGlanceIcon"),
 				name = document:getElementById("serverGlanceName"),
-				status = document:getElementById("serverGlanceStatusPill")
+				status = {
+					pill = document:getElementById("serverGlanceStatusPill"),
+					tooltip = document:getElementById("serverGlanceStatusTooltip")
+				}
 			},
 			statistics = {
 				players = {
@@ -39,7 +42,7 @@ local elements = {
 		},
 		players = {
 			container = document:getElementById("serverPlayersContainer"),
-			search = document:getElementById("playerSearch"),
+			search = document:getElementById("serverPlayersSearch"),
 			internal = {
 				container = document:getElementById("serverPlayersInternal"),
 				icon = document:getElementById("serverPlayersInternalIcon"),
@@ -107,33 +110,12 @@ coroutine.wrap(function()
 	local cookie = utils.cookie("discord")
 	if cookie then
 		if path[1] == "servers" and tonumber(path[2]) and path[3] == "panel" then
-			local function applyPlayerSearch()
-				if not elements.panel.players.search then return end
-				local query = elements.panel.players.search.value:lower()
-				local players = elements.panel.players.container:getElementsByClassName("player-card")
-
-				for i = 0, players.length - 1 do
-					local playerCard = players[i]
-					local playerName = playerCard:getAttribute("data-name"):lower()
-					local playerUsername = playerCard:getAttribute("data-username"):lower()
-
-					if playerName:find(query, 1, true) or playerUsername:find(query, 1, true) then
-						playerCard.style.display = ""
-					else
-						playerCard.style.display = "none"
-					end
-				end
-			end
-
-			if elements.panel.players.search then
-				elements.panel.players.search:addEventListener("input", applyPlayerSearch)
-			end
-
 			local GuildID = path[2]
 			local User = utils.user()
 			local Guild = utils.guild(GuildID, cookie)
+			local lastRefresh = nil
 
-			local function refresh()
+			local function refresh(initial)
 				local ERLC = Guild and utils.erlc(GuildID)
 
 				if User then
@@ -178,10 +160,12 @@ coroutine.wrap(function()
 								coroutine.wrap(function()
 									for _, player in pairs(ERLC.players) do
 										if player.roblox then
+											local query = utils.input(elements.panel.players.search, true)
+											local show = (query and (player.roblox.displayName:lower():find(query) or player.roblox.name:lower():find(query))) or not query
 											local card = document:createElement("div")
-											card.className = "player-card flex items-center justify-between bg-white/10 rounded-full pl-2 pr-4 py-1 animate-slide-right"
-											card:setAttribute("data-name", player.roblox.displayName)
-											card:setAttribute("data-username", player.roblox.name)
+											card.className = "player-card flex items-center justify-between bg-white/10 rounded-full pl-2 pr-4 py-1 hidden" .. ((initial and " animate-slide-right") or "")
+											card:setAttribute("data-name", player.roblox.name)
+											card:setAttribute("data-displayName", player.roblox.displayName)
 
 											card.innerHTML = string.format([[
 												<div class="flex items-center gap-3 min-w-0">
@@ -203,10 +187,13 @@ coroutine.wrap(function()
 											]], player.roblox.avatar, player.roblox.displayName, "@" .. player.roblox.name)
 
 											elements.panel.players.container:appendChild(card)
-											time.sleep(50)
+											
+											if show then
+												card.classList:remove("hidden")
+												if initial then time.sleep(50) end
+											end
 										end
 									end
-									applyPlayerSearch()
 								end)()
 							end
 
@@ -232,32 +219,62 @@ coroutine.wrap(function()
 								end
 							end
 
+							elements.panel.glance.server.status.pill.classList:remove("pill-green", "pill-yellow", "pill-red", "pill-gray")
+
 							if ERLC.online then
-								elements.panel.glance.server.status.classList:remove("pill-green", "pill-yellow", "pill-red")
 								if ERLC.status <= 2 then
-									elements.panel.glance.server.status.classList:add("pill-green")
-									elements.panel.glance.server.status.innerHTML = '<span class="h-2 w-2 rounded-full"></span> Calm'
+									elements.panel.glance.server.status.pill.classList:add("pill-green")
+									elements.panel.glance.server.status.pill.innerHTML = '<span class="h-2 w-2 rounded-full"></span> Calm'
 								elseif ERLC.status >= 3 and ERLC.status <= 5 then
-									elements.panel.glance.server.status.classList:add("pill-yellow")
-									elements.panel.glance.server.status.innerHTML = '<span class="h-2 w-2 rounded-full"></span> Busy'
+									elements.panel.glance.server.status.pill.classList:add("pill-yellow")
+									elements.panel.glance.server.status.pill.innerHTML = '<span class="h-2 w-2 rounded-full"></span> Busy'
 								elseif ERLC.status >= 6 then
-									elements.panel.glance.server.status.classList:add("pill-red")
-									elements.panel.glance.server.status.innerHTML = '<span class="h-2 w-2 rounded-full"></span> Chaotic'
+									elements.panel.glance.server.status.pill.classList:add("pill-red")
+									elements.panel.glance.server.status.pill.innerHTML = '<span class="h-2 w-2 rounded-full"></span> Chaotic'
 								end
+							else
+								elements.panel.glance.server.status.pill.classList:add("pill-gray")
+								elements.panel.glance.server.status.pill.innerHTML = '<span class="h-2 w-2 rounded-full"></span> Offline'
 							end
 						end
+
+						lastRefresh = time.now()
 					else
 						utils.redirect("servers")
 					end
 				end
 			end
 
-			refresh()
+			elements.panel.players.search:addEventListener("input", function()
+				local query = utils.input(elements.panel.players.search, true)
+				local cards = elements.panel.players.container:getElementsByClassName("player-card")
+
+				for _, card in pairs(cards) do
+					local name = card:getAttribute("data-name"):lower()
+					local displayName = card:getAttribute("data-displayName"):lower()
+
+					if (not query) or (name:find(query) or displayName:find(query)) then
+						card.classList:remove("hidden")
+					else
+						card.classList:add("hidden")
+					end
+				end
+			end)
+
+			refresh(true)
 
 			time.interval(30000, function()
 				coroutine.wrap(function()
 					refresh()
 				end)()
+			end)
+
+			time.interval(1000, function()
+				if lastRefresh then
+					elements.panel.glance.server.status.tooltip.textContent = "Last updated " .. utils.ago(lastRefresh)
+				else
+					elements.panel.glance.server.status.tooltip.textContent = "This server is offline"
+				end
 			end)
 		else
 			utils.redirect("servers")

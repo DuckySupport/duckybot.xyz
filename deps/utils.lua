@@ -50,22 +50,66 @@ function utils.shuffle(tbl)
 end
 
 function utils.chop(tbl, chop)
-    local new = {}
+    local ret = {}
 
     for i, v in pairs(tbl) do
-        table.insert(new, v)
+        table.insert(ret, v)
         if i == chop then
             break
         end
     end
 
-    return new
+    return ret
 end
 
 function utils.floorDigits(n, digits)
     digits = digits or 4
     local factor = 10 ^ digits
     return math.floor(n / factor) * factor
+end
+
+function utils.filter(tbl, pred)
+    local ret = {}
+
+    for _, v in pairs(tbl) do
+        if pred(v) == true then
+            table.insert(ret, v)
+        end
+    end
+
+    return ret
+end
+
+function utils.input(input, lower)
+    local value = input.value ~= "" and input.value
+    if value and lower then
+        value = value:lower()
+    end
+
+    return value
+end
+
+
+function utils.plural(n, word)
+    local str = n .. " " .. word
+    return (n == 1 and str) or (str .. "s")
+end
+
+function utils.ago(timestamp)
+    local now = time.now()
+    local diff = now - timestamp
+
+    if diff < 1 then
+        return "just now"
+    elseif diff < 60 then
+        return utils.plural(math.floor(diff), "second") .. " ago"
+    elseif diff < 3600 then
+        return utils.plural(math.floor(diff / 60), "minute") .. " ago"
+    elseif diff < 86400 then
+        return utils.plural(math.floor(diff / 3600), "hour") .. " ago"
+    else
+        return utils.plural(math.floor(diff / 86400), "day") .. " ago"
+    end
 end
 
 function utils.hexToRGBA(hex, alpha)
