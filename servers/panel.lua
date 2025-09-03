@@ -186,7 +186,7 @@ coroutine.wrap(function()
 
 							if ERLC.kills then
 								for _, kill in pairs(ERLC.kills) do
-									if (time.now() - kill.Timestamp) < 300 then
+									if (time.now() - kill.Timestamp) < 200 then
 										ERLC.status = ERLC.status + 1
 									end
 								end
