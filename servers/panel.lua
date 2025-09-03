@@ -158,10 +158,7 @@ coroutine.wrap(function()
 									end
 								end
 
-								local existingPlayers = elements.panel.players.container:getElementsByClassName("player-card")
-								for i = existingPlayers.length - 1, 0, -1 do
-									existingPlayers[i]:remove()
-								end
+								elements.panel.players.container.innerHTML = ""
 
 								if #ERLC.players > 0 then
 									ERLC.online = true
