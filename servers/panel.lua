@@ -193,6 +193,7 @@ coroutine.wrap(function()
 							end
 
 							if ERLC.online then
+								elements.panel.glance.server.status.classList:remove("pill-green", "pill-yellow", "pill-red")
 								if ERLC.status <= 2 then
 									elements.panel.glance.server.status.classList:add("pill-green")
 									elements.panel.glance.server.status.innerHTML = '<span class="h-2 w-2 rounded-full"></span> Calm'
