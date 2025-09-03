@@ -90,9 +90,13 @@
                                     in-game players</p>
                             </div>
                         </div>
-                        <div class="border-t border-white/10 mt-3"></div>
-
-                        <div class="mt-3 space-y-3 max-h-[70vh] overflow-y-auto pr-[5px]" id="serverPlayersContainer"></div>
+                        <hr class="border-t border-white/10 mt-3"></hr>
+                        <div class="mt-3 space-y-3 max-h-[70vh] overflow-y-auto pr-[5px]" id="serverPlayersContainer">
+                            <div class="mt-3 flex items-center" id="serverPlayersInternal">
+                                <img src="/images/icons/Loading.gif" class="w-[30px]" id="serverPlayersInternalIcon" />
+                                <span class="text-sm pl-[5px]" id="serverPlayersInternalText">Loading...</span>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- shift mgmt panel later :heh: -->
