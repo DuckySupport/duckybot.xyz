@@ -225,7 +225,9 @@ coroutine.wrap(function()
 			refresh()
 
 			time.interval(30000, function()
-				refresh()
+				coroutine.wrap(function()
+					refresh()
+				end)()
 			end)
 		else
 			utils.redirect("servers")
