@@ -27,8 +27,6 @@ local elements = {
 		mgmt = document:getElementById("teamMgmt"),
 		admin = document:getElementById("teamAdmin"),
 		support = document:getElementById("teamSupport"),
-		qa = document:getElementById("teamQA"),
-		docwriter = document:getElementById("teamDocs"),
 		mod = document:getElementById("teamMod")
 	},
 	link = {
