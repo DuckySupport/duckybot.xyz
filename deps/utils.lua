@@ -9,7 +9,7 @@ local console = global.console
 local elements = {
     notifications = document:getElementById("notificationContainer"),
     loading = {
-		container = document:getElementById("loadingContainer"),
+		container = document:getElementById("loadingScreen"),
 		icon = document:getElementById("loadingIcon"),
 		title = document:getElementById("loadingTitle"),
 		text = document:getElementById("loadingText")
@@ -239,22 +239,20 @@ function utils.split(str, delim)
 end
 
 function utils.loading(icon, title, text)
+    if (not elements.server.loading.container) or (not elements.server.loading.icon) or (not elements.server.loading.title) or (not elements.server.loading.text) then return end
+
+    local icons = {
+        loading = "/images/icons/Loading.gif",
+        success = "/images/icons/Success.svg",
+        fail = "/images/icons/Fail.svg"
+    }
+
     if not icon then
-        if elements.loading and elements.loading.container then
-            elements.loading.container:remove()
-        end
+        elements.servers.loading.container:remove()
     else
-        if (not elements.loading.container) or (not elements.loading.icon) or (not elements.loading.title) or (not elements.loading.text) then return end
-
-        local icons = {
-            loading = "/images/icons/Loading.gif",
-            success = "/images/icons/Success.svg",
-            fail = "/images/icons/Fail.svg"
-        }
-
-        elements.loading.icon.src = icons[icon] or icon
-        elements.loading.title.textContent = title
-        elements.loading.text.textContent = text
+        elements.servers.loading.icon.src = icons[icon] or icon
+        elements.servers.loading.title.textContent = title
+        elements.servers.loading.text.textContent = text
     end
 end
 
