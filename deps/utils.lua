@@ -4,7 +4,13 @@ local time = require("time")
 local global = js.global
 local document = global.document
 local elements = {
-    notifications = document:getElementById("notification-container")
+    notifications = document:getElementById("notificationContainer"),
+    loading = {
+		container = document:getElementById("loadingScreen"),
+		icon = document:getElementById("loadingIcon"),
+		title = document:getElementById("loadingTitle"),
+		text = document:getElementById("loadingText")
+	}
 }
 
 local redirectWhitelist = {
@@ -206,6 +212,24 @@ function utils.split(str, delim)
 	end
 	table.insert(ret, string.sub(str, n))
 	return ret
+end
+
+function utils.loading(icon, title, text)
+    if (not elements.server.loading.container) or (not elements.server.loading.icon) or (not elements.server.loading.title) or (not elements.server.loading.text) then return end
+
+    local icons = {
+        loading = "/images/icons/Loading.gif",
+        success = "/images/icons/Success.svg",
+        fail = "/images/icons/Fail.svg"
+    }
+
+    if not icon then
+        elements.servers.loading.container:remove()
+    else
+        elements.servers.loading.icon.src = icons[icon] or icon
+        elements.servers.loading.title.textContent = title
+        elements.servers.loading.text.textContent = text
+    end
 end
 
 function utils.notify(message, type, duration)
