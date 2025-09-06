@@ -23,11 +23,11 @@ local elements = {
 	navbar = document:getElementById("navbar"),
 	footer = document:getElementById("footer"),
 	team = {
-		dev = document:getElementById("team-dev"),
-		mgmt = document:getElementById("team-mgmt"),
-		admin = document:getElementById("team-admin"),
-		support = document:getElementById("team-support"),
-		mod = document:getElementById("team-mod")
+		dev = document:getElementById("teamDev"),
+		mgmt = document:getElementById("teamMgmt"),
+		admin = document:getElementById("teamAdmin"),
+		support = document:getElementById("teamSupport"),
+		mod = document:getElementById("teamMod")
 	},
 	link = {
 		icon = document:getElementById("linkIcon"),
