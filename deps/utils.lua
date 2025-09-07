@@ -98,7 +98,7 @@ end
 
 function utils.plural(n, word, pluralized)
     local str = n .. " " .. word
-    return (n == 1 and str) or (pluralized or (str .. "s"))
+    return (n == 1 and str) or ((pluralized and n .. " " .. pluralized) or (str .. "s"))
 end
 
 function utils.ago(timestamp)
