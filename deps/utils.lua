@@ -2,6 +2,7 @@ local js = require("js")
 local http = require("http")
 local time = require("time")
 local global = js.global
+local window = global.window
 local document = global.document
 local elements = {
     notifications = document:getElementById("notificationContainer"),
@@ -38,13 +39,18 @@ function utils.clamp(n, min, max)
 	end
 end
 
+function utils.round(n, i)
+    local m = 10 ^ (i or 0)
+	return math.floor(n * m + 0.5) / m
+end
+
 function utils.formatNumber(n)
 	local number = js.new(global.Number, n)
 	return number:toLocaleString()
 end
 
 function utils.mobile()
-    return global.innerWidth <= 768
+    return window.innerWidth <= 768
 end
 
 function utils.shuffle(tbl)
@@ -137,6 +143,15 @@ function utils.redirect(url)
             break
         end
     end
+end
+
+function utils.popup(url, width, height, left, top)
+    width = width or 500
+    height = height or 600
+    top = top or utils.round(window.screenY + (window.innerHeight / 2) - (height / 2))
+    left = left or utils.round(window.screenX + (window.innerWidth / 2) - (width / 2))
+
+    return global.window:open(url, "Popup", string.format("width=%d,height=%d,top=%d,left=%d,status=no,scrollbars=yes,resizable=yes", width, height, top, left))
 end
 
 function utils.truncate(str, len)
