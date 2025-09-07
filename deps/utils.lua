@@ -215,17 +215,19 @@ function utils.split(str, delim)
 end
 
 function utils.loading(icon, title, text)
-    if (not elements.loading.container) or (not elements.loading.icon) or (not elements.loading.title) or (not elements.loading.text) then return end
-
-    local icons = {
-        loading = "/images/icons/Loading.gif",
-        success = "/images/icons/Success.svg",
-        fail = "/images/icons/Fail.svg"
-    }
-
     if not icon then
-        elements.loading.container:remove()
+        if elements.loading and elements.loading.container then
+            elements.loading.container:remove()
+        end
     else
+        if (not elements.loading.container) or (not elements.loading.icon) or (not elements.loading.title) or (not elements.loading.text) then return end
+
+        local icons = {
+            loading = "/images/icons/Loading.gif",
+            success = "/images/icons/Success.svg",
+            fail = "/images/icons/Fail.svg"
+        }
+
         elements.loading.icon.src = icons[icon] or icon
         elements.loading.title.textContent = title
         elements.loading.text.textContent = text
