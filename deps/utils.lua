@@ -248,11 +248,11 @@ function utils.loading(icon, title, text)
     }
 
     if not icon then
-        elements.servers.loading.container:remove()
+        elements.loading.container:remove()
     else
-        elements.servers.loading.icon.src = icons[icon] or icon
-        elements.servers.loading.title.textContent = title
-        elements.servers.loading.text.textContent = text
+        elements.loading.icon.src = icons[icon] or icon
+        elements.loading.title.textContent = title
+        elements.loading.text.textContent = text
     end
 end
 
