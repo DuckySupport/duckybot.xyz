@@ -239,7 +239,7 @@ function utils.split(str, delim)
 end
 
 function utils.loading(icon, title, text)
-    if (not elements.server.loading.container) or (not elements.server.loading.icon) or (not elements.server.loading.title) or (not elements.server.loading.text) then return end
+    if (not elements.loading.container) or (not elements.loading.icon) or (not elements.loading.title) or (not elements.loading.text) then return end
 
     local icons = {
         loading = "/images/icons/Loading.gif",
