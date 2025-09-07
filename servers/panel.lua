@@ -155,7 +155,7 @@ coroutine.wrap(function()
 								elements.panel.glance.statistics.players.tooltip.textContent = #ERLC.players .. "/" .. ERLC.server.MaxPlayers .. " players are in-game"
 
 								elements.panel.glance.statistics.staff.label.textContent = #ERLC.staff
-								elements.panel.glance.statistics.staff.tooltip.textContent = #ERLC.staff .. " staff members are in-game"
+								elements.panel.glance.statistics.staff.tooltip.textContent = #ERLC.staff .. utils.plural(#ERLC.staff, "staff member is", "staff members are") .. " in-game"
 
 								coroutine.wrap(function()
 									for _, player in pairs(ERLC.players) do
@@ -208,7 +208,7 @@ coroutine.wrap(function()
 								end
 
 								elements.panel.glance.statistics.modcalls.label.textContent = #ERLC.pendingModcalls
-								elements.panel.glance.statistics.modcalls.tooltip.textContent = #ERLC.pendingModcalls .. " pending modcalls"
+								elements.panel.glance.statistics.modcalls.tooltip.textContent = #ERLC.pendingModcalls .. " pending " .. utils.plural(#ERLC.pendingModcalls, "modcall")
 							end
 
 							if ERLC.kills then
