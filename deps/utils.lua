@@ -102,9 +102,9 @@ function utils.input(input, lower)
 end
 
 
-function utils.plural(n, word)
+function utils.plural(n, word, pluralized)
     local str = n .. " " .. word
-    return (n == 1 and str) or (str .. "s")
+    return (n == 1 and str) or (pluralized or (str .. "s"))
 end
 
 function utils.ago(timestamp)
