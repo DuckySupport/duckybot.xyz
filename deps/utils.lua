@@ -145,6 +145,15 @@ function utils.redirect(url)
     end
 end
 
+function utils.popup(url, width, height, left, top)
+    width = width or 500
+    height = height or 600
+    top = top or utils.round(window.screenY + (window.innerHeight / 2) - (height / 2))
+    left = left or utils.round(window.screenX + (window.innerWidth / 2) - (width / 2))
+
+    return global.window:open(url, "Popup", string.format("width=%d,height=%d,top=%d,left=%d,status=no,scrollbars=yes,resizable=yes", width, height, top, left))
+end
+
 function utils.truncate(str, len)
     if #str > len then
         return str:sub(1, len - 3) .. "..."
