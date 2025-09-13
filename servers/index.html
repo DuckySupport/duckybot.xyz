@@ -17,8 +17,8 @@
     <title>Ducky ・ Your Servers</title>
     <script nonce="{{nonce}}" src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script nonce="{{nonce}}" src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <link rel="stylesheet" href="/styles.css">
+    <script nonce = "{{nonce}}" src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <script nonce="{{nonce}}">
         tailwind.config = {
             theme: {
@@ -48,7 +48,7 @@
         <div id="navbar"></div>
         <div id="mobileMenu" class="mobile-menu">
             <button id="mobileMenuClose" class="absolute top-6 right-6 text-white/70" aria-label="Close mobile menu">
-                    <span class="iconify inline-flex text-2xl" data-icon="mingcute:close-fill"></span>
+                    <span class="iconify text-2xl" data-icon="mingcute:close-fill"></span>
                 </button>
             <div class="flex flex-col items-center gap-6 sm:gap-8">
                 <a href="/team" class="nav-link text-xl text-white/70">Team</a>
@@ -81,7 +81,7 @@
                         <h2 class="text-2xl sm:text-3xl font-bold">Your Servers
                         </h2>
                         <button id="serversRefresh" class="group btn-glass px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base">
-                            <i class="iconify inline-flex text-2xl" data-icon="material-symbols:refresh-rounded"></i> Refresh
+                            <span class="iconify" data-icon="material-symbols:refresh-rounded"></span>
                         </button>
                     </div>
                     <hr class="border-white/10 w-full my-2">
