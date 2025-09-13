@@ -23,9 +23,7 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
             rel="stylesheet">
-        <link
-            href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css"
-            rel="stylesheet">
+            <script nonce = "{{nonce}}" src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
         <link rel="stylesheet" href="/styles.css">
         <script nonce="{{nonce}}">
             tailwind.config = {
@@ -80,10 +78,10 @@
             </div>
             <section
                 class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
-                <div class="max-w-7xl mx-auto px-4">
+                <div class="max-w-7xl mx-auto px-4 flex flex-wrap gap-6">
                     <div class="bg-black/60 border border-white/10 shadow-2xl rounded-2xl p-5 w-[33%]">
                         <div class="flex items-start gap-3">
-                            <i class="fa-solid fa-users text-4xl"></i>
+                            <span class="iconify text-4xl" data-icon="famicons:people"></span>
                             <div>
                                 <h2 class="text-white font-semibold text-lg leading-tight">Players</h2>
                                 <p class="text-white/60 text-xs">View and manage in-game players</p>
@@ -100,6 +98,17 @@
                                 <span class="text-sm pl-[5px]" id="serverPlayersInternalText">Loading...</span>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="bg-black/60 border border-white/10 shadow-2xl rounded-2xl p-5 w-[33%]">
+                        <div class="flex items-start gap-3">
+                            <span class="iconify text-4xl" data-icon="tabler:clock-filled"></span>
+                            <div>
+                                <h2 class="text-white font-semibold text-lg leading-tight">Shifts</h2>
+                                <p class="text-white/60 text-xs">View and manage your shifts</p>
+                            </div>
+                        </div>
+                        <hr class="border-t border-white/10 mt-3"></hr>
                     </div>
 
                     <!-- shift mgmt panel later :heh: -->
@@ -139,7 +148,7 @@
                         <div
                             class="relative flex items-center gap-3 rounded-full bg-black/60 border border-white/10 shadow-2xl h-12 px-4 text-[14px]">
                             <div class="relative group flex items-center gap-1">
-                                <i class="fa-solid fa-users"></i>
+                                <span class="iconify" data-icon="famicons:people"></span>
                                 <span id="serverGlancePlayerCount">0/39</span>
 
                                 <div
@@ -160,7 +169,7 @@
                             <span class="opacity-50">•</span>
 
                             <div class="relative group flex items-center gap-1">
-                                <i class="fa-solid fa-shield-alt"></i>
+                                <span class="iconify" data-icon="stash:shield-duotone"></span>
                                 <span id="serverGlanceStaffCount">0</span>
 
                                 <div
@@ -181,7 +190,7 @@
                             <span class="opacity-50">•</span>
 
                             <div class="relative group flex items-center gap-1">
-                                <i class="fa-solid fa-phone"></i>
+                                <span class="iconify" data-icon="mage:phone-call-fill"></span>
                                 <span id="serverGlanceModcallCount">0</span>
 
                                 <div
