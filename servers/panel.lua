@@ -177,11 +177,11 @@ coroutine.wrap(function()
 												</div>
 												<div class="flex items-center gap-2 text-white/50">
 													<button class="btn-glass rounded-full w-8 h-8 flex items-center justify-center" aria-label="Tools">
-														<i class="fa-solid fa-hammer text-sm"></i>
+														<i class="iconify text-sm" data-icon="ion:hammer"></i>
 													</button>
 
 													<button class="btn-glass rounded-full w-8 h-8 flex items-center justify-center" aria-label="Settings">
-														<i class="fa-solid fa-gear text-sm"></i>
+														<i class="iconify text-sm" data-icon="mdi:gear"></i>
 													</button>
 												</div>
 											]], player.roblox.avatar, player.roblox.displayName, "@" .. player.roblox.name)
