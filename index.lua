@@ -710,7 +710,7 @@ elseif path[1] == "servers" then
 										<div class="pt-2 mt-auto">
 											<a href="/servers/%s/panel" class="group btn-glass w-full h-[38px] px-5 py-2 rounded-full text-sm inline-flex justify-center items-center">
 											Moderate
-											<i class="iconify text-xl transition-transform group-hover:translate-x-1 ml-2" data-icon="lsicon:right-outline"></i>
+											<i class="iconify text-xs transition-transform group-hover:translate-x-1 ml-2" data-icon="lsicon:right-outline"></i>
 											</a>
 										</div>
 									]], guild.icon, guild.name, guild.name, plusBadge, utils.formatNumber(guild.members), guild.role, guild.id)
