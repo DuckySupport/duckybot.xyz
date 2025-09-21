@@ -4,6 +4,7 @@ local time = require("time")
 local global = js.global
 local window = global.window
 local document = global.document
+local body = document.body
 local elements = {
     notifications = document:getElementById("notificationContainer"),
     loading = {
@@ -146,13 +147,87 @@ function utils.redirect(url)
     end
 end
 
-function utils.popup(url, width, height, left, top)
-    width = width or 500
-    height = height or 600
-    top = top or utils.round(window.screenY + (window.innerHeight / 2) - (height / 2))
-    left = left or utils.round(window.screenX + (window.innerWidth / 2) - (width / 2))
+--[[
 
-    return global.window:open(url, "Popup", string.format("width=%d,height=%d,top=%d,left=%d,status=no,scrollbars=yes,resizable=yes", width, height, top, left))
+data: {
+    title = string,
+    content = string,
+    buttons = {
+        {
+            label = string,
+            style = success/fail/transparent/glass,
+            callback = function
+        },
+        ...
+    },
+    width = number/nil
+}
+
+example: {
+    title = "Are you sure you want to do this?",
+    content = "This cannot be undone.",
+    buttons = {
+        {
+            label = "Yes",
+            style = "success",
+            callback = function()
+                print("Pressed yes")
+            end
+        },
+        {
+            label = "No",
+            style = "fail",
+            callback = function()
+                print("Pressed no")
+            end
+        }
+    }
+}
+
+]]--
+function utils.popup(data)
+    local new = document:createElement("div")
+    new.className = "popup animate-in quick"
+
+    if data.width then
+        new.style.width = data.width .. "px"
+    end
+    
+    new.innerHTML = string.format([[
+        <div class="header">
+            <p class="text-primary text-2xl font-bold m-0">%s</p>
+            <button id="close">✕</button>
+        </div>
+        <p>%s</p>
+    ]], data.title or "", data.content or "")
+
+    local function close()
+        new.classList:remove("animate-in")
+        new.classList:add("animate-out")
+
+        time.after(200, function()
+            new:remove()
+        end)
+    end
+
+    local buttons = document:createElement("div")
+    buttons.className = "buttons"
+
+    for _, button in pairs(data.buttons or {}) do
+        local new = document:createElement("button")
+        new.className = "btn-" .. button.style .. " px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base"
+        new.textContent = button.label
+        new:addEventListener("click", function(...)
+            button.callback(...)
+            close()
+        end)
+        buttons:appendChild(new)
+    end
+
+    new:querySelector(".header #close"):addEventListener("click", close)
+
+    new:appendChild(buttons)
+    body:appendChild(new)
 end
 
 function utils.truncate(str, len)
