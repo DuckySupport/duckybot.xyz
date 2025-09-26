@@ -23,6 +23,7 @@ local redirectWhitelist = {
     "https://docs.duckybot.xyz/",
     "https://status.duckybot.xyz/",
     "https://discord.com/",
+    "https://discord.gg/",
     "https://authorize.roblox.com/"
 }
 
@@ -414,7 +415,7 @@ end
 
 function utils.guild(id, cookie)
     cookie = cookie or utils.cookie("discord")
-    
+
     if id then
         local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/info", {
             ["Discord-Code"] = cookie
@@ -428,7 +429,7 @@ end
 
 function utils.erlc(id, cookie)
     cookie = cookie or utils.cookie("discord")
-    
+
     if id then
         local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/erlc/data", {
             ["Discord-Code"] = cookie
