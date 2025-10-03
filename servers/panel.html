@@ -45,9 +45,37 @@
             }
         </script>
         <script nonce="{{nonce}}" src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
+        <style>
+            .panel-hidden {
+                opacity: 0;
+                pointer-events: none;
+            }
+            .panel-hidden > div {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+        </style>
     </head>
 
     <body class="min-h-screen flex flex-col">
+        <div id="playerPanel" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center transition-opacity duration-300 panel-hidden">
+            <div class="bg-black/60 border border-white/10 shadow-2xl rounded-2xl p-6 w-full max-w-md mx-auto transition-all duration-300" onclick="event.stopPropagation()">
+                <div class="flex justify-between items-start">
+                    <div class="flex items-center gap-4">
+                        <img id="playerPanelAvatar" src="" class="h-16 w-16 rounded-full">
+                        <div class="min-w-0">
+                            <div id="playerPanelDisplayName" class="text-white font-bold text-xl truncate"></div>
+                            <div id="playerPanelUsername" class="text-white/50 truncate"></div>
+                        </div>
+                    </div>
+                    <button id="playerPanelClose" class="text-white/50 hover:text-white text-2xl leading-none">&times;</button>
+                </div>
+                <hr class="my-4 border-white/10">
+                <div id="playerPanelContent" class="text-white">
+                    <p>Player tools will be shown here.</p>
+                </div>
+            </div>
+        </div>
         <main class="flex-grow">
             <div
                 class="glow bg-primary top-0 left-[10%] w-[500px] h-[500px]"></div>
