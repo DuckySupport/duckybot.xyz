@@ -48,6 +48,14 @@ local elements = {
 				icon = document:getElementById("serverPlayersInternalIcon"),
 				text = document:getElementById("serverPlayersInternalText")
 			}
+		},
+		playerPanel = {
+			container = document:getElementById("playerPanel"),
+			avatar = document:getElementById("playerPanelAvatar"),
+			displayName = document:getElementById("playerPanelDisplayName"),
+			username = document:getElementById("playerPanelUsername"),
+			content = document:getElementById("playerPanelContent"),
+			close = document:getElementById("playerPanelClose"),
 		}
 	}
 }
@@ -96,6 +104,18 @@ http.request(function(success, response)
 end, "GET", "/partials/navbar.html", nil, nil, "text")
 
 coroutine.wrap(function()
+	local playerPanel = elements.panel.playerPanel
+	local function hidePlayerPanel()
+		playerPanel.container.classList:add("panel-hidden")
+	end
+
+	playerPanel.close:addEventListener("click", hidePlayerPanel)
+	playerPanel.container:addEventListener("click", function(e)
+		if e.target == playerPanel.container then
+			hidePlayerPanel()
+		end
+	end)
+
 	local cookie = utils.cookie("discord")
 	if cookie then
 		if path[1] == "servers" and tonumber(path[2]) and path[3] == "panel" then
@@ -176,7 +196,14 @@ coroutine.wrap(function()
 											]], player.roblox.avatar, player.roblox.displayName, "@" .. player.roblox.name)
 
 											elements.panel.players.container:appendChild(card)
-											
+
+											card:querySelector('[aria-label="Tools"]'):addEventListener("click", function()
+												playerPanel.avatar.src = player.roblox.avatar
+												playerPanel.displayName.textContent = player.roblox.displayName
+												playerPanel.username.textContent = "@" .. player.roblox.name
+												playerPanel.container.classList:remove("panel-hidden")
+											end)
+
 											if show then
 												card.classList:remove("hidden")
 												if initial then time.sleep(50) end
