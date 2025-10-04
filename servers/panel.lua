@@ -172,7 +172,8 @@ coroutine.wrap(function()
 							<span class="text-xs text-white/50">%s</span>
 						</div>
 						<p class="text-sm text-white/80 mt-1">Reason: %s</p>
-					]], punishment.moderator.avatar, punishment.moderator.name, punishment.type:lower(), punishment.type, utils.ago(punishment.timestamp), punishment.reason)
+					]], punishment.moderator.avatar, punishment.moderator.name, punishment.type:lower(), punishment.type,
+                        utils.ago(punishment.timestamp), punishment.reason)
                     list:appendChild(card)
                 end
             end
@@ -211,7 +212,9 @@ coroutine.wrap(function()
             local function openPlayerPanel(playerData)
                 playerPanel.avatar.src = playerData.avatar
                 playerPanel.displayName.textContent = playerData.displayName
-                				playerPanel.username.textContent = "@" .. playerData.name .. " (" .. string.format("%.0f", playerData.ID) .. ")"                playerPanel.permission.textContent = playerData.Permission or "N/A"
+                playerPanel.username.textContent = "@" .. playerData.name .. " (" ..
+                                                       string.format("%.0f", playerData.ID) .. ")"
+                playerPanel.permission.textContent = playerData.Permission or "N/A"
                 playerPanel.team.textContent = playerData.Team or "N/A"
 
                 currentPanelPlayerID = playerData.ID
