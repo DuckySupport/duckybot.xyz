@@ -5,6 +5,7 @@ local global = js.global
 local window = global.window
 local document = global.document
 local body = document.body
+local console = global.console
 local elements = {
     notifications = document:getElementById("notificationContainer"),
     loading = {
@@ -437,6 +438,43 @@ function utils.erlc(id, cookie)
 
         if success and response and response.data then
             return response.data
+        end
+    end
+end
+
+function utils.queryUser(query, cookie)
+    cookie = cookie or utils.cookie("discord")
+
+    if query then
+        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/users/" .. query, {
+            ["Discord-Code"] = cookie
+        })
+
+        if success and response and response.data then
+            return response.data
+        end
+    end
+end
+
+function utils.punishments(guildID, targetPlayer, targetModerator, cookie)
+    cookie = cookie or utils.cookie("discord")
+
+    if guildID then
+        local headers = {
+            ["Discord-Code"] = cookie,
+        }
+
+        if targetPlayer then
+            headers["Player"] = targetPlayer
+        end
+
+        if targetModerator then
+            headers["Moderator"] = targetModerator
+        end
+
+        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/punishments", headers)
+        if success and response and response.data and response.data.punishments then
+            return response.data.punishments
         end
     end
 end
