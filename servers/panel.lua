@@ -64,6 +64,10 @@ local elements = {
                 list = document:getElementById("punishmentsList"),
                 status = document:getElementById("punishmentsStatus"),
                 reload = document:getElementById("punishmentsReloadBtn")
+            },
+            bolo = {
+                container = document:getElementById("boloContainer"),
+                info = document:getElementById("boloInfo")
             }
         }
     }
@@ -131,25 +135,94 @@ coroutine.wrap(function()
             local User = utils.user()
             local Guild = utils.guild(GuildID, cookie)
             local ERLC = nil
+            local punishmentsCache = {}
+            local bolosCache = {}
             local lastRefresh = nil
 
-            local punishmentsCache = {}
             local currentPanelPlayerID = nil
             local playerPanel = elements.panel.playerPanel
             local function hidePlayerPanel()
                 playerPanel.container.classList:add("panel-hidden")
             end
 
+            local function renderBolo(bolo)
+                console.log(nil, "rendering bolo")
+                local boloPanel = playerPanel.bolo
+                local boloContainer = boloPanel.container
+                local boloInfo = boloPanel.info
+
+                if not bolo then
+                    boloContainer.classList:add("hidden")
+                    boloInfo.innerHTML = ""
+                    return
+                end
+
+                boloContainer.classList:remove("hidden")
+                boloInfo.innerHTML = string.format([[
+                    <div class="bg-white/5 p-3 rounded-lg">
+                        <div class="flex justify-between items-center">
+                            <div class="text-xs text-white/50 flex items-center gap-1">
+                                <img src="%s" class="h-4 w-4 rounded-full">
+                                <span>@%s</span>
+                            </div>
+                            <span class="text-xs text-white/50">%s</span>
+                        </div>
+                        <div class="flex justify-between items-center gap-1 mt-2">
+							<span class="font-semibold text-sm">BOLO</span>
+                            <div class="flex items-center gap-2">
+                                <button id="boloAcceptBtn" class="btn-glass rounded-full w-8 h-8 flex items-center justify-center" aria-label="Accept BOLO">
+                                    <img src="/images/icons/Success.svg" class="w-5 h-5" />
+                                </button>
+                                <button id="boloDenyBtn" class="btn-glass rounded-full w-8 h-8 flex items-center justify-center" aria-label="Deny BOLO">
+                                    <img src="/images/icons/Fail.svg" class="w-5 h-5" />
+                                </button>
+                            </div>
+						</div>
+                        <p class="text-sm text-white/80 mt-1">Reason: %s</p>
+                    </div>
+                ]], bolo.moderator.avatar, bolo.moderator.username, utils.ago(bolo.created), bolo.reason)
+
+                local acceptBtn = document:getElementById("boloAcceptBtn")
+                local denyBtn = document:getElementById("boloDenyBtn")
+
+                acceptBtn:addEventListener("click", function()
+                    console.log(nil, "BOLO accepted for user " .. tostring(bolo.user.id))
+                end)
+
+                denyBtn:addEventListener("click", function()
+                    console.log(nil, "BOLO denied for user " .. tostring(bolo.user.id))
+                end)
+            end
+
+            local function loadBolo(playerID, force)
+                coroutine.wrap(function()
+                    if force then
+                        bolosCache[playerID] = nil
+                    end
+
+                    if bolosCache[playerID] then
+                        renderBolo(bolosCache[playerID])
+                        return
+                    end
+
+                    local bolo = utils.bolos(GuildID, playerID)
+                    if bolo and next(bolo) then
+                        bolosCache[playerID] = bolo
+                        renderBolo(bolo)
+                    else
+                        bolosCache[playerID] = nil
+                        renderBolo(nil)
+                    end
+                end)()
+            end
+
             local function renderPunishments(punishments)
-                console.log(nil, "rendering punishments")
                 local list = playerPanel.punishments.list
                 local status = playerPanel.punishments.status
                 list.innerHTML = ""
                 status.innerHTML = ""
 
-                console.log(nil, #punishments)
                 if #punishments == 0 then
-                    console.log(nil, "clean record")
                     status.innerHTML = [[
 						<div class="flex items-center">
 							<img src="/images/icons/Success.svg" class="w-[30px]" />
@@ -163,17 +236,18 @@ coroutine.wrap(function()
                     local card = document:createElement("div")
                     card.className = "bg-white/5 p-3 rounded-lg"
                     card.innerHTML = string.format([[
-						<div class="text-xs text-white/50 mt-2 flex items-center gap-1">
-							<img src="%s" class="h-4 w-4 rounded-full">
-							<span>@%s</span>
-						</div>
-						<div class="flex justify-between items-center gap-1">
+                        <div class="flex justify-between items-center">
+                            <div class="text-xs text-white/50 flex items-center gap-1">
+                                <img src="%s" class="h-4 w-4 rounded-full">
+                                <span>@%s</span>
+                            </div>
+                            <span class="text-xs text-white/50">%s</span>
+                        </div>
+						<div class="flex justify-between items-center gap-1 mt-2">
 							<span class="font-semibold text-sm pill-%s">%s</span>
-							<span class="text-xs text-white/50">%s</span>
 						</div>
 						<p class="text-sm text-white/80 mt-1">Reason: %s</p>
-					]], punishment.moderator.avatar, punishment.moderator.name, punishment.type:lower(), punishment.type,
-                        utils.ago(punishment.timestamp), punishment.reason)
+					]], punishment.moderator.avatar, punishment.moderator.username, utils.ago(punishment.timestamp), punishment.type:lower(), punishment.type, punishment.reason)
                     list:appendChild(card)
                 end
             end
@@ -210,6 +284,7 @@ coroutine.wrap(function()
             end
 
             local function openPlayerPanel(playerData)
+                console.log(nil, playerData.ID)
                 playerPanel.avatar.src = playerData.avatar
                 playerPanel.displayName.textContent = playerData.displayName
                 playerPanel.username.textContent = "@" .. playerData.name .. " (" ..
@@ -219,6 +294,7 @@ coroutine.wrap(function()
 
                 currentPanelPlayerID = playerData.ID
                 loadPunishments(playerData.ID)
+                loadBolo(playerData.ID)
 
                 playerPanel.container.classList:remove("panel-hidden")
             end
@@ -273,6 +349,7 @@ coroutine.wrap(function()
                     end
                 end)()
             end
+
             elements.panel.players.searchBtn:addEventListener("click", searchPlayer)
             elements.panel.players.search:addEventListener("keydown", function()
                 local event = js.global.event
