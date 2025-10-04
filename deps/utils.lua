@@ -479,4 +479,21 @@ function utils.punishments(guildID, targetPlayer, targetModerator, cookie)
     end
 end
 
+function utils.bolos(guildID, targetPlayer, cookie)
+    cookie = cookie or utils.cookie("discord")
+
+    if guildID then
+        local targetPlayer = string.format("%.0f", tostring(targetPlayer))
+        local url = "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/bolos" .. ((tostring(targetPlayer) and "/" .. tostring(targetPlayer)) or "")
+        console.log(nil, url)
+        local success, response = http.requestSync("GET", url, {
+            ["Discord-Code"] = cookie
+        })
+
+        if success and response and response.data then
+            return response.data
+        end
+    end
+end
+
 return utils
