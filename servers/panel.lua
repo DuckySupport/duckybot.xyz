@@ -211,8 +211,7 @@ coroutine.wrap(function()
             local function openPlayerPanel(playerData)
                 playerPanel.avatar.src = playerData.avatar
                 playerPanel.displayName.textContent = playerData.displayName
-                playerPanel.username.textContent = "@" .. playerData.name .. " (" .. playerData.ID .. ")"
-                playerPanel.permission.textContent = playerData.Permission or "N/A"
+                				playerPanel.username.textContent = "@" .. playerData.name .. " (" .. string.format("%.0f", playerData.ID) .. ")"                playerPanel.permission.textContent = playerData.Permission or "N/A"
                 playerPanel.team.textContent = playerData.Team or "N/A"
 
                 currentPanelPlayerID = playerData.ID
