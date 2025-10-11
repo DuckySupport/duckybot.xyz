@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Imagine calling a mechanic, saying 'my car doesn't work', and hanging up. That's what 'it doesn't work' sounds like to us. 🤦">
+    <meta content="Ducky・Bug Report" property="og:title">
+    <meta content="Imagine calling a mechanic, saying 'my car doesn't work', and hanging up. That's what 'it doesn't work' sounds like to us. 🤦" property="og:description">
+    <meta content="https://duckybot.xyz" property="og:url">
+    <meta content="/images/icons/Ducky.png" property="og:image">
+    <meta content="/images/icons/Ducky.png" property="og:image:url">
+    <meta content="300" property="og:image:width">
+    <meta content="300" property="og:image:height">
+    <meta content="#F5FF82" name="theme-color">
+    <link rel="icon" href="/images/icons/Ducky.png">
+    <title>Ducky</title>
+    <script nonce="{{nonce}}" src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script nonce="{{nonce}}">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F5FF82',
+                        secondary: '#111111',
+                        dark: '#0a0a0a'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    maxHeight: {
+                        '100': '100px'
+                    }
+                }
+            }
+        }
+    </script>
+    <script nonce="{{nonce}}" src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
+</head>
+
+<body>
+    <div class="glow bg-primary top-0 left-[10%] w-[500px] h-[500px]"></div>
+    <div class="glow bg-primary bottom-0 right-[10%] w-[500px] h-[500px]"></div>
+    <div id="navbar"></div>
+    <div id="mobileMenu" class="mobile-menu">
+        <button id="mobileMenuClose" class="absolute top-6 right-6 text-white/70" aria-label="Close mobile menu">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+        <div class="flex flex-col items-center gap-6 sm:gap-8">
+            <a href="/team" class="nav-link text-xl text-white/70">Team</a>
+            <a href="/docs" class="nav-link text-xl text-white/70">Docs</a>
+            <a href="/plus" class="nav-link text-xl text-white/70">Ducky
+                    Plus+</a>
+            <a href="/status" class="nav-link text-xl text-white/70">Status</a>
+            <a href="/support" class="nav-link text-xl text-white/70">Support</a>
+            <a href="/invite" class="btn-primary text-xl px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add
+                    Ducky</a>
+        </div>
+    </div>
+    <section class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
+        <div class="max-w-5xl mx-auto text-center">
+            <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 animate-fade-in">
+                "It doesn't work" is not a bug report
+            </h1>
+            <h2 class="text-xl sm:text-2xl text-white/80 max-w-3xl mx-auto mb-8 animate-fade-in" style="animation-delay: 0.1s;">
+                Imagine calling a mechanic, saying "my car doesn't work", and hanging up. That's what "it doesn't work" sounds like to us. 🤦
+            </h2>
+            <p class="text-white/60 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-12 animate-slide-up" style="animation-delay: 0.2s;">
+                To help us help you, please provide as much detail as possible.
+            </p>
+        </div>
+    </section>
+    <section class="py-16 sm:py-20 px-4 relative">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+            <div class="card p-6 sm:p-8 animate-fade-in">
+                <i class="fas fa-list-ol text-2xl sm:text-3xl mb-4 sm:mb-6"></i>
+                <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Provide exact steps to reproduce</h3>
+                <p class="text-white/60 text-sm sm:text-base">
+                    List the exact steps you took that led to the issue. This helps us follow the same path to see what's going wrong.
+                </p>
+            </div>
+            <div class="card p-6 sm:p-8 animate-fade-in">
+                <i class="fas fa-camera text-2xl sm:text-3xl mb-4 sm:mb-6"></i>
+                <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Show, don't just tell</h3>
+                <p class="text-white/60 text-sm sm:text-base">
+                    A picture is worth a thousand words. A video is worth a million. Show us what you're seeing.
+                </p>
+            </div>
+            <div class="card p-6 sm:p-8 animate-fade-in">
+                <i class="fas fa-server text-2xl sm:text-3xl mb-4 sm:mb-6"></i>
+                <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Include relevant context</h3>
+                <p class="text-white/60 text-sm sm:text-base">
+                    Provide details like your Server ID, or any other information that might be relevant to the issue.
+                </p>
+            </div>
+        </div>
+    </section>
+    <div id="footer"></div>
+    <script nonce="{{nonce}}">
+        fetch("/index.lua")
+            .then(res => res.text())
+            .then(lua => {
+                fengari.load(lua)();
+            });
+    </script>
+</body>
+
+</html>
