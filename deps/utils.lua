@@ -514,4 +514,46 @@ function utils.bolos(guildID, targetPlayer, cookie)
     end
 end
 
+function utils.shifts(id, cookie)
+    cookie = cookie or utils.cookie("discord")
+
+    if id then
+        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/shifts", {
+            ["Discord-Code"] = cookie
+        })
+
+        if success and response and response.data then
+            return response.data
+        end
+    end
+end
+
+function utils.startShift(guildID, shiftType, cookie, callback)
+    cookie = cookie or utils.cookie("discord")
+    if guildID and shiftType then
+        http.request(callback, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/shifts/start", {
+            ["Discord-Code"] = cookie,
+            ["Content-Type"] = "application/json"
+        }, global.JSON:stringify({type = shiftType}))
+    end
+end
+
+function utils.pauseShift(guildID, cookie, callback)
+    cookie = cookie or utils.cookie("discord")
+    if guildID then
+        http.request(callback, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/shifts/pause", {
+            ["Discord-Code"] = cookie
+        })
+    end
+end
+
+function utils.endShift(guildID, cookie, callback)
+    cookie = cookie or utils.cookie("discord")
+    if guildID then
+        http.request(callback, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/shifts/end", {
+            ["Discord-Code"] = cookie
+        })
+    end
+end
+
 return utils

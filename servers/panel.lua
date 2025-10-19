@@ -69,7 +69,8 @@ local elements = {
                 container = document:getElementById("boloContainer"),
                 info = document:getElementById("boloInfo")
             }
-        }
+        },
+        shift = document:getElementById("userShiftPanel")
     }
 }
 
@@ -367,6 +368,205 @@ coroutine.wrap(function()
                 end
             end)
 
+            local activeShift = nil
+            local shiftTypes = {}
+            local shiftUpdateInterval = nil
+
+            local function renderShiftPanel()
+                local shiftPanel = elements.panel.shift
+                if not shiftPanel then return end
+
+                if shiftUpdateInterval then
+                    time.clearInterval(shiftUpdateInterval)
+                    shiftUpdateInterval = nil
+                end
+
+                if activeShift then
+                    local totalPauseTime = 0
+                    local onPause = false
+                    for _, pause in ipairs(activeShift.pauses) do
+                        if pause.ended then
+                            totalPauseTime = totalPauseTime + (pause.ended - pause.started)
+                        else
+                            onPause = true
+                            totalPauseTime = totalPauseTime + (time.now() - pause.started)
+                        end
+                    end
+
+                    local activeTime = (time.now() - activeShift.started) - totalPauseTime
+                    local function formatTime(seconds)
+                        local hours = math.floor(seconds / 3600)
+                        local minutes = math.floor((seconds % 3600) / 60)
+                        local secs = math.floor(seconds % 60)
+                        return string.format("%02i:%02i:%02i", hours, minutes, secs)
+                    end
+
+                    shiftPanel.innerHTML = string.format([[
+                        <div class="grid grid-cols-2 gap-4 text-center">
+                            <div>
+                                <p class="text-xs text-white/50 flex items-center justify-center gap-1"><span class="iconify" data-icon="tabler:clock-hour-4"></span> Time Active</p>
+                                <p id="shiftActiveTime" class="text-lg font-semibold">%s</p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-white/50 flex items-center justify-center gap-1"><span class="iconify text-xl" data-icon="f7:pause-fill"></span> Pause Time</p>
+                                <p id="shiftPauseTime" class="text-lg font-semibold">%s</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 mt-4">
+                            <button id="pauseShiftBtn" class="btn-glass w-full py-2.5 rounded-lg text-sm flex items-center justify-center gap-2">%s</button>
+                            <button id="endShiftBtn" class="btn-fail w-full py-2.5 rounded-lg text-sm flex items-center justify-center gap-2"><span class="iconify text-xl" data-icon="gravity-ui:stop-fill"></span> End Shift</button>
+                        </div>
+                    ]], formatTime(activeTime), formatTime(totalPauseTime), onPause and '<span class="iconify text-xl" data-icon="ion:play"></span> Resume' or '<span class="iconify text-xl" data-icon="f7:pause-fill"></span> Pause')
+
+                    shiftUpdateInterval = time.interval(1000, function()
+                        if not activeShift then return end
+
+                        local totalPauseTime = 0
+                        local onPause = false
+                        for _, pause in ipairs(activeShift.pauses) do
+                            if pause.ended then
+                                totalPauseTime = totalPauseTime + (pause.ended - pause.started)
+                            else
+                                onPause = true
+                                totalPauseTime = totalPauseTime + (time.now() - pause.started)
+                            end
+                        end
+
+                        local activeTime = (time.now() - activeShift.started) - totalPauseTime
+                        document:getElementById("shiftActiveTime").textContent = formatTime(activeTime)
+                        document:getElementById("shiftPauseTime").textContent = formatTime(totalPauseTime)
+                    end)
+
+                    document:getElementById("pauseShiftBtn"):addEventListener("click", function()
+                        local pauseBtn = document:getElementById("pauseShiftBtn")
+                        local endBtn = document:getElementById("endShiftBtn")
+                        pauseBtn.disabled = true
+                        pauseBtn.innerHTML = '<img src="/images/icons/Loading.gif" class="w-5 h-5" />'
+                        endBtn.disabled = true
+                        endBtn.innerHTML = '<img src="/images/icons/Loading.gif" class="w-5 h-5" />'
+
+                        utils.pauseShift(GuildID, cookie, function(success, response)
+                            if success then
+                                local isPausing = not onPause
+                                if isPausing then
+                                    table.insert(activeShift.pauses, { started = time.now() })
+                                else
+                                    activeShift.pauses[#activeShift.pauses].ended = time.now()
+                                end
+                                renderShiftPanel()
+                            else
+                                utils.notify((response and response.message) or "Failed to pause/resume shift. Please try again.", "fail")
+                                renderShiftPanel()
+                            end
+                        end)
+                    end)
+
+                    document:getElementById("endShiftBtn"):addEventListener("click", function()
+                        local pauseBtn = document:getElementById("pauseShiftBtn")
+                        local endBtn = document:getElementById("endShiftBtn")
+                        pauseBtn.disabled = true
+                        pauseBtn.innerHTML = '<img src="/images/icons/Loading.gif" class="w-5 h-5" />'
+                        endBtn.disabled = true
+                        endBtn.innerHTML = '<img src="/images/icons/Loading.gif" class="w-5 h-5" />'
+
+                        utils.endShift(GuildID, cookie, function(success, response)
+                            if success then
+                                activeShift = nil
+                                renderShiftPanel()
+                            else
+                                utils.notify((response and response.data and response.data.message) or "Failed to end shift. Please try again.", "fail")
+                                renderShiftPanel()
+                            end
+                        end)
+                    end)
+                else
+                    shiftPanel.innerHTML = '<button id="startShiftBtn" class="btn-primary w-full py-2.5 rounded-lg text-sm flex items-center justify-center gap-2"><span class="iconify text-xl" data-icon="ion:play"></span> Start Shift</button>'
+
+                    document:getElementById("startShiftBtn"):addEventListener("click", function()
+                        local shiftTypesHTML = ""
+                        for i, shiftType in ipairs(shiftTypes) do
+                            shiftTypesHTML = shiftTypesHTML .. string.format([[
+                                <button id="shiftType-%s" data-shifttype="%s" class="btn-glass w-full py-2.5 rounded-lg text-sm">%s</button>
+                            ]], i, shiftType.name, shiftType.name)
+                        end
+
+                        shiftPanel.innerHTML = string.format([[
+                            <div class="space-y-2">
+                                <p class="text-sm font-medium text-white text-center">Select Shift Type</p>
+                                %s
+                            </div>
+                            <button id="cancelStartShiftBtn" class="btn-fail w-full py-2.5 rounded-lg text-sm mt-3">Cancel</button>
+                        ]], shiftTypesHTML)
+
+                        for i, shiftType in ipairs(shiftTypes) do
+                            local btn = document:getElementById("shiftType-" .. i)
+                            btn:addEventListener("click", function()
+                                local typeButtons = shiftPanel:querySelectorAll("button")
+                                for j = 0, typeButtons.length - 1 do
+                                    typeButtons[j].disabled = true
+                                end
+                                btn.innerHTML = '<img src="/images/icons/Loading.gif" class="w-5 h-5 mx-auto" />'
+
+                                utils.startShift(GuildID, shiftType.name, cookie, function(success, response)
+                                    if success then
+                                        activeShift = {
+                                            started = time.now(),
+                                            pauses = {},
+                                            member = User.id,
+                                            type = shiftType.name
+                                        }
+                                        renderShiftPanel()
+                                    else
+                                        utils.notify((response and response.message) or "Failed to start shift. Please try again.", "fail")
+                                        renderShiftPanel()
+                                    end
+                                end)
+                            end)
+                        end
+
+                        document:getElementById("cancelStartShiftBtn"):addEventListener("click", function()
+                            renderShiftPanel()
+                        end)
+                    end)
+                end
+            end
+
+            local function refreshShift(force)
+                local shiftPanel = elements.panel.shift
+                if not shiftPanel then return end
+
+                if force then
+                    utils.cache.shifts = nil
+                end
+
+                local shifts = utils.shifts(GuildID)
+                if not shifts then
+                    shiftPanel.innerHTML = '<p class="text-sm text-white/50">Could not load shift information.</p>'
+                    return
+                end
+
+                shiftTypes = shifts.types
+
+                local myShifts = {}
+                for _, wave in ipairs(shifts.waves) do
+                    for _, shift in ipairs(wave.shifts) do
+                        if shift.member == User.id then
+                            table.insert(myShifts, shift)
+                        end
+                    end
+                end
+
+                activeShift = nil
+                for _, shift in ipairs(myShifts) do
+                    if not shift.ended then
+                        activeShift = shift
+                        break
+                    end
+                end
+
+                renderShiftPanel()
+            end
+
             local function refresh(initial)
                 ERLC = Guild and utils.erlc(GuildID)
 
@@ -526,6 +726,7 @@ coroutine.wrap(function()
                         end
 
                         lastRefresh = time.now()
+                        refreshShift()
                     else
                         utils.redirect("servers")
                     end
@@ -550,6 +751,8 @@ coroutine.wrap(function()
             end)
 
             refresh(true)
+
+            refreshShift(true)
 
             time.interval(30000, function()
                 coroutine.wrap(function()
