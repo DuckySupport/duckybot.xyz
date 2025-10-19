@@ -445,20 +445,27 @@ coroutine.wrap(function()
                         endBtn.disabled = true
                         endBtn.innerHTML = '<img src="/images/icons/Loading.gif" class="w-5 h-5" />'
 
-                        utils.pauseShift(GuildID, cookie, function(success, response)
-                            if success then
-                                local isPausing = not onPause
-                                if isPausing then
-                                    table.insert(activeShift.pauses, { started = time.now() })
-                                else
+                        if onPause then
+                            utils.startShift(GuildID, activeShift.type, cookie, function(success, response)
+                                if success then
                                     activeShift.pauses[#activeShift.pauses].ended = time.now()
+                                    renderShiftPanel()
+                                else
+                                    utils.notify((response and response.data and response.data.message) or "Failed to resume shift. Please try again.", "fail")
+                                    renderShiftPanel()
                                 end
-                                renderShiftPanel()
-                            else
-                                utils.notify((response and response.message) or "Failed to pause/resume shift. Please try again.", "fail")
-                                renderShiftPanel()
-                            end
-                        end)
+                            end)
+                        else
+                            utils.pauseShift(GuildID, cookie, function(success, response)
+                                if success then
+                                    table.insert(activeShift.pauses, { started = time.now() })
+                                    renderShiftPanel()
+                                else
+                                    utils.notify((response and response.data and response.data.message) or "Failed to pause shift. Please try again.", "fail")
+                                    renderShiftPanel()
+                                end
+                            end)
+                        end
                     end)
 
                     document:getElementById("endShiftBtn"):addEventListener("click", function()
