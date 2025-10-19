@@ -422,7 +422,6 @@ coroutine.wrap(function()
                         if not activeShift then return end
 
                         local totalPauseTime = 0
-                        local onPause = false
                         for _, pause in ipairs(activeShift.pauses) do
                             if pause.ended then
                                 totalPauseTime = totalPauseTime + (pause.ended - pause.started)
