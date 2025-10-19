@@ -23,11 +23,13 @@ local elements = {
 	navbar = document:getElementById("navbar"),
 	footer = document:getElementById("footer"),
 	team = {
-		dev = document:getElementById("team-dev"),
-		mgmt = document:getElementById("team-mgmt"),
-		admin = document:getElementById("team-admin"),
-		support = document:getElementById("team-support"),
-		mod = document:getElementById("team-mod")
+		dev = document:getElementById("teamDev"),
+		mgmt = document:getElementById("teamMgmt"),
+		admin = document:getElementById("teamAdmin"),
+		support = document:getElementById("teamSupport"),
+		qa = document:getElementById("teamQA"),
+		docwriter = document:getElementById("teamDocs"),
+		mod = document:getElementById("teamMod")
 	},
 	link = {
 		icon = document:getElementById("linkIcon"),
@@ -46,10 +48,6 @@ local elements = {
 	},
 	servers = {
 		container = document:getElementById("servers"),
-		loadingScreen = document:getElementById("loading-screen"),
-		loadingIcon = document:getElementById("loading-icon"),
-		loadingTitle = document:getElementById("loading-title"),
-		loadingText = document:getElementById("loading-text"),
 		ducky = document:getElementById("serversDucky"),
 		refresh = document:getElementById("serversRefresh")
 	}
@@ -380,18 +378,8 @@ coroutine.wrap(function()
 
 		if cookie then
 			if (not path[2]) or (path[2] == "") then
-				local function updateLoading(icon, title, text)
-					local key = {
-						loading = "/images/icons/Loading.gif",
-						fail = "/images/icons/Fail.svg"
-					}
-					if elements.servers.loadingIcon then elements.servers.loadingIcon.src = key[icon] or icon end
-					if elements.servers.loadingTitle then elements.servers.loadingTitle.textContent = title end
-					if elements.servers.loadingText then elements.servers.loadingText.textContent = text end
-				end
-
 				local function loadServers()
-					updateLoading("loading", "Loading...", "Fetching guilds information...")
+					utils.loading("loading", "Loading...", "Fetching guilds information...")
 
 					http.request(function(success, response)
 						if success and response and response.data then
@@ -427,7 +415,7 @@ coroutine.wrap(function()
 											</div>
 
 											<p class="text-sm text-white/50 mt-1 flex items-center">
-												<i class="fa-solid fa-users mr-[5px]"></i> %s・<i class="fa-solid fa-shield-halved mr-[5px]"></i> %s
+												<i class="iconify mr-[5px]" data-icon="bi:people-fill"></i> %s・<i class="iconify mr-[5px]" data-icon="stash:shield-duotone"></i> %s
 											</p>
 											</div>
 										</div>
@@ -435,7 +423,7 @@ coroutine.wrap(function()
 										<div class="pt-2 mt-auto">
 											<a href="/servers/%s/panel" class="group btn-glass w-full h-[38px] px-5 py-2 rounded-full text-sm inline-flex justify-center items-center">
 											Moderate
-											<i class="fas fa-chevron-right text-xs transition-transform group-hover:translate-x-1 ml-2"></i>
+											<i class="iconify text-xl transition-transform group-hover:translate-x-1 ml-2" data-icon="lsicon:right-outline"></i>
 											</a>
 										</div>
 									]], guild.icon, guild.name, guild.name, plusBadge, utils.formatNumber(guild.members), guild.role, guild.id)
@@ -446,10 +434,10 @@ coroutine.wrap(function()
 
 							if elements.servers.ducky.childElementCount <= 0 then elements.servers.ducky.innerHTML = '<span class="text-white/50">There are no servers to show here.</span>' end
 
-							if elements.servers.loadingScreen then elements.servers.loadingScreen:remove() end
+							utils.loading()
 							if elements.servers.container then elements.servers.container.classList:remove("hidden") end
 						else
-							updateLoading("fail", "API Error", response and response.message or "Unknown Error.")
+							utils.loading("fail", "API Error", (response and response.data and response.data.message) or "An unknown error occurred. Please try again later.")
 						end
 					end, "GET", "https://devapi.duckybot.xyz/guilds", {
 						["Discord-Code"] = cookie
