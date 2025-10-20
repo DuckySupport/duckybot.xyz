@@ -486,54 +486,58 @@ coroutine.wrap(function()
                         end)
                     end)
                 else
-                    shiftPanel.innerHTML = '<button id="startShiftBtn" class="btn-primary w-full py-2.5 rounded-lg text-sm flex items-center justify-center gap-2"><span class="iconify text-xl" data-icon="ion:play"></span> Start Shift</button>'
+                    if shiftTypes and #shiftTypes > 0 then
+                        shiftPanel.innerHTML = '<button id="startShiftBtn" class="btn-primary w-full py-2.5 rounded-lg text-sm flex items-center justify-center gap-2"><span class="iconify text-xl" data-icon="ion:play"></span> Start Shift</button>'
 
-                    document:getElementById("startShiftBtn"):addEventListener("click", function()
-                        local shiftTypesHTML = ""
-                        for i, shiftType in ipairs(shiftTypes) do
-                            shiftTypesHTML = shiftTypesHTML .. string.format([[
-                                <button id="shiftType-%s" data-shifttype="%s" class="btn-glass w-full py-2.5 rounded-lg text-sm">%s</button>
-                            ]], i, shiftType.name, shiftType.name)
-                        end
+                        document:getElementById("startShiftBtn"):addEventListener("click", function()
+                            local shiftTypesHTML = ""
+                            for i, shiftType in ipairs(shiftTypes) do
+                                shiftTypesHTML = shiftTypesHTML .. string.format([[
+                                    <button id="shiftType-%s" data-shifttype="%s" class="btn-glass w-full py-2.5 rounded-lg text-sm">%s</button>
+                                ]], i, shiftType.name, shiftType.name)
+                            end
 
-                        shiftPanel.innerHTML = string.format([[
-                            <div class="space-y-2">
-                                <p class="text-sm font-medium text-white text-center">Select Shift Type</p>
-                                %s
-                            </div>
-                            <button id="cancelStartShiftBtn" class="btn-fail w-full py-2.5 rounded-lg text-sm mt-3">Cancel</button>
-                        ]], shiftTypesHTML)
+                            shiftPanel.innerHTML = string.format([[
+                                <div class="space-y-2">
+                                    <p class="text-sm font-medium text-white text-center">Select Shift Type</p>
+                                    %s
+                                </div>
+                                <button id="cancelStartShiftBtn" class="btn-fail w-full py-2.5 rounded-lg text-sm mt-3">Cancel</button>
+                            ]], shiftTypesHTML)
 
-                        for i, shiftType in ipairs(shiftTypes) do
-                            local btn = document:getElementById("shiftType-" .. i)
-                            btn:addEventListener("click", function()
-                                local typeButtons = shiftPanel:querySelectorAll("button")
-                                for j = 0, typeButtons.length - 1 do
-                                    typeButtons[j].disabled = true
-                                end
-                                btn.innerHTML = '<img src="/images/icons/Loading.gif" class="w-5 h-5 mx-auto" />'
-
-                                utils.startShift(GuildID, shiftType.name, cookie, function(success, response)
-                                    if success then
-                                        activeShift = {
-                                            started = time.now(),
-                                            pauses = {},
-                                            member = User.id,
-                                            type = shiftType.name
-                                        }
-                                        renderShiftPanel()
-                                    else
-                                        utils.notify((response and response.message) or "Failed to start shift. Please try again.", "fail")
-                                        renderShiftPanel()
+                            for i, shiftType in ipairs(shiftTypes) do
+                                local btn = document:getElementById("shiftType-" .. i)
+                                btn:addEventListener("click", function()
+                                    local typeButtons = shiftPanel:querySelectorAll("button")
+                                    for j = 0, typeButtons.length - 1 do
+                                        typeButtons[j].disabled = true
                                     end
-                                end)
-                            end)
-                        end
+                                    btn.innerHTML = '<img src="/images/icons/Loading.gif" class="w-5 h-5 mx-auto" />'
 
-                        document:getElementById("cancelStartShiftBtn"):addEventListener("click", function()
-                            renderShiftPanel()
+                                    utils.startShift(GuildID, shiftType.name, cookie, function(success, response)
+                                        if success then
+                                            activeShift = {
+                                                started = time.now(),
+                                                pauses = {},
+                                                member = User.id,
+                                                type = shiftType.name
+                                            }
+                                            renderShiftPanel()
+                                        else
+                                            utils.notify((response and response.message) or "Failed to start shift. Please try again.", "fail")
+                                            renderShiftPanel()
+                                        end
+                                    end)
+                                end)
+                            end
+
+                            document:getElementById("cancelStartShiftBtn"):addEventListener("click", function()
+                                renderShiftPanel()
+                            end)
                         end)
-                    end)
+                    else
+                        shiftPanel.innerHTML = '<p class="text-sm text-white/50">Shifts are not configured for this server.</p>'
+                    end
                 end
             end
 
@@ -546,18 +550,20 @@ coroutine.wrap(function()
                 end
 
                 local shifts = utils.shifts(GuildID)
-                if not shifts then
-                    shiftPanel.innerHTML = '<p class="text-sm text-white/50">Could not load shift information.</p>'
+                if not shifts or not shifts.waves then
+                    shiftPanel.innerHTML = '<p class="text-sm text-white/50">No shift data is available for this server.</p>'
                     return
                 end
 
-                shiftTypes = shifts.types
+                shiftTypes = shifts.types or {}
 
                 local myShifts = {}
                 for _, wave in ipairs(shifts.waves) do
-                    for _, shift in ipairs(wave.shifts) do
-                        if shift.member == User.id then
-                            table.insert(myShifts, shift)
+                    if wave.shifts then
+                        for _, shift in ipairs(wave.shifts) do
+                            if shift.member == User.id then
+                                table.insert(myShifts, shift)
+                            end
                         end
                     end
                 end
