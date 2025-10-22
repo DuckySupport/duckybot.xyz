@@ -437,7 +437,7 @@ coroutine.wrap(function()
 							utils.loading()
 							if elements.servers.container then elements.servers.container.classList:remove("hidden") end
 						else
-							utils.loading("fail", "API Error", (response and response.data and response.data.message) or "An unknown error occurred. Please try again later.")
+							utils.loading("fail", "API Error", (response and response.message) or "An unknown error occurred. Please try again later.")
 						end
 					end, "GET", "https://devapi.duckybot.xyz/guilds", {
 						["Discord-Code"] = cookie
