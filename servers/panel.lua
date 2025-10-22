@@ -370,6 +370,7 @@ coroutine.wrap(function()
             end)
 
             local shiftUpdateInterval = nil
+            local lastUpdatedInterval = nil
 
             local function renderShiftPanel()
                 local shiftPanel = elements.panel.shift
@@ -552,6 +553,10 @@ coroutine.wrap(function()
             end
 
             local function refresh(initial)
+                if lastUpdatedInterval then
+                    time.clearInterval(lastUpdatedInterval)
+                    lastUpdatedInterval = nil
+                end
                 if User then
                     if Guild then
                         local data = utils.panel(GuildID)
@@ -704,16 +709,37 @@ coroutine.wrap(function()
                                     elements.panel.glance.server.status.pill.innerHTML =
                                         '<span class="h-2 w-2 rounded-full"></span> Chaotic'
                                 end
+
+                                if lastUpdatedInterval then
+                                    time.clearInterval(lastUpdatedInterval)
+                                    lastUpdatedInterval = nil
+                                end
+
+                                lastRefresh = time.now()
+
+                                lastUpdatedInterval = time.interval(1000, function()
+                                    elements.panel.glance.server.status.tooltip.textContent = "Last updated " .. utils.ago(lastRefresh)
+                                end)
                             else
                                 elements.panel.glance.server.status.pill.classList:add("pill-gray")
                                 elements.panel.glance.server.status.pill.innerHTML =
                                     '<span class="h-2 w-2 rounded-full"></span> Offline'
                             end
+                        else
+                            elements.panel.glance.server.status.pill.classList:add("pill-red")
+                            elements.panel.glance.server.status.pill.innerHTML =
+                                '<span class="h-2 w-2 rounded-full"></span> Not Linked'
+                            elements.panel.glance.server.status.tooltip.textContent = "No ERLC server data was found"
+
+                            elements.panel.players.container.innerHTML = [[
+                                <div class="flex items-center justify-center text-white text-center gap-2 w-full">
+                                    <img src="/images/icons/Fail.svg" class="w-5 h-5" />
+                                    <p>ERLC server is offline or not configured.</p>
+                                </div>
+                            ]]
                         end
 
                         renderShiftPanel()
-
-                        lastRefresh = time.now()
                     else
                         utils.redirect("servers")
                     end
@@ -739,20 +765,10 @@ coroutine.wrap(function()
 
             refresh(true)
 
-            refreshShift(true)
-
             time.interval(30000, function()
                 coroutine.wrap(function()
                     refresh()
                 end)()
-            end)
-
-            time.interval(1000, function()
-                if lastRefresh then
-                    elements.panel.glance.server.status.tooltip.textContent = "Last updated " .. utils.ago(lastRefresh)
-                else
-                    elements.panel.glance.server.status.tooltip.textContent = "This server is offline"
-                end
             end)
         else
             utils.redirect("servers")
