@@ -138,12 +138,12 @@ coroutine.wrap(function()
             local GuildID = path[2]
             local User = utils.user()
             if not User then
-                utils.loading("fail", "Error", "Failed to fetch user data. Please log in again.")
+                utils.loading("fail", "API Error", "Failed to fetch user data. Please log in again.")
                 return
             end
             local success, Guild = utils.guild(GuildID, cookie)
             if not success then
-                utils.loading("fail", "Error", (Guild and Guild.message) or "Failed to load server data. Unknown error.")
+                utils.loading("fail", "API Error", (Guild and Guild.message) or "Failed to load server data. Unknown error.")
                 return
             end
             local ERLC
@@ -572,7 +572,7 @@ coroutine.wrap(function()
 
                         if not success then
                             if initial then
-                                return utils.loading("fail", "Error", "Failed to fetch panel data.")
+                                return utils.loading("fail", "API Error", "Failed to fetch panel data.")
                             else
                                 return utils.notify("Failed to fetch panel data.", "fail")
                             end
