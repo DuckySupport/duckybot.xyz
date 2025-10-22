@@ -446,6 +446,20 @@ function utils.guild(id, cookie)
     end
 end
 
+function utils.panel(id, cookie)
+    cookie = cookie or utils.cookie("discord")
+
+    if id then
+        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/panel", {
+            ["Discord-Code"] = cookie
+        })
+
+        if success and response and response.data then
+            return response.data
+        end
+    end
+end
+
 function utils.erlc(id, cookie)
     cookie = cookie or utils.cookie("discord")
 
