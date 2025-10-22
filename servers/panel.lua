@@ -135,7 +135,8 @@ coroutine.wrap(function()
             local GuildID = path[2]
             local User = utils.user()
             local Guild = utils.guild(GuildID, cookie)
-            local ERLC = nil
+            local ERLC
+            local Shifts
             local punishmentsCache = {}
             local bolosCache = {}
             local lastRefresh = nil
@@ -368,8 +369,6 @@ coroutine.wrap(function()
                 end
             end)
 
-            local activeShift = nil
-            local shiftTypes = {}
             local shiftUpdateInterval = nil
 
             local function renderShiftPanel()
@@ -381,19 +380,24 @@ coroutine.wrap(function()
                     shiftUpdateInterval = nil
                 end
 
-                if activeShift then
-                    local totalPauseTime = 0
-                    local onPause = false
-                    for _, pause in ipairs(activeShift.pauses) do
-                        if pause.ended then
-                            totalPauseTime = totalPauseTime + (pause.ended - pause.started)
-                        else
-                            onPause = true
-                            totalPauseTime = totalPauseTime + (time.now() - pause.started)
-                        end
-                    end
+                if not Shifts then
+                    shiftPanel.innerHTML = [[
+                        <div class="flex items-center justify-center text-white text-center gap-2 w-full">
+                            <img src="/images/icons/Fail.svg" class="w-5 h-5" />
+                            <p>Shifts are not configured in this server.</p>
+                        </div>
+                    ]]
+                    return
+                end
 
-                    local activeTime = (time.now() - activeShift.started) - totalPauseTime
+                Shifts.me = Shifts.me or {}
+
+                if Shifts.me.active then
+                    local active = Shifts.me.active
+                    local totalPauseTime = active.pausetime
+                    local onPause = active.paused
+                    local activeTime = active.elapsed
+
                     local function formatTime(seconds)
                         local hours = math.floor(seconds / 3600)
                         local minutes = math.floor((seconds % 3600) / 60)
@@ -419,21 +423,18 @@ coroutine.wrap(function()
                     ]], formatTime(activeTime), formatTime(totalPauseTime), onPause and '<span class="iconify text-xl" data-icon="ion:play"></span> Resume' or '<span class="iconify text-xl" data-icon="f7:pause-fill"></span> Pause')
 
                     shiftUpdateInterval = time.interval(1000, function()
-                        if not activeShift then return end
-
-                        local totalPauseTime = 0
-                        for _, pause in ipairs(activeShift.pauses) do
-                            if pause.ended then
-                                totalPauseTime = totalPauseTime + (pause.ended - pause.started)
-                            else
-                                onPause = true
-                                totalPauseTime = totalPauseTime + (time.now() - pause.started)
-                            end
+                        if not Shifts or not Shifts.me or not Shifts.me.active then
+                            return
                         end
 
-                        local activeTime = (time.now() - activeShift.started) - totalPauseTime
-                        document:getElementById("shiftActiveTime").textContent = formatTime(activeTime)
-                        document:getElementById("shiftPauseTime").textContent = formatTime(totalPauseTime)
+                        if Shifts.me.active.paused then
+                            Shifts.me.active.pausetime = time.now() - Shifts.me.active.paused.started
+                        else
+                            Shifts.me.active.elapsed = (time.now() - Shifts.me.active.started) - Shifts.me.active.pausetime
+                        end
+
+                        document:getElementById("shiftActiveTime").textContent = formatTime(Shifts.me.active.elapsed)
+                        document:getElementById("shiftPauseTime").textContent = formatTime(Shifts.me.active.pausetime)
                     end)
 
                     document:getElementById("pauseShiftBtn"):addEventListener("click", function()
@@ -445,9 +446,10 @@ coroutine.wrap(function()
                         endBtn.innerHTML = '<img src="/images/icons/Loading.gif" class="w-5 h-5" />'
 
                         if onPause then
-                            utils.startShift(GuildID, activeShift.type, cookie, function(success, response)
+                            utils.startShift(GuildID, Shifts.me.active.type, cookie, function(success, response)
                                 if success then
-                                    activeShift.pauses[#activeShift.pauses].ended = time.now()
+                                    Shifts.me.active.paused = nil
+                                    Shifts.me.active.pauses[#Shifts.me.active.pauses].ended = time.now()
                                     renderShiftPanel()
                                 else
                                     utils.notify((response and response.data and response.data.message) or "Failed to resume shift. Please try again.", "fail")
@@ -457,7 +459,8 @@ coroutine.wrap(function()
                         else
                             utils.pauseShift(GuildID, cookie, function(success, response)
                                 if success then
-                                    table.insert(activeShift.pauses, { started = time.now() })
+                                    Shifts.me.active.paused = { started = time.now() }
+                                    table.insert(Shifts.me.active.pauses, Shifts.me.active.paused)
                                     renderShiftPanel()
                                 else
                                     utils.notify((response and response.data and response.data.message) or "Failed to pause shift. Please try again.", "fail")
@@ -477,7 +480,7 @@ coroutine.wrap(function()
 
                         utils.endShift(GuildID, cookie, function(success, response)
                             if success then
-                                activeShift = nil
+                                Shifts.me.active = nil
                                 renderShiftPanel()
                             else
                                 utils.notify((response and response.data and response.data.message) or "Failed to end shift. Please try again.", "fail")
@@ -486,12 +489,12 @@ coroutine.wrap(function()
                         end)
                     end)
                 else
-                    if shiftTypes and #shiftTypes > 0 then
+                    if type(Shifts.types) == "table" and next(Shifts.types) then
                         shiftPanel.innerHTML = '<button id="startShiftBtn" class="btn-primary w-full py-2.5 rounded-lg text-sm flex items-center justify-center gap-2"><span class="iconify text-xl" data-icon="ion:play"></span> Start Shift</button>'
 
                         document:getElementById("startShiftBtn"):addEventListener("click", function()
                             local shiftTypesHTML = ""
-                            for i, shiftType in ipairs(shiftTypes) do
+                            for i, shiftType in ipairs(Shifts.types) do
                                 shiftTypesHTML = shiftTypesHTML .. string.format([[
                                     <button id="shiftType-%s" data-shifttype="%s" class="btn-glass w-full py-2.5 rounded-lg text-sm">%s</button>
                                 ]], i, shiftType.name, shiftType.name)
@@ -505,7 +508,7 @@ coroutine.wrap(function()
                                 <button id="cancelStartShiftBtn" class="btn-fail w-full py-2.5 rounded-lg text-sm mt-3">Cancel</button>
                             ]], shiftTypesHTML)
 
-                            for i, shiftType in ipairs(shiftTypes) do
+                            for i, shiftType in ipairs(Shifts.types) do
                                 local btn = document:getElementById("shiftType-" .. i)
                                 btn:addEventListener("click", function()
                                     local typeButtons = shiftPanel:querySelectorAll("button")
@@ -516,11 +519,13 @@ coroutine.wrap(function()
 
                                     utils.startShift(GuildID, shiftType.name, cookie, function(success, response)
                                         if success then
-                                            activeShift = {
+                                            Shifts.me.active = {
                                                 started = time.now(),
                                                 pauses = {},
                                                 member = User.id,
-                                                type = shiftType.name
+                                                type = shiftType.name,
+                                                elapsed = 0,
+                                                pausetime = 0
                                             }
                                             renderShiftPanel()
                                         else
@@ -536,54 +541,23 @@ coroutine.wrap(function()
                             end)
                         end)
                     else
-                        shiftPanel.innerHTML = '<p class="text-sm text-white/50">Shifts are not configured for this server.</p>'
+                        shiftPanel.innerHTML = [[
+                            <div class="flex items-center justify-center text-white text-center gap-2 w-full">
+                                <img src="/images/icons/Fail.svg" class="w-5 h-5" />
+                                <p>You don't have access to any shift types.</p>
+                            </div>
+                        ]]
                     end
                 end
-            end
-
-            local function refreshShift(force)
-                local shiftPanel = elements.panel.shift
-                if not shiftPanel then return end
-
-                if force then
-                    utils.cache.shifts = nil
-                end
-
-                local shifts = utils.shifts(GuildID)
-                if not shifts or not shifts.waves then
-                    shiftPanel.innerHTML = '<p class="text-sm text-white/50">No shift data is available for this server.</p>'
-                    return
-                end
-
-                shiftTypes = shifts.types or {}
-
-                local myShifts = {}
-                for _, wave in ipairs(shifts.waves) do
-                    if wave.shifts then
-                        for _, shift in ipairs(wave.shifts) do
-                            if shift.member == User.id then
-                                table.insert(myShifts, shift)
-                            end
-                        end
-                    end
-                end
-
-                activeShift = nil
-                for _, shift in ipairs(myShifts) do
-                    if not shift.ended then
-                        activeShift = shift
-                        break
-                    end
-                end
-
-                renderShiftPanel()
             end
 
             local function refresh(initial)
-                ERLC = Guild and utils.erlc(GuildID)
-
                 if User then
                     if Guild then
+                        local data = utils.panel(GuildID)
+                        ERLC = data.erlc
+                        Shifts = data.shifts
+
                         elements.panel.glance.server.icon.src = Guild.icon
                         elements.panel.glance.server.name.textContent = Guild.name
 
@@ -737,8 +711,9 @@ coroutine.wrap(function()
                             end
                         end
 
+                        renderShiftPanel()
+
                         lastRefresh = time.now()
-                        refreshShift()
                     else
                         utils.redirect("servers")
                     end
