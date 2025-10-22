@@ -133,150 +133,161 @@
                         Ducky</a>
                 </div>
             </div>
-            <section
-                class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
-                <div class="max-w-7xl mx-auto px-4 flex flex-wrap gap-6">
-                    <div class="bg-black/60 border border-white/10 shadow-2xl rounded-2xl p-5 w-[33%]">
-                        <div class="flex items-start gap-3">
-                            <span class="iconify inline-flex text-4xl" data-icon="famicons:people"></span>
-                            <div>
-                                <h2 class="text-white font-semibold text-lg leading-tight">Players</h2>
-                                <p class="text-white/60 text-xs">View and manage (in-game) players</p>
-                            </div>
-                        </div>
-                        <hr class="border-t border-white/10 mt-3"></hr>
-                        <div class="relative mt-3 flex items-center gap-2">
-                            <div class="relative flex-grow">
-                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-white/30"></i>
-                                <input type="text" id="serverPlayersSearch" placeholder="Search players or ID..." class="w-full bg-white/5 border border-white/10 rounded-full h-10 pl-10 pr-4 text-sm text-white placeholder:text-white/30 focus:outline-none">
-                            </div>
-                            <button id="serverPlayerSearchBtn" class="btn-glass rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0" aria-label="Search Player">
-                                <i class="iconify text-sm" data-icon="mdi:account-search"></i>
-                            </button>
-                        </div>
-                        <div class="mt-3 space-y-3 max-h-[calc(100vh-29rem)] overflow-y-auto pr-[5px]" id="serverPlayersContainer">
-                            <div class="mt-3 flex items-center" id="serverPlayersInternal">
-                                <img src="/images/icons/Loading.gif" class="w-[30px]" id="serverPlayersInternalIcon" />
-                                <span class="text-sm pl-[5px]" id="serverPlayersInternalText">Loading...</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-black/60 border border-white/10 shadow-2xl rounded-2xl p-5 w-[33%]">
-                        <div class="flex items-start gap-3">
-                            <span class="iconify inline-flex text-4xl" data-icon="tabler:clock-filled"></span>
-                            <div>
-                                <h2 class="text-white font-semibold text-lg leading-tight">Your Shift</h2>
-                                <p class="text-white/60 text-xs">Manage your active shift</p>
-                            </div>
-                        </div>
-                        <hr class="border-t border-white/10 mt-3"></hr>
-                        <div id="userShiftPanel" class="mt-3">
-                            <div class="flex justify-center items-center h-20">
-                                <img src="/images/icons/Loading.gif" class="w-8 h-8" />
-                            </div>
-                        </div>
+            <div id="loadingContainer" class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
+                <div class="bg-secondary/80 border border-white/10 rounded-2xl p-8 shadow-lg max-w-xl mx-auto">
+                    <div class="flex flex-col items-center space-y-3">
+                        <img src="/images/icons/Loading.gif" class="w-20 h-20" id="loadingIcon">
+                        <h1 class="text-white text-3xl font-semibold text-center" id="loadingTitle">Loading...</h1>
+                        <hr class="border-white/10 w-3/4 my-4">
+                        <p class="text-white/70 text-center" id="loadingText">
+                            Please wait...
+                        </p>
                     </div>
                 </div>
-            </section>
-            <section
-                class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
-                <div
-                    class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 select-none">
-                    <div class="flex items-center gap-3">
-                        <div
-                            class="flex items-center rounded-full bg-black/60 border border-white/10 shadow-2xl px-2 h-12">
-                            <img
-                                src="/images/icons/Loading.gif"
-                                class="h-8 w-8 rounded-full object-cover"
-                                id="serverGlanceIcon">
-                            <div class="ml-2 mr-3 leading-tight">
-                                <span class="text-[15px] font-semibold"
-                                    id="serverGlanceName">Loading...</span>
-                            </div>
-                            <div class="relative group inline-flex">
-                                <span class="flex items-center gap-1 rounded-full px-2 py-0.5 text-[12px] pill-gray" id="serverGlanceStatusPill">
-                                    <span class="h-2 w-2 rounded-full"></span> Offline
-                                </span>
+            </div>
 
-                                <div class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick z-50">
-                                    <div class="relative flex flex-col items-center">
-                                        <div class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl" id="serverGlanceStatusTooltip">
-                                            Loading...
-                                        </div>
-                                        <span class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
-                                    </div>
+            <div id="panelContainer" class="hidden">
+                <section
+                    class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
+                    <div class="max-w-7xl mx-auto px-4 flex flex-wrap gap-6">
+                        <div class="bg-black/60 border border-white/10 shadow-2xl rounded-2xl p-5 w-[33%]">
+                            <div class="flex items-start gap-3">
+                                <span class="iconify inline-flex text-4xl" data-icon="famicons:people"></span>
+                                <div>
+                                    <h2 class="text-white font-semibold text-lg leading-tight">Players</h2>
+                                    <p class="text-white/60 text-xs">View and manage (in-game) players</p>
+                                </div>
+                            </div>
+                            <hr class="border-t border-white/10 mt-3"></hr>
+                            <div class="relative mt-3 flex items-center gap-2">
+                                <div class="relative flex-grow">
+                                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-white/30"></i>
+                                    <input type="text" id="serverPlayersSearch" placeholder="Search players or ID..." class="w-full bg-white/5 border border-white/10 rounded-full h-10 pl-10 pr-4 text-sm text-white placeholder:text-white/30 focus:outline-none">
+                                </div>
+                                <button id="serverPlayerSearchBtn" class="btn-glass rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0" aria-label="Search Player">
+                                    <i class="iconify text-sm" data-icon="mdi:account-search"></i>
+                                </button>
+                            </div>
+                            <div class="mt-3 space-y-3 max-h-[calc(100vh-29rem)] overflow-y-auto pr-[5px]" id="serverPlayersContainer">
+                                <div class="mt-3 flex items-center" id="serverPlayersInternal">
+                                    <img src="/images/icons/Loading.gif" class="w-[30px]" id="serverPlayersInternalIcon" />
+                                    <span class="text-sm pl-[5px]" id="serverPlayersInternalText">Loading...</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div
-                            class="relative flex items-center gap-3 rounded-full bg-black/60 border border-white/10 shadow-2xl h-12 px-4 text-[14px]">
-                            <div class="relative group flex items-center gap-1">
-                                <span class="iconify" data-icon="famicons:people"></span>
-                                <span id="serverGlancePlayerCount">0/39</span>
-
-                                <div
-                                    class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick">
-                                    <div
-                                        class="relative flex flex-col items-center">
-                                        <div
-                                            class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl"
-                                            id="serverGlancePlayerTooltip">
-                                            0/39 players are in-game
-                                        </div>
-                                        <span
-                                            class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
-                                    </div>
+                        <div class="bg-black/60 border border-white/10 shadow-2xl rounded-2xl p-5 w-[33%]">
+                            <div class="flex items-start gap-3">
+                                <span class="iconify inline-flex text-4xl" data-icon="tabler:clock-filled"></span>
+                                <div>
+                                    <h2 class="text-white font-semibold text-lg leading-tight">Your Shift</h2>
+                                    <p class="text-white/60 text-xs">Manage your active shift</p>
                                 </div>
                             </div>
-
-                            <span class="opacity-50">•</span>
-
-                            <div class="relative group flex items-center gap-1">
-                                <span class="iconify" data-icon="stash:shield-duotone"></span>
-                                <span id="serverGlanceStaffCount">0</span>
-
-                                <div
-                                    class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick">
-                                    <div
-                                        class="relative flex flex-col items-center">
-                                        <div
-                                            class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl"
-                                            id="serverGlanceStaffTooltip">
-                                            0 staff members are in-game
-                                        </div>
-                                        <span
-                                            class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <span class="opacity-50">•</span>
-
-                            <div class="relative group flex items-center gap-1">
-                                <span class="iconify" data-icon="mage:phone-call-fill"></span>
-                                <span id="serverGlanceModcallCount">0</span>
-
-                                <div
-                                    class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick">
-                                    <div
-                                        class="relative flex flex-col items-center">
-                                        <div
-                                            class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl"
-                                            id="serverGlanceModcallTooltip">
-                                            0 pending modcalls
-                                        </div>
-                                        <span
-                                            class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
-                                    </div>
-                                </div>
-                            </div>
-
+                            <hr class="border-t border-white/10 mt-3"></hr>
+                            <div id="userShiftPanel" class="mt-3 relative">
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+                <section
+                    class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
+                    <div
+                        class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 select-none">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="flex items-center rounded-full bg-black/60 border border-white/10 shadow-2xl px-2 h-12">
+                                <img
+                                    src="/images/icons/Loading.gif"
+                                    class="h-8 w-8 rounded-full object-cover"
+                                    id="serverGlanceIcon">
+                                <div class="ml-2 mr-3 leading-tight">
+                                    <span class="text-[15px] font-semibold"
+                                        id="serverGlanceName">Loading...</span>
+                                </div>
+                                <div class="relative group inline-flex">
+                                    <span class="flex items-center gap-1 rounded-full px-2 py-0.5 text-[12px] pill-gray" id="serverGlanceStatusPill">
+                                        <span class="h-2 w-2 rounded-full"></span> Offline
+                                    </span>
+
+                                    <div class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick z-50">
+                                        <div class="relative flex flex-col items-center">
+                                            <div class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl" id="serverGlanceStatusTooltip">
+                                                Loading...
+                                            </div>
+                                            <span class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="relative flex items-center gap-3 rounded-full bg-black/60 border border-white/10 shadow-2xl h-12 px-4 text-[14px]">
+                                <div class="relative group flex items-center gap-1">
+                                    <span class="iconify" data-icon="famicons:people"></span>
+                                    <span id="serverGlancePlayerCount">0/39</span>
+
+                                    <div
+                                        class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick">
+                                        <div
+                                            class="relative flex flex-col items-center">
+                                            <div
+                                                class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl"
+                                                id="serverGlancePlayerTooltip">
+                                                0/39 players are in-game
+                                            </div>
+                                            <span
+                                                class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <span class="opacity-50">•</span>
+
+                                <div class="relative group flex items-center gap-1">
+                                    <span class="iconify" data-icon="stash:shield-duotone"></span>
+                                    <span id="serverGlanceStaffCount">0</span>
+
+                                    <div
+                                        class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick">
+                                        <div
+                                            class="relative flex flex-col items-center">
+                                            <div
+                                                class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl"
+                                                id="serverGlanceStaffTooltip">
+                                                0 staff members are in-game
+                                            </div>
+                                            <span
+                                                class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <span class="opacity-50">•</span>
+
+                                <div class="relative group flex items-center gap-1">
+                                    <span class="iconify" data-icon="mage:phone-call-fill"></span>
+                                    <span id="serverGlanceModcallCount">0</span>
+
+                                    <div
+                                        class="pointer-events-none absolute bottom-[125%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick">
+                                        <div
+                                            class="relative flex flex-col items-center">
+                                            <div
+                                                class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl"
+                                                id="serverGlanceModcallTooltip">
+                                                0 pending modcalls
+                                            </div>
+                                            <span
+                                                class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </main>
         <div id="notificationContainer"
             class="w-full flex flex-col items-end p-4 space-y-2"></div>
