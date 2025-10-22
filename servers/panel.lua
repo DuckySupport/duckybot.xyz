@@ -16,6 +16,7 @@ local console = global.console
 local elements = {
     navbar = document:getElementById("navbar"),
     panel = {
+        container = document:getElementById("panelContainer"),
         glance = {
             server = {
                 icon = document:getElementById("serverGlanceIcon"),
@@ -129,12 +130,22 @@ http.request(function(success, response)
 end, "GET", "/partials/navbar.html", nil, nil, "text")
 
 coroutine.wrap(function()
+    utils.loading("loading", "Loading Panel...", "Fetching server data.")
+
     local cookie = utils.cookie("discord")
     if cookie then
         if path[1] == "servers" and tonumber(path[2]) and path[3] == "panel" then
             local GuildID = path[2]
             local User = utils.user()
-            local Guild = utils.guild(GuildID, cookie)
+            if not User then
+                utils.loading("fail", "Error", "Failed to fetch user data. Please log in again.")
+                return
+            end
+            local success, Guild = utils.guild(GuildID, cookie)
+            if not success then
+                utils.loading("fail", "Error", (Guild and Guild.message) or "Failed to load server data. Unknown error.")
+                return
+            end
             local ERLC
             local Shifts
             local punishmentsCache = {}
@@ -148,7 +159,6 @@ coroutine.wrap(function()
             end
 
             local function renderBolo(bolo)
-                console.log(nil, "rendering bolo")
                 local boloPanel = playerPanel.bolo
                 local boloContainer = boloPanel.container
                 local boloInfo = boloPanel.info
@@ -286,7 +296,6 @@ coroutine.wrap(function()
             end
 
             local function openPlayerPanel(playerData)
-                console.log(nil, playerData.ID)
                 playerPanel.avatar.src = playerData.avatar
                 playerPanel.displayName.textContent = playerData.displayName
                 playerPanel.username.textContent = "@" .. playerData.name .. " (" ..
@@ -559,7 +568,16 @@ coroutine.wrap(function()
                 end
                 if User then
                     if Guild then
-                        local data = utils.panel(GuildID)
+                        local success, data = utils.panel(GuildID)
+
+                        if not success then
+                            if initial then
+                                return utils.loading("fail", "Error", "Failed to fetch panel data.")
+                            else
+                                return utils.notify("Failed to fetch panel data.", "fail")
+                            end
+                        end
+
                         ERLC = data.erlc
                         Shifts = data.shifts
 
@@ -743,8 +761,11 @@ coroutine.wrap(function()
                         end
 
                         renderShiftPanel()
-                    else
-                        utils.redirect("servers")
+
+                        if initial then
+                            utils.loading(nil, nil, nil)
+                            elements.panel.container.classList:remove("hidden")
+                        end
                     end
                 end
             end

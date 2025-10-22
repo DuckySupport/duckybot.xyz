@@ -441,7 +441,9 @@ function utils.guild(id, cookie)
         })
 
         if success and response and response.data then
-            return response.data
+            return true, response.data
+        else
+            return false, response
         end
     end
 end
@@ -455,9 +457,13 @@ function utils.panel(id, cookie)
         })
 
         if success and response and response.data then
-            return response.data
+            return true, response.data
+        else
+            return false, response
         end
     end
+
+    return false, nil
 end
 
 function utils.erlc(id, cookie)
