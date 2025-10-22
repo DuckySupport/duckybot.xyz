@@ -589,9 +589,12 @@ coroutine.wrap(function()
                                     ERLC.online = true
                                     elements.panel.players.internal.container.classList:add("hidden")
                                 else
-                                    elements.panel.players.internal.container.classList:remove("hidden")
-                                    elements.panel.players.internal.icon.src = "/images/icons/Fail.svg"
-                                    elements.panel.players.internal.text.textContent = "There are no players in-game."
+                                    elements.panel.players.container.innerHTML = [[
+                                        <div class="flex items-center justify-center text-white text-center gap-2 w-full">
+                                            <img src="/images/icons/Fail.svg" class="w-5 h-5" />
+                                            <p>There are no players in-game.</p>
+                                        </div>
+                                    ]]
                                 end
 
                                 elements.panel.glance.statistics.players.label.textContent = #ERLC.players .. "/" ..
