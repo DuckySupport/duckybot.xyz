@@ -536,7 +536,7 @@ function utils.startShift(guildID, shiftType, cookie, callback)
         http.request(callback, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/shifts/start", {
             ["Discord-Code"] = cookie,
             ["Content-Type"] = "application/json"
-        }, global.JSON:stringify({type = shiftType}))
+        }, {type = shiftType})
     end
 end
 
