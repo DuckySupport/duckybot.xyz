@@ -405,9 +405,13 @@ coroutine.wrap(function()
                 Shifts.me = Shifts.me or {}
 
                 local quotaBarHTML = [[
-                    <div id="shiftQuotaContainer" class="mt-4 text-center">
-                        <p id="shiftQuotaText" class="text-white/50 text-sm"></p>
-                        <div class="w-full bg-white/10 rounded-full h-2.5 mt-1 relative">
+                    <div class="mt-4">
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="font-medium text-white/70">Quota Progress</span>
+                            <span class="opacity-50">•</span>
+                            <span id="shiftQuotaText" class="text-white/50"></span>
+                        </div>
+                        <div class="w-full bg-white/10 rounded-full h-2.5 mt-2 relative">
                             <div id="shiftQuotaBar" class="bg-primary h-2.5 rounded-full" style="width: 0%; transition: width 0.5s ease-in-out;"></div>
                             <div id="shiftQuotaBarExtra" class="absolute top-0 left-0 bg-yellow-500 h-2.5 rounded-full" style="width: 0%; transition: width 0.5s ease-in-out;"></div>
                         </div>
@@ -582,20 +586,6 @@ coroutine.wrap(function()
                                     shiftType.name)
                         end
 
-                        local offShiftQuotaBarHTML = [[
-                            <div>
-                                <div class="flex items-center gap-2 text-sm">
-                                    <span class="font-medium text-white/70">Quota Progress</span>
-                                    <span class="opacity-50">•</span>
-                                    <span id="shiftQuotaText" class="text-white/50"></span>
-                                </div>
-                                <div class="w-full bg-white/10 rounded-full h-2.5 mt-2 relative">
-                                    <div id="shiftQuotaBar" class="bg-primary h-2.5 rounded-full" style="width: 0%; transition: width 0.5s ease-in-out;"></div>
-                                    <div id="shiftQuotaBarExtra" class="absolute top-0 left-0 bg-yellow-500 h-2.5 rounded-full" style="width: 0%; transition: width 0.5s ease-in-out;"></div>
-                                </div>
-                            </div>
-                        ]]
-
                         shiftPanel.innerHTML = string.format([[
                             <div class="space-y-4">
                                 <div>
@@ -612,7 +602,7 @@ coroutine.wrap(function()
                                 %s
                             </div>
                             <button id="startShiftBtn" class="btn-primary w-full py-2.5 rounded-lg text-sm flex items-center justify-center gap-2 mt-6"><span class="iconify text-xl" data-icon="ion:play"></span> Start Shift</button>
-                        ]], optionsHTML, offShiftQuotaBarHTML)
+                        ]], optionsHTML, quotaBarHTML)
 
                         local dropdown = document:getElementById("shiftTypeDropdown")
 
