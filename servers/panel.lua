@@ -143,7 +143,8 @@ coroutine.wrap(function()
             end
             local success, Guild = utils.guild(GuildID, cookie)
             if not success then
-                utils.loading("fail", "API Error", (Guild and Guild.message) or "Failed to load server data. Unknown error.")
+                utils.loading("fail", "API Error",
+                    (Guild and Guild.message) or "Failed to load server data. Unknown error.")
                 return
             end
             local ERLC
@@ -259,7 +260,8 @@ coroutine.wrap(function()
 							<span class="font-semibold text-sm pill-%s">%s</span>
 						</div>
 						<p class="text-sm text-white/80 mt-1">Reason: %s</p>
-					]], punishment.moderator.avatar, punishment.moderator.username, utils.ago(punishment.timestamp), punishment.type:lower(), punishment.type, punishment.reason)
+					]], punishment.moderator.avatar, punishment.moderator.username, utils.ago(punishment.timestamp),
+                        punishment.type:lower(), punishment.type, punishment.reason)
                     list:appendChild(card)
                 end
             end
@@ -383,7 +385,9 @@ coroutine.wrap(function()
 
             local function renderShiftPanel()
                 local shiftPanel = elements.panel.shift
-                if not shiftPanel then return end
+                if not shiftPanel then
+                    return
+                end
 
                 if shiftUpdateInterval then
                     time.clearInterval(shiftUpdateInterval)
@@ -430,7 +434,9 @@ coroutine.wrap(function()
                             <button id="pauseShiftBtn" class="btn-glass w-full py-2.5 rounded-lg text-sm flex items-center justify-center gap-2">%s</button>
                             <button id="endShiftBtn" class="btn-fail w-full py-2.5 rounded-lg text-sm flex items-center justify-center gap-2"><span class="iconify text-xl" data-icon="gravity-ui:stop-fill"></span> End Shift</button>
                         </div>
-                    ]], formatTime(activeTime), formatTime(totalPauseTime), onPause and '<span class="iconify text-xl" data-icon="ion:play"></span> Resume' or '<span class="iconify text-xl" data-icon="f7:pause-fill"></span> Pause')
+                    ]], formatTime(activeTime), formatTime(totalPauseTime),
+                        onPause and '<span class="iconify text-xl" data-icon="ion:play"></span> Resume' or
+                            '<span class="iconify text-xl" data-icon="f7:pause-fill"></span> Pause')
 
                     shiftUpdateInterval = time.interval(1000, function()
                         if not Shifts or not Shifts.me or not Shifts.me.active then
@@ -440,7 +446,8 @@ coroutine.wrap(function()
                         if Shifts.me.active.paused then
                             Shifts.me.active.pausetime = time.now() - Shifts.me.active.paused.started
                         else
-                            Shifts.me.active.elapsed = (time.now() - Shifts.me.active.started) - Shifts.me.active.pausetime
+                            Shifts.me.active.elapsed = (time.now() - Shifts.me.active.started) -
+                                                           Shifts.me.active.pausetime
                         end
 
                         document:getElementById("shiftActiveTime").textContent = formatTime(Shifts.me.active.elapsed)
@@ -462,18 +469,22 @@ coroutine.wrap(function()
                                     Shifts.me.active.pauses[#Shifts.me.active.pauses].ended = time.now()
                                     renderShiftPanel()
                                 else
-                                    utils.notify((response and response.data and response.data.message) or "Failed to resume shift. Please try again.", "fail")
+                                    utils.notify((response and response.data and response.data.message) or
+                                                     "Failed to resume shift. Please try again.", "fail")
                                     renderShiftPanel()
                                 end
                             end)
                         else
                             utils.pauseShift(GuildID, cookie, function(success, response)
                                 if success then
-                                    Shifts.me.active.paused = { started = time.now() }
+                                    Shifts.me.active.paused = {
+                                        started = time.now()
+                                    }
                                     table.insert(Shifts.me.active.pauses, Shifts.me.active.paused)
                                     renderShiftPanel()
                                 else
-                                    utils.notify((response and response.data and response.data.message) or "Failed to pause shift. Please try again.", "fail")
+                                    utils.notify((response and response.data and response.data.message) or
+                                                     "Failed to pause shift. Please try again.", "fail")
                                     renderShiftPanel()
                                 end
                             end)
@@ -493,7 +504,8 @@ coroutine.wrap(function()
                                 Shifts.me.active = nil
                                 renderShiftPanel()
                             else
-                                utils.notify((response and response.data and response.data.message) or "Failed to end shift. Please try again.", "fail")
+                                utils.notify((response and response.data and response.data.message) or
+                                                 "Failed to end shift. Please try again.", "fail")
                                 renderShiftPanel()
                             end
                         end)
@@ -502,10 +514,12 @@ coroutine.wrap(function()
                     if type(Shifts.types) == "table" and next(Shifts.types) then
                         local optionsHTML = ""
                         for _, shiftType in ipairs(Shifts.types) do
-                            optionsHTML = optionsHTML .. string.format('<option value="%s">%s</option>', shiftType.name, shiftType.name)
+                            optionsHTML = optionsHTML ..
+                                              string.format('<option value="%s">%s</option>', shiftType.name,
+                                    shiftType.name)
                         end
 
-                                                shiftPanel.innerHTML = string.format([[
+                        shiftPanel.innerHTML = string.format([[
                                                     <div class="relative">
                                                         <select id="shiftTypeDropdown" class="w-full bg-white/5 border border-white/10 rounded-lg h-10 px-4 text-sm text-white focus:outline-none appearance-none">
                                                             %s
@@ -523,59 +537,60 @@ coroutine.wrap(function()
                                                     </div>
                                                     <button id="startShiftBtn" class="btn-primary w-full py-2.5 rounded-lg text-sm flex items-center justify-center gap-2 mt-3"><span class="iconify text-xl" data-icon="ion:play"></span> Start Shift</button>
                                                 ]], optionsHTML)
-                        
-                                                local dropdown = document:getElementById("shiftTypeDropdown")
-                                                local quotaText = document:getElementById("shiftQuotaText")
-                                                local quotaBar = document:getElementById("shiftQuotaBar")
-                                                local quotaBarExtra = document:getElementById("shiftQuotaBarExtra")
-                        
-                                                local accumulatedTime = {}
-                                                if Shifts.me and Shifts.me.history then
-                                                    for _, shift in ipairs(Shifts.me.history) do
-                                                        if shift.elapsed then
-                                                            accumulatedTime[shift.type] = (accumulatedTime[shift.type] or 0) + shift.elapsed
-                                                        end
-                                                    end
-                                                end
-                        
-                                                local function updateQuota()
-                                                    local selectedType = dropdown.value
-                                                    local quota = 0
-                                                    for _, shiftType in ipairs(Shifts.types) do
-                                                        if shiftType.name == selectedType then
-                                                            quota = shiftType.quota
-                                                            break
-                                                        end
-                                                    end
-                                                    local userTime = accumulatedTime[selectedType] or 0
-                                                    
-                                                    local displayPercentage = 0
-                                                    if quota and quota > 0 then
-                                                        displayPercentage = (userTime / quota) * 100
-                                                    end
-                        
-                                                    local barPercentage = math.min(100, displayPercentage)
-                                                    
-                                                    local extraPercentage = 0
-                                                    if displayPercentage > 100 then
-                                                        extraPercentage = displayPercentage % 100
-                                                        if extraPercentage == 0 and displayPercentage > 0 then
-                                                            extraPercentage = 100
-                                                        end
-                                                    end
-                                                    
-                                                    local hours = math.floor(userTime / 3600)
-                                                    local minutes = math.floor((userTime % 3600) / 60)
-                        
-                                                    quotaText.innerHTML = string.format('Quota: %d%% (%d hours, %d minutes)', math.floor(displayPercentage), hours, minutes)
-                                                    
-                                                    quotaBar.style.width = tostring(barPercentage) .. '%'
-                                                    quotaBarExtra.style.width = tostring(extraPercentage) .. '%'
-                                                end
-                        
-                                                js.global:setTimeout(updateQuota, 50)
-                        
-                                                dropdown:addEventListener("change", updateQuota)
+
+                        local dropdown = document:getElementById("shiftTypeDropdown")
+                        local quotaText = document:getElementById("shiftQuotaText")
+                        local quotaBar = document:getElementById("shiftQuotaBar")
+                        local quotaBarExtra = document:getElementById("shiftQuotaBarExtra")
+
+                        local accumulatedTime = {}
+                        if Shifts.me and Shifts.me.history then
+                            for _, shift in ipairs(Shifts.me.history) do
+                                if shift.elapsed then
+                                    accumulatedTime[shift.type] = (accumulatedTime[shift.type] or 0) + shift.elapsed
+                                end
+                            end
+                        end
+
+                        local function updateQuota()
+                            local selectedType = dropdown.value
+                            local quota = 0
+                            for _, shiftType in ipairs(Shifts.types) do
+                                if shiftType.name == selectedType then
+                                    quota = shiftType.quota
+                                    break
+                                end
+                            end
+                            local userTime = accumulatedTime[selectedType] or 0
+
+                            local displayPercentage = 0
+                            if quota and quota > 0 then
+                                displayPercentage = (userTime / quota) * 100
+                            end
+
+                            local barPercentage = math.min(100, displayPercentage)
+
+                            local extraPercentage = 0
+                            if displayPercentage > 100 then
+                                extraPercentage = displayPercentage % 100
+                                if extraPercentage == 0 and displayPercentage > 0 then
+                                    extraPercentage = 100
+                                end
+                            end
+
+                            local hours = math.floor(userTime / 3600)
+                            local minutes = math.floor((userTime % 3600) / 60)
+
+                            quotaText.innerHTML = string.format('Quota: %d%% (%d hours, %d minutes)',
+                                math.floor(displayPercentage), hours, minutes)
+
+                            quotaBar.style.width = tostring(barPercentage) .. '%'
+                            quotaBarExtra.style.width = tostring(extraPercentage) .. '%'
+                        end
+
+                        js.global:setTimeout(updateQuota, 50)
+
+                        dropdown:addEventListener("change", updateQuota)
                         document:getElementById("startShiftBtn"):addEventListener("click", function()
                             local btn = document:getElementById("startShiftBtn")
                             btn.disabled = true
@@ -595,7 +610,8 @@ coroutine.wrap(function()
                                     }
                                     renderShiftPanel()
                                 else
-                                    utils.notify((response and response.message) or "Failed to start shift. Please try again.", "fail")
+                                    utils.notify((response and response.message) or
+                                                     "Failed to start shift. Please try again.", "fail")
                                     renderShiftPanel()
                                 end
                             end)
@@ -789,7 +805,8 @@ coroutine.wrap(function()
                                 lastRefresh = time.now()
 
                                 lastUpdatedInterval = time.interval(1000, function()
-                                    elements.panel.glance.server.status.tooltip.textContent = "Last updated " .. utils.ago(lastRefresh)
+                                    elements.panel.glance.server.status.tooltip.textContent = "Last updated " ..
+                                                                                                  utils.ago(lastRefresh)
                                 end)
                             else
                                 elements.panel.glance.server.status.pill.classList:add("pill-gray")
