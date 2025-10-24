@@ -532,8 +532,7 @@ coroutine.wrap(function()
                         if onPause then
                             utils.startShift(GuildID, Shifts.me.active.type, cookie, function(success, response)
                                 if success then
-                                    Shifts.me.active.paused = nil
-                                    Shifts.me.active.pauses[#Shifts.me.active.pauses].ended = time.now()
+                                    Shifts = response.data
                                     renderShiftPanel()
                                 else
                                     utils.notify((response and response.data and response.data.message) or
@@ -544,10 +543,7 @@ coroutine.wrap(function()
                         else
                             utils.pauseShift(GuildID, cookie, function(success, response)
                                 if success then
-                                    Shifts.me.active.paused = {
-                                        started = time.now()
-                                    }
-                                    table.insert(Shifts.me.active.pauses, Shifts.me.active.paused)
+                                    Shifts = response.data
                                     renderShiftPanel()
                                 else
                                     utils.notify((response and response.data and response.data.message) or
@@ -568,9 +564,7 @@ coroutine.wrap(function()
 
                         utils.endShift(GuildID, cookie, function(success, response)
                             if success then
-                                Shifts.me.active.ended = time.now()
-                                table.insert(Shifts.me.history, Shifts.me.active)
-                                Shifts.me.active = nil
+                                Shifts = response.data
                                 renderShiftPanel(true)
                             else
                                 utils.notify((response and response.data and response.data.message) or
@@ -623,14 +617,7 @@ coroutine.wrap(function()
 
                             utils.startShift(GuildID, selectedType, cookie, function(success, response)
                                 if success then
-                                    Shifts.me.active = {
-                                        started = time.now(),
-                                        pauses = {},
-                                        member = User.id,
-                                        type = selectedType,
-                                        elapsed = 0,
-                                        pausetime = 0
-                                    }
+                                    Shifts = response.data
                                     renderShiftPanel(true)
                                 else
                                     utils.notify((response and response.message) or
