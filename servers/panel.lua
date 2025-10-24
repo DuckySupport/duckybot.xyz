@@ -459,7 +459,7 @@ coroutine.wrap(function()
                     local hours = math.floor(totalUserTime / 3600)
                     local minutes = math.floor((totalUserTime % 3600) / 60)
 
-                    quotaText.innerHTML = string.format('Quota: %d%% (%d hours, %d minutes)', math.floor(displayPercentage), hours, minutes)
+                    quotaText.innerHTML = string.format('%d%% (%d hours, %d minutes)', math.floor(displayPercentage), hours, minutes)
                     
                     quotaBar.style.width = tostring(barPercentage) .. '%'
                     quotaBarExtra.style.width = tostring(extraPercentage) .. '%'
@@ -582,18 +582,37 @@ coroutine.wrap(function()
                                     shiftType.name)
                         end
 
-                        shiftPanel.innerHTML = string.format([[
-                            <div class="relative">
-                                <select id="shiftTypeDropdown" class="w-full bg-white/5 border border-white/10 rounded-lg h-10 px-4 text-sm text-white focus:outline-none appearance-none">
-                                    %s
-                                </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white/50">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                        local offShiftQuotaBarHTML = [[
+                            <div>
+                                <div class="flex items-center gap-2 text-sm">
+                                    <span class="font-medium text-white/70">Quota Progress</span>
+                                    <span class="opacity-50">•</span>
+                                    <span id="shiftQuotaText" class="text-white/50"></span>
+                                </div>
+                                <div class="w-full bg-white/10 rounded-full h-2.5 mt-2 relative">
+                                    <div id="shiftQuotaBar" class="bg-primary h-2.5 rounded-full" style="width: 0%; transition: width 0.5s ease-in-out;"></div>
+                                    <div id="shiftQuotaBarExtra" class="absolute top-0 left-0 bg-yellow-500 h-2.5 rounded-full" style="width: 0%; transition: width 0.5s ease-in-out;"></div>
                                 </div>
                             </div>
-                            %s
-                            <button id="startShiftBtn" class="btn-primary w-full py-2.5 rounded-lg text-sm flex items-center justify-center gap-2 mt-3"><span class="iconify text-xl" data-icon="ion:play"></span> Start Shift</button>
-                        ]], optionsHTML, quotaBarHTML)
+                        ]]
+
+                        shiftPanel.innerHTML = string.format([[
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="shiftTypeDropdown" class="text-sm font-medium text-white/70">Shift Type</label>
+                                    <div class="relative mt-1">
+                                        <select id="shiftTypeDropdown" class="w-full bg-white/5 border border-white/10 rounded-lg h-10 px-4 text-sm text-white focus:outline-none appearance-none">
+                                            %s
+                                        </select>
+                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white/50">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                %s
+                            </div>
+                            <button id="startShiftBtn" class="btn-primary w-full py-2.5 rounded-lg text-sm flex items-center justify-center gap-2 mt-6"><span class="iconify text-xl" data-icon="ion:play"></span> Start Shift</button>
+                        ]], optionsHTML, offShiftQuotaBarHTML)
 
                         local dropdown = document:getElementById("shiftTypeDropdown")
 
