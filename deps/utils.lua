@@ -382,6 +382,50 @@ function utils.notify(message, type, duration)
     end)()
 end
 
+function utils.readable(seconds, short, ms)
+	local function decompose(value, mult)
+		return math.modf(value / mult), math.fmod(value, mult)
+	end
+	
+    local units = short and {
+        {'y', 31536000000},
+		{'mo', 2592000000},
+		{'w', 604800000},
+		{'d', 86400000},
+		{'h', 3600000},
+		{'m', 60000},
+		{'s', 1000}
+	} or {
+        {'years', 31536000000},
+		{'months', 2592000000},
+		{'weeks', 604800000},
+		{'days', 86400000},
+		{'hours', 3600000},
+		{'minutes', 60000},
+		{'seconds', 1000}
+    }
+
+    if ms then
+        if short then
+            table.insert(units, 1, {'ms', 1})
+        else
+            table.insert(units, 1, {'milliseconds', 1})
+        end
+    end
+
+	local ret = {}
+	local ms = seconds * 1000
+	for _, unit in ipairs(units) do
+		local n
+		n, ms = decompose(ms, unit[2])
+		if n > 0 then
+			table.insert(ret, n .. unit[1])
+		end
+	end
+	return #ret > 0 and table.concat(ret) or "0s"
+end
+
+
 function utils.convert(str, denyseconds)
     if not str then return nil end
     local units = {
