@@ -130,7 +130,7 @@ http.request(function(success, response)
 end, "GET", "/partials/navbar.html", nil, nil, "text")
 
 coroutine.wrap(function()
-    utils.loading("loading", "Loading Panel...", "Fetching server data.")
+    utils.loading("loading", "Loading Panel...", "Fetching server data...")
 
     local cookie = utils.cookie("discord")
     if cookie then
@@ -866,17 +866,18 @@ coroutine.wrap(function()
                                 elements.panel.glance.server.status.pill.classList:add("pill-gray")
                                 elements.panel.glance.server.status.pill.innerHTML =
                                     '<span class="h-2 w-2 rounded-full"></span> Offline'
+                                elements.panel.glance.server.status.tooltip.textContent = "The ERLC private server is offline"
                             end
                         else
                             elements.panel.glance.server.status.pill.classList:add("pill-red")
                             elements.panel.glance.server.status.pill.innerHTML =
                                 '<span class="h-2 w-2 rounded-full"></span> Not Linked'
-                            elements.panel.glance.server.status.tooltip.textContent = "No ERLC server data was found"
+                            elements.panel.glance.server.status.tooltip.textContent = "No ERLC private server data was found"
 
                             elements.panel.players.container.innerHTML = [[
                                 <div class="flex items-center justify-center text-white text-center gap-2 w-full">
                                     <img src="/images/icons/Fail.svg" class="w-5 h-5" />
-                                    <p>ERLC server is offline or not configured.</p>
+                                    <p>The ERLC private server is either offline or not linked.</p>
                                 </div>
                             ]]
                         end
