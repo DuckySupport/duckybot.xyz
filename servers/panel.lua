@@ -459,10 +459,7 @@ coroutine.wrap(function()
 						end
 					end
 
-					local hours = math.floor(totalUserTime / 3600)
-					local minutes = math.floor((totalUserTime % 3600) / 60)
-
-					quotaText.innerHTML = string.format("%d%% (%d hours, %d minutes)", math.floor(displayPercentage), hours, minutes)
+					quotaText.innerHTML = math.floor(displayPercentage) .. "% (" .. utils.readable(quota, true) .. " quota, " .. utils.readable(totalUserTime, true) .. " complete)"
 
 					quotaBar.style.width = tostring(barPercentage) .. "%"
 					quotaBarExtra.style.width = tostring(extraPercentage) .. "%"
