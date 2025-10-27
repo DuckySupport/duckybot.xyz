@@ -461,7 +461,11 @@ coroutine.wrap(function()
 						end
 					end
 
-					quotaText.innerHTML = math.floor(displayPercentage) .. "% (" .. utils.readable(quota, true) .. " quota, " .. utils.readable(totalUserTime, true) .. " complete)"
+					if quota and quota > 0 then
+						quotaText.innerHTML = math.floor(displayPercentage) .. "% (" .. utils.readable(quota, true) .. " quota, " .. utils.readable(totalUserTime, true) .. " complete)"
+					else
+						quotaText.innerHTML = math.floor(displayPercentage) .. "% (No quota)"
+					end
 
 					quotaBar.style.width = tostring(barPercentage) .. "%"
 					quotaBarExtra.style.width = tostring(extraPercentage) .. "%"
@@ -842,7 +846,7 @@ coroutine.wrap(function()
 							elements.panel.players.container.innerHTML = [[
                                 <div class="flex items-center justify-center text-white text-center gap-2 w-full">
                                     <img src="/images/icons/Fail.svg" class="w-5 h-5" />
-                                    <p>The ERLC private server is either offline or not linked.</p>
+                                    <p>The ERLC private server is offline or not linked.</p>
                                 </div>
                             ]]
 						end
