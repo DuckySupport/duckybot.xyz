@@ -447,6 +447,8 @@ coroutine.wrap(function()
 					local displayPercentage = 0
 					if quota and quota > 0 then
 						displayPercentage = (totalUserTime / quota) * 100
+					else
+						displayPercentage = 100
 					end
 
 					local barPercentage = math.min(100, displayPercentage)
