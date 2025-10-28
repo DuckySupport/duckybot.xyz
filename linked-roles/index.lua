@@ -17,7 +17,13 @@ end
 
 local parameters = utils.parameters()
 
+local agreeButton = document:getElementById("agreeButton")
+local denyButton = document:getElementById("denyButton")
+
 if parameters.code and parameters.state then
+	agreeButton.parentElement:remove()
+	denyButton.parentElement:remove()
+
 	local savedState = utils.cookie("oauth_state")
 	utils.cookie("oauth_state", "delete")
 
@@ -37,9 +43,6 @@ if parameters.code and parameters.state then
 		["Discord-Code"] = parameters.code,
 	})
 else
-	local agreeButton = document:getElementById("agreeButton")
-	local denyButton = document:getElementById("denyButton")
-
 	agreeButton:addEventListener("click", function()
 		agreeButton.parentElement:remove()
 		denyButton.parentElement:remove()
