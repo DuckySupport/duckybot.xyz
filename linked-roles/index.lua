@@ -41,6 +41,8 @@ else
 	local denyButton = document:getElementById("denyButton")
 
 	agreeButton:addEventListener("click", function()
+		agreeButton.parentElement:remove()
+		denyButton.parentElement:remove()
 		utils.loading("loading", "Redirecting...", "Redirecting you to Discord to link your roles.")
 		local state = global.crypto:randomUUID()
 		utils.cookie("oauth_state", state, 480)
