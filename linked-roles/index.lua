@@ -37,8 +37,19 @@ if parameters.code and parameters.state then
 		["Discord-Code"] = parameters.code,
 	})
 else
-	utils.loading("loading", "Redirecting...", "Redirecting you to Discord to link your roles.")
-	local state = global.crypto:randomUUID()
-	utils.cookie("oauth_state", state, 480)
-	utils.redirect("https://discord.com/api/oauth2/authorize?client_id=1284586408945647727&redirect_uri=" .. redirect_uri .. "&response_type=code&scope=identify+role_connections.write&state=" .. state)
+	local agreeButton = document:getElementById("agreeButton")
+	local denyButton = document:getElementById("denyButton")
+
+	agreeButton:addEventListener("click", function()
+		agreeButton.parentElement:remove()
+		denyButton.parentElement:remove()
+		utils.loading("loading", "Redirecting...", "Redirecting you to Discord to link your roles.")
+		local state = global.crypto:randomUUID()
+		utils.cookie("oauth_state", state, 480)
+		utils.redirect("https://discord.com/api/oauth2/authorize?client_id=1284586408945647727&redirect_uri=" .. redirect_uri .. "&response_type=code&scope=identify+role_connections.write&state=" .. state)
+	end)
+
+	denyButton:addEventListener("click", function()
+		utils.redirect("/")
+	end)
 end
