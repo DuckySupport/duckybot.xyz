@@ -240,7 +240,7 @@ function utils.truncate(str, len)
     end
 end
 
-function utils.cookie(name, value)
+function utils.cookie(name, value, expires_in_seconds)
     if value == nil then
         local cookies = document.cookie
         if not cookies then return end
@@ -254,7 +254,8 @@ function utils.cookie(name, value)
     elseif value == "delete" then
         document.cookie = name .. "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/"
     else
-        local expires = os.date("!%a, %d %b %Y %H:%M:%S GMT", os.time() + 5 * 24 * 60 * 60)
+        local lifetime = expires_in_seconds or (5 * 24 * 60 * 60)
+        local expires = os.date("!%a, %d %b %Y %H:%M:%S GMT", os.time() + lifetime)
         document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=/; Secure; SameSite=Lax"
     end
 end
@@ -364,6 +365,50 @@ function utils.notify(message, type, duration)
     end)()
 end
 
+function utils.readable(seconds, short, ms)
+	local function decompose(value, mult)
+		return math.modf(value / mult), math.fmod(value, mult)
+	end
+	
+    local units = short and {
+        {'y', 31536000000},
+		{'mo', 2592000000},
+		{'w', 604800000},
+		{'d', 86400000},
+		{'h', 3600000},
+		{'m', 60000},
+		{'s', 1000}
+	} or {
+        {'years', 31536000000},
+		{'months', 2592000000},
+		{'weeks', 604800000},
+		{'days', 86400000},
+		{'hours', 3600000},
+		{'minutes', 60000},
+		{'seconds', 1000}
+    }
+
+    if ms then
+        if short then
+            table.insert(units, 1, {'ms', 1})
+        else
+            table.insert(units, 1, {'milliseconds', 1})
+        end
+    end
+
+	local ret = {}
+	local ms = seconds * 1000
+	for _, unit in ipairs(units) do
+		local n
+		n, ms = decompose(ms, unit[2])
+		if n > 0 then
+			table.insert(ret, n .. unit[1])
+		end
+	end
+	return #ret > 0 and table.concat(ret) or "0s"
+end
+
+
 function utils.convert(str, denyseconds)
     if not str then return nil end
     local units = {
@@ -423,9 +468,29 @@ function utils.guild(id, cookie)
         })
 
         if success and response and response.data then
-            return response.data
+            return true, response.data
+        else
+            return false, response
         end
     end
+end
+
+function utils.panel(id, cookie)
+    cookie = cookie or utils.cookie("discord")
+
+    if id then
+        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/panel", {
+            ["Discord-Code"] = cookie
+        })
+
+        if success and response and response.data then
+            return true, response.data
+        else
+            return false, response
+        end
+    end
+
+    return false, nil
 end
 
 function utils.erlc(id, cookie)
@@ -493,6 +558,48 @@ function utils.bolos(guildID, targetPlayer, cookie)
         if success and response and response.data then
             return response.data
         end
+    end
+end
+
+function utils.shifts(id, cookie)
+    cookie = cookie or utils.cookie("discord")
+
+    if id then
+        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/shifts", {
+            ["Discord-Code"] = cookie
+        })
+
+        if success and response and response.data then
+            return response.data
+        end
+    end
+end
+
+function utils.startShift(guildID, shiftType, cookie, callback)
+    cookie = cookie or utils.cookie("discord")
+    if guildID and shiftType then
+        http.request(callback, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/shifts/start", {
+            ["Discord-Code"] = cookie,
+            ["Content-Type"] = "application/json"
+        }, {type = shiftType})
+    end
+end
+
+function utils.pauseShift(guildID, cookie, callback)
+    cookie = cookie or utils.cookie("discord")
+    if guildID then
+        http.request(callback, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/shifts/pause", {
+            ["Discord-Code"] = cookie
+        })
+    end
+end
+
+function utils.endShift(guildID, cookie, callback)
+    cookie = cookie or utils.cookie("discord")
+    if guildID then
+        http.request(callback, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/shifts/end", {
+            ["Discord-Code"] = cookie
+        })
     end
 end
 
