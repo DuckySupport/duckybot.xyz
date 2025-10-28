@@ -79,7 +79,7 @@
     </main>
     <div id="footer"></div>
     <script nonce="{{nonce}}">
-        fetch("/index.lua")
+        fetch("/linked-roles/index.lua")
             .then(res => res.text())
             .then(lua => {
                 fengari.load(lua)();
