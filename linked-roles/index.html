@@ -65,13 +65,16 @@
             <div class="max-w-5xl mx-auto text-center">
                 <div id="loadingContainer" class="bg-secondary/80 border border-white/10 rounded-2xl p-8 shadow-lg max-w-xl mx-auto">
                     <div class="flex flex-col items-center space-y-3">
-                        <img src="/images/icons/Loading.gif" alt="icon" class="w-20 h-20" id="loadingIcon">
-                        <h1 class="text-white text-3xl font-semibold text-center" id="loadingTitle">Loading...
-                        </h1>
+                        <img src="/images/icons/Ducky.png" alt="icon" class="w-20 h-20">
+                        <h1 class="text-white text-3xl font-semibold text-center">Link Roles</h1>
                         <hr class="border-white/10 w-3/4 my-4">
-                        <p class="text-white/70 text-center" id="loadingText">
-                            Please wait...
+                        <p class="text-white/70 text-center">
+                            To use linked roles, Ducky needs to store a refresh token to be able to automatically update your roles in the future. Do you agree to this?
                         </p>
+                        <div class="flex gap-4 pt-4">
+                            <button id="agreeButton" class="btn-primary px-5 py-2 rounded-full text-sm">Agree</button>
+                            <button id="denyButton" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-full text-sm">Deny</button>
+                        </div>
                     </div>
                 </div>
             </div>
