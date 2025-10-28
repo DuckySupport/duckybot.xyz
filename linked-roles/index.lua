@@ -17,7 +17,7 @@ end
 
 local parameters = utils.parameters()
 
-if parameters.access_token and parameters.state then
+if parameters.code and parameters.state then
 	local savedState = utils.cookie("oauth_state")
 	utils.cookie("oauth_state", "delete")
 
@@ -34,7 +34,7 @@ if parameters.access_token and parameters.state then
 			utils.loading("fail", "API Error", (response and response.message) or "An unknown error occurred.")
 		end
 	end, "POST", "https://devapi.duckybot.xyz/linked-roles/update", {
-		["Discord-Code"] = parameters.access_token,
+		["Discord-Code"] = parameters.code,
 	})
 else
 	utils.loading("loading", "Redirecting...", "Redirecting you to Discord to link your roles.")
