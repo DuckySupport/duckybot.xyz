@@ -240,7 +240,7 @@ function utils.truncate(str, len)
     end
 end
 
-function utils.cookie(name, value)
+function utils.cookie(name, value, expires_in_seconds)
     if value == nil then
         local cookies = document.cookie
         if not cookies then return end
@@ -254,7 +254,8 @@ function utils.cookie(name, value)
     elseif value == "delete" then
         document.cookie = name .. "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/"
     else
-        local expires = os.date("!%a, %d %b %Y %H:%M:%S GMT", os.time() + 5 * 24 * 60 * 60)
+        local lifetime = expires_in_seconds or (5 * 24 * 60 * 60)
+        local expires = os.date("!%a, %d %b %Y %H:%M:%S GMT", os.time() + lifetime)
         document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=/; Secure; SameSite=Lax"
     end
 end
