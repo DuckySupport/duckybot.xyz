@@ -17,15 +17,9 @@ end
 
 local parameters = utils.parameters()
 
-local agreeButton = document:getElementById("agreeButton")
-local denyButton = document:getElementById("denyButton")
-
-if parameters.code and parameters.state then
-	agreeButton.parentElement:remove()
-	denyButton.parentElement:remove()
-
-	local savedState = utils.cookie("state")
-	utils.cookie("state", "delete")
+if parameters.access_token and parameters.state then
+	local savedState = utils.cookie("oauth_state")
+	utils.cookie("oauth_state", "delete")
 
 	if not savedState or savedState ~= parameters.state then
 		utils.loading("fail", "State Mismatch", "There was an issue verifying your request. Please try again.")
@@ -40,19 +34,11 @@ if parameters.code and parameters.state then
 			utils.loading("fail", "API Error", (response and response.message) or "An unknown error occurred.")
 		end
 	end, "POST", "https://devapi.duckybot.xyz/linked-roles/update", {
-		["Discord-Code"] = parameters.code,
+		["Discord-Code"] = parameters.access_token,
 	})
 else
-	agreeButton:addEventListener("click", function()
-		agreeButton.parentElement:remove()
-		denyButton.parentElement:remove()
-		utils.loading("loading", "Redirecting...", "Redirecting you to Discord to link your roles.")
-		local state = utils.crypto()
-		utils.cookie("state", state, 480, "None")
-		utils.redirect("https://discord.com/api/oauth2/authorize?client_id=1284586408945647727&redirect_uri=" .. redirect_uri .. "&response_type=code&scope=identify+role_connections.write&state=" .. state)
-	end)
-
-	denyButton:addEventListener("click", function()
-		utils.redirect("/")
-	end)
+	utils.loading("loading", "Redirecting...", "Redirecting you to Discord to link your roles.")
+	local state = global.crypto:randomUUID()
+	utils.cookie("oauth_state", state, 480)
+	utils.redirect("https://discord.com/api/oauth2/authorize?client_id=1284586408945647727&redirect_uri=" .. redirect_uri .. "&response_type=code&scope=role_connections.write&state=" .. state)
 end

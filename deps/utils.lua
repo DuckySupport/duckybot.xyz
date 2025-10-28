@@ -240,12 +240,7 @@ function utils.truncate(str, len)
     end
 end
 
-function utils.date(timestamp)
-    local makeDate = js.global:eval("(function(t) { return new Date(t * 1000).toUTCString(); })")
-    return makeDate(timestamp)
-end
-
-function utils.cookie(name, value, expires_in_seconds, samesite)
+function utils.cookie(name, value, expires_in_seconds)
     if value == nil then
         local cookies = document.cookie
         if not cookies then return end
@@ -261,15 +256,8 @@ function utils.cookie(name, value, expires_in_seconds, samesite)
         return utils.cookie(name) == nil
     else
         local lifetime = expires_in_seconds or (5 * 24 * 60 * 60)
-        local expires = utils.date(os.time() + lifetime)
-        document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=/; Secure; SameSite=" .. (samesite or "Lax")
-
-        local attempt = 1
-        repeat
-            attempt = attempt + 1
-        until utils.cookie(name) or attempt > 10
-
-        return utils.cookie(name) == value
+        local expires = os.date("!%a, %d %b %Y %H:%M:%S GMT", os.time() + lifetime)
+        document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=/; Secure; SameSite=Lax"
     end
 end
 
