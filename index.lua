@@ -595,7 +595,7 @@ elseif path[1] == "servers" then
 					utils.redirect("/")
 				end)()
 			else
-				update("fail", "Not Logged In", "You are not logged in. You will be redirected in a moment.")
+				update("fail", "Not Logged In", "You are not logged in. You will be redirect in a moment.")
 				coroutine.wrap(function()
 					time.sleep(3000)
 					utils.redirect("login")
@@ -623,7 +623,7 @@ elseif path[1] == "servers" then
 			local savedState = utils.cookie("state")
 
 			if not providedState or not savedState or providedState ~= savedState then
-				update("fail", "State Mismatch", "There was an issue verifying your request. You will be redirected in a moment.")
+				update("fail", "State Mismatch", "There was an issue verifying your request. You will be redirect in a moment.")
 				coroutine.wrap(function()
 					time.sleep(3000)
 					utils.redirect("login")
@@ -657,8 +657,8 @@ elseif path[1] == "servers" then
 				utils.cookie("redirectAfter", parameters.redirect, 480)
 			end
 
-			local state = utils.crypto()
-			utils.cookie("state", state, 480, "None")
+			local state = global.crypto:randomUUID()
+			utils.cookie("state", state, 480)
 
 			utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=token&redirect_uri=" .. redirect_uri .. "&scope=identify+guilds&state=" .. state)
 		end
