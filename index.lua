@@ -344,7 +344,7 @@ coroutine.wrap(function()
 					utils.redirect("/")
 				end)()
 			else
-				update("fail", "Not Logged In", "You are not logged in. You will be redirect in a moment.")
+				update("fail", "Not Logged In", "You are not logged in. You will be redirected in a moment.")
 				coroutine.wrap(function()
 					time.sleep(3000)
 					utils.redirect("login")
@@ -367,7 +367,7 @@ coroutine.wrap(function()
 			local savedState = utils.cookie("state")
 
 			if not providedState or not savedState or providedState ~= savedState then
-				update("fail", "State Mismatch", "There was an issue verifying your request. You will be redirect in a moment.")
+				update("fail", "State Mismatch", "There was an issue verifying your request. You will be redirected in a moment.")
 				coroutine.wrap(function()
 					time.sleep(3000)
 					utils.redirect("login")
