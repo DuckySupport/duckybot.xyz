@@ -344,8 +344,11 @@ coroutine.wrap(function()
 					utils.redirect("/")
 				end)()
 			else
-				update("fail", "Not Logged In", "You are not logged in.")
-				utils.redirect("login")
+				update("fail", "Not Logged In", "You are not logged in. You will be redirect in a moment.")
+				coroutine.wrap(function()
+					time.sleep(3000)
+					utils.redirect("login")
+				end)()
 			end
 		elseif cookie then
 			update("loading", "Loading...", "Fetching your Discord profile from our API...", false)
@@ -358,6 +361,22 @@ coroutine.wrap(function()
 				update("fail", "API Error", "Failed to fetch your Discord profile from our API. Please try again later.")
 			end
 		elseif parameters.access_token then
+			update("loading", "Loading...", "Validating your request...", false)
+
+			local providedState = parameters.state
+			local savedState = utils.cookie("state")
+
+			if not providedState or not savedState or providedState ~= savedState then
+				update("fail", "State Mismatch", "There was an issue verifying your request. You will be redirect in a moment.")
+				coroutine.wrap(function()
+					time.sleep(3000)
+					utils.redirect("login")
+				end)()
+				return
+			end
+
+			utils.cookie("state", "delete")
+
 			update("loading", "Loading...", "Fetching your Discord profile from our API...", false)
 
 			user = utils.user(parameters.access_token)
@@ -365,13 +384,27 @@ coroutine.wrap(function()
 			if user then
 				utils.cookie("discord", parameters.access_token)
 				update("success", "Logged In", 'You have been logged in as <a href="https://discord.com/users/' .. user.id .. '" class="text-white font-semibold">@' .. user.username .. '</a>.', true)
-				if parameters.redirect or parameters.state then utils.redirect(parameters.redirect or parameters.state) end
+
+				local redirectAfter = utils.cookie("redirectAfter")
+
+				if redirectAfter then
+					utils.cookie("redirectAfter", "delete")
+					utils.redirect(redirectAfter)
+				end
 			else
 				update("fail", "API Error", "Failed to fetch your Discord profile from our API. Please try again later.")
 			end
 		else
 			update("loading", "Redirecting...", "You are being redirected to Discord.", false)
-			utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=token&redirect_uri=" .. redirect_uri .. "&scope=identify+guilds" .. ((parameters.redirect and ("&state=" .. parameters.redirect)) or ""))
+
+			if parameters.redirect then
+				utils.cookie("redirectAfter", parameters.redirect, 480)
+			end
+
+			local state = global.crypto:randomUUID()
+			utils.cookie("state", state, 480)
+
+			utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=token&redirect_uri=" .. redirect_uri .. "&scope=identify+guilds&state=" .. state)
 		end
 	elseif path[1] == "servers" then
 		local cookie = utils.cookie("discord")
