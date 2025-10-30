@@ -19,7 +19,7 @@ local elements = {
 		users = document:getElementById("userCount")
 	},
 	feedback = document:getElementById("feedbackSlider"),
-	version = document:getElementById("duckyVersionText"),
+	version = document:getElementById("duckyVersion"),
 	navbar = document:getElementById("navbar"),
 	footer = document:getElementById("footer"),
 	team = {
@@ -523,16 +523,22 @@ coroutine.wrap(function()
 end)()
 
 http.request(function(success, response)
-	if success and response and response.data then
-		if location == "/" then elements.version.textContent = response.data.version end
+	if success and response and response.data and response.data.version then
+		if location == "/" then
+			elements.version.innerHTML = string.format('Ducky %s is now live! <i class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i>', response.data.version)
+		end
 
 		elements.footer.version.textContent = response.data.version
 		elements.footer.status.innerHTML = '<span class="w-2 h-2 bg-[#66FF66] rounded-full"></span> Status: Operational'
 		elements.footer.status.className = "flex items-center gap-1 px-2 py-0.5 bg-[#66FF66]/10 rounded-full text-[#66FF66] text-xs"
 	else
-		elements.footer.version.textContent = "v1.3.0 Stable"
+		if location == "/" then
+			elements.version.className = "group inline-flex items-center px-4 sm:px-6 py-1.5 sm:py-2 rounded-full bg-[#FF6666]/10 border border-[#FF6666]/10 text-white/90 text-xs sm:text-sm font-medium mb-6 sm:mb-8 hover:bg-primary/10 transition"
+			elements.version.innerHTML = 'Ducky is currently experiencing an outage. <i class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i>'
+		end
+
+		elements.footer.version.textContent = "v1.5.1 Stable"
 		elements.footer.status.innerHTML = '<span class="w-2 h-2 bg-[#FF6666] rounded-full"></span> Status: Unavailable'
 		elements.footer.status.className = "flex items-center gap-1 px-2 py-0.5 bg-[#FF6666]/10 rounded-full text-[#FF6666] text-xs"
-		elements.footer.statusDot.className = "w-2 h-2 bg-[#FF6666] rounded-full"
 	end
 end, "GET", "https://api.duckybot.xyz/")
