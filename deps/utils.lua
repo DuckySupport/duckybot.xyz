@@ -95,6 +95,15 @@ function utils.filter(tbl, pred)
     return ret
 end
 
+function utils.find(tbl, key, value)
+    for _, v in pairs(tbl) do
+        if v[key] == value then
+            return v
+        end
+    end
+    return nil
+end
+
 function utils.input(input, lower)
     local value = input.value ~= "" and input.value
     if value and lower then
