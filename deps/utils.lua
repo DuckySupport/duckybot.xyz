@@ -188,13 +188,20 @@ example: {
 
 ]]--
 function utils.popup(data)
+    local popupWrapper = document:createElement("div")
+    local wrapperClass = "fixed inset-0 bg-black/30 flex items-center justify-center z-50"
+    if data.blur then
+        wrapperClass = wrapperClass .. " backdrop-blur-sm"
+    end
+    popupWrapper.className = wrapperClass
+
     local new = document:createElement("div")
     new.className = "popup animate-in quick"
 
     if data.width then
         new.style.width = data.width .. "px"
     end
-    
+
     new.innerHTML = string.format([[
         <div class="header">
             <p class="text-primary text-2xl font-bold m-0">%s</p>
@@ -208,28 +215,35 @@ function utils.popup(data)
         new.classList:add("animate-out")
 
         time.after(200, function()
-            new:remove()
+            popupWrapper:remove()
         end)
     end
+
+    popupWrapper:addEventListener("click", function()
+        if js.global.event.target == popupWrapper then
+            close()
+        end
+    end)
 
     local buttons = document:createElement("div")
     buttons.className = "buttons"
 
-    for _, button in pairs(data.buttons or {}) do
-        local new = document:createElement("button")
-        new.className = "btn-" .. button.style .. " px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base"
-        new.textContent = button.label
-        new:addEventListener("click", function(...)
-            button.callback(...)
+    for _, buttonData in pairs(data.buttons or {}) do
+        local button = document:createElement("button")
+        button.className = "btn-" .. buttonData.style .. " px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base"
+        button.textContent = buttonData.label
+        button:addEventListener("click", function(...)
+            buttonData.callback(...)
             close()
         end)
-        buttons:appendChild(new)
+        buttons:appendChild(button)
     end
 
     new:querySelector(".header #close"):addEventListener("click", close)
 
     new:appendChild(buttons)
-    body:appendChild(new)
+    popupWrapper:appendChild(new)
+    body:appendChild(popupWrapper)
 end
 
 function utils.truncate(str, len)
