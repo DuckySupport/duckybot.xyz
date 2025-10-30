@@ -187,7 +187,8 @@ coroutine.wrap(function()
 							<li>Click the "Purchase Slot" button.</li>
 							<li>Follow the on-screen instructions to complete your purchase.</li>
 						</ol>
-					]]
+					]],
+					blur = true
 				})
 			end)
 		end
