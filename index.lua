@@ -189,6 +189,7 @@ coroutine.wrap(function()
 							<li>Use the <code class="bg-black/20 px-1.5 py-1 rounded">/plus manage</code> command.</li>
 							<li>Click the "Purchase Slot" button.</li>
 							<li>Follow the instructions to complete your purchase.</li>
+							<li>Apply the slot to a server with the <b>Use Slot</b> button.</li>
 						</ol>
 					]],
 					blur = true

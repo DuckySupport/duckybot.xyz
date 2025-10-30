@@ -198,8 +198,13 @@ function utils.popup(data)
     local new = document:createElement("div")
     new.className = "popup animate-in quick"
 
-    if data.width then
+    if utils.mobile() then
+        new.style.width = "90vw"
+        new.style.maxWidth = "400px"
+    elseif data.width then
         new.style.width = data.width .. "px"
+    else
+        new.style.width = "500px"
     end
 
     new.innerHTML = string.format([[
