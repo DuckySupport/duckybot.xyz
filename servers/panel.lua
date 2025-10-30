@@ -373,7 +373,7 @@ coroutine.wrap(function()
             end)
 
             playerPanel.close:addEventListener("click", hidePlayerPanel)
-            playerPanel.container:addEventListener("click", function(e)
+            playerPanel.container:addEventListener("click", function()
                 local target = js.global.event and js.global.event.target
                 if target == playerPanel.container then
                     hidePlayerPanel()
@@ -658,7 +658,7 @@ coroutine.wrap(function()
                         end
 
                         if refreshQuota then
-                            js.global:setTimeout(onDropdownChange, 50)
+							time.after(50, onDropdownChange)
                         else
                             onDropdownChange()
                         end
