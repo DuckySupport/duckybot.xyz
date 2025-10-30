@@ -377,7 +377,12 @@ coroutine.wrap(function()
 			if user then
 				update("success", "Already Logged In", 'You are already logged in as <a href="https://discord.com/users/' .. user.id .. '" class="text-white font-semibold">@' .. user.username .. '</a>.', true)
 
-				if parameters.redirect or parameters.state then utils.redirect(parameters.redirect or parameters.state) end
+				local redirectAfter = utils.cookie("redirectAfter")
+
+				if redirectAfter then
+					utils.cookie("redirectAfter", "delete")
+					utils.redirect(redirectAfter)
+				end
 			else
 				update("fail", "API Error", "Failed to fetch your Discord profile from our API. Please try again later.")
 			end
