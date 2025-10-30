@@ -50,6 +50,9 @@ local elements = {
 		container = document:getElementById("servers"),
 		ducky = document:getElementById("serversDucky"),
 		refresh = document:getElementById("serversRefresh")
+	},
+	plus = {
+		purchase = document:getElementById("purchase")
 	}
 }
 
@@ -175,16 +178,15 @@ coroutine.wrap(function()
 			end
 		end, "GET", "https://api.duckybot.xyz/feedback")
 	elseif path[1] == "plus" then
-		local purchaseButton = document:getElementById("purchaseButton")
-		if purchaseButton then
-			purchaseButton:addEventListener("click", function()
+		if elements.plus.purchase then
+			elements.plus.purchase:addEventListener("click", function()
 				utils.popup({
 					title = "How to Purchase Ducky Plus+",
 					content = [[
 						<ol class="list-decimal list-inside text-white/80 space-y-2">
 							<li><a target="_blank" href="/invite" class="font-bold text-blue-400">Invite Ducky</a> to your server.</li>
-							<li>Use the <code class="bg-black/20 px-1.5 py-1 rounded">/plus manage</code> command.</li>
-							<li>Click the "Purchase Slot" button.</li>
+							<li>Use the <code class="bg-black/20 font-bold px-1.5 py-1 rounded">/plus manage</code> command.</li>
+							<li>Click the <b>Purchase Slot</b> button.</li>
 							<li>Follow the instructions to complete your purchase.</li>
 						</ol>
 					]],
