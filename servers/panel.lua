@@ -624,10 +624,12 @@ coroutine.wrap(function()
                         local customDropdown = document:getElementById("customShiftDropdown")
 
                         local selectedShiftType = Shifts.types[1].name
+
                         if lastShiftType and utils.find(Shifts.types, "name", lastShiftType) then
                             selectedShiftType = lastShiftType
                             lastShiftType = nil
                         end
+
                         dropdownButtonText.textContent = selectedShiftType
                         local function onDropdownChange()
                             updateQuotaDisplay(selectedShiftType, 0)
@@ -666,7 +668,6 @@ coroutine.wrap(function()
                             btn.disabled = true
                             btn.innerHTML = "<img src=\"/images/icons/Loading.gif\" class=\"w-5 h-5 mx-auto\" />"
 
-                            console.log(nil, selectedShiftType)
                             utils.startShift(GuildID, selectedShiftType, cookie, function(success, response)
                                 if success then
                                     Shifts = response.data
