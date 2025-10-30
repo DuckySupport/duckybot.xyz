@@ -185,7 +185,7 @@ coroutine.wrap(function()
 							<li><a target="_blank" href="/invite" class="font-bold text-blue-400">Invite Ducky</a> to your server.</li>
 							<li>Use the <code class="bg-black/20 px-1.5 py-1 rounded">/plus manage</code> command.</li>
 							<li>Click the "Purchase Slot" button.</li>
-							<li>Follow the on-screen instructions to complete your purchase.</li>
+							<li>Follow the instructions to complete your purchase.</li>
 						</ol>
 					]],
 					blur = true
