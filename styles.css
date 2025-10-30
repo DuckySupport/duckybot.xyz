@@ -37,6 +37,7 @@ body {
     .floating-nav {
         height: 60px;
     }
+
     body {
         padding-top: 60px;
     }
@@ -163,6 +164,10 @@ body {
     animation: fadeIn 0.8s ease-out forwards;
 }
 
+.animate-fade-out {
+    animation: fadeOut 0.8s ease-out forwards;
+}
+
 .animate-slide-up {
     opacity: 0;
     transform: translateY(20px);
@@ -187,16 +192,23 @@ body {
     animation: slideDown 0.8s ease-out forwards;
 }
 
-.quick {
-    animation-duration: 0.2s;
-}
-
 @keyframes fadeIn {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
     }
 }
 
@@ -205,6 +217,7 @@ body {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -216,6 +229,7 @@ body {
         opacity: 0;
         transform: translateX(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -227,6 +241,7 @@ body {
         opacity: 0;
         transform: translateX(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -238,6 +253,7 @@ body {
         opacity: 0;
         transform: translateY(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -341,6 +357,7 @@ body {
         --translateY: 10px;
         opacity: 0;
     }
+
     to {
         --translateY: 0;
         opacity: 1;
@@ -357,22 +374,22 @@ body {
     will-change: contents;
 }
 
- ::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 3px;
     height: 6px;
     padding-left: 5px;
 }
 
- ::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.05);
 }
 
- ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.3);
     border-radius: 3px;
 }
 
- ::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.5);
 }
 
@@ -380,27 +397,34 @@ body {
     .desktop-nav {
         display: none;
     }
+
     .mobile-nav-toggle {
         display: block;
     }
+
     h1 {
         font-size: 2rem !important;
         line-height: 1.2 !important;
     }
+
     h2 {
         font-size: 1.75rem !important;
         margin-bottom: 1.5rem !important;
     }
+
     h3 {
         font-size: 1.25rem !important;
     }
+
     p {
         font-size: 0.9375rem !important;
     }
+
     section {
         padding-top: 3rem !important;
         padding-bottom: 3rem !important;
     }
+
     .pt-40 {
         padding-top: 8rem !important;
     }
@@ -521,6 +545,7 @@ body {
     .content-area p {
         margin-bottom: 1rem !important;
     }
+
     .content-area .glass-card {
         margin-bottom: 1rem !important;
     }
@@ -535,38 +560,146 @@ body {
 }
 
 .pill-gray {
-  background-color: rgba(107, 114, 128, 0.15);
-  color: rgb(156, 163, 175);
+    background-color: rgba(107, 114, 128, 0.15);
+    color: rgb(156, 163, 175);
 }
+
 .pill-gray span {
-  background-color: rgb(156, 163, 175);
+    background-color: rgb(156, 163, 175);
 }
 
 .pill-green {
-  background-color: rgba(34, 197, 94, 0.15);
-  color: rgb(74, 222, 128);
+    background-color: rgba(34, 197, 94, 0.15);
+    color: rgb(74, 222, 128);
 }
+
 .pill-green span {
-  background-color: rgb(74, 222, 128);
+    background-color: rgb(74, 222, 128);
 }
 
 .pill-yellow {
-  background-color: rgba(250, 204, 21, 0.15);
-  color: rgb(251, 191, 36);
+    background-color: rgba(250, 204, 21, 0.15);
+    color: rgb(251, 191, 36);
 }
+
 .pill-yellow span {
-  background-color: rgb(251, 191, 36);
+    background-color: rgb(251, 191, 36);
 }
 
 .pill-red {
-  background-color: rgba(239, 68, 68, 0.15);
-  color: rgb(248, 113, 113);
+    background-color: rgba(239, 68, 68, 0.15);
+    color: rgb(248, 113, 113);
 }
+
 .pill-red span {
-  background-color: rgb(248, 113, 113);
+    background-color: rgb(248, 113, 113);
 }
 
 img {
     user-select: none;
     -webkit-user-drag: none;
+}
+
+input {
+    transition: border-color 0.2s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: rgba(245, 255, 130, 1);
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%), translate(20px);
+    background: rgba(18, 18, 18, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    padding: 20px;
+    z-index: 999;
+}
+
+.popup .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.popup .header p {
+    margin: 0;
+    line-height: 1;
+    display: block;
+}
+
+.popup .header button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    line-height: 1;
+    font-size: 16px;
+    border-radius: 9999px;
+    box-sizing: border-box;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}
+
+.popup p {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.popup .buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.popup.animate-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: popupIn 0.2s ease-out forwards;
+}
+
+.popup.animate-out {
+    animation: popupOut 0.2s ease-out forwards;
+}
+
+.quick {
+    animation-duration: 0.2s;
+}
+
+@keyframes popupIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+
+@keyframes popupOut {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
 }
