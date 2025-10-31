@@ -737,7 +737,7 @@ coroutine.wrap(function()
                                     elements.panel.players.internal.container.classList:add("hidden")
                                 else
                                     elements.panel.players.container.innerHTML = [[
-                                        <div class="flex items-center justify-center text-white text-center gap-2 w-full">
+                                        <div class="flex items-center justify-center text-white text-sm text-center gap-2 w-full">
                                             <img src="/images/icons/Fail.svg" class="w-5 h-5" />
                                             <p>There are no players in-game.</p>
                                         </div>
@@ -886,9 +886,9 @@ coroutine.wrap(function()
                                 "No ERLC private server data was found"
 
                             elements.panel.players.container.innerHTML = [[
-                                <div class="flex items-center justify-center text-white text-center gap-2 w-full">
+                                <div class="flex items-center justify-center text-white text-center text-sm gap-2 w-full">
                                     <img src="/images/icons/Fail.svg" class="w-5 h-5" />
-                                    <p>The ERLC private server is offline or not linked.</p>
+                                    <p>There is no ERLC private server linked.</p>
                                 </div>
                             ]]
                         end
