@@ -95,6 +95,15 @@ function utils.filter(tbl, pred)
     return ret
 end
 
+function utils.find(tbl, key, value)
+    for _, v in pairs(tbl) do
+        if v[key] == value then
+            return v
+        end
+    end
+    return nil
+end
+
 function utils.input(input, lower)
     local value = input.value ~= "" and input.value
     if value and lower then
@@ -259,7 +268,7 @@ function utils.truncate(str, len)
     end
 end
 
-function utils.cookie(name, value, expires_in_seconds)
+function utils.cookie(name, value, expires_in_seconds, samesite)
     if value == nil then
         local cookies = document.cookie
         if not cookies then return end
@@ -275,7 +284,7 @@ function utils.cookie(name, value, expires_in_seconds)
     else
         local lifetime = expires_in_seconds or (5 * 24 * 60 * 60)
         local expires = os.date("!%a, %d %b %Y %H:%M:%S GMT", os.time() + lifetime)
-        document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=/; Secure; SameSite=Lax"
+        document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=/; Secure; SameSite=" .. (samesite or "Lax")
     end
 end
 
