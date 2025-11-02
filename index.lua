@@ -186,9 +186,9 @@ coroutine.wrap(function()
 						<ol class="list-decimal list-inside text-white/80 space-y-2">
 							<li><a target="_blank" href="/invite" class="font-bold text-blue-400">Invite Ducky</a> to your server.</li>
 							<li>Use the <code class="bg-black/20 font-bold px-1.5 py-1 rounded">/plus manage</code> command.</li>
-							<li>Click the <b>Purchase Slot</b> button.</li>
+							<li>Press the <b>Purchase Slot</b> button.</li>
 							<li>Follow the instructions to complete your purchase.</li>
-							<li>Apply the slot to a server with the <b>Use Slot</b> button.</li>
+							<li>Apply the slot to a server by pressing the <b>Use Slot</b> button.</li>
 						</ol>
 					]],
 					blur = true
@@ -428,7 +428,7 @@ coroutine.wrap(function()
 			end
 
 			local state = global.crypto:randomUUID()
-			utils.cookie("state", state, 480)
+			utils.cookie("state", state, 480, "None")
 
 			utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=token&redirect_uri=" .. redirect_uri .. "&scope=identify+guilds&state=" .. state)
 		end
