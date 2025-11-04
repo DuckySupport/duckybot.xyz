@@ -287,17 +287,21 @@ function utils.cookie(name, value, expires_in_seconds, samesite)
     else
         print("SET cookie: " .. tostring(name) .. "=" .. tostring(value))
         local lifetime = expires_in_seconds or (5 * 24 * 60 * 60)
+        print("SET cookie (lifetime): " .. tostring(lifetime))
         local expires = os.date("!%a, %d %b %Y %H:%M:%S GMT", os.time() + lifetime)
+        print("SET cookie (expires): " .. tostring(expires))
         document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=/; Secure; SameSite=" .. (samesite or "Lax")
+        print("SET cookie (written): " .. tostring(document.cookie))
 
-        local attempt = 0
+        local attempt = 1
         repeat
+            print("SET cookie (verify): attempt " .. tostring(attempt) .. ": " .. tostring(utils.cookie(name)))
             attempt = attempt + 1
             time.sleep(100)
             print("Checking cookie set attempt " .. attempt .. ": " .. tostring(utils.cookie(name)))
         until utils.cookie(name) or attempt > 10
 
-        print("SET cookie (complete): " .. tostring(document.cookie) .. ", " .. tostring(utils.cookie(name)))
+        print("SET cookie (complete): " .. attempt .. " attempts, " .. tostring(document.cookie) .. ", " .. tostring(utils.cookie(name)))
         return utils.cookie(name) == value
     end
 end
