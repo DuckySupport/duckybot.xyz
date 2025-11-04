@@ -269,9 +269,8 @@ function utils.truncate(str, len)
 end
 
 function utils.date(timestamp)
-    local ts = js.global:eval("return " .. tostring(timestamp) .. " * 1000")
-    local date = js.new(js.global.Date, ts)
-    return date:toUTCString()
+    local makeDate = js.global:eval("(function(t) { return new Date(t * 1000).toUTCString(); })")
+    return makeDate(timestamp)
 end
 
 function utils.cookie(name, value, expires_in_seconds, samesite)
