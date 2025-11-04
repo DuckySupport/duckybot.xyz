@@ -281,10 +281,19 @@ function utils.cookie(name, value, expires_in_seconds, samesite)
         end
     elseif value == "delete" then
         document.cookie = name .. "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/"
+        return utils.cookie(name) == nil
     else
         local lifetime = expires_in_seconds or (5 * 24 * 60 * 60)
         local expires = os.date("!%a, %d %b %Y %H:%M:%S GMT", os.time() + lifetime)
         document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=/; Secure; SameSite=" .. (samesite or "Lax")
+
+        local attempt = 0
+        repeat
+            attempt = attempt + 1
+            time.sleep(100)
+        until utils.cookie(name) or attempt > 10
+
+        return utils.cookie(name) == value
     end
 end
 
