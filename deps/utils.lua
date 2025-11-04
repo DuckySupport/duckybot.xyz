@@ -269,6 +269,9 @@ function utils.truncate(str, len)
 end
 
 function utils.cookie(name, value, expires_in_seconds, samesite)
+    print("TESTS:")
+    print("VERSION: " .. tostring(_VERSION))
+    print("DATE: " .. os.date())
     if value == nil then
         print("FETCH cookie: " .. name)
         local cookies = document.cookie
