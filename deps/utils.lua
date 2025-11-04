@@ -270,6 +270,7 @@ end
 
 function utils.cookie(name, value, expires_in_seconds, samesite)
     if value == nil then
+        print("FETCH cookie: " .. name)
         local cookies = document.cookie
         if not cookies then return end
 
@@ -280,9 +281,11 @@ function utils.cookie(name, value, expires_in_seconds, samesite)
             end
         end
     elseif value == "delete" then
+        print("DELETE cookie: " .. name)
         document.cookie = name .. "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/"
         return utils.cookie(name) == nil
     else
+        print("SET cookie: " .. tostring(name) .. "=" .. tostring(value))
         local lifetime = expires_in_seconds or (5 * 24 * 60 * 60)
         local expires = os.date("!%a, %d %b %Y %H:%M:%S GMT", os.time() + lifetime)
         document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=/; Secure; SameSite=" .. (samesite or "Lax")
@@ -291,6 +294,7 @@ function utils.cookie(name, value, expires_in_seconds, samesite)
         repeat
             attempt = attempt + 1
             time.sleep(100)
+            print("Checking cookie set attempt " .. attempt .. ": " .. tostring(utils.cookie(name)))
         until utils.cookie(name) or attempt > 10
 
         return utils.cookie(name) == value
