@@ -269,7 +269,8 @@ function utils.truncate(str, len)
 end
 
 function utils.date(timestamp)
-    local date = js.new(js.global.Date, timestamp * 1000)
+    local ts = js.global:eval("return " .. tostring(timestamp) .. " * 1000")
+    local date = js.new(js.global.Date, ts)
     return date:toUTCString()
 end
 

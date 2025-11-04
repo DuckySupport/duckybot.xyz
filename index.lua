@@ -542,14 +542,3 @@ http.request(function(success, response)
 		elements.footer.status.className = "flex items-center gap-1 px-2 py-0.5 bg-[#FF6666]/10 rounded-full text-[#FF6666] text-xs"
 	end
 end, "GET", "https://api.duckybot.xyz/")
-
-local js = require "js"
-local timestamp = 1762293044
-print("Timestamp (seconds): " .. tostring(timestamp))
-print("Timestamp * 1000: " .. tostring(timestamp * 1000))
-
-local date = js.new(js.global.Date, timestamp * 1000)
-print("Date result: " .. date:toUTCString())
-
-local date2 = js.new(js.global.Date, 1762293044000)
-print("Date2 result: " .. date2:toUTCString())
