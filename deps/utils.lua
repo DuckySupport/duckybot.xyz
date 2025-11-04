@@ -314,6 +314,10 @@ function utils.parameters()
     return params
 end
 
+function utils.crypto()
+    return global.crypto:randomUUID()
+end
+
 function utils.split(str, delim)
 	local ret = {}
 	if not str then

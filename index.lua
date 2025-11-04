@@ -427,7 +427,7 @@ coroutine.wrap(function()
 				utils.cookie("redirectAfter", parameters.redirect, 480)
 			end
 
-			local state = global.crypto:randomUUID()
+			local state = utils.crypto()
 			utils.cookie("state", state, 480, "None")
 
 			utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=token&redirect_uri=" .. redirect_uri .. "&scope=identify+guilds&state=" .. state)
