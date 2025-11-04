@@ -268,6 +268,11 @@ function utils.truncate(str, len)
     end
 end
 
+function utils.date(timestamp)
+    local date = js.new(js.global.Date, timestamp * 1000)
+    return date:toUTCString()
+end
+
 function utils.cookie(name, value, expires_in_seconds, samesite)
     if value == nil then
         print("FETCH cookie: " .. name)
@@ -285,15 +290,10 @@ function utils.cookie(name, value, expires_in_seconds, samesite)
         document.cookie = name .. "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/"
         return utils.cookie(name) == nil
     else
-        print("PRETESTS:")
-        print("VERSION: " .. tostring(_VERSION))
-        print("DATE (local): " .. os.date())
-        print("DATE (UTC):   " .. os.date("!%c"))
-        print("DATE (UTC2):  " .. os.date("!%a, %d %b %Y %H:%M:%S GMT"))
         print("SET cookie: " .. tostring(name) .. "=" .. tostring(value))
         local lifetime = expires_in_seconds or (5 * 24 * 60 * 60)
         print("SET cookie (lifetime): " .. tostring(lifetime))
-        local expires = os.date("!%a, %d %b %Y %H:%M:%S GMT", os.time() + lifetime)
+        local expires = utils.date(os.time() + lifetime)
         print("SET cookie (expires): " .. tostring(expires))
         document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=/; Secure; SameSite=" .. (samesite or "Lax")
         print("SET cookie (written): " .. tostring(document.cookie))
