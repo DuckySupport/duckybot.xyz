@@ -47,7 +47,7 @@ else
 		agreeButton.parentElement:remove()
 		denyButton.parentElement:remove()
 		utils.loading("loading", "Redirecting...", "Redirecting you to Discord to link your roles.")
-		local state = global.crypto:randomUUID()
+		local state = utils.crypto()
 		utils.cookie("state", state, 480, "None")
 		utils.redirect("https://discord.com/api/oauth2/authorize?client_id=1284586408945647727&redirect_uri=" .. redirect_uri .. "&response_type=code&scope=identify+role_connections.write&state=" .. state)
 	end)
