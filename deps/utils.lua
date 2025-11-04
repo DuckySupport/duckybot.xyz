@@ -290,6 +290,10 @@ function utils.cookie(name, value, expires_in_seconds, samesite)
         document.cookie = name .. "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/"
         return utils.cookie(name) == nil
     else
+        print("PRETESTS:")
+        print("os.time(): " .. tostring(os.time()))
+        print("os.time() + 3600: " .. tostring(os.time() + 3600))
+        print("Date.now(): " .. tostring(js.global.Date:now()))
         print("SET cookie: " .. tostring(name) .. "=" .. tostring(value))
         local lifetime = expires_in_seconds or (5 * 24 * 60 * 60)
         print("SET cookie (lifetime): " .. tostring(lifetime))
