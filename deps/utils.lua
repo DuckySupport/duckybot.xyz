@@ -297,6 +297,7 @@ function utils.cookie(name, value, expires_in_seconds, samesite)
             print("Checking cookie set attempt " .. attempt .. ": " .. tostring(utils.cookie(name)))
         until utils.cookie(name) or attempt > 10
 
+        print("SET cookie (complete): " .. tostring(document.cookie) .. ", " .. tostring(utils.cookie(name)))
         return utils.cookie(name) == value
     end
 end
