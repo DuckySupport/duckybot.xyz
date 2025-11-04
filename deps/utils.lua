@@ -269,9 +269,6 @@ function utils.truncate(str, len)
 end
 
 function utils.cookie(name, value, expires_in_seconds, samesite)
-    print("TESTS:")
-    print("VERSION: " .. tostring(_VERSION))
-    print("DATE: " .. os.date())
     if value == nil then
         print("FETCH cookie: " .. name)
         local cookies = document.cookie
@@ -288,6 +285,11 @@ function utils.cookie(name, value, expires_in_seconds, samesite)
         document.cookie = name .. "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/"
         return utils.cookie(name) == nil
     else
+        print("PRETESTS:")
+        print("VERSION: " .. tostring(_VERSION))
+        print("DATE (local): " .. os.date())
+        print("DATE (UTC):   " .. os.date("!%c"))
+        print("DATE (UTC2):  " .. os.date("!%a, %d %b %Y %H:%M:%S GMT"))
         print("SET cookie: " .. tostring(name) .. "=" .. tostring(value))
         local lifetime = expires_in_seconds or (5 * 24 * 60 * 60)
         print("SET cookie (lifetime): " .. tostring(lifetime))
