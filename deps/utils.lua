@@ -298,7 +298,7 @@ function utils.cookie(name, value, expires_in_seconds, samesite)
 
         local attempt = 1
         repeat
-            print("SET cookie (verify): attempt " .. tostring(attempt) .. ": " .. tostring(utils.cookie(name)))
+            print("SET cookie (verify): attempt " .. tostring(attempt))
             attempt = attempt + 1
             time.sleep(100)
             print("Checking cookie set attempt " .. attempt .. ": " .. tostring(utils.cookie(name)))
