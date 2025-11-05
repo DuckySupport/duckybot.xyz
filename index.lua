@@ -324,6 +324,7 @@ coroutine.wrap(function()
 			update("loading", "Redirecting...", "You are being redirected to Discord.", false)
 			utils.redirect("login/?redirect=link")
 		end
+	
 	elseif path[1] == "login" then
 		local redirect_uri
 		if global.window.location.hostname == "dev.duckybot.xyz" then
@@ -427,7 +428,7 @@ coroutine.wrap(function()
 				utils.cookie("redirectAfter", parameters.redirect, 480)
 			end
 
-			local state = global.crypto:randomUUID()
+			local state = utils.crypto()
 			utils.cookie("state", state, 480, "None")
 
 			utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=token&redirect_uri=" .. redirect_uri .. "&scope=identify+guilds&state=" .. state)
