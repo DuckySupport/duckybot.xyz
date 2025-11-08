@@ -20,12 +20,15 @@
         <button id="profileButton" class="w-[50px] h-[50px] rounded-full btn-outline overflow-hidden flex justify-center items-center">
             <img src="/images/misc/defaultpfp.webp" id="profileImage" class="w-full h-full object-cover"></img>
         </button>
-        <div id="profileMenu" class="hidden absolute top-[125%] right-0 glass-card dark py-2 px-2 w-[125px] animate-slide-down quick">
+        <div id="profileMenu" class="hidden absolute top-[125%] right-0 glass-card dark py-2 px-3 w-auto min-w-[150px] animate-slide-down quick">
             <!-- optional quick links
             <a href="/servers" class="flex px-4 py-2 nav-link text-white/70">Servers</a>
             <hr class="border-white/10 border-t-[2px] py-[5px]"> -->
-            <a href="/profile" class="flex px-4 py-2 nav-link text-white/70">Profile</a>
-            <a href="/login?logout=true" class="flex items-center justify-center px-4 py-2 btn-fail rounded-full">Log Out</a>
+            <a href="/profile" class="group btn-glass px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base flex items-center justify-center">
+                Profile
+                <i class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i>
+            </a>
+            <a href="/login?logout=true" class="flex items-center justify-center px-4 py-2 btn-fail rounded-full mt-2">Log Out</a>
         </div>
     </div>
 </div>
