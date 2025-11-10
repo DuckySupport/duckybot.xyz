@@ -289,7 +289,6 @@ function utils.cookie(name, value, expires_in_seconds, samesite)
         return utils.cookie(name) == nil
     else
         local lifetime = expires_in_seconds or (5 * 24 * 60 * 60)
-        local lifetime = expires_in_seconds or (5 * 24 * 60 * 60)
         local expires = utils.date(os.time() + lifetime)
         document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=/; Secure; SameSite=" .. (samesite or "Lax")
 
