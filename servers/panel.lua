@@ -779,19 +779,15 @@ coroutine.wrap(function()
 													</div>
 												</div>
 												<div class="flex items-center gap-2 text-white/50">
-													<button class="btn-glass rounded-full w-8 h-8 flex items-center justify-center" aria-label="Tools">
+													<button class="btn-glass rounded-full w-8 h-8 flex items-center justify-center" aria-label="Panel">
 														<i class="iconify text-sm" data-icon="ion:hammer"></i>
-													</button>
-
-													<button class="btn-glass rounded-full w-8 h-8 flex items-center justify-center" aria-label="Settings">
-														<i class="iconify text-sm" data-icon="mdi:gear"></i>
 													</button>
 												</div>
 											]], player.roblox.avatar, player.roblox.displayName, "@" .. player.roblox.name)
 
                                             elements.panel.players.container:appendChild(card)
 
-                                            card:querySelector("[aria-label=\"Tools\"]"):addEventListener("click",
+                                            card:querySelector("[aria-label=\"Panel\"]"):addEventListener("click",
                                                 function()
                                                     openPlayerPanel({
                                                         avatar = player.roblox.avatar,
