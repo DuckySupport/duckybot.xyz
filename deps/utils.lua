@@ -295,7 +295,6 @@ function utils.cookie(name, value, expires_in_seconds, samesite)
         local attempt = 1
         repeat
             attempt = attempt + 1
-            time.sleep(100)
         until utils.cookie(name) or attempt > 10
 
         return utils.cookie(name) == value
