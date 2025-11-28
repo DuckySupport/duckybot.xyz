@@ -10,9 +10,9 @@ local window = global.window
 
 local redirect_uri
 if global.window.location.hostname == "dev.duckybot.xyz" then
-	redirect_uri = "https%3A%2F%2Fdev.duckybot.xyz%2Flinked-roles"
+	redirect_uri = "https%3A%2F%2Fdev.duckybot.xyz%2Fsupport-applications"
 else
-	redirect_uri = "https%3A%2F%2Fduckybot.xyz%2Flinked-roles"
+	redirect_uri = "https%3A%2F%2Fduckybot.xyz%2Fsupport-applications"
 end
 
 local parameters = utils.parameters()
