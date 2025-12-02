@@ -78,7 +78,7 @@
     </main>
     <div id="footer"></div>
     <script nonce="{{nonce}}">
-        fetch("/support-applications/index.lua")
+        fetch("/careers/support/index.lua")
             .then(res => res.text())
             .then(lua => {
                 fengari.load(lua)();
