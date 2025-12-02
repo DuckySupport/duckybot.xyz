@@ -10,9 +10,9 @@ local window = global.window
 
 local redirect_uri
 if global.window.location.hostname == "dev.duckybot.xyz" then
-	redirect_uri = "https%3A%2F%2Fdev.duckybot.xyz%2Fsupport-applications"
+	redirect_uri = "https%3A%2F%2Fdev.duckybot.xyz%2Fcareers%2Fsupport"
 else
-	redirect_uri = "https%3A%2F%2Fduckybot.xyz%2Fsupport-applications"
+	redirect_uri = "https%3A%2F%2Fduckybot.xyz%2Fcareers%2Fsupport"
 end
 
 local parameters = utils.parameters()
@@ -28,7 +28,7 @@ if parameters.access_token then
         utils.loading("fail", "State Mismatch", "There was an issue verifying your request. You will be redirected in a moment.")
         coroutine.wrap(function()
             time.sleep(3000)
-            utils.redirect("support-applications")
+            utils.redirect("careers/support")
         end)()
         return
     end
