@@ -1,0 +1,207 @@
+{
+	"data": {
+		"shifts": {
+			"me": {
+				"active": {
+					"pausetime": 0,
+					"type": "Shift",
+					"paused": false,
+					"started": 1761313859,
+					"id": "1431278805598736384",
+					"commands": 0,
+					"member": "782235114858872854",
+					"elapsed": 48,
+					"punishments": 0,
+					"pauses": []
+				},
+				"history": [
+					{
+						"ended": 1760987212,
+						"id": "1429751753997422592",
+						"type": "Shift",
+						"member": "782235114858872854",
+						"started": 1760949781,
+						"commands": 0,
+						"punishments": 0,
+						"pauses": []
+					},
+					{
+						"pausetime": 0,
+						"type": "Shift",
+						"paused": false,
+						"started": 1761139526,
+						"id": "1430547602495115264",
+						"ended": 1761139697,
+						"commands": 0,
+						"member": "782235114858872854",
+						"elapsed": 161,
+						"punishments": 0,
+						"pauses": [
+							{
+								"started": 1761139691,
+								"ended": 1761139697
+							}
+						]
+					},
+					{
+						"pausetime": 59,
+						"type": "Shift",
+						"paused": {
+							"started": 1761139735,
+							"ended": 1761139799
+						},
+						"started": 1761139732,
+						"id": "1430548465032761344",
+						"ended": 1761139804,
+						"commands": 0,
+						"member": "782235114858872854",
+						"elapsed": 3,
+						"punishments": 0,
+						"pauses": [
+							{
+								"started": 1761139735,
+								"ended": 1761139799
+							}
+						]
+					},
+					{
+						"ended": 1761116147,
+						"id": "1430449515558735872",
+						"type": "Shift",
+						"member": "782235114858872854",
+						"started": 1761116141,
+						"commands": 0,
+						"punishments": 0,
+						"pauses": []
+					},
+					{
+						"ended": 1760947141,
+						"id": "1429740658817634304",
+						"type": "Shift",
+						"member": "782235114858872854",
+						"started": 1760947136,
+						"commands": 0,
+						"punishments": 0,
+						"pauses": [
+							{
+								"started": 1760947139,
+								"ended": 1760947141
+							}
+						]
+					},
+					{
+						"ended": 1761140079,
+						"id": "1430549910624800768",
+						"type": "Shift",
+						"member": "782235114858872854",
+						"started": 1761140077,
+						"commands": 0,
+						"punishments": 0,
+						"pauses": []
+					},
+					{
+						"ended": 1761144417,
+						"id": "1430568103766528000",
+						"type": "Shift",
+						"member": "782235114858872854",
+						"started": 1761144415,
+						"commands": 0,
+						"punishments": 0,
+						"pauses": []
+					},
+					{
+						"ended": 1761151618,
+						"id": "1430598307582971904",
+						"type": "Shift",
+						"member": "782235114858872854",
+						"started": 1761151616,
+						"commands": 0,
+						"punishments": 0,
+						"pauses": []
+					},
+					{
+						"pausetime": 0,
+						"type": "Shift",
+						"paused": false,
+						"started": 1761313859,
+						"id": "1431278805598736384",
+						"commands": 0,
+						"member": "782235114858872854",
+						"elapsed": 48,
+						"punishments": 0,
+						"pauses": []
+					}
+				]
+			},
+			"types": [
+				{
+					"name": "Shift",
+					"requiredrole": "1429446569723302032",
+					"onshiftrole": "1352934605996560415",
+					"quota": 3600,
+					"onpauserole": "1391670510823276604"
+				}
+			]
+		},
+		"erlc": {
+			"bans": {
+				"1471114199": "moopertong",
+				"7972615389": "therizzfromtown"
+			},
+			"modcalls": [],
+			"players": [],
+			"lastJoinLogTimestamp": 1761143599,
+			"kills": [],
+			"lastCacheReset": 1761298953.5911,
+			"lastTeamPlayerCounts": {
+				"Fire": 0,
+				"Sheriff": 0,
+				"Jail": 0,
+				"Police": 0,
+				"Civilian": 0,
+				"DOT": 0
+			},
+			"lastLeaveLogTimestamp": 0,
+			"previousPlayers": [],
+			"joins": [
+				{
+					"Timestamp": 1761143599,
+					"Join": true,
+					"Player": "bobbibonesreal:3943721740"
+				},
+				{
+					"Timestamp": 1761145669,
+					"Join": false,
+					"Player": "bobbibonesreal:3943721740"
+				}
+			],
+			"server": {
+				"Name": "Duckys Pond",
+				"OwnerId": 3943721740,
+				"CoOwnerIds": [
+					1038671897
+				],
+				"MaxPlayers": 40,
+				"AccVerifiedReq": "Disabled",
+				"JoinKey": "ducky",
+				"CurrentPlayers": 0,
+				"TeamBalance": false
+			},
+			"commands": [
+				{
+					"Timestamp": 1759860690,
+					"Command": ":to bobbibonesreal",
+					"Player": "bobbibonesreal:3943721740"
+				}
+			],
+			"logHistory": {
+				"playerkill": 1759650991,
+				"modcall": 1759860595,
+				"playerleave": 1761145669,
+				"playerjoin": 1761143599
+			}
+		}
+	},
+	"message": "Panel data for '🛁 Ducky's Tub' fetched successfully.",
+	"code": 200
+}
