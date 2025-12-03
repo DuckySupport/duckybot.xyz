@@ -15,22 +15,25 @@ else
 	redirect_uri = "https%3A%2F%2Fduckybot.xyz%2Fcareers%2Fsupport"
 end
 
+local user = utils.user()
 local parameters = utils.parameters()
 
-if parameters.access_token then
-    utils.loading("loading", "Loading...", "Validating your request...")
+if user or parameters.access_token then
+    if parameters.access_token then
+        utils.loading("loading", "Loading...", "Validating your request...")
 
-    local providedState = parameters.state
-    local savedState = utils.cookie("state")
-    utils.cookie("state", "delete")
+        local providedState = parameters.state
+        local savedState = utils.cookie("state")
+        utils.cookie("state", "delete")
 
-    if not providedState or not savedState or providedState ~= savedState then
-        utils.loading("fail", "State Mismatch", "There was an issue verifying your request. You will be redirected in a moment.")
-        coroutine.wrap(function()
-            time.sleep(3000)
-            utils.redirect("careers/support")
-        end)()
-        return
+        if not providedState or not savedState or providedState ~= savedState then
+            utils.loading("fail", "State Mismatch", "There was an issue verifying your request. You will be redirected in a moment.")
+            coroutine.wrap(function()
+                time.sleep(3000)
+                utils.redirect("careers/support")
+            end)()
+            return
+        end
     end
 
 	utils.loading("loading", "Redirecting...", "Redirecting you to the application...")
