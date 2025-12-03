@@ -16,6 +16,7 @@ else
 end
 
 coroutine.wrap(function()
+    local cookie = utils.cookie("discord")
     local user = utils.user()
     local parameters = utils.parameters()
 
@@ -38,7 +39,7 @@ coroutine.wrap(function()
         end
 
         utils.loading("loading", "Redirecting...", "Redirecting you to the application...")
-        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSdg3SQ2-UYdkorBWcOyisYhMtJqoQZPKctN1LeVNNwcQnqFGA/viewform?usp=pp_url&entry.1011316122=" .. parameters.access_token
+        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSdg3SQ2-UYdkorBWcOyisYhMtJqoQZPKctN1LeVNNwcQnqFGA/viewform?usp=pp_url&entry.1011316122=" .. (cookie or parameters.access_token)
     else
         utils.loading("loading", "Redirecting...", "Redirecting you to Discord to identify you...")
         local state = utils.crypto()
