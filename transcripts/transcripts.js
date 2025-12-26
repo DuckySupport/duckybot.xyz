@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   const discordToken = document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1]
   
-  if (!discordToken) {
+  if (!discordToken || discordToken == "" || discordToken == "null" || discordToken == "undefined") {
     window.location.href = `/login?redirect=transcripts`
     return
   }
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentGroup = null
 
     messages.forEach((msg) => {
-      const messageDate = new Date(msg.timestamp || Date.now())
+      const messageDate = new Date((msg.timestamp * 1000) || Date.now())
       const messageDay = messageDate.toDateString()
       
       if (messageDay !== currentDate) {
