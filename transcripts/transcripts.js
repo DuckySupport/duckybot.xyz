@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function formatTimestamp(timestamp) {
     if (!timestamp) return 'Today at 00:00'
     
-    const date = new Date(timestamp)
+    const date = new Date(timestamp * 1000)
     const now = new Date()
     const isToday = date.toDateString() === now.toDateString()
     const isYesterday = new Date(now - 86400000).toDateString() === date.toDateString()
