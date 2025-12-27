@@ -424,13 +424,13 @@ function utils.readable(seconds, short, ms)
 		{'m', 60000},
 		{'s', 1000}
 	} or {
-        {'years', 31536000000},
-		{'months', 2592000000},
-		{'weeks', 604800000},
-		{'days', 86400000},
-		{'hours', 3600000},
-		{'minutes', 60000},
-		{'seconds', 1000}
+        {'year', 31536000000},
+		{'month', 2592000000},
+		{'week', 604800000},
+		{'day', 86400000},
+		{'hour', 3600000},
+		{'minute', 60000},
+		{'second', 1000}
     }
 
     if ms then
@@ -447,7 +447,7 @@ function utils.readable(seconds, short, ms)
 		local n
 		n, ms = decompose(ms, unit[2])
 		if n > 0 then
-			table.insert(ret, n .. unit[1])
+			table.insert(ret, ((short and n .. unit[1]) or utils.plural(n, unit[1])))
 		end
 	end
 	return #ret > 0 and table.concat(ret) or "0s"

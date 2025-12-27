@@ -155,6 +155,7 @@ coroutine.wrap(function()
 
             local currentPanelPlayerID = nil
             local playerPanel = elements.panel.playerPanel
+            
             local function hidePlayerPanel()
                 playerPanel.container.classList:add("panel-hidden")
             end
@@ -363,6 +364,12 @@ coroutine.wrap(function()
                 end)()
             end
 
+            playerPanel.punishments.reload:addEventListener("click", function()
+                if currentPanelPlayerID then
+                    loadPunishments(currentPanelPlayerID, true)
+                end
+            end)
+
             elements.panel.players.searchBtn:addEventListener("click", searchPlayer)
             elements.panel.players.search:addEventListener("keydown", function()
                 local event = js.global.event
@@ -462,20 +469,20 @@ coroutine.wrap(function()
 
                     local extraPercentage = 0
                     if displayPercentage > 100 then
-                        extraPercentage = displayPercentage % 100
+                        extraPercentage = math.min(100, displayPercentage - 100)
                         if extraPercentage == 0 and displayPercentage > 0 then
                             extraPercentage = 100
                         end
                     end
 
                     if quota and quota > 0 then
-                        quotaText.innerHTML = math.floor(displayPercentage) .. "% (" .. utils.readable(quota, true) ..
-                                                  " quota, " .. utils.readable(totalUserTime, true) .. " complete)"
+                        quotaText.innerHTML = math.floor(displayPercentage) .. "% (" .. utils.readable(quota) .. " quota)"
                     else
                         quotaText.innerHTML = math.floor(displayPercentage) .. "% (No quota)"
                     end
 
                     quotaBar.style.width = tostring(barPercentage) .. "%"
+                    quotaBarExtra.style.height = "50%"
                     quotaBarExtra.style.width = tostring(extraPercentage) .. "%"
                 end
 
@@ -551,8 +558,7 @@ coroutine.wrap(function()
                                     Shifts = response.data
                                     renderShiftPanel()
                                 else
-                                    utils.notify((response and response.data and response.data.message) or
-                                                     "Failed to resume shift. Please try again.", "fail")
+                                    utils.notify((response and response.data and response.data.message) or "Failed to resume shift. Please try again.", "fail")
                                     renderShiftPanel()
                                 end
                             end)
@@ -807,11 +813,6 @@ coroutine.wrap(function()
                                             end
                                         end
                                     end
-                                    playerPanel.punishments.reload:addEventListener("click", function()
-                                        if currentPanelPlayerID then
-                                            loadPunishments(currentPanelPlayerID, true)
-                                        end
-                                    end)
                                 end)()
                             end
 
