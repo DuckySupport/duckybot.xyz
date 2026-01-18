@@ -502,7 +502,7 @@ coroutine.wrap(function()
                     shiftPanel.innerHTML = string.format([[
                         <div class="grid grid-cols-2 gap-4 text-center">
                             <div>
-                                <p class="text-xs text-white/50 flex items-center justify-center gap-1"><span class="iconify" data-icon="tabler:clock-hour-4"></span> Time Active</p>
+                                <p class="text-xs text-white/50 flex items-center justify-center gap-1"><span class="iconify" data-icon="tabler:clock-filled"></span> Time Active</p>
                                 <p id="shiftActiveTime" class="text-lg font-semibold">%s</p>
                             </div>
                             <div>
