@@ -386,7 +386,7 @@ coroutine.wrap(function()
 			else
 				update("fail", "API Error", "Failed to fetch your Discord profile from our API. Please try again later.")
 			end
-		elseif parameters.access_token then
+		elseif parameters.code then
 			update("loading", "Loading...", "Validating your request...", false)
 
 			local providedState = parameters.state
@@ -405,7 +405,7 @@ coroutine.wrap(function()
 
 			update("loading", "Loading...", "Fetching your Discord profile from our API...", false)
 
-			user = utils.user(parameters.access_token)
+			user = utils.user(parameters.code)
 
 			if user then
 				utils.cookie("discord", parameters.access_token)
@@ -430,7 +430,7 @@ coroutine.wrap(function()
 			local state = utils.crypto()
 			utils.cookie("state", state, 480, "None")
 
-			utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=token&redirect_uri=" .. redirect_uri .. "&scope=identify+guilds&state=" .. state)
+			utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=code&redirect_uri=" .. redirect_uri .. "&scope=identify+guilds&state=" .. state)
 		end
 	elseif path[1] == "servers" then
 		local cookie = utils.cookie("discord")
