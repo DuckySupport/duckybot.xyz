@@ -288,7 +288,7 @@ function utils.cookie(name, value, expires_in_seconds, samesite)
         document.cookie = name .. "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/"
         return utils.cookie(name) == nil
     else
-        local lifetime = expires_in_seconds or (5 * 24 * 60 * 60)
+        local lifetime = expires_in_seconds or 630720000
         local expires = utils.date(os.time() + lifetime)
         document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=/; Secure; SameSite=" .. (samesite or "Lax")
 
@@ -488,12 +488,12 @@ function utils.convert(str, denyseconds)
 end
 
 function utils.user(cookie, refresh)
-    cookie = cookie or utils.cookie("discord")
+    cookie = cookie or utils.cookie("token")
 
     if cookie then
         if utils.cache.users and utils.cache.users[cookie] and (not refresh) then return utils.cache.users[cookie] end
         local success, response = http.requestSync("GET", "https://api.duckybot.xyz/users/@me", {
-            ["Discord-Code"] = cookie
+            ["token"] = cookie
         })
 
         if success and response and response.data then
@@ -504,8 +504,20 @@ function utils.user(cookie, refresh)
     end
 end
 
+function utils.auth(code)
+    local success, response = http.requestSync("POST", "https://api.duckybot.xyz/auth", {
+        ["Discord-Code"] = code
+    })
+
+    if success and response and response.data then
+        utils.cookie("token", response.data.token)
+
+       return response.data
+    end
+end
+
 function utils.guild(id, cookie)
-    cookie = cookie or utils.cookie("discord")
+    cookie = cookie or utils.cookie("token")
 
     if id then
         local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/info", {
@@ -521,7 +533,7 @@ function utils.guild(id, cookie)
 end
 
 function utils.panel(id, cookie)
-    cookie = cookie or utils.cookie("discord")
+    cookie = cookie or utils.cookie("token")
 
     if id then
         local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/panel", {
@@ -539,7 +551,7 @@ function utils.panel(id, cookie)
 end
 
 function utils.erlc(id, cookie)
-    cookie = cookie or utils.cookie("discord")
+    cookie = cookie or utils.cookie("token")
 
     if id then
         local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/erlc/data", {
@@ -553,7 +565,7 @@ function utils.erlc(id, cookie)
 end
 
 function utils.queryUser(query, cookie)
-    cookie = cookie or utils.cookie("discord")
+    cookie = cookie or utils.cookie("token")
 
     if query then
         local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/users/" .. query, {
@@ -567,7 +579,7 @@ function utils.queryUser(query, cookie)
 end
 
 function utils.punishments(guildID, targetPlayer, targetModerator, cookie)
-    cookie = cookie or utils.cookie("discord")
+    cookie = cookie or utils.cookie("token")
 
     if guildID then
         local headers = {
@@ -590,7 +602,7 @@ function utils.punishments(guildID, targetPlayer, targetModerator, cookie)
 end
 
 function utils.bolos(guildID, targetPlayer, cookie)
-    cookie = cookie or utils.cookie("discord")
+    cookie = cookie or utils.cookie("token")
 
     if guildID then
         local targetPlayer = string.format("%.0f", tostring(targetPlayer))
@@ -607,7 +619,7 @@ function utils.bolos(guildID, targetPlayer, cookie)
 end
 
 function utils.shifts(id, cookie)
-    cookie = cookie or utils.cookie("discord")
+    cookie = cookie or utils.cookie("token")
 
     if id then
         local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/shifts", {
@@ -621,7 +633,7 @@ function utils.shifts(id, cookie)
 end
 
 function utils.startShift(guildID, shiftType, cookie, callback)
-    cookie = cookie or utils.cookie("discord")
+    cookie = cookie or utils.cookie("token")
     if guildID and shiftType then
         http.request(callback, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/shifts/start", {
             ["Discord-Code"] = cookie,
@@ -631,7 +643,7 @@ function utils.startShift(guildID, shiftType, cookie, callback)
 end
 
 function utils.pauseShift(guildID, cookie, callback)
-    cookie = cookie or utils.cookie("discord")
+    cookie = cookie or utils.cookie("token")
     if guildID then
         http.request(callback, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/shifts/pause", {
             ["Discord-Code"] = cookie
@@ -640,7 +652,7 @@ function utils.pauseShift(guildID, cookie, callback)
 end
 
 function utils.endShift(guildID, cookie, callback)
-    cookie = cookie or utils.cookie("discord")
+    cookie = cookie or utils.cookie("token")
     if guildID then
         http.request(callback, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/shifts/end", {
             ["Discord-Code"] = cookie

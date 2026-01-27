@@ -257,7 +257,7 @@ coroutine.wrap(function()
 
 		update("loading", "Loading...", "Checking if you're logged in...", false)
 
-		local cookie = utils.cookie("discord")
+		local cookie = utils.cookie("token")
 		local user = utils.user()
 		local parameters = utils.parameters()
 
@@ -352,13 +352,13 @@ coroutine.wrap(function()
 
 		update("loading", "Loading...", "Checking if you're logged in...", false)
 
-		local cookie = utils.cookie("discord")
+		local cookie = utils.cookie("token")
 		local user = utils.user()
 		local parameters = utils.parameters()
 
 		if parameters.logout == "true" then
 			if cookie then
-				utils.cookie("discord", "delete")
+				utils.cookie("token", "delete")
 				update("success", "Logged Out", "You have been successfully logged out.")
 				coroutine.wrap(function()
 					time.sleep(3000)
@@ -405,10 +405,10 @@ coroutine.wrap(function()
 
 			update("loading", "Loading...", "Fetching your Discord profile from our API...", false)
 
-			user = utils.user(parameters.code)
+			local data = utils.auth(parameters.code)
+			user = data.user
 
 			if user then
-				utils.cookie("discord", parameters.access_token)
 				update("success", "Logged In", 'You have been logged in as <a href="https://discord.com/users/' .. user.id .. '" class="text-white font-semibold">@' .. user.username .. '</a>.', true)
 
 				local redirectAfter = utils.cookie("redirectAfter")
@@ -433,7 +433,7 @@ coroutine.wrap(function()
 			utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=code&redirect_uri=" .. redirect_uri .. "&scope=identify+guilds&state=" .. state)
 		end
 	elseif path[1] == "servers" then
-		local cookie = utils.cookie("discord")
+		local cookie = utils.cookie("token")
 
 		if cookie then
 			if (not path[2]) or (path[2] == "") then

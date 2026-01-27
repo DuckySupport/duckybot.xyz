@@ -16,7 +16,7 @@ else
 end
 
 coroutine.wrap(function()
-    local cookie = utils.cookie("discord")
+    local cookie = utils.cookie("token")
     local user = utils.user()
     local parameters = utils.parameters()
 

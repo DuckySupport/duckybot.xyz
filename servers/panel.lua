@@ -132,7 +132,7 @@ end, "GET", "/partials/navbar.html", nil, nil, "text")
 coroutine.wrap(function()
     utils.loading("loading", "Loading Panel...", "Fetching server data...")
 
-    local cookie = utils.cookie("discord")
+    local cookie = utils.cookie("token")
     if cookie then
         if path[1] == "servers" and tonumber(path[2]) and path[3] == "panel" then
             local GuildID = path[2]
