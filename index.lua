@@ -501,7 +501,7 @@ coroutine.wrap(function()
 							utils.loading("fail", "API Error", (response and response.message) or "An unknown error occurred. Please try again later.")
 						end
 					end, "GET", "https://devapi.duckybot.xyz/guilds", {
-						["Discord-Code"] = cookie
+						["Token"] = cookie
 					})
 				end
 
