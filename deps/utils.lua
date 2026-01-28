@@ -492,7 +492,7 @@ function utils.user(cookie, refresh)
 
     if cookie then
         if utils.cache.users and utils.cache.users[cookie] and (not refresh) then return utils.cache.users[cookie] end
-        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/users/@me", {
+        local success, response = http.requestSync("GET", "https://api.duckybot.xyz/users/@me", {
             ["token"] = cookie
         })
 
@@ -505,7 +505,7 @@ function utils.user(cookie, refresh)
 end
 
 function utils.auth(code)
-    local success, response = http.requestSync("POST", "https://devapi.duckybot.xyz/auth", {
+    local success, response = http.requestSync("POST", "https://api.duckybot.xyz/auth", {
         ["Discord-Code"] = code
     })
 
