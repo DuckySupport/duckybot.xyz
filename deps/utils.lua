@@ -506,7 +506,7 @@ end
 
 function utils.auth(code)
     local success, response = http.requestSync("POST", "https://devapi.duckybot.xyz/auth", {
-        ["Token"] = code
+        ["Discord-code"] = code
     })
 
     if success and response and response.data then
