@@ -292,6 +292,10 @@ function utils.cookie(name, value, expires_in_seconds, samesite)
         local expires = utils.date(math.floor(time.now()) + lifetime)
         console.log(nil, expires)
         document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=/; Secure; SameSite=" .. (samesite or "Lax")
+        local isSecure = window.location.protocol == "https:"
+        local secureFlag = isSecure and "; Secure" or ""
+
+        document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=" .. secureFlag .. "; SameSite=" .. (samesite or "Lax")
 
         local attempt = 1
         repeat
