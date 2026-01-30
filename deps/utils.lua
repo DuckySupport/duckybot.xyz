@@ -290,14 +290,26 @@ function utils.cookie(name, value, expires_in_seconds, samesite)
     else
         local lifetime = expires_in_seconds or 630720000
 
-        local expiryDate = js.new(js.global.Date)
-        expiryDate:setTime(expiryDate:getTime() + (lifetime * 1000))
-        local expires = expiryDate:toUTCString()
+        window.tempLifetime = lifetime
+
+        local makeExpiryDate = js.global:eval([[
+            (function() {
+                var seconds = window.tempLifetime;
+                var date = new Date();
+                date.setTime(date.getTime() + (seconds * 1000));
+                delete window.tempLifetime;
+                return date.toUTCString();
+            })
+        ]])
+
+        local expires = makeExpiryDate()
 
         local isSecure = window.location.protocol == "https:"
         local secureFlag = isSecure and "; Secure" or ""
 
-        document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=" .. secureFlag .. "; SameSite=" .. (samesite or "Lax")
+        local cookieString = name .. "=" .. value .. "; expires=" .. expires .. "; path=/" .. secureFlag .. "; SameSite=" .. (samesite or "Lax")
+
+        document.cookie = cookieString
 
         local attempt = 1
         repeat
