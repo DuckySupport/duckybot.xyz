@@ -516,6 +516,25 @@ function utils.auth(code)
     end
 end
 
+function utils.logout()
+    local token = utils.cookie("token")
+
+    if not token then
+        return false, "You are not logged in."
+    end
+
+    local success, response = http.requestSync("DELETE", "https://devapi.duckybot.xyz/auth", {
+        ["Token"] = token
+    })
+
+    if success then
+        utils.cookie("token", "delete")
+        return true
+    else
+        return false, response.message or "Unknown error"
+    end
+end
+
 function utils.guild(id, cookie)
     cookie = cookie or utils.cookie("token")
 
