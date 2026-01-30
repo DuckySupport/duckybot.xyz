@@ -289,7 +289,7 @@ coroutine.wrap(function()
 							update("fail", "API Error", response.message)
 						end
 					end, "DELETE", "https://api.duckybot.xyz/links/" .. DiscordID, {
-						["Discord-Code"] = cookie
+						["Token"] = cookie
 					})
 				else
 					update("loading", "Loading...", "Fetching your Roblox profile from our API...", false)
@@ -311,7 +311,7 @@ coroutine.wrap(function()
 									update("fail", "API Error", response.message)
 								end
 							end, "POST", "https://api.duckybot.xyz/links", {
-								["Discord-Code"] = cookie,
+								["Token"] = cookie,
 								["Roblox-Code"] = parameters.code
 							})
 						else
