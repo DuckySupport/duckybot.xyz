@@ -358,8 +358,14 @@ coroutine.wrap(function()
 
 		if parameters.logout == "true" then
 			if cookie then
-				utils.cookie("token", "delete")
-				update("success", "Logged Out", "You have been successfully logged out.")
+				local success, error = utils.logout()
+
+				if success then
+					update("success", "Logged Out", "You have been successfully logged out.")
+				else
+					update("fail", "Logout Error", error or "Unknown error")
+				end
+
 				coroutine.wrap(function()
 					time.sleep(3000)
 					utils.redirect("/")
