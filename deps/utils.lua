@@ -289,7 +289,7 @@ function utils.cookie(name, value, expires_in_seconds, samesite)
         return utils.cookie(name) == nil
     else
         local lifetime = expires_in_seconds or 630720000
-        local expires = utils.date(time.now() + lifetime)
+        local expires = utils.date(math.floor(time.now()) + lifetime)
         console.log(nil, expires)
         document.cookie = name .. "=" .. value .. "; expires=" .. expires .. "; path=/; Secure; SameSite=" .. (samesite or "Lax")
 
