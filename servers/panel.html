@@ -55,17 +55,27 @@
                 opacity: 0;
             }
             .punish-hidden {
+                width: 0 !important;
+                margin-right: 0 !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
                 opacity: 0;
-                transform: translateX(-20px) scale(0.95);
+                border-width: 0 !important;
                 pointer-events: none;
-                visibility: hidden;
+                overflow: hidden;
+            }
+            #punishPanelDialog {
+                width: 384px;
+                margin-right: 24px;
             }
         </style>
     </head>
 
     <body class="min-h-screen flex flex-col">
-        <div id="playerPanel" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center gap-6 transition-opacity duration-300 panel-hidden">
-            <div id="punishPanelDialog" class="punish-hidden bg-black/80 border border-white/10 shadow-2xl rounded-2xl p-6 w-full max-w-sm transition-all ease-out" style="transition-duration: 250ms;" onclick="event.stopPropagation()">
+        <div id="playerPanel" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center transition-opacity duration-300 panel-hidden">
+            <div id="punishPanelDialog" class="punish-hidden bg-black/80 border border-white/10 shadow-2xl rounded-2xl p-6 w-full transition-all ease-out" style="transition-duration: 250ms;" onclick="event.stopPropagation()">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-semibold text-white">Punish Player</h3>
                     <button id="punishPanelClose" class="text-white/50 hover:text-white text-2xl leading-none">&times;</button>
@@ -107,7 +117,9 @@
                 <hr class="my-4 border-white/10">
                 <div class="flex items-center gap-3 text-white/80 text-sm mb-4">
                     <div class="flex items-center gap-2">
-                        <span class="iconify text-base" data-icon="stash:shield-duotone"></span>
+                        <div id="playerPanelPermissionIconContainer">
+                            <span class="iconify text-base" data-icon="ph:user-bold"></span>
+                        </div>
                         <span id="playerPanelPermission"></span>
                     </div>
                     <span class="opacity-50">•</span>
