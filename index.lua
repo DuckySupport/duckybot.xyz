@@ -545,7 +545,7 @@ http.request(function(success, response)
 			elements.version.innerHTML = 'Ducky is currently experiencing an outage. <i class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i>'
 		end
 
-		elements.footer.version.textContent = "v1.5.2 Stable"
+		elements.footer.version.textContent = "v1.6.0 Stable"
 		elements.footer.status.innerHTML = '<span class="w-2 h-2 bg-[#FF6666] rounded-full"></span> Status: Unavailable'
 		elements.footer.status.className = "flex items-center gap-1 px-2 py-0.5 bg-[#FF6666]/10 rounded-full text-[#FF6666] text-xs"
 	end
