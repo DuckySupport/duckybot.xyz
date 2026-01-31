@@ -438,7 +438,7 @@ coroutine.wrap(function()
 			local state = utils.crypto()
 			utils.cookie("state", state, 480, "None")
 
-			utils.redirect("https://discord.com/oauth2/authorize/?client_id=1284586408945647727&response_type=code&redirect_uri=" .. redirect_uri .. "&scope=identify+guilds&state=" .. state)
+			utils.redirect("https://discord.com/oauth2/authorize/?client_id=1257389588910182411&response_type=code&redirect_uri=" .. redirect_uri .. "&scope=identify+guilds&state=" .. state)
 		end
 	elseif path[1] == "servers" then
 		local cookie = utils.cookie("token")
@@ -506,7 +506,7 @@ coroutine.wrap(function()
 						else
 							utils.loading("fail", "API Error", (response and response.message) or "An unknown error occurred. Please try again later.")
 						end
-					end, "GET", "https://devapi.duckybot.xyz/guilds", {
+					end, "GET", "https://api.duckybot.xyz/guilds", {
 						["Token"] = cookie
 					})
 				end

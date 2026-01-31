@@ -511,7 +511,7 @@ function utils.user(cookie, refresh)
 
     if cookie then
         if utils.cache.users and utils.cache.users[cookie] and (not refresh) then return utils.cache.users[cookie] end
-        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/users/@me", {
+        local success, response = http.requestSync("GET", "https://api.duckybot.xyz/users/@me", {
             ["token"] = cookie
         })
 
@@ -524,7 +524,7 @@ function utils.user(cookie, refresh)
 end
 
 function utils.auth(code)
-    local success, response = http.requestSync("POST", "https://devapi.duckybot.xyz/auth", {
+    local success, response = http.requestSync("POST", "https://api.duckybot.xyz/auth", {
         ["Discord-code"] = code
     })
 
@@ -542,7 +542,7 @@ function utils.logout()
         return false, "You are not logged in."
     end
 
-    local success, response = http.requestSync("DELETE", "https://devapi.duckybot.xyz/auth", {
+    local success, response = http.requestSync("DELETE", "https://api.duckybot.xyz/auth", {
         ["Token"] = token
     })
 
@@ -558,7 +558,7 @@ function utils.guild(id, cookie)
     cookie = cookie or utils.cookie("token")
 
     if id then
-        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/info", {
+        local success, response = http.requestSync("GET", "https://api.duckybot.xyz/guilds/" .. id .. "/info", {
             ["Token"] = cookie
         })
 
@@ -574,7 +574,7 @@ function utils.panel(id, cookie)
     cookie = cookie or utils.cookie("token")
 
     if id then
-        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/panel", {
+        local success, response = http.requestSync("GET", "https://api.duckybot.xyz/guilds/" .. id .. "/panel", {
             ["Token"] = cookie
         })
 
@@ -592,7 +592,7 @@ function utils.erlc(id, cookie)
     cookie = cookie or utils.cookie("token")
 
     if id then
-        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/erlc/data", {
+        local success, response = http.requestSync("GET", "https://api.duckybot.xyz/guilds/" .. id .. "/erlc/data", {
             ["Token"] = cookie
         })
 
@@ -606,7 +606,7 @@ function utils.queryUser(query, cookie)
     cookie = cookie or utils.cookie("token")
 
     if query then
-        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/users/" .. query, {
+        local success, response = http.requestSync("GET", "https://api.duckybot.xyz/users/" .. query, {
             ["Token"] = cookie
         })
 
@@ -632,7 +632,7 @@ function utils.punishments(guildID, targetPlayer, targetModerator, cookie)
             headers["Moderator"] = targetModerator
         end
 
-        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/punishments", headers)
+        local success, response = http.requestSync("GET", "https://api.duckybot.xyz/guilds/" .. guildID .. "/punishments", headers)
         if success and response and response.data and response.data.punishments then
             return response.data.punishments
         end
@@ -644,7 +644,7 @@ function utils.bolos(guildID, targetPlayer, cookie)
 
     if guildID then
         local targetPlayer = string.format("%.0f", tostring(targetPlayer))
-        local url = "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/bolos" .. ((tostring(targetPlayer) and "/" .. tostring(targetPlayer)) or "")
+        local url = "https://api.duckybot.xyz/guilds/" .. guildID .. "/bolos" .. ((tostring(targetPlayer) and "/" .. tostring(targetPlayer)) or "")
         console.log(nil, url)
         local success, response = http.requestSync("GET", url, {
             ["Token"] = cookie
@@ -660,7 +660,7 @@ function utils.shifts(id, cookie)
     cookie = cookie or utils.cookie("token")
 
     if id then
-        local success, response = http.requestSync("GET", "https://devapi.duckybot.xyz/guilds/" .. id .. "/shifts", {
+        local success, response = http.requestSync("GET", "https://api.duckybot.xyz/guilds/" .. id .. "/shifts", {
             ["Token"] = cookie
         })
 
@@ -673,7 +673,7 @@ end
 function utils.startShift(guildID, shiftType, cookie, callback)
     cookie = cookie or utils.cookie("token")
     if guildID and shiftType then
-        http.request(callback, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/shifts/start", {
+        http.request(callback, "POST", "https://api.duckybot.xyz/guilds/" .. guildID .. "/shifts/start", {
             ["Token"] = cookie,
             ["Content-Type"] = "application/json"
         }, {type = shiftType})
@@ -683,7 +683,7 @@ end
 function utils.pauseShift(guildID, cookie, callback)
     cookie = cookie or utils.cookie("token")
     if guildID then
-        http.request(callback, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/shifts/pause", {
+        http.request(callback, "POST", "https://api.duckybot.xyz/guilds/" .. guildID .. "/shifts/pause", {
             ["Token"] = cookie
         })
     end
@@ -692,7 +692,7 @@ end
 function utils.endShift(guildID, cookie, callback)
     cookie = cookie or utils.cookie("token")
     if guildID then
-        http.request(callback, "POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/shifts/end", {
+        http.request(callback, "POST", "https://api.duckybot.xyz/guilds/" .. guildID .. "/shifts/end", {
             ["Token"] = cookie
         })
     end
@@ -701,7 +701,7 @@ end
 function utils.createPunishment(guildID, violator, pType, reason)
     local cookie = utils.cookie("token")
 
-    local success, response = http.requestSync("POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/punishments", {
+    local success, response = http.requestSync("POST", "https://api.duckybot.xyz/guilds/" .. guildID .. "/punishments", {
         ["Token"] = cookie
     }, {
         username = violator, -- can be username or ID, ID preffered
