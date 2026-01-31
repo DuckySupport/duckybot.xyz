@@ -58,8 +58,36 @@
     </head>
 
     <body class="min-h-screen flex flex-col">
-        <div id="playerPanel" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center transition-opacity duration-300 panel-hidden">
-            <div id="playerPanelDialog" class="bg-black/60 border border-white/10 shadow-2xl rounded-2xl p-6 w-full max-w-lg mx-auto transition-all duration-300" onclick="event.stopPropagation()">
+        <div id="playerPanel" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center gap-6 transition-opacity duration-300 panel-hidden">
+            <div id="punishPanelDialog" class="hidden bg-black/60 border border-white/10 shadow-2xl rounded-2xl p-6 w-full max-w-sm transition-all duration-300" onclick="event.stopPropagation()">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-white">Punish Player</h3>
+                    <button id="punishPanelClose" class="text-white/50 hover:text-white text-2xl leading-none">&times;</button>
+                </div>
+                <div id="punishFormContent" class="space-y-4">
+                    <div>
+                        <label class="text-sm font-medium text-white/70">Punishment Type</label>
+                        <div id="punishTypeDropdownContainer" class="relative mt-1">
+                            <button id="punishTypeButton" type="button" class="w-full bg-white/5 border border-white/10 rounded-lg h-10 px-4 text-sm text-white text-left flex justify-between items-center">
+                                <span id="punishTypeButtonText">Select Type</span>
+                                <span class="iconify" data-icon="heroicons:chevron-down-20-solid"></span>
+                            </button>
+                            <div id="punishTypeOptions" class="hidden absolute z-10 w-full mt-1 bg-black/80 backdrop-blur-sm border border-white/10 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium text-white/70">Reason</label>
+                        <textarea id="punishReason" rows="3" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-white/30 mt-1" placeholder="Enter punishment reason..."></textarea>
+                    </div>
+                    <button id="submitPunishBtn" class="btn-fail w-full py-2.5 rounded-lg text-sm font-medium">Punish</button>
+                </div>
+                <div id="punishError" class="hidden flex flex-col items-center justify-center text-center p-4">
+                    <img src="/images/icons/Fail.svg" class="w-8 h-8 mb-2">
+                    <p class="text-white text-sm">No punishment types available.</p>
+                </div>
+            </div>
+            <div id="playerPanelDialog" class="bg-black/60 border border-white/10 shadow-2xl rounded-2xl p-6 w-full max-w-lg transition-all duration-300" onclick="event.stopPropagation()">
                 <div class="flex justify-between items-start">
                     <div class="flex items-center gap-4">
                         <img id="playerPanelAvatar" src="" class="h-16 w-16 rounded-full object-cover">
@@ -83,7 +111,7 @@
                     </div>
                 </div>
                 <div id="playerPanelContent" class="text-white grid grid-cols-3 gap-6">
-                    <div class="col-span-1">
+                    <div class="col-span-1" id="playerPanelTools">
                         <h3 class="text-lg font-semibold">Tools</h3>
                         <p class="text-sm text-white/50">Player tools will be shown here.</p>
                     </div>

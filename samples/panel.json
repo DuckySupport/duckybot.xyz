@@ -200,7 +200,10 @@
 				"playerleave": 1761145669,
 				"playerjoin": 1761143599
 			}
-		}
+		},
+		"punishmentTypes": [
+            "warning"
+        ]
 	},
 	"message": "Panel data for '🛁 Ducky's Tub' fetched successfully.",
 	"code": 200
