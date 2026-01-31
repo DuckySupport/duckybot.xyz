@@ -54,12 +54,18 @@
                 transform: scale(0.95);
                 opacity: 0;
             }
+            .punish-hidden {
+                opacity: 0;
+                transform: translateX(-20px) scale(0.95);
+                pointer-events: none;
+                visibility: hidden;
+            }
         </style>
     </head>
 
     <body class="min-h-screen flex flex-col">
-        <div id="playerPanel" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center gap-6 transition-opacity duration-300 panel-hidden">
-            <div id="punishPanelDialog" class="hidden bg-black/60 border border-white/10 shadow-2xl rounded-2xl p-6 w-full max-w-sm transition-all duration-300" onclick="event.stopPropagation()">
+        <div id="playerPanel" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center gap-6 transition-opacity duration-300 panel-hidden">
+            <div id="punishPanelDialog" class="punish-hidden bg-black/80 border border-white/10 shadow-2xl rounded-2xl p-6 w-full max-w-sm transition-all ease-out" style="transition-duration: 250ms;" onclick="event.stopPropagation()">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-semibold text-white">Punish Player</h3>
                     <button id="punishPanelClose" class="text-white/50 hover:text-white text-2xl leading-none">&times;</button>
@@ -87,7 +93,7 @@
                     <p class="text-white text-sm">No punishment types available.</p>
                 </div>
             </div>
-            <div id="playerPanelDialog" class="bg-black/60 border border-white/10 shadow-2xl rounded-2xl p-6 w-full max-w-lg transition-all duration-300" onclick="event.stopPropagation()">
+            <div id="playerPanelDialog" class="bg-black/80 border border-white/10 shadow-2xl rounded-2xl p-6 w-full max-w-2xl transition-all duration-300" onclick="event.stopPropagation()">
                 <div class="flex justify-between items-start">
                     <div class="flex items-center gap-4">
                         <img id="playerPanelAvatar" src="" class="h-16 w-16 rounded-full object-cover">
@@ -318,7 +324,7 @@
             </div>
         </main>
         <div id="notificationContainer"
-            class="w-full flex flex-col items-end p-4 space-y-2"></div>
+            class="fixed inset-0 z-[100] pointer-events-none flex flex-col justify-end items-end p-4 space-y-2"></div>
         <div id="footer"></div>
         <script nonce="{{nonce}}">
             document.addEventListener("DOMContentLoaded", function() {

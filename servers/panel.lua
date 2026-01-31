@@ -175,7 +175,7 @@ coroutine.wrap(function()
             
             local function hidePlayerPanel()
                 playerPanel.container.classList:add("panel-hidden")
-                playerPanel.punish.dialog.classList:add("hidden")
+                playerPanel.punish.dialog.classList:add("punish-hidden")
             end
 
             local function renderBolo(bolo)
@@ -330,7 +330,7 @@ coroutine.wrap(function()
                 
                 -- Tools Setup
                 playerPanel.tools.innerHTML = ""
-                playerPanel.punish.dialog.classList:add("hidden")
+                playerPanel.punish.dialog.classList:add("punish-hidden")
 
                 local tools = {
                      {
@@ -338,7 +338,11 @@ coroutine.wrap(function()
                          icon = "ion:hammer",
                          callback = function()
                              local punishPanel = playerPanel.punish
-                             punishPanel.dialog.classList:remove("hidden")
+                             if not punishPanel.dialog.classList:contains("punish-hidden") then
+                                 punishPanel.dialog.classList:add("punish-hidden")
+                                 return
+                             end
+                             punishPanel.dialog.classList:remove("punish-hidden")
                              
                              punishPanel.reason.value = ""
                              punishPanel.type.text.textContent = "Select Type"
@@ -399,7 +403,7 @@ coroutine.wrap(function()
                                          
                                          if success then
                                              utils.notify("Successfully punished player.", "success")
-                                             punishPanel.dialog.classList:add("hidden")
+                                             punishPanel.dialog.classList:add("punish-hidden")
                                              loadPunishments(currentPanelPlayerID, true)
                                          else
                                               utils.notify((response and response.message) or "Failed to punish player.", "fail")
@@ -421,15 +425,15 @@ coroutine.wrap(function()
                 playerPanel.tools:appendChild(toolsTitle)
                 
                 local toolsGrid = document:createElement("div")
-                toolsGrid.className = "grid grid-cols-2 gap-2 mt-2"
+                toolsGrid.className = "flex flex-col gap-2 mt-2"
                 playerPanel.tools:appendChild(toolsGrid)
                 
                 for _, tool in ipairs(tools) do
                     local btn = document:createElement("button")
-                    btn.className = "btn-glass p-3 rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-white/10 transition-colors"
+                    btn.className = "btn-glass px-4 py-2.5 rounded-lg flex items-center gap-3 hover:bg-white/10 transition-colors w-full"
                     btn.innerHTML = string.format([[
-                        <span class="iconify text-2xl" data-icon="%s"></span>
-                        <span class="text-xs font-medium">%s</span>
+                        <span class="iconify text-xl" data-icon="%s"></span>
+                        <span class="text-sm font-medium">%s</span>
                     ]], tool.icon, tool.name)
                     btn:addEventListener("click", tool.callback)
                     toolsGrid:appendChild(btn)
@@ -513,7 +517,7 @@ coroutine.wrap(function()
             end)
 
             playerPanel.punish.close:addEventListener("click", function()
-                 playerPanel.punish.dialog.classList:add("hidden")
+                 playerPanel.punish.dialog.classList:add("punish-hidden")
             end)
 
             window:addEventListener("click", function()
@@ -886,6 +890,24 @@ coroutine.wrap(function()
                                     end
                                 end
 
+                                if currentPanelPlayerID and not playerPanel.container.classList:contains("panel-hidden") then
+                                    local foundPlayer = nil
+                                    for _, player in pairs(ERLC.players) do
+                                        if player.ID == currentPanelPlayerID then
+                                            foundPlayer = player
+                                            break
+                                        end
+                                    end
+
+                                    if foundPlayer then
+                                        playerPanel.permission.textContent = foundPlayer.Permission or "N/A"
+                                        playerPanel.team.textContent = foundPlayer.Team or "N/A"
+                                    end
+
+                                    loadPunishments(currentPanelPlayerID, true)
+                                    loadBolo(currentPanelPlayerID, true)
+                                end
+
                                 elements.panel.players.container.innerHTML = ""
 
                                 if #ERLC.players > 0 then
@@ -926,11 +948,40 @@ coroutine.wrap(function()
                                             card:setAttribute("data-displayName", player.roblox.displayName)
                                             card:setAttribute("data-id", player.ID)
 
+                                            local icon = ""
+                                            local pName = player.Permission
+                                            local pIcon = nil
+
+                                            if pName == "Server Moderator" then
+                                                pIcon = "ion:hammer"
+                                            elseif pName == "Server Administrator" then
+                                                pIcon = "stash:shield-duotone"
+                                            elseif pName == "Server Owner" then
+                                                pIcon = "ph:crown-fill"
+                                            end
+
+                                            if pIcon then
+                                                icon = string.format([[
+                                                    <div class="relative group inline-flex items-center ml-1.5">
+                                                        <span class="opacity-50 mr-1.5">•</span>
+                                                        <span class="iconify text-white" data-icon="%s"></span>
+                                                        <div class="pointer-events-none absolute bottom-[125%%] inset-x-0 hidden group-hover:flex justify-center animate-fade-in quick z-50">
+                                                            <div class="relative flex flex-col items-center">
+                                                                <div class="whitespace-nowrap rounded-full bg-[#0f0f0f] border border-white/10 px-3 py-1.5 text-xs text-white shadow-xl">
+                                                                    %s
+                                                                </div>
+                                                                <span class="absolute left-1/2 top-full -translate-x-1/2 -mt-1 block h-2 w-2 rotate-45 bg-[#0f0f0f] border-r border-b border-white/10"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ]], pIcon, pName)
+                                            end
+
                                             card.innerHTML = string.format([[
 												<div class="flex items-center gap-3 min-w-0">
 													<img src="%s" class="h-10 w-10 rounded-full">
 													<div class="min-w-0 leading-snug">
-														<div class="text-white font-semibold text-[14px] truncate leading-tight">%s</div>
+														<div class="text-white font-semibold text-[14px] leading-tight flex items-center">%s%s</div>
 														<div class="text-white/50 text-[11px] truncate leading-tight">%s</div>
 													</div>
 												</div>
@@ -939,7 +990,7 @@ coroutine.wrap(function()
 														<i class="iconify text-sm" data-icon="ion:hammer"></i>
 													</button>
 												</div>
-											]], player.roblox.avatar, player.roblox.displayName, "@" .. player.roblox.name)
+											]], player.roblox.avatar, player.roblox.displayName, icon, "@" .. player.roblox.name)
 
                                             elements.panel.players.container:appendChild(card)
 

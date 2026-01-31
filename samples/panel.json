@@ -149,7 +149,618 @@
 				"7972615389": "therizzfromtown"
 			},
 			"modcalls": [],
-			"players": [],
+			"players": [
+                {
+                    "ID": "861953154",
+                    "Permission": "Server Administrator",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[Prohart14](<https://roblox.com/users/861953154/profile>)",
+                        "name": "Prohart14",
+                        "id": 861953154,
+                        "avatar": "https://t7.rbxcdn.com/30DAY-AvatarHeadshot-F121C3130E8F23BB2F4A1177C77BD3E4-Png",
+                        "profile": "https://roblox.com/users/861953154/profile",
+                        "verified": false,
+                        "displayName": "Prohart14"
+                    },
+                    "Player": "Prohart14:861953154",
+                    "Name": "Prohart14"
+                },
+                {
+                    "ID": "5583970995",
+                    "Permission": "Server Moderator",
+                    "Callsign": "JM-10",
+                    "Team": "Sheriff",
+                    "roblox": {
+                        "hyperlink": "[turjvo0](<https://roblox.com/users/5583970995/profile>)",
+                        "name": "turjvo0",
+                        "id": 5583970995,
+                        "avatar": "https://t6.rbxcdn.com/30DAY-AvatarHeadshot-9AEE618E2508A584E3027EEE85B00B58-Png",
+                        "profile": "https://roblox.com/users/5583970995/profile",
+                        "verified": false,
+                        "displayName": "turjvo0"
+                    },
+                    "Player": "turjvo0:5583970995",
+                    "Name": "turjvo0"
+                },
+                {
+                    "ID": "2664557074",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[Romppu19809](<https://roblox.com/users/2664557074/profile>)",
+                        "name": "Romppu19809",
+                        "id": 2664557074,
+                        "avatar": "https://t5.rbxcdn.com/30DAY-AvatarHeadshot-D88BDB3865A006D2902F7B5FA8A0BDFB-Png",
+                        "profile": "https://roblox.com/users/2664557074/profile",
+                        "verified": false,
+                        "displayName": "Romppu19809"
+                    },
+                    "Player": "Romppu19809:2664557074",
+                    "Name": "Romppu19809"
+                },
+                {
+                    "ID": "8144118856",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[black_man200069](<https://roblox.com/users/8144118856/profile>)",
+                        "name": "black_man200069",
+                        "id": 8144118856,
+                        "avatar": "https://t5.rbxcdn.com/30DAY-AvatarHeadshot-FCB379BD2F4DCB35F6D8229A2DB38523-Png",
+                        "profile": "https://roblox.com/users/8144118856/profile",
+                        "verified": false,
+                        "displayName": "black_man200069"
+                    },
+                    "Player": "black_man200069:8144118856",
+                    "Name": "black_man200069"
+                },
+                {
+                    "ID": "8013655952",
+                    "Permission": "Server Moderator",
+                    "Callsign": "JM-47",
+                    "Team": "Sheriff",
+                    "roblox": {
+                        "hyperlink": "[Kenqyiz](<https://roblox.com/users/8013655952/profile>)",
+                        "name": "Kenqyiz",
+                        "id": 8013655952,
+                        "avatar": "https://t0.rbxcdn.com/30DAY-AvatarHeadshot-A62FCF34552FAFC9A9B3EF022D8A3CB0-Png",
+                        "profile": "https://roblox.com/users/8013655952/profile",
+                        "verified": false,
+                        "displayName": "Zeny"
+                    },
+                    "Player": "Kenqyiz:8013655952",
+                    "Name": "Kenqyiz"
+                },
+                {
+                    "ID": "6029139322",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[Rosap591](<https://roblox.com/users/6029139322/profile>)",
+                        "name": "Rosap591",
+                        "id": 6029139322,
+                        "avatar": "https://t4.rbxcdn.com/30DAY-AvatarHeadshot-25C6E85E909EC032416DEA2EAF47CB00-Png",
+                        "profile": "https://roblox.com/users/6029139322/profile",
+                        "verified": false,
+                        "displayName": "Rosap591"
+                    },
+                    "Player": "Rosap591:6029139322",
+                    "Name": "Rosap591"
+                },
+                {
+                    "ID": "7906867632",
+                    "Permission": "Server Moderator",
+                    "Callsign": "8394",
+                    "Team": "Sheriff",
+                    "roblox": {
+                        "hyperlink": "[Numba1bee1](<https://roblox.com/users/7906867632/profile>)",
+                        "name": "Numba1bee1",
+                        "id": 7906867632,
+                        "avatar": "https://t6.rbxcdn.com/30DAY-AvatarHeadshot-EADC5B12554BD051A5C5ED5CDD0C7B0A-Png",
+                        "profile": "https://roblox.com/users/7906867632/profile",
+                        "verified": false,
+                        "displayName": "Numba1bee1"
+                    },
+                    "Player": "Numba1bee1:7906867632",
+                    "Name": "Numba1bee1"
+                },
+                {
+                    "ID": "1390443040",
+                    "Permission": "Normal",
+                    "Callsign": "7457",
+                    "Team": "Police",
+                    "roblox": {
+                        "hyperlink": "[EUMPAD](<https://roblox.com/users/1390443040/profile>)",
+                        "name": "EUMPAD",
+                        "id": 1390443040,
+                        "avatar": "https://t3.rbxcdn.com/30DAY-AvatarHeadshot-6CB815A0CECFC776BE0BB894551EEA44-Png",
+                        "profile": "https://roblox.com/users/1390443040/profile",
+                        "verified": false,
+                        "displayName": "nameawoman"
+                    },
+                    "Player": "EUMPAD:1390443040",
+                    "Name": "EUMPAD"
+                },
+                {
+                    "ID": "5474871101",
+                    "Permission": "Server Moderator",
+                    "Callsign": "121",
+                    "Team": "Sheriff",
+                    "roblox": {
+                        "hyperlink": "[RobloxcoOwnerb5](<https://roblox.com/users/5474871101/profile>)",
+                        "name": "RobloxcoOwnerb5",
+                        "id": 5474871101,
+                        "avatar": "https://t4.rbxcdn.com/30DAY-AvatarHeadshot-9349F6CDD59E7608F8796717610023BF-Png",
+                        "profile": "https://roblox.com/users/5474871101/profile",
+                        "verified": false,
+                        "displayName": "Drake"
+                    },
+                    "Player": "RobloxcoOwnerb5:5474871101",
+                    "Name": "RobloxcoOwnerb5"
+                },
+                {
+                    "ID": "1613796452",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[OfficerP7](<https://roblox.com/users/1613796452/profile>)",
+                        "name": "OfficerP7",
+                        "id": 1613796452,
+                        "avatar": "https://t3.rbxcdn.com/30DAY-AvatarHeadshot-C9246AFF1E2DAA5195720FCA6B5130FC-Png",
+                        "profile": "https://roblox.com/users/1613796452/profile",
+                        "verified": false,
+                        "displayName": "OfficerP7"
+                    },
+                    "Player": "OfficerP7:1613796452",
+                    "Name": "OfficerP7"
+                },
+                {
+                    "ID": "1434597385",
+                    "Permission": "Normal",
+                    "Callsign": "TM-01",
+                    "Team": "Sheriff",
+                    "roblox": {
+                        "hyperlink": "[kkillkillmaster](<https://roblox.com/users/1434597385/profile>)",
+                        "name": "kkillkillmaster",
+                        "id": 1434597385,
+                        "avatar": "https://t3.rbxcdn.com/30DAY-AvatarHeadshot-7DE321C22121C6C69B8E2991E6AFAA6F-Png",
+                        "profile": "https://roblox.com/users/1434597385/profile",
+                        "verified": false,
+                        "displayName": "IIIIIIIIIIII"
+                    },
+                    "Player": "kkillkillmaster:1434597385",
+                    "Name": "kkillkillmaster"
+                },
+                {
+                    "ID": "9314109280",
+                    "Permission": "Server Administrator",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[Produelwarriorplayer](<https://roblox.com/users/9314109280/profile>)",
+                        "name": "Produelwarriorplayer",
+                        "id": 9314109280,
+                        "avatar": "https://t6.rbxcdn.com/30DAY-AvatarHeadshot-645DA5120EE244B1C81E1A18EEA18B3A-Png",
+                        "profile": "https://roblox.com/users/9314109280/profile",
+                        "verified": false,
+                        "displayName": "allNolimit11231"
+                    },
+                    "Player": "Produelwarriorplayer:9314109280",
+                    "Name": "Produelwarriorplayer"
+                },
+                {
+                    "ID": "10329893416",
+                    "Permission": "Normal",
+                    "Callsign": "819",
+                    "Team": "Police",
+                    "roblox": {
+                        "hyperlink": "[Officer73918](<https://roblox.com/users/10329893416/profile>)",
+                        "name": "Officer73918",
+                        "id": 10329893416,
+                        "avatar": "https://t5.rbxcdn.com/30DAY-AvatarHeadshot-B9B6C4EC125DFC0BAEB5C9BC37863121-Png",
+                        "profile": "https://roblox.com/users/10329893416/profile",
+                        "verified": false,
+                        "displayName": "Officer792M"
+                    },
+                    "Player": "Officer73918:10329893416",
+                    "Name": "Officer73918"
+                },
+                {
+                    "ID": "10328911670",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[karonly666](<https://roblox.com/users/10328911670/profile>)",
+                        "name": "karonly666",
+                        "id": 10328911670,
+                        "avatar": "https://t1.rbxcdn.com/30DAY-AvatarHeadshot-DD65CBBC2C7D613D2B856D37FBBAC758-Png",
+                        "profile": "https://roblox.com/users/10328911670/profile",
+                        "verified": false,
+                        "displayName": "karonly666"
+                    },
+                    "Player": "karonly666:10328911670",
+                    "Name": "karonly666"
+                },
+                {
+                    "ID": "3280755971",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[Fifndud19363](<https://roblox.com/users/3280755971/profile>)",
+                        "name": "Fifndud19363",
+                        "id": 3280755971,
+                        "avatar": "https://t7.rbxcdn.com/30DAY-AvatarHeadshot-5349897C0EB210CFA0FB7A25D1D28B77-Png",
+                        "profile": "https://roblox.com/users/3280755971/profile",
+                        "verified": false,
+                        "displayName": "trappyyyyyy"
+                    },
+                    "Player": "Fifndud19363:3280755971",
+                    "Name": "Fifndud19363"
+                },
+                {
+                    "ID": "10328936887",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[quadxx651](<https://roblox.com/users/10328936887/profile>)",
+                        "name": "quadxx651",
+                        "id": 10328936887,
+                        "avatar": "https://t0.rbxcdn.com/30DAY-AvatarHeadshot-68EBD4957F7B35BBC9599B98C7B06314-Png",
+                        "profile": "https://roblox.com/users/10328936887/profile",
+                        "verified": false,
+                        "displayName": "quadxx651"
+                    },
+                    "Player": "quadxx651:10328936887",
+                    "Name": "quadxx651"
+                },
+                {
+                    "ID": "1519542479",
+                    "Permission": "Normal",
+                    "Callsign": "1A-267",
+                    "Team": "Police",
+                    "roblox": {
+                        "hyperlink": "[FiveDrizzlaM1](<https://roblox.com/users/1519542479/profile>)",
+                        "name": "FiveDrizzlaM1",
+                        "id": 1519542479,
+                        "avatar": "https://t7.rbxcdn.com/30DAY-AvatarHeadshot-F04566D6AE55F46BC327892DBF983823-Png",
+                        "profile": "https://roblox.com/users/1519542479/profile",
+                        "verified": false,
+                        "displayName": "FiveDrizzlaM1"
+                    },
+                    "Player": "FiveDrizzlaM1:1519542479",
+                    "Name": "FiveDrizzlaM1"
+                },
+                {
+                    "ID": "8407499045",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[Jameson10500](<https://roblox.com/users/8407499045/profile>)",
+                        "name": "Jameson10500",
+                        "id": 8407499045,
+                        "avatar": "https://t3.rbxcdn.com/30DAY-AvatarHeadshot-07621C6D332BA62C0755D91763ABCFB6-Png",
+                        "profile": "https://roblox.com/users/8407499045/profile",
+                        "verified": false,
+                        "displayName": "Poblo"
+                    },
+                    "Player": "Jameson10500:8407499045",
+                    "Name": "Jameson10500"
+                },
+                {
+                    "ID": "5028453217",
+                    "Permission": "Normal",
+                    "Callsign": "111",
+                    "Team": "Police",
+                    "roblox": {
+                        "hyperlink": "[Joemilk_5](<https://roblox.com/users/5028453217/profile>)",
+                        "name": "Joemilk_5",
+                        "id": 5028453217,
+                        "avatar": "https://t3.rbxcdn.com/30DAY-AvatarHeadshot-F2364F84F1087483AFB4CD4F7C351393-Png",
+                        "profile": "https://roblox.com/users/5028453217/profile",
+                        "verified": false,
+                        "displayName": "Joe"
+                    },
+                    "Player": "Joemilk_5:5028453217",
+                    "Name": "Joemilk_5"
+                },
+                {
+                    "ID": "1653823445",
+                    "Permission": "Normal",
+                    "Callsign": "1A-76",
+                    "Team": "Police",
+                    "roblox": {
+                        "hyperlink": "[projectzorgdhf](<https://roblox.com/users/1653823445/profile>)",
+                        "name": "projectzorgdhf",
+                        "id": 1653823445,
+                        "avatar": "https://t1.rbxcdn.com/30DAY-AvatarHeadshot-55D7BAEB3CDF7805BEE775E6886064B9-Png",
+                        "profile": "https://roblox.com/users/1653823445/profile",
+                        "verified": false,
+                        "displayName": "Alex"
+                    },
+                    "Player": "projectzorgdhf:1653823445",
+                    "Name": "projectzorgdhf"
+                },
+                {
+                    "ID": "2625098643",
+                    "Permission": "Server Moderator",
+                    "Callsign": "M6767",
+                    "Team": "Sheriff",
+                    "roblox": {
+                        "hyperlink": "[GhostGamerY0T](<https://roblox.com/users/2625098643/profile>)",
+                        "name": "GhostGamerY0T",
+                        "id": 2625098643,
+                        "avatar": "https://t0.rbxcdn.com/30DAY-AvatarHeadshot-E3A09B6E6B783E82D9F3C714F864C223-Png",
+                        "profile": "https://roblox.com/users/2625098643/profile",
+                        "verified": false,
+                        "displayName": "Sailor"
+                    },
+                    "Player": "GhostGamerY0T:2625098643",
+                    "Name": "GhostGamerY0T"
+                },
+                {
+                    "ID": "3083287712",
+                    "Permission": "Server Moderator",
+                    "Callsign": "4532",
+                    "Team": "Sheriff",
+                    "roblox": {
+                        "hyperlink": "[dhuhruej](<https://roblox.com/users/3083287712/profile>)",
+                        "name": "dhuhruej",
+                        "id": 3083287712,
+                        "avatar": "https://t7.rbxcdn.com/30DAY-AvatarHeadshot-3AAD5E690F063DA3FDD3CC4D49D36DCA-Png",
+                        "profile": "https://roblox.com/users/3083287712/profile",
+                        "verified": false,
+                        "displayName": "yoky"
+                    },
+                    "Player": "dhuhruej:3083287712",
+                    "Name": "dhuhruej"
+                },
+                {
+                    "ID": "3997716201",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[Beauski24](<https://roblox.com/users/3997716201/profile>)",
+                        "name": "Beauski24",
+                        "id": 3997716201,
+                        "avatar": "https://t4.rbxcdn.com/30DAY-AvatarHeadshot-EBB5B04A86AF7354B2027ACF3FC5AA91-Png",
+                        "profile": "https://roblox.com/users/3997716201/profile",
+                        "verified": false,
+                        "displayName": "germanleader"
+                    },
+                    "Player": "Beauski24:3997716201",
+                    "Name": "Beauski24"
+                },
+                {
+                    "ID": "5583605390",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[er_n1437](<https://roblox.com/users/5583605390/profile>)",
+                        "name": "er_n1437",
+                        "id": 5583605390,
+                        "avatar": "https://t7.rbxcdn.com/30DAY-AvatarHeadshot-8247F93A543C15112F9263C8AC86263A-Png",
+                        "profile": "https://roblox.com/users/5583605390/profile",
+                        "verified": false,
+                        "displayName": "T_1A4"
+                    },
+                    "Player": "er_n1437:5583605390",
+                    "Name": "er_n1437"
+                },
+                {
+                    "ID": "1045852988",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[countryboi900](<https://roblox.com/users/1045852988/profile>)",
+                        "name": "countryboi900",
+                        "id": 1045852988,
+                        "avatar": "https://t4.rbxcdn.com/30DAY-AvatarHeadshot-AB31B8415F28780D4693F25F42B94975-Png",
+                        "profile": "https://roblox.com/users/1045852988/profile",
+                        "verified": false,
+                        "displayName": "Cam"
+                    },
+                    "Player": "countryboi900:1045852988",
+                    "Name": "countryboi900"
+                },
+                {
+                    "ID": "5232513349",
+                    "Permission": "Normal",
+                    "Callsign": "9I-762",
+                    "Team": "Police",
+                    "roblox": {
+                        "hyperlink": "[Nosequeponer4543](<https://roblox.com/users/5232513349/profile>)",
+                        "name": "Nosequeponer4543",
+                        "id": 5232513349,
+                        "avatar": "https://t0.rbxcdn.com/30DAY-AvatarHeadshot-AFA89DB41DB316FDA3540957B964AE1E-Png",
+                        "profile": "https://roblox.com/users/5232513349/profile",
+                        "verified": false,
+                        "displayName": "TK_getstackzz"
+                    },
+                    "Player": "Nosequeponer4543:5232513349",
+                    "Name": "Nosequeponer4543"
+                },
+                {
+                    "ID": "3483089793",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[Tractor_boy152](<https://roblox.com/users/3483089793/profile>)",
+                        "name": "Tractor_boy152",
+                        "id": 3483089793,
+                        "avatar": "https://t4.rbxcdn.com/30DAY-AvatarHeadshot-7BE389A82DAB70F533C5AAE90460F29F-Png",
+                        "profile": "https://roblox.com/users/3483089793/profile",
+                        "verified": false,
+                        "displayName": "Bubba"
+                    },
+                    "Player": "Tractor_boy152:3483089793",
+                    "Name": "Tractor_boy152"
+                },
+                {
+                    "ID": "1689268197",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[gajelly123](<https://roblox.com/users/1689268197/profile>)",
+                        "name": "gajelly123",
+                        "id": 1689268197,
+                        "avatar": "https://t5.rbxcdn.com/30DAY-AvatarHeadshot-6B00BC9DF180CE469085CB18DAE2BB4A-Png",
+                        "profile": "https://roblox.com/users/1689268197/profile",
+                        "verified": false,
+                        "displayName": "Crusader"
+                    },
+                    "Player": "gajelly123:1689268197",
+                    "Name": "gajelly123"
+                },
+                {
+                    "ID": "3784462658",
+                    "Permission": "Normal",
+                    "Callsign": "3019",
+                    "Team": "Police",
+                    "roblox": {
+                        "hyperlink": "[joker252319](<https://roblox.com/users/3784462658/profile>)",
+                        "name": "joker252319",
+                        "id": 3784462658,
+                        "avatar": "https://t3.rbxcdn.com/30DAY-AvatarHeadshot-60528BB77EB653C4C17B5AAB1BBF0BC1-Png",
+                        "profile": "https://roblox.com/users/3784462658/profile",
+                        "verified": false,
+                        "displayName": "Slick_cheese"
+                    },
+                    "Player": "joker252319:3784462658",
+                    "Name": "joker252319"
+                },
+                {
+                    "ID": "1771887250",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[Chase025643](<https://roblox.com/users/1771887250/profile>)",
+                        "name": "Chase025643",
+                        "id": 1771887250,
+                        "avatar": "https://t0.rbxcdn.com/30DAY-AvatarHeadshot-C654289F7AB3DABCB153746B730D1150-Png",
+                        "profile": "https://roblox.com/users/1771887250/profile",
+                        "verified": false,
+                        "displayName": "skibidiupcakesigma21"
+                    },
+                    "Player": "Chase025643:1771887250",
+                    "Name": "Chase025643"
+                },
+                {
+                    "ID": "1083246719",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[HUGTY5](<https://roblox.com/users/1083246719/profile>)",
+                        "name": "HUGTY5",
+                        "id": 1083246719,
+                        "avatar": "https://t1.rbxcdn.com/30DAY-AvatarHeadshot-A37FDC4D56570A9B4AD40F8B2F331825-Png",
+                        "profile": "https://roblox.com/users/1083246719/profile",
+                        "verified": false,
+                        "displayName": "Fade"
+                    },
+                    "Player": "HUGTY5:1083246719",
+                    "Name": "HUGTY5"
+                },
+                {
+                    "ID": "638766976",
+                    "Permission": "Normal",
+                    "Callsign": "676767",
+                    "Team": "Police",
+                    "roblox": {
+                        "hyperlink": "[Coolmanawesome8779](<https://roblox.com/users/638766976/profile>)",
+                        "name": "Coolmanawesome8779",
+                        "id": 638766976,
+                        "avatar": "https://t5.rbxcdn.com/30DAY-AvatarHeadshot-F24B2B0C484075CBE46C95F9370EC12D-Png",
+                        "profile": "https://roblox.com/users/638766976/profile",
+                        "verified": false,
+                        "displayName": "TheDman"
+                    },
+                    "Player": "Coolmanawesome8779:638766976",
+                    "Name": "Coolmanawesome8779"
+                },
+                {
+                    "ID": "3175803503",
+                    "Permission": "Normal",
+                    "Callsign": "E-3",
+                    "Team": "Fire",
+                    "roblox": {
+                        "hyperlink": "[MCFanatic11](<https://roblox.com/users/3175803503/profile>)",
+                        "name": "MCFanatic11",
+                        "id": 3175803503,
+                        "avatar": "https://t7.rbxcdn.com/30DAY-AvatarHeadshot-DF24A3DBDCB56E39A3295F0F6B712AF0-Png",
+                        "profile": "https://roblox.com/users/3175803503/profile",
+                        "verified": false,
+                        "displayName": "MCFanatic11"
+                    },
+                    "Player": "MCFanatic11:3175803503",
+                    "Name": "MCFanatic11"
+                },
+                {
+                    "ID": "9096388945",
+                    "Permission": "Normal",
+                    "Callsign": "1212",
+                    "Team": "Police",
+                    "roblox": {
+                        "hyperlink": "[therealkillerclawn12](<https://roblox.com/users/9096388945/profile>)",
+                        "name": "therealkillerclawn12",
+                        "id": 9096388945,
+                        "avatar": "https://t3.rbxcdn.com/30DAY-AvatarHeadshot-0A88DBA8EFFE384FE73255B6382A9546-Png",
+                        "profile": "https://roblox.com/users/9096388945/profile",
+                        "verified": false,
+                        "displayName": "therealkillerclawn12"
+                    },
+                    "Player": "therealkillerclawn12:9096388945",
+                    "Name": "therealkillerclawn12"
+                },
+                {
+                    "ID": "10206902935",
+                    "Permission": "Normal",
+                    "Callsign": "7A-073",
+                    "Team": "Police",
+                    "roblox": {
+                        "hyperlink": "[Moglot941](<https://roblox.com/users/10206902935/profile>)",
+                        "name": "Moglot941",
+                        "id": 10206902935,
+                        "avatar": "https://t0.rbxcdn.com/30DAY-AvatarHeadshot-5AAE1A5A00C7A50A99D490E4DBD13D6B-Png",
+                        "profile": "https://roblox.com/users/10206902935/profile",
+                        "verified": false,
+                        "displayName": "Moglot941"
+                    },
+                    "Player": "Moglot941:10206902935",
+                    "Name": "Moglot941"
+                },
+                {
+                    "ID": "3306055484",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[xG0LDZ](<https://roblox.com/users/3306055484/profile>)",
+                        "name": "xG0LDZ",
+                        "id": 3306055484,
+                        "avatar": "https://t3.rbxcdn.com/30DAY-AvatarHeadshot-39B2A8C3699BE44295C6BE3DF57DDFB7-Png",
+                        "profile": "https://roblox.com/users/3306055484/profile",
+                        "verified": false,
+                        "displayName": "Tobi"
+                    },
+                    "Player": "xG0LDZ:3306055484",
+                    "Name": "xG0LDZ"
+                },
+                {
+                    "ID": "1342456947",
+                    "Permission": "Normal",
+                    "Team": "Civilian",
+                    "roblox": {
+                        "hyperlink": "[onephazey](<https://roblox.com/users/1342456947/profile>)",
+                        "name": "onephazey",
+                        "id": 1342456947,
+                        "avatar": "https://t1.rbxcdn.com/30DAY-AvatarHeadshot-A2247E4276BBCE871541E97338C4D7C0-Png",
+                        "profile": "https://roblox.com/users/1342456947/profile",
+                        "verified": false,
+                        "displayName": "Taiden"
+                    },
+                    "Player": "onephazey:1342456947",
+                    "Name": "onephazey"
+                }
+            ],
 			"lastJoinLogTimestamp": 1761143599,
 			"kills": [],
 			"lastCacheReset": 1761298953.5911,
