@@ -521,6 +521,8 @@ coroutine.wrap(function()
 		end
 	elseif path[1] == "docs" then
 		utils.redirect("https://docs.duckybot.xyz/")
+	elseif path[1] == "changelogs" then
+		utils.redirect("https://docs.duckybot.xyz/overview/changelogs")
 	elseif path[1] == "status" then
 		utils.redirect("https://status.duckybot.xyz/")
 	elseif path[1] == "invite" then
