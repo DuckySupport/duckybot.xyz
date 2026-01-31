@@ -58,6 +58,7 @@ local elements = {
             displayName = document:getElementById("playerPanelDisplayName"),
             username = document:getElementById("playerPanelUsername"),
             permission = document:getElementById("playerPanelPermission"),
+            permissionIcon = document:getElementById("playerPanelPermissionIconContainer"),
             team = document:getElementById("playerPanelTeam"),
             content = document:getElementById("playerPanelContent"),
             close = document:getElementById("playerPanelClose"),
@@ -322,6 +323,18 @@ coroutine.wrap(function()
                 playerPanel.username.textContent = "@" .. playerData.name .. " (" ..
                                                        string.format("%.0f", playerData.ID) .. ")"
                 playerPanel.permission.textContent = playerData.Permission or "N/A"
+                
+                local pIcon = "ph:user-bold"
+                local pName = playerData.Permission
+                if pName == "Server Moderator" then
+                    pIcon = "ion:hammer"
+                elseif pName == "Server Administrator" then
+                    pIcon = "stash:shield-duotone"
+                elseif pName == "Server Owner" then
+                    pIcon = "ph:crown-fill"
+                end
+                playerPanel.permissionIcon.innerHTML = string.format('<span class="iconify text-base" data-icon="%s"></span>', pIcon)
+
                 playerPanel.team.textContent = playerData.Team or "N/A"
 
                 currentPanelPlayerID = playerData.ID
@@ -901,6 +914,18 @@ coroutine.wrap(function()
 
                                     if foundPlayer then
                                         playerPanel.permission.textContent = foundPlayer.Permission or "N/A"
+                                        
+                                        local pIcon = "ph:user-bold"
+                                        local pName = foundPlayer.Permission
+                                        if pName == "Server Moderator" then
+                                            pIcon = "ion:hammer"
+                                        elseif pName == "Server Administrator" then
+                                            pIcon = "stash:shield-duotone"
+                                        elseif pName == "Server Owner" then
+                                            pIcon = "ph:crown-fill"
+                                        end
+                                        playerPanel.permissionIcon.innerHTML = string.format('<span class="iconify text-base" data-icon="%s"></span>', pIcon)
+
                                         playerPanel.team.textContent = foundPlayer.Team or "N/A"
                                     end
 
