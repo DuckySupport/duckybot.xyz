@@ -698,4 +698,18 @@ function utils.endShift(guildID, cookie, callback)
     end
 end
 
+function utils.createPunishment(guildID, violator, pType, reason)
+    local cookie = utils.cookie("token")
+
+    local success, response = http.requestSync("POST", "https://devapi.duckybot.xyz/guilds/" .. guildID .. "/punishments", {
+        ["Token"] = cookie
+    }, {
+        username = violator, -- can be username or ID, ID preffered
+        type = pType,
+        reason = reason
+    })
+
+    return success, response
+end
+
 return utils

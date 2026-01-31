@@ -149,6 +149,7 @@ coroutine.wrap(function()
             end
             local ERLC
             local Shifts
+            local PunishmentTypes
             local punishmentsCache = {}
             local bolosCache = {}
             local lastRefresh = nil
@@ -156,8 +157,25 @@ coroutine.wrap(function()
             local currentPanelPlayerID = nil
             local playerPanel = elements.panel.playerPanel
             
+            elements.panel.playerPanel.tools = document:getElementById("playerPanelTools")
+            elements.panel.playerPanel.punish = {
+                 dialog = document:getElementById("punishPanelDialog"),
+                 close = document:getElementById("punishPanelClose"),
+                 form = document:getElementById("punishFormContent"),
+                 error = document:getElementById("punishError"),
+                 type = {
+                     container = document:getElementById("punishTypeDropdownContainer"),
+                     button = document:getElementById("punishTypeButton"),
+                     text = document:getElementById("punishTypeButtonText"),
+                     options = document:getElementById("punishTypeOptions")
+                 },
+                 reason = document:getElementById("punishReason"),
+                 submit = document:getElementById("submitPunishBtn")
+            }
+            
             local function hidePlayerPanel()
                 playerPanel.container.classList:add("panel-hidden")
+                playerPanel.punish.dialog.classList:add("hidden")
             end
 
             local function renderBolo(bolo)
@@ -309,6 +327,113 @@ coroutine.wrap(function()
                 currentPanelPlayerID = playerData.ID
                 loadPunishments(playerData.ID)
                 loadBolo(playerData.ID)
+                
+                -- Tools Setup
+                playerPanel.tools.innerHTML = ""
+                playerPanel.punish.dialog.classList:add("hidden")
+
+                local tools = {
+                     {
+                         name = "Punish",
+                         icon = "ion:hammer",
+                         callback = function()
+                             local punishPanel = playerPanel.punish
+                             punishPanel.dialog.classList:remove("hidden")
+                             
+                             punishPanel.reason.value = ""
+                             punishPanel.type.text.textContent = "Select Type"
+                             local selectedType = nil
+                             
+                             if PunishmentTypes and #PunishmentTypes > 0 then
+                                 punishPanel.form.classList:remove("hidden")
+                                 punishPanel.error.classList:add("hidden")
+                                 
+                                 punishPanel.type.options.innerHTML = ""
+                                 for _, pType in ipairs(PunishmentTypes) do
+                                     local btn = document:createElement("button")
+                                     btn.className = "w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10"
+                                     btn.innerHTML = "<p>" .. pType:gsub("^%l", string.upper) .. "</p>"
+                                     btn:addEventListener("click", function()
+                                         selectedType = pType
+                                         punishPanel.type.text.textContent = pType:gsub("^%l", string.upper)
+                                         punishPanel.type.options.classList:add("hidden")
+                                     end)
+                                     punishPanel.type.options:appendChild(btn)
+                                 end
+                                 
+                                 local newTypeBtn = punishPanel.type.button:cloneNode(true)
+                                 punishPanel.type.button.parentNode:replaceChild(newTypeBtn, punishPanel.type.button)
+                                 punishPanel.type.button = newTypeBtn
+                                 punishPanel.type.text = newTypeBtn:querySelector("#punishTypeButtonText")
+                                 
+                                 punishPanel.type.button:addEventListener("click", function()
+                                     punishPanel.type.options.classList:toggle("hidden")
+                                 end)
+                                 
+                                 local newSubmitBtn = punishPanel.submit:cloneNode(true)
+                                 punishPanel.submit.parentNode:replaceChild(newSubmitBtn, punishPanel.submit)
+                                 punishPanel.submit = newSubmitBtn
+                                 
+                                 punishPanel.submit:addEventListener("click", function()
+                                     if not selectedType then
+                                         utils.notify("Please select a punishment type.", "fail")
+                                         return
+                                     end
+                                     
+                                     local reason = punishPanel.reason.value
+                                     if not reason or reason == "" then
+                                         utils.notify("Please enter a reason.", "fail")
+                                         return
+                                     end
+                                     
+                                     local btn = punishPanel.submit
+                                     local originalText = btn.innerHTML
+                                     btn.disabled = true
+                                     btn.innerHTML = "<img src=\"/images/icons/Loading.gif\" class=\"w-5 h-5 mx-auto\" />"
+                                     
+                                     coroutine.wrap(function()
+                                         local success, response = utils.createPunishment(GuildID, currentPanelPlayerID, selectedType, reason)
+                                         
+                                         btn.disabled = false
+                                         btn.innerHTML = originalText
+                                         
+                                         if success then
+                                             utils.notify("Successfully punished player.", "success")
+                                             punishPanel.dialog.classList:add("hidden")
+                                             loadPunishments(currentPanelPlayerID, true)
+                                         else
+                                              utils.notify((response and response.message) or "Failed to punish player.", "fail")
+                                         end
+                                     end)()
+                                 end)
+                                 
+                             else
+                                 punishPanel.form.classList:add("hidden")
+                                 punishPanel.error.classList:remove("hidden")
+                             end
+                         end
+                     }
+                }
+                
+                local toolsTitle = document:createElement("h3")
+                toolsTitle.className = "text-lg font-semibold"
+                toolsTitle.textContent = "Tools"
+                playerPanel.tools:appendChild(toolsTitle)
+                
+                local toolsGrid = document:createElement("div")
+                toolsGrid.className = "grid grid-cols-2 gap-2 mt-2"
+                playerPanel.tools:appendChild(toolsGrid)
+                
+                for _, tool in ipairs(tools) do
+                    local btn = document:createElement("button")
+                    btn.className = "btn-glass p-3 rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-white/10 transition-colors"
+                    btn.innerHTML = string.format([[
+                        <span class="iconify text-2xl" data-icon="%s"></span>
+                        <span class="text-xs font-medium">%s</span>
+                    ]], tool.icon, tool.name)
+                    btn:addEventListener("click", tool.callback)
+                    toolsGrid:appendChild(btn)
+                end
 
                 playerPanel.container.classList:remove("panel-hidden")
             end
@@ -384,6 +509,30 @@ coroutine.wrap(function()
                 local target = js.global.event and js.global.event.target
                 if target == playerPanel.container then
                     hidePlayerPanel()
+                end
+            end)
+
+            playerPanel.punish.close:addEventListener("click", function()
+                 playerPanel.punish.dialog.classList:add("hidden")
+            end)
+
+            window:addEventListener("click", function()
+                local event = js.global.event
+                local punishPanel = elements.panel.playerPanel.punish
+                local container = punishPanel.type.container
+                local options = punishPanel.type.options
+                if event and container and not container:contains(event.target) then
+                     options.classList:add("hidden")
+                end
+            end)
+
+            playerPanel.punish.dialog:addEventListener("click", function()
+                local event = js.global.event
+                local punishPanel = elements.panel.playerPanel.punish
+                local container = punishPanel.type.container
+                local options = punishPanel.type.options
+                if event and container and not container:contains(event.target) then
+                     options.classList:add("hidden")
                 end
             end)
 
@@ -715,6 +864,7 @@ coroutine.wrap(function()
 
                         ERLC = data.erlc
                         Shifts = data.shifts
+                        PunishmentTypes = data.punishmentTypes
 
                         elements.panel.glance.server.icon.src = Guild.icon
                         elements.panel.glance.server.name.textContent = Guild.name
