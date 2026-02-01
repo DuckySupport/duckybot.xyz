@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Unlock endless possibilities with increased limits, giveaway requirements, less ratelimits, and so much more for 1,000 robux per server.">
+    <meta content="Ducky Plus+" property="og:title">
+    <meta content="Unlock endless possibilities with increased limits, giveaway requirements, less ratelimits, and so much more for 1,000 robux per server." property="og:description">
+    <meta content="https://duckybot.xyz" property="og:url">
+    <meta content="/images/icons/Plus.png" property="og:image">
+    <meta content="/images/icons/Plus.png" property="og:image:url">
+    <meta content="300" property="og:image:width">
+    <meta content="300" property="og:image:height">
+    <meta content="#FF54F9" name="theme-color">
+    <link rel="icon" href="/images/icons/Plus.png">
+    <title>Ducky Plus+</title>
+    <script nonce="{{nonce}}" src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script nonce="{{nonce}}">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FFFFFF',
+                        secondary: '#111111',
+                        dark: '#0a0a0a'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    maxHeight: {
+                        '100': '100px'
+                    }
+                }
+            }
+        }
+    </script>
+    <script nonce="{{nonce}}" src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
+</head>
+
+<body>
+    <div class="fixed inset-0 z-0 bg-[url('/images/misc/rainbow.webp')] bg-no-repeat bg-center bg-cover blur-xl opacity-60 pointer-events-none"></div>
+    <div id="navbar"></div>
+    <div id="mobileMenu" class="mobile-menu">
+        <button id="mobileMenuClose" class="absolute top-6 right-6 text-white/70" aria-label="Close mobile menu">
+            <i class="fas fa-times text-2xl"></i>
+        </button>
+        <div class="flex flex-col items-center gap-6 sm:gap-8">
+            <a href="/team" class="nav-link white text-xl text-white/70">Team</a>
+            <a href="/docs" class="nav-link white text-xl text-white/70">Docs</a>
+            <a href="/plus" class="nav-link white text-xl text-white/70">Ducky Plus+</a>
+            <a href="/status" class="nav-link white text-xl text-white/70">Status</a>
+            <a href="/support" class="nav-link white text-xl text-white/70">Support</a>
+            <a href="/invite" class="btn-glass text-xl px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add Ducky</a>
+        </div>
+    </div>
+    <main>
+    <section class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
+        <div class="max-w-5xl mx-auto text-center">
+            <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 animate-fade-in">
+                <img src="/images/icons/Plus.svg" alt="Ducky Plus+ Icon" class="inline w-auto h-[1.2em] align-text-bottom"> Ducky Plus+
+            </h1>
+            <p class="text-white/60 text-sm sm:text-lg mb-6 sm:mb-8 max-w-3xl mx-auto animate-slide-up">
+                Unlock endless possibilities with increased limits, giveaway requirements, less ratelimits, and so much more for
+                <img src="/images/icons/robux.svg" alt="Robux Icon" class="inline w-auto h-[1.2em] align-text-bottom">
+                <b>1,000</b> per server.
+            </p>
+            <div class="flex flex-wrap justify-center gap-3 sm:gap-4 animate-slide-up" style="animation-delay: 0.2s">
+                <button id="purchase" class="btn-glass px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base" aria-label="How to purchase Ducky Plus+">
+                    Purchase
+                </button>
+                <a href="/support" class="group btn-glass px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base">
+                    Support
+                    <i
+                            class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    <div class="max-w-5xl mx-auto text-center overflow-x-auto overflow-y-hidden px-5 mb-12">
+        <h2 class="text-3xl font-bold mb-6 animate-fade-in text-white">Feature Comparison</h2>
+        <table class="min-w-full table-fixed text-sm text-white border-separate border-spacing-0 animate-slide-up">
+            <thead>
+                <tr>
+                    <th scope="col" class="w-1/3 backdrop-blur-sm border border-white text-center px-4 py-3 font-bold rounded-tl-[15px]">
+                        Feature
+                    </th>
+                    <th scope="col" class="w-1/3 backdrop-blur-sm border border-white text-center px-4 py-3 font-bold">
+                        Free
+                    </th>
+                    <th scope="col" class="w-1/3 backdrop-blur-sm border border-white text-center px-4 py-3 font-bold rounded-tr-[15px]">
+                        Ducky Plus+
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-white/20">
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">Customized Bot Profile</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Fail.svg" alt="no" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Success.svg" alt="yes" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">ERLC Player Panel</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Fail.svg" alt="no" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Success.svg" alt="yes" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">Giveaway Requirements</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Fail.svg" alt="no" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Success.svg" alt="yes" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">Export Embed Message Command</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Fail.svg" alt="no" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Success.svg" alt="yes" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">ERLC Command Queueing</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Fail.svg" alt="no" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Success.svg" alt="yes" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">Reduced Cooldowns</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Fail.svg" alt="no" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Success.svg" alt="yes" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">Automation Limits</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        10 automations, 5 actions per automation
+                    </td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        50 automations, 15 actions per automation
+                    </td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">Autoresponder Limits</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">3 autoresponders</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">25 autoresponders</td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">Reaction Board Limits</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">1 reaction board</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">10 reaction boards</td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">Ticket Panel Limits</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">1 ticket panel</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">5 ticket panels</td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">Ticket Form Limits</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">2 questions on pre-open form</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">5 questions on pre-open form</td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">ERLC Status Channel Limits</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">3 ERLC status channels</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">6 ERLC status channels</td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">Discord Status Channel Limits</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">3 Discord status channels</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">6 Discord status channels</td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">Autodelete Channel Limits</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">3 Autodelete channels</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">10 Autodelete channels</td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">Sticky Message Limits</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">3 sticky messages</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">10 sticky messages</td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">Special Perks in Ducky's Pond</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Fail.svg" alt="no" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Success.svg" alt="yes" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3">Priority Support</td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Fail.svg" alt="no" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Success.svg" alt="yes" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="backdrop-blur-sm border border-white px-4 py-3 rounded-bl-[15px]">
+                        Support Ducky's Development
+                    </td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3">
+                        <img src="/images/icons/Fail.svg" alt="no" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                    <td class="backdrop-blur-sm border border-white text-center px-4 py-3 rounded-br-[15px]">
+                        <img src="/images/icons/Success.svg" alt="yes" class="inline w-auto h-[1.2em] align-text-bottom">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    </main>
+    <div id="footer"></div>
+    <script nonce="{{nonce}}">
+        fetch("/index.lua")
+            .then(res => res.text())
+            .then(lua => {
+                fengari.load(lua)();
+            });
+    </script>
+</body>
+
+</html>

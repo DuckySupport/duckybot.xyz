@@ -1,0 +1,36 @@
+{
+    "message": "Successfully loaded info for guild '1351287020932300891'.",
+    "code": 200,
+    "data": {
+        "members": 16,
+        "role": "Manager",
+        "name": "🛁 Ducky's Tub",
+        "icon": "https://cdn.discordapp.com/icons/1351287020932300891/38aaed458937ee6a6c993ca9b69da392.png",
+        "plus": [],
+        "id": "1351287020932300891",
+        "ducky": true,
+        "permissions": {
+            "DUCKY_PLUS_GUILD": false,
+            "ERLC_ADMIN": true,
+            "TESTER": true,
+            "FOUNDER": true,
+            "ERLC_MANAGER": true,
+            "MANAGE_SERVER": true,
+            "SESSION_STARTER": true,
+            "SETUP": true,
+            "BOT_DEVELOPER": true,
+            "MOD": true,
+            "WEB_DEVELOPER": true,
+            "SUPPORT": true,
+            "MANAGEMENT": true,
+            "ERLC_LINKED": false,
+            "DUCKY_STAFF": true,
+            "ERLC_STAFF": true,
+            "DUCKY_PLUS_MEMBER": false,
+            "ADMIN": true,
+            "EXECUTIVE": true,
+            "MUSIC": true
+        },
+        "owner": "782235114858872854"
+    }
+}

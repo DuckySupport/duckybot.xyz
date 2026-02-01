@@ -1,0 +1,141 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(8px);
+  z-index: 50;
+  border-bottom: 1px solid #1e1f22;
+  background-color: rgba(49, 51, 56, 0.8);
+  transition: all 0.3s;
+  width: 100%;
+}
+
+.navbar-container {
+  margin: auto;
+  max-width: 1440px;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .navbar-container {
+    padding: 0 3rem;
+  }
+}
+
+.navbar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  flex-wrap: wrap;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.navbar-logo {
+  width: 2rem;
+  height: 2rem;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover .navbar-logo {
+  transform: scale(1.1);
+}
+
+.navbar-title {
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 700;
+  color: #f5ff82;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.navbar-title:hover {
+  text-shadow: 0 0 15px rgba(245, 255, 130, 0.5);
+}
+
+.navbar-links {
+  display: none;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+@media (min-width: 768px) {
+  .navbar-links {
+    display: flex;
+    width: auto;
+    flex-direction: row;
+    padding: 0;
+  }
+}
+
+.nav-link {
+  font-size: clamp(0.75rem, 1.5vw, 1rem);
+  color: #b5bac1;
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.25rem;
+  transition: all 0.3s;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+}
+
+@media (min-width: 768px) {
+  .nav-link {
+    width: auto;
+  }
+}
+
+.nav-link:hover {
+  color: white;
+  background-color: rgba(79, 84, 92, 0.3);
+}
+
+.premium-button {
+  background-color: #f5ff82;
+  color: #313338 !important;
+  border: none;
+  font-weight: 600;
+  transition: all 0.3s;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .premium-button {
+    width: auto;
+    margin-top: 0;
+  }
+}
+
+.premium-button:hover {
+  background-color: rgba(245, 255, 130, 0.9);
+  box-shadow: 0 0 10px rgba(245, 255, 130, 0.3);
+}
+
+.mobile-menu-button {
+  display: block;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .mobile-menu-button {
+    display: none;
+  }
+}
+
+.navbar-links.active {
+  display: flex;
+}

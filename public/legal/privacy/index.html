@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Learn how Ducky stores, processes, and protects your data.">
+    <meta content="Ducky・Privacy Policy" property="og:title">
+    <meta content="Learn how Ducky stores, processes, and protects your data." property="og:description">
+    <meta content="https://duckybot.xyz" property="og:url">
+    <meta content="/images/icons/Ducky.png" property="og:image">
+    <meta content="/images/icons/Ducky.png" property="og:image:url">
+    <meta content="300" property="og:image:width">
+    <meta content="300" property="og:image:height">
+    <meta content="#F5FF82" name="theme-color">
+    <link rel="icon" href="/images/icons/Ducky.png">
+    <title>Ducky ・ Privacy Policy</title>
+    <script nonce="{{nonce}}" src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script nonce="{{nonce}}">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F5FF82',
+                        secondary: '#111111',
+                        dark: '#0a0a0a'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    maxHeight: {
+                        '100': '100px'
+                    }
+                }
+            }
+        }
+    </script>
+    <script nonce="{{nonce}}" src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
+</head>
+
+<body>
+    <div class="glow bg-primary top-0 left-[10%] w-[500px] h-[500px]"></div>
+    <div class="glow bg-primary bottom-0 right-[10%] w-[500px] h-[500px]"></div>
+    <div id="navbar"></div>
+    <div id="mobileMenu" class="mobile-menu">
+        <button id="mobileMenuClose" class="absolute top-6 right-6 text-white/70" aria-label="Close mobile menu">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+        <div class="flex flex-col items-center gap-6 sm:gap-8">
+            <a href="/team" class="nav-link text-xl text-white/70">Team</a>
+            <a href="/docs" class="nav-link text-xl text-white/70">Docs</a>
+            <a href="/plus" class="nav-link text-xl text-white/70">Ducky
+                    Plus+</a>
+            <a href="/status" class="nav-link text-xl text-white/70">Status</a>
+            <a href="/support" class="nav-link text-xl text-white/70">Support</a>
+            <a href="/invite" class="btn-primary text-xl px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add
+                    Ducky</a>
+        </div>
+    </div>
+    <section class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
+        <div class="tos-container text-left">
+            <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 animate-fade-in text-center">
+                <span class="text-primary">Privacy</span> Policy
+            </h1>
+
+            <div class="policy-info text-center mb-8">
+                <p><strong>Terms of Service:</strong> <a href="/legal/terms" class="text-[#F5FF82] hover:underline">https://duckybot.xyz/legal/terms</a></p>
+                <p><strong>Effective Date:</strong> September 29, 2024</p>
+                <p><strong>Last Updated:</strong> August 15, 2025</p>
+            </div>
+
+            <div class="max-w-3xl mx-auto px-4">
+                <section id="introduction">
+                    <h2 class="text-2xl font-bold heading mb-4">1. Introduction
+                    </h2>
+                    <p class="mb-4">Welcome to the Privacy Policy of Ducky. If you haven't already, read and accept our Terms of Service first and then this Privacy Policy. We will try to be as transparent as possible about how Ducky uses information it receives from
+                        users. Whenever this Privacy Policy mentions
+                        <strong>giving us consent</strong> or similar phrases, it refers to giving Ducky your consent. "Us" and "Ducky" are used interchangeably, and both mean the same thing in this context.</p>
+                </section>
+
+                <section id="website">
+                    <h2 class="text-2xl font-bold heading mb-4">2. Using the Ducky website</h2>
+                    <p class="mb-4">We currently support 2 features on our website that collect and process information. This includes Discord login and Roblox login; these are both done through an OAuth2 flow. For Discord login, the website stores a cookie with the
+                        provided authentication code from Discord. For Roblox login, the authentication code from Roblox is send to our API, which can link your Discord account with your Roblox account. More information about linking with Ducky can be
+                        found in section 3.1. Our domain is managed by Cloudflare, which provides basic statistical information about traffic on our domain. For information about how Cloudflare handles data, please view their privacy policy (accessible
+                        at <a href="https://www.cloudflare.com/privacypolicy/" class="text-[#F5FF82] hover:underline">https://www.cloudflare.com/privacypolicy</a>).</p>
+                </section>
+
+                <section id="discord">
+                    <h2 class="text-2xl font-bold heading mb-4">3. Using Ducky in Discord</h2>
+                    <p class="mb-4">When using Ducky in your Discord server, you give us consent to see and process information about your server and you Ducky has access to. Additionally, Ducky may store and use information you give it to make it do what it's supposed
+                        to. Extra information on specific topics can be found below.</p>
+
+                    <h3 class="text-xl font-semibold mt-4 mb-2">3.1. Roblox Linking
+                    </h3>
+                    <p class="mb-4">There are 2 ways you can get linked with Ducky. First is manually linking yourself. This can be done through the website or with the legacy verification method through a Discord command. The second possibility is when joining a server
+                        that has the <strong>Use Bloxlink</strong> feature enabled. This will use the Bloxlink "private" API (which requires a server key and the user to be a member of the server) to see if you have Roblox information on Bloxlink. If
+                        it does find Roblox information, it will DM you with confirmation and will not store the information from the Bloxlink API until you authorize this. If you don't want to receive this DM anymore, you can click the third option <strong>Deny, and don't ask
+                                again</strong>. Ducky will store your preference in usersettings, which can be managed with the
+                        <code>/usersettings</code> command. With that command you can also disable this feature in advance, and Ducky will not look up Roblox information using the Bloxlink API for you. Once linked with Ducky, using any way, anyone can
+                        get your Roblox ID using your Discord ID and the other way around. You can unlink from Ducky at any time using the
+                        <code>/link</code> command and clicking
+                        <strong>Unlink</strong>.</p>
+
+                    <h3 class="text-xl font-semibold mt-4 mb-2">3.2. ERLC API Key</h3>
+                    <p class="mb-4">When providing Ducky with an API key, you give us consent to see and process information about your ERLC server. Ducky will automate requests to the PRC API, required for many of its features. Abiding by the PRC Private Server API
+                        Use Guidelines (accessible at <a href="https://apidocs.policeroleplay.community/api-information/api-use-guidelines" class="text-[#F5FF82] hover:underline">https://apidocs.policeroleplay.community/api-information/api-use-guidelines</a>),
+                        once Ducky is removed from your server, it will not make any requests to the PRC API using your API key. For information about data retention, including the retention of your ERLC API key, see section 6.</p>
+                </section>
+
+                <section id="storage">
+                    <h2 class="text-2xl font-bold heading mb-4">4. Storage of Data</h2>
+                    <p class="mb-4">Ducky stores data in an SQL database stored on the VPS (Virtual Private Server) managed by Vertuo Hosting (<a href="https://vertuohosting.com" class="text-[#F5FF82] hover:underline">https://vertuohosting.com</a>). The raw data files are only accessible by
+                        Ducky Senior Developers+, which currently include @bobbibones (Discord ID: 782235114858872854) and @troptopreal (Discord ID: 598958193032560642). Access to data through any Ducky service will ensure the user has the required authorization
+                        to access that data. Ducky frequently makes a backup of the raw data file. Backups are deleted after 5 days, and are only used for disaster recovery. We do not sell your data. We may share it with trusted third parties only when
+                        necessary to provide our services, comply with legal obligations, or protect our rights.
+                    </p>
+                </section>
+
+                <section id="security">
+                    <h2 class="text-2xl font-bold heading mb-4">5. Security of Data</h2>
+                    <p class="mb-4">We take reasonable technical and organizational measures to protect your data. However, no system is completely secure, and we cannot guarantee prevention of unauthorized access, loss, or breaches. To the fullest extent permitted by
+                        law, we disclaim liability for any resulting damages.
+                    </p>
+                </section>
+
+                <section id="retention">
+                    <h2 class="text-2xl font-bold heading mb-4">6. Retention and Deletion of Data</h2>
+                    <p class="mb-4">Server data is removed 7 days after removing Ducky from the server. You can manually wipe all server data on the first page of
+                        <code>/setup</code>. As stated in section 4, we make backups of the raw data file; this includes all data. Backups are deleted after 5 days.</p>
+                </section>
+
+                <section id="requests">
+                    <h2 class="text-2xl font-bold heading mb-4">7. Data Requests
+                    </h2>
+                    <p class="mb-4">If you would like to request all data we have about you or request deletion of all data, you can create a development ticket in our support server (Discord ID: 1228508072289370172, accessible at <a href="https://discord.gg/w2dNr7vuKP"
+                            class="text-[#F5FF82] hover:underline">https://discord.gg/w2dNr7vuKP</a>) or DM bobbibones (Discord ID: 782235114858872854). We do not allow this through any other communication channel, as we cannot confirm ownership on any other
+                        communication channel.</p>
+                </section>
+
+                <section id="updates">
+                    <h2 class="text-2xl font-bold heading mb-4">8. Modifications to this Privacy Policy</h2>
+
+                    <p class="mb-4">
+                        By continuing to use our service after changes have been posted, you are agreeing to those changes. To receive notifications about updates to our Privacy Policy, updates will be posted in a dedicated thread under the shouts channel (Channel ID: 1258891659874144256,
+                        Thread ID: 1394306899653955614). You can join the support server (Discord ID: 1228508072289370172, accessible at
+                        <a href="https://discord.gg/w2dNr7vuKP" class="text-[#F5FF82] hover:underline">https://discord.gg/w2dNr7vuKP</a>). When joining, you can select the "Legal" role to receive pings about updates posted in this thread for the Privacy
+                        Policy and our Terms of Service (accessible at <a href="/legal/terms" class="text-[#F5FF82] hover:underline">https://duckybot.xyz/legal/terms</a>). If you are already in the support server, you can obtain the "Legal" role via the
+                        "Channels & Roles" tab at the top of the channel list.
+                    </p>
+                    <p class="mb-4">
+                        By doing any of the following, you agree
+                        <strong>not</strong> to be notified about changes to this Privacy Policy:
+                    </p>
+                    <ul class="list-disc pl-5">
+                        <li>Not joining the support server (Discord ID: 1228508072289370172, accessible at <a href="https://discord.gg/w2dNr7vuKP" class="text-[#F5FF82] hover:underline">https://discord.gg/w2dNr7vuKP</a>)
+                        </li>
+                        <li>Not selecting the "Legal" ping during onboarding
+                        </li>
+                        <li>Violating the support server rules (see the "rules" channel, Discord ID: 1259259527094734858)
+                        </li>
+                        <li>Disabling notifications for the support server in any way</li>
+                    </ul>
+                </section>
+            </div>
+    </section>
+    <div id="footer"></div>
+    <script nonce="{{nonce}}">
+        fetch("/index.lua")
+            .then(res => res.text())
+            .then(lua => {
+                fengari.load(lua)();
+            });
+    </script>
+</body>
+
+</html>

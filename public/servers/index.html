@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Manage and moderate your servers with ease from the web panel.">
+    <meta content="Ducky・Your Servers" property="og:title">
+    <meta content="Manage and moderate your servers with ease from the web panel." property="og:description">
+    <meta content="https://duckybot.xyz" property="og:url">
+    <meta content="/images/icons/Ducky.png" property="og:image">
+    <meta content="/images/icons/Ducky.png" property="og:image:url">
+    <meta content="300" property="og:image:width">
+    <meta content="300" property="og:image:height">
+    <meta content="#F5FF82" name="theme-color">
+    <link rel="icon" href="/images/icons/Ducky.png">
+    <title>Ducky ・ Your Servers</title>
+    <script nonce="{{nonce}}" src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script nonce="{{nonce}}" src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+    <script nonce="{{nonce}}">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F5FF82',
+                        secondary: '#111111',
+                        dark: '#0a0a0a'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    maxHeight: {
+                        '100': '100px'
+                    }
+                }
+            }
+        }
+    </script>
+    <script nonce="{{nonce}}" src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
+</head>
+
+<body class="min-h-screen flex flex-col">
+    <main class="flex-grow">
+        <div class="glow bg-primary top-0 left-[10%] w-[500px] h-[500px]"></div>
+        <div class="glow bg-primary bottom-0 right-[10%] w-[500px] h-[500px]"></div>
+        <div id="navbar"></div>
+        <div id="mobileMenu" class="mobile-menu">
+            <button id="mobileMenuClose" class="absolute top-6 right-6 text-white/70" aria-label="Close mobile menu">
+                    <span class="iconify inline-flex text-2xl" data-icon="mingcute:close-fill"></span>
+                </button>
+            <div class="flex flex-col items-center gap-6 sm:gap-8">
+                <a href="/team" class="nav-link text-xl text-white/70">Team</a>
+                <a href="/docs" class="nav-link text-xl text-white/70">Docs</a>
+                <a href="/plus" class="nav-link text-xl text-white/70">Ducky
+                        Plus+</a>
+                <a href="/status" class="nav-link text-xl text-white/70">Status</a>
+                <a href="/support" class="nav-link text-xl text-white/70">Support</a>
+                <a href="/invite" class="btn-primary text-xl px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm">Add
+                        Ducky</a>
+            </div>
+        </div>
+        <section class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
+            <div id="loadingContainer">
+                <div class="bg-secondary/80 border border-white/10 rounded-2xl p-8 shadow-lg max-w-xl mx-auto">
+                    <div class="flex flex-col items-center space-y-3">
+                        <img src="/images/icons/Loading.gif" class="w-20 h-20" id="loadingIcon">
+                        <h1 class="text-white text-3xl font-semibold text-center" id="loadingTitle">Loading...</h1>
+                        <hr class="border-white/10 w-3/4 my-4">
+                        <p class="text-white/70 text-center" id="loadingText">
+                            Please wait...
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="servers" class="hidden">
+                <div class="max-w-6xl mx-auto text-white">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-2xl sm:text-3xl font-bold">Your Servers
+                        </h2>
+                        <button id="serversRefresh" class="group btn-glass px-5 py-2.5 sm:px-6 sm:py-2 rounded-full text-sm sm:text-base">
+                            <i class="iconify inline-flex text-2xl" data-icon="material-symbols:refresh-rounded"></i> Refresh
+                        </button>
+                    </div>
+                    <hr class="border-white/10 w-full my-2">
+                    <div class="mb-10">
+                        <div id="serversDucky" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <span class="text-white/50">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+    <div id="footer"></div>
+    <script nonce="{{nonce}}">
+        fetch("/index.lua ")
+            .then(res => res.text())
+            .then(lua => {
+                fengari.load(lua)();
+            });
+    </script>
+</body>
+
+</html>

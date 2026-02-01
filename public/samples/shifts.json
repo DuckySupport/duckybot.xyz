@@ -1,0 +1,74 @@
+{
+	"message": "Shifts for '🛁 Ducky's Tub' fetched successfully.",
+	"code": 200,
+	"data": {
+		"waves": [
+			{
+				"shifts": [
+					{
+						"punishments": 0,
+						"member": "782235114858872854",
+						"id": "1428050687572578305",
+						"pauses": [],
+						"ended": 1760544246,
+						"started": 1760543563,
+						"type": "Shift"
+					},
+					{
+						"punishments": 0,
+						"member": "1195190410264461394",
+						"id": "1428533553313874081",
+						"pauses": [],
+						"ended": 1760659985,
+						"started": 1760659340,
+						"type": "Shift"
+					},
+					{
+						"punishments": 0,
+						"member": "782235114858872854",
+						"id": "1428050687572578304",
+						"pauses": [],
+						"ended": 1760330903,
+						"started": 1760330290,
+						"type": "Shift"
+					},
+					{
+						"punishments": 0,
+						"member": "1195190410264461394",
+						"id": "1428932534284193795",
+						"pauses": [
+							{
+								"ended": 1760754571,
+								"started": 1760754547
+							}
+						],
+						"ended": 1760754713,
+						"started": 1760754464,
+						"type": "Shift"
+					},
+					{
+						"punishments": 0,
+						"member": "598958193032560642",
+						"id": "1429120635124191232",
+						"pauses": [],
+						"ended": 1757199311,
+						"started": 1760799311,
+						"type": "Shift"
+					}
+				],
+				"started": 1760544216,
+				"id": 1
+			}
+		],
+		"gamelock": true,
+		"types": [
+			{
+				"onpauserole": "1391670510823276604",
+				"name": "Shift",
+				"quota": 3600,
+				"onshiftrole": "1352934605996560415",
+				"requiredrole": "1429446569723302032"
+			}
+		]
+	}
+}
