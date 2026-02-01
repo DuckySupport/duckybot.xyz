@@ -1,0 +1,27 @@
+name: Sync Private Repo
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'public/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout pulic repo
+        uses: actions/checkout@v4
+
+      - name: Push public/ to private repo
+        uses: cpina/github-action-push-to-another-repository@v1.7.2
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: 'public'
+          destination-github-username: 'DuckySupport'
+          destination-repository-name: 'duckybot.xyz-private'
+          user-email: 'github-actions[bot]@users.noreply.github.com'
+          target-branch: 'master'
+          target-directory: 'public'
