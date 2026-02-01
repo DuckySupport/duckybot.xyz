@@ -15,9 +15,18 @@
     <meta content="#F5FF82" name="theme-color">
     <link rel="icon" href="/images/icons/Ducky.png">
     <title>Ducky</title>
+
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://unpkg.com">
+
+    <link rel="preload" href="/images/misc/fannedlogos.webp" as="image" fetchpriority="high">
+
     <script nonce="{{nonce}}" src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="/styles.css">
     <script nonce="{{nonce}}">
         tailwind.config = {
@@ -38,7 +47,7 @@
             }
         }
     </script>
-    <script nonce="{{nonce}}" src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js"></script>
+    <script nonce="{{nonce}}" src="https://unpkg.com/fengari-web@0.1.4/dist/fengari-web.js" defer></script>
 </head>
 
 <body>
@@ -60,6 +69,7 @@
                     Ducky</a>
         </div>
     </div>
+    <main>
     <section class="pt-28 sm:pt-32 md:pt-40 pb-16 sm:pb-20 px-4 relative">
         <div class="max-w-5xl mx-auto text-center">
             <a id="duckyVersion" href="https://docs.duckybot.xyz/overview/changelogs" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center px-4 sm:px-6 py-1.5 sm:py-2 rounded-full bg-primary/10 border border-primary/10 text-white/90 text-xs sm:text-sm font-medium mb-6 sm:mb-8 hover:bg-primary/10 transition">
@@ -89,23 +99,23 @@
     <section class="py-16 sm:py-20 px-4 relative">
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             <div class="card p-6 sm:p-8 animate-fade-in">
-                <i class="fas fa-shield-alt text-2xl sm:text-3xl mb-4 sm:mb-6"></i>
-                <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Staff Management
-                </h3>
+                <i class="fas fa-shield-alt text-2xl sm:text-3xl mb-4 sm:mb-6" aria-hidden="true"></i>
+                <h2 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Staff Management
+                </h2>
                 <p class="text-white/60 text-sm sm:text-base">
                     Manage your staff team with ease using infractions, promotions, LOAs, feedback, and more
                 </p>
             </div>
             <div class="card p-6 sm:p-8 animate-fade-in">
-                <img src="/images/icons/automation.svg" alt="Automation Icon" class="inline w-auto h-[2.25rem] mb-4 sm:mb-6">
-                <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Automation</h3>
+                <img src="/images/icons/automation.svg" alt="" class="inline w-auto h-[2.25rem] mb-4 sm:mb-6" loading="lazy">
+                <h2 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Automation</h2>
                 <p class="text-white/60 text-sm sm:text-base">
                     Seamless ERLC automation with over 30+ triggers, actions, and conditions for effortless management
                 </p>
             </div>
             <div class="card p-6 sm:p-8 animate-fade-in">
-                <i class="fas fa-code text-2xl sm:text-3xl mb-4 sm:mb-6"></i>
-                <h3 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Multipurpose</h3>
+                <i class="fas fa-code text-2xl sm:text-3xl mb-4 sm:mb-6" aria-hidden="true"></i>
+                <h2 class="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Multipurpose</h2>
                 <p class="text-white/60 text-sm sm:text-base">
                     Features for every server, such as Discord Moderation, Roblox Verification, Reaction Boards, and more
                 </p>
@@ -113,14 +123,17 @@
         </div>
     </section>
     <section class="relative py-20 px-4 max-w-5xl mx-auto text-center overflow-visible animate-slide-up">
-        <img src="/images/misc/fannedlogos.png" alt="fanned logos" class="absolute top-[-75px] left-1/2 -translate-x-1/2 w-full max-w-none pointer-events-none select-none" style="height: 400px; object-fit: contain; z-index: 0;">
+        <picture>
+            <source srcset="/images/misc/fannedlogos.webp" type="image/webp">
+            <img src="/images/misc/fannedlogos.png" alt="fanned logos" class="absolute top-[-75px] left-1/2 -translate-x-1/2 w-full max-w-none pointer-events-none select-none" style="height: 400px; object-fit: contain; z-index: 0;" fetchpriority="high">
+        </picture>
         <div class="relative z-10">
             <h1 class="text-white text-4xl sm:text-5xl leading-tight max-w-3xl mx-auto">
                 <br> Trusted by
-                <span class="text-primary font-bold" id="userCount">500,000+
+                <span class="text-primary font-bold" id="userCount">750,000+
                         users</span>
                 <br> across
-                <span class="text-primary font-bold" id="guildCount">6,600+
+                <span class="text-primary font-bold" id="guildCount">10,000+
                         communities</span>.
             </h1>
         </div>
@@ -139,7 +152,10 @@
                 <div class="card affiliate-card">
                     <div class="flex justify-center">
                         <div class="card-icon fixed-icon">
-                            <img src="/images/affiliates/logos/crp.png" alt="California" class="h-full w-full object-cover">
+                            <picture>
+                                <source srcset="/images/affiliates/logos/crp.webp" type="image/webp">
+                                <img src="/images/affiliates/logos/crp.png" alt="California" class="h-full w-full object-cover" loading="lazy">
+                            </picture>
                         </div>
                     </div>
                     <div class="card-content">
@@ -159,7 +175,10 @@
                 <div class="card affiliate-card">
                     <div class="flex justify-center">
                         <div class="card-icon fixed-icon">
-                            <img src="/images/affiliates/logos/brx.png" alt="Brixton" class="h-full w-full object-cover">
+                            <picture>
+                                <source srcset="/images/affiliates/logos/brx.webp" type="image/webp">
+                                <img src="/images/affiliates/logos/brx.png" alt="Brixton" class="h-full w-full object-cover" loading="lazy">
+                            </picture>
                         </div>
                     </div>
                     <div class="card-content">
@@ -215,11 +234,11 @@
                 <div class="absolute inset-0 bg-[url('/images/misc/rainbow.webp')] bg-cover bg-center blur opacity-60 z-0"></div>
                 <div class="relative z-10">
                     <h2 class="text-2xl sm:text-4xl font-bold mb-4 sm:mb-6 text-white">
-                        <img src="/images/icons/Plus.svg" alt="Ducky Icon" class="inline h-[1.2em] w-auto align-text-bottom"> Ducky Plus+
+                        <img src="/images/icons/Plus.svg" alt="Ducky Icon" class="inline h-[1.2em] w-auto align-text-bottom" loading="lazy"> Ducky Plus+
                     </h2>
                     <p class="text-white/60 text-sm sm:text-lg mb-6 sm:mb-8 max-w-3xl mx-auto">
                         Unlock endless possibilities with increased limits, giveaway requirements, less ratelimits, and so much more for
-                        <img src="/images/icons/robux.svg" alt="Robux Icon" class="inline w-auto h-[1.2em] align-text-bottom">
+                        <img src="/images/icons/robux.svg" alt="Robux Icon" class="inline w-auto h-[1.2em] align-text-bottom" loading="lazy">
                         <b>1,000</b> per server.
                     </p>
                     <a href="/plus" class="bg-white/10 text-white border border-white/30 px-5 py-2.5 sm:px-6 sm:py-2 rounded-full inline-flex items-center gap-2 text-sm sm:text-base font-semibold hover:bg-white/30 transition">
@@ -229,6 +248,7 @@
             </div>
         </div>
     </section>
+    </main>
     <div id="footer"></div>
     <script nonce="{{nonce}}">
         fetch("/index.lua")

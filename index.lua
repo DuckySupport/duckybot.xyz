@@ -152,18 +152,18 @@ coroutine.wrap(function()
 					card.className = "glass-card dark review-card p-4 opacity-0 w-full max-h-100 rounded-full"
 					card.style.animation = "fadeInSlide 0.5s ease-out " .. ((mobile and i * 0.15) or i * 0.2) .. "s forwards"
 
-					local filledStar = '<img src="/images/icons/starfill.svg" class="' .. (mobile and "w-5 h-5" or "w-6 h-6") .. ' inline-block mx-[2px]">'
-					local emptyStar = '<img src="/images/icons/star.svg" class="' .. (mobile and "w-5 h-5" or "w-6 h-6") .. ' inline-block mx-[2px]">'
+					local filledStar = '<img src="/images/icons/starfill.svg" alt="" class="' .. (mobile and "w-5 h-5" or "w-6 h-6") .. ' inline-block mx-[2px]">'
+					local emptyStar = '<img src="/images/icons/star.svg" alt="" class="' .. (mobile and "w-5 h-5" or "w-6 h-6") .. ' inline-block mx-[2px]">'
 
 					local filledStars = filledStar:rep(review.rating)
 					local emptyStars = emptyStar:rep(5 - review.rating)
 
 					card.innerHTML = string.format([[
 						<div class="flex items-center gap-4">
-							<img src="%s" alt="%s" class="%s rounded-full flex-shrink-0">
+							<img src="%s" alt="" class="%s rounded-full flex-shrink-0">
 							<div class="flex flex-col flex-grow">
 							<div class="flex items-center gap-2 mb-1">
-								<h4 class="font-semibold text-lg truncate">%s</h4>
+								<h3 class="font-semibold text-lg truncate">%s</h3>
 								<div class="text-primary flex gap-1">
 								%s%s
 								</div>
@@ -171,16 +171,15 @@ coroutine.wrap(function()
 							<p class="text-white/60 text-base overflow-hidden" style="-webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical;">%s</p>
 							</div>
 						</div>
-						]], review.submitter.avatar, review.submitter.username, mobile and "w-16 h-16" or "w-20 h-20", review.submitter.username, filledStars, emptyStars, review.feedback)
+						]], review.submitter.avatar, mobile and "w-16 h-16" or "w-20 h-20", review.submitter.username, filledStars, emptyStars, review.feedback)
 
 					elements.feedback:appendChild(card)
 				end
 			end
 		end, "GET", "https://api.duckybot.xyz/feedback")
 	elseif path[1] == "plus" then
-		local purchaseButton = document:getElementById("purchaseButton")
-		if purchaseButton then
-			purchaseButton:addEventListener("click", function()
+		if elements.plus.purchase then
+			elements.plus.purchase:addEventListener("click", function()
 				utils.popup({
 					title = "How to Purchase Ducky Plus+",
 					content = [[
@@ -240,9 +239,9 @@ coroutine.wrap(function()
 
 		local function update(icon, title, text, showButtons)
 			local key = {
-				loading = "/images/icons/loading.gif",
-				success = "/images/icons/success.svg",
-				fail = "/images/icons/fail.svg"
+				loading = "/images/icons/Loading.gif",
+				success = "/images/icons/Success.svg",
+				fail = "/images/icons/Fail.svg"
 			}
 
 			elements.link.icon.src = key[icon] or icon
@@ -325,7 +324,6 @@ coroutine.wrap(function()
 			update("loading", "Redirecting...", "You are being redirected to Discord.", false)
 			utils.redirect("login/?redirect=link")
 		end
-	
 	elseif path[1] == "login" then
 		local redirect_uri
 		if global.window.location.hostname == "dev.duckybot.xyz" then
@@ -336,9 +334,9 @@ coroutine.wrap(function()
 
 		local function update(icon, title, text, showButtons)
 			local key = {
-				loading = "/images/icons/loading.gif",
-				success = "/images/icons/success.svg",
-				fail = "/images/icons/fail.svg"
+				loading = "/images/icons/Loading.gif",
+				success = "/images/icons/Success.svg",
+				fail = "/images/icons/Fail.svg"
 			}
 
 			elements.login.icon.src = key[icon] or icon

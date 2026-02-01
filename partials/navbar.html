@@ -1,7 +1,10 @@
 <div class="fixed top-4 sm:top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-5xl px-4 flex justify-between items-center h-14">
     <nav class="floating-nav flex-grow flex items-center justify-between py-2 px-4 rounded-full bg-secondary/30 h-full">
         <a href="/" class="flex items-center gap-2 sm:gap-3">
-            <img src="/images/misc/fullDucky.png" alt="Ducky" class="w-32 sm:w-32 h-auto object-contain">
+            <picture>
+                <source srcset="/images/misc/fullDucky.webp" type="image/webp">
+                <img src="/images/misc/fullDucky.png" alt="Ducky" class="w-32 sm:w-32 h-auto object-contain">
+            </picture>
         </a>
         <div class="hidden md:flex items-center gap-4 sm:gap-8">
             <a href="/team" class="nav-link text-sm text-white/70">Team</a>
@@ -17,8 +20,8 @@
         </button>
     </nav>
     <div class="hidden md:flex relative transform translate-x-2">
-        <button id="profileButton" class="w-[50px] h-[50px] rounded-full btn-outline overflow-hidden flex justify-center items-center">
-            <img src="/images/misc/defaultpfp.webp" id="profileImage" class="w-full h-full object-cover"></img>
+        <button id="profileButton" class="w-[50px] h-[50px] rounded-full btn-outline overflow-hidden flex justify-center items-center" aria-label="User Profile Menu">
+            <img src="/images/misc/defaultpfp.webp" id="profileImage" class="w-full h-full object-cover" alt="User Profile"></img>
         </button>
         <div id="profileMenu" class="hidden absolute top-[125%] right-0 glass-card dark py-2 px-2 w-[125px] animate-slide-down quick">
             <a href="/servers" class="flex px-4 py-2 nav-link text-white/70">Servers</a>

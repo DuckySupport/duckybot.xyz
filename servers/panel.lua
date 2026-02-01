@@ -93,7 +93,9 @@ http.request(function(success, response)
             close = document:getElementById("mobileMenuClose")
         }
 
-        elements.navbar.addDucky.classList:add("btn-primary")
+        if elements.navbar.addDucky then
+            elements.navbar.addDucky.classList:add("btn-primary")
+        end
 
         local user = utils.user()
         if user then
@@ -108,25 +110,29 @@ http.request(function(success, response)
             end
         end)
 
-        elements.mobile.open:addEventListener("click", function()
-            elements.mobile.menu.classList:toggle("active")
+        if elements.mobile.open then
+            elements.mobile.open:addEventListener("click", function()
+                elements.mobile.menu.classList:toggle("active")
 
-            if elements.mobile.menu.classList:contains("active") then
-                body.style.overflow = "hidden"
-            else
-                body.style.overflow = ""
-            end
-        end)
+                if elements.mobile.menu.classList:contains("active") then
+                    body.style.overflow = "hidden"
+                else
+                    body.style.overflow = ""
+                end
+            end)
+        end
 
-        elements.mobile.close:addEventListener("click", function()
-            elements.mobile.menu.classList:toggle("active")
+        if elements.mobile.close then
+            elements.mobile.close:addEventListener("click", function()
+                elements.mobile.menu.classList:toggle("active")
 
-            if elements.mobile.menu.classList:contains("active") then
-                body.style.overflow = "hidden"
-            else
-                body.style.overflow = ""
-            end
-        end)
+                if elements.mobile.menu.classList:contains("active") then
+                    body.style.overflow = "hidden"
+                else
+                    body.style.overflow = ""
+                end
+            end)
+        end
     end
 end, "GET", "/partials/navbar.html", nil, nil, "text")
 
@@ -330,7 +336,7 @@ coroutine.wrap(function()
                     pIcon = "ion:hammer"
                 elseif pName == "Server Administrator" then
                     pIcon = "stash:shield-duotone"
-                elseif pName == "Server Owner" then
+                elseif pName == "Server Owner" or pName == "Server Co-Owner" then
                     pIcon = "ph:crown-fill"
                 end
                 playerPanel.permissionIcon.innerHTML = string.format('<span class="iconify text-base" data-icon="%s"></span>', pIcon)
@@ -921,7 +927,7 @@ coroutine.wrap(function()
                                             pIcon = "ion:hammer"
                                         elseif pName == "Server Administrator" then
                                             pIcon = "stash:shield-duotone"
-                                        elseif pName == "Server Owner" then
+                                        elseif pName == "Server Owner" or pName == "Server Co-Owner" then
                                             pIcon = "ph:crown-fill"
                                         end
                                         playerPanel.permissionIcon.innerHTML = string.format('<span class="iconify text-base" data-icon="%s"></span>', pIcon)
@@ -981,7 +987,7 @@ coroutine.wrap(function()
                                                 pIcon = "ion:hammer"
                                             elseif pName == "Server Administrator" then
                                                 pIcon = "stash:shield-duotone"
-                                            elseif pName == "Server Owner" then
+                                            elseif pName == "Server Owner" or pName == "Server Co-Owner" then
                                                 pIcon = "ph:crown-fill"
                                             end
 
