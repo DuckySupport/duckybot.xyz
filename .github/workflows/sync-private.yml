@@ -3,7 +3,7 @@ name: Sync Private Repo
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - 'public/**'
 
@@ -23,5 +23,6 @@ jobs:
           destination-github-username: 'DuckySupport'
           destination-repository-name: 'duckybot.xyz-private'
           user-email: 'github-actions[bot]@users.noreply.github.com'
+          commit-message: 'Update public content [skip ci]'
           target-branch: 'master'
           target-directory: 'public'
