@@ -166,7 +166,7 @@ export default async function Home() {
           className="logo-fan-image"
         />
         <div className="trusted-text">
-          <h2 className="mx-auto max-w-3xl text-4xl leading-tight text-white sm:text-5xl">
+          <h2 className="mx-auto max-w-3xl text-4xl leading-[1.1] text-white sm:text-5xl">
             <br /> Trusted by{" "}
             <span className="accent-text font-bold" id="userCount">
               {userCount}
@@ -315,20 +315,14 @@ export default async function Home() {
                 Ducky Plus+
               </h2>
               <p className="mx-auto mb-6 max-w-3xl text-sm text-white/60 sm:mb-8 sm:text-lg">
-                Unlock endless possibilities with increased limits, giveaway
-                requirements, less ratelimits, and so much more for{" "}
-                <img
-                  src="/icons/robux.svg"
-                  alt="Robux"
-                  className="mx-1 inline h-[1.2em] w-auto align-text-bottom"
-                />{" "}
-                <b>1,000</b> per server.
+                Unlock endless possibilities with a customized profile, increased limits, giveaway requirements, and so much more
+                for <img src="/icons/robux.svg" alt="Robux" className="mx-1 inline h-[1.2em] w-auto align-text-bottom"/><span className="text-white font-bold">1,000</span> per server.
               </p>
               <a
                 href="/plus"
                 className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/30 sm:px-6 sm:py-2 sm:text-base"
               >
-                Upgrade to Ducky Plus+
+                Upgrade Now
               </a>
             </div>
           </div>

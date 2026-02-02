@@ -69,13 +69,13 @@ export default function Footer() {
           </div>
         </div>
         <div className="flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-6 text-xs text-white/50 md:flex-row">
-          <span>Â© 2026 Ducky Bot. All rights reserved.</span>
+          <span>© 2026 Ducky Bot. All rights reserved.</span>
           <div className="flex flex-wrap items-center gap-4 text-white/60">
             <span>v1.6.0 Stable</span>
             <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-200">
               <span className="h-2 w-2 rounded-full bg-emerald-400" />
-              Status: Operational
-            </span>
+                Status: Operational
+              </span>
             <div className="flex items-center gap-3 text-white/60">
               <a className="transition hover:text-white" href="/support">
                 <MessageSquare className="h-4 w-4" />

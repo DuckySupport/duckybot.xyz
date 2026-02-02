@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# netlify (ignored on master/dev from previous, will be removed in the future)
+.netlify
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

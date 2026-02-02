@@ -9,8 +9,7 @@ export default function NotFound() {
           404 <span className="accent-text">Not Found</span>
         </h1>
         <p className="mt-4 text-sm text-white/60 sm:text-base">
-          That link doesn&apos;t exist or has moved. Head back home or contact
-          support and we&apos;ll help you find it.
+          The requested resource was not found in this pond. If you need help finding it, contact support&mdash; we&apos;re here to help.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link href="/" className="btn-primary rounded-full px-6 py-3 text-sm">
