@@ -3,8 +3,8 @@
 :root {
   --background: #0a0a0a;
   --foreground: #f7f5f0;
-  --accent: #f7e82d;
-  --accent-strong: #e9dc28;
+  --accent: #FFF45C;
+  --accent-strong: #FFE243;
   --card: #111111;
   --card-deep: #0f0f0f;
   --border-soft: rgba(255, 255, 255, 0.12);
@@ -608,7 +608,7 @@ a {
 .review-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 7px;
 }
 
 .review-in {

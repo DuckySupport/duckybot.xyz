@@ -8,18 +8,18 @@ import Navbar from "@/components/Navbar";
 import PurchaseModal from "@/components/PurchaseModal";
 
 const rows = [
-  { feature: "Customized Bot Profile", free: "—", plus: true },
-  { feature: "ERLC Player Panel", free: "—", plus: true },
-  { feature: "Giveaway Requirements", free: "—", plus: true },
-  { feature: "Export Embed Message Command", free: "—", plus: true },
-  { feature: "ERLC Command Queueing", free: "—", plus: true },
-  { feature: "Reduced Cooldowns", free: "—", plus: true },
+  { feature: "Customized Bot Profile", free: false, plus: true },
+  { feature: "ERLC Player Panel", free: false, plus: true },
+  { feature: "Giveaway Requirements", free: false, plus: true },
+  { feature: "Export Embed Message Command", free: false, plus: true },
+  { feature: "ERLC Command Queueing", free: false, plus: true },
+  { feature: "Reduced Cooldowns", free: false, plus: true },
   {
     feature: "Automation Limits",
     free: "10 automations, 5 actions",
     plus: "50 automations, 15 actions",
   },
-  { feature: "Autoresponder Limits", free: "3 autoresponders", plus: "25" },
+  { feature: "Autoresponder Limits", free: "3 autoresponders", plus: "25 autoresponders" },
   { feature: "Reaction Board Limits", free: "1 board", plus: "10 boards" },
   { feature: "Ticket Panel Limits", free: "1 panel", plus: "5 panels" },
   { feature: "Ticket Form Limits", free: "2 questions", plus: "5 questions" },
@@ -31,7 +31,9 @@ const rows = [
   },
   { feature: "Autodelete Channels", free: "3 channels", plus: "10 channels" },
   { feature: "Sticky Messages", free: "3 messages", plus: "10 messages" },
+  { feature: "Special Perks in Ducky's Pond", free: false, plus: true },
   { feature: "Priority Support", free: false, plus: true },
+  { feature: "Support Ducky's Development", free: false, plus: true },
 ];
 
 export default function PlusPage() {
@@ -47,8 +49,7 @@ export default function PlusPage() {
             Ducky <span className="accent-text">Plus+</span>
           </div>
           <p className="max-w-2xl text-sm text-white/60 sm:text-base">
-            Unlock higher limits, advanced automations, and premium support for
-            <span className="text-white"> 1,000 per server</span>.
+            Unlock endless possibilities with a customized profile, increased limits, giveaway requirements, and so much more for <img src="/icons/robux.svg" alt="Robux" className="mx-1 inline h-[1.2em] w-auto align-text-bottom"/><span className="text-white font-bold">1,000</span> per server.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <button
