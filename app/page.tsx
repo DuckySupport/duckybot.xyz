@@ -1,4 +1,4 @@
-import {
+﻿import {
   ArrowRight,
   ChevronRight,
   Code2,
@@ -12,10 +12,38 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Reviews from "@/components/Reviews";
 
-export default function Home() {
+const STATS_API = "https://api.duckybot.xyz/statistics";
+
+type StatsResponse = {
+  data?: {
+    guilds?: number;
+    users?: number;
+  };
+};
+
+const formatNumber = (value?: number) =>
+  typeof value === "number"
+    ? new Intl.NumberFormat("en-US").format(value)
+    : "â€”";
+
+async function getStats() {
+  try {
+    const response = await fetch(STATS_API, { next: { revalidate: 300 } });
+    if (!response.ok) return null;
+    const json = (await response.json()) as StatsResponse;
+    return json?.data ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export default async function Home() {
+  const stats = await getStats();
+  const userCount = `${formatNumber(stats?.users)} users`;
+  const guildCount = `${formatNumber(stats?.guilds)} communities`;
+
   return (
     <div className="relative min-h-screen bg-[#0a0a0a] text-white">
-
       <Navbar />
 
       <div id="mobileMenu" className="mobile-menu">
@@ -141,11 +169,11 @@ export default function Home() {
           <h2 className="mx-auto max-w-3xl text-4xl leading-tight text-white sm:text-5xl">
             <br /> Trusted by{" "}
             <span className="accent-text font-bold" id="userCount">
-              785,946 users
+              {userCount}
             </span>
             <br /> across{" "}
             <span className="accent-text font-bold" id="guildCount">
-              10,501 communities
+              {guildCount}
             </span>
             .
           </h2>

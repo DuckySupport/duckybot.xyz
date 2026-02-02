@@ -1,92 +1,127 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Star } from "lucide-react";
-
-const reviewSets = [
-  [
-    {
-      name: "bmwnrx",
-      text: "Wonderful bot. Used it for my 6.6k server.",
-      avatar: "/images/avatars/itzzezy.png",
-    },
-    {
-      name: "12345hi6789bye",
-      text: "Why can't I rate this higher. Very good bot, however it could use some more features that are unique like having an eco shop and stuff.",
-      avatar: "/images/avatars/mrpxlarizedgg_.png",
-    },
-    {
-      name: "shadowishere_",
-      text: "I am a developer for Ducky and I just gotta say that this bot is way better than all of the others. It has every single feature that I could ever need for any kind of server.",
-      avatar: "/images/avatars/jrllyfish.png",
-    },
-    {
-      name: "prince0nly",
-      text: "This bot so cute and i love ducks",
-      avatar: "/images/avatars/commander_coast.png",
-    },
-    {
-      name: "ckkx",
-      text: "Best bot for ERLC, automations and tickets built-in help so much!",
-      avatar: "/images/avatars/uvloop.png",
-    },
-  ],
-  [
-    {
-      name: "ghostrelay",
-      text: "Clean UI, fast responses, and the staff tools are actually useful.",
-      avatar: "/images/avatars/itzzezy.png",
-    },
-    {
-      name: "aidenplays",
-      text: "We switched from another bot and the automations saved hours every week.",
-      avatar: "/images/avatars/mrpxlarizedgg_.png",
-    },
-    {
-      name: "marblebee",
-      text: "Moderation feels effortless now. Love the built-in templates.",
-      avatar: "/images/avatars/jrllyfish.png",
-    },
-    {
-      name: "novaqueen",
-      text: "Setup was painless and the support team answered quick.",
-      avatar: "/images/avatars/commander_coast.png",
-    },
-    {
-      name: "robloxpd",
-      text: "Perfect for ERLC communities — tickets and roleplay tools are solid.",
-      avatar: "/images/avatars/uvloop.png",
-    },
-  ],
-];
 
 const SHOW_DURATION_MS = 8000;
 const SLIDE_DURATION_MS = 1300;
 const GAP_BETWEEN_MS = 1000;
+const REVIEWS_API = "https://api.duckybot.xyz/feedback";
+const FALLBACK_AVATAR = "https://cdn.discordapp.com/embed/avatars/0.png";
+
+type ApiReview = {
+  rating?: number;
+  feedback?: string;
+  submitter?: {
+    username?: string;
+    avatar?: string;
+    id?: string;
+    discord_id?: string;
+  };
+};
+
+type ReviewItem = {
+  name: string;
+  text: string;
+  avatar: string;
+  rating: number;
+};
+
+const resolveAvatar = (avatar?: string, id?: string) => {
+  if (!avatar) return FALLBACK_AVATAR;
+  if (avatar.startsWith("http") || avatar.startsWith("/") || avatar.startsWith("data:")) {
+    return avatar;
+  }
+  if (id) {
+    return `https://cdn.discordapp.com/avatars/${id}/${avatar}.png?size=128`;
+  }
+  return FALLBACK_AVATAR;
+};
+
+const chunk = (items: ReviewItem[], size: number) => {
+  const result: ReviewItem[][] = [];
+  for (let i = 0; i < items.length; i += size) {
+    result.push(items.slice(i, i + size));
+  }
+  return result;
+};
 
 export default function Reviews() {
   const [setIndex, setSetIndex] = useState(0);
   const [phase, setPhase] = useState<"in" | "out">("in");
+  const [sets, setSets] = useState<ReviewItem[][]>([]);
 
-  const reviews = useMemo(() => reviewSets[setIndex], [setIndex]);
+  const reviews = useMemo(() => sets[setIndex] ?? [], [setIndex, sets]);
+
+  const loadReviews = useCallback(async () => {
+    try {
+      const response = await fetch(REVIEWS_API);
+      if (!response.ok) return null;
+      const json = await response.json();
+      if (!json?.data || !Array.isArray(json.data)) return null;
+      const parsed = (json.data as ApiReview[])
+        .map((item) => ({
+          name: item.submitter?.username ?? "Anonymous",
+          text: item.feedback ?? "",
+          avatar: resolveAvatar(
+            item.submitter?.avatar,
+            item.submitter?.id ?? item.submitter?.discord_id
+          ),
+          rating: Math.max(1, Math.min(5, item.rating ?? 5)),
+        }))
+        .filter((item) => item.text.trim().length > 0);
+
+      if (!parsed.length) return null;
+      return chunk(parsed, 5);
+    } catch {
+      return null;
+    }
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    loadReviews().then((nextSets) => {
+      if (!isMounted || !nextSets?.length) return;
+      setSets(nextSets);
+      setSetIndex(0);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [loadReviews]);
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
     let gapTimeoutId: NodeJS.Timeout;
 
-    timeoutId = setTimeout(() => {
-      setPhase("out");
-      gapTimeoutId = setTimeout(() => {
-        setSetIndex((prev) => (prev + 1) % reviewSets.length);
-        setPhase("in");
-      }, SLIDE_DURATION_MS + GAP_BETWEEN_MS);
-    }, SHOW_DURATION_MS);
+    if (sets.length > 0) {
+      timeoutId = setTimeout(() => {
+        setPhase("out");
+        gapTimeoutId = setTimeout(() => {
+          loadReviews().then((nextSets) => {
+            if (nextSets?.length) {
+              setSets(nextSets);
+              setSetIndex((prev) => (prev + 1) % nextSets.length);
+            } else {
+              setSetIndex((prev) => (prev + 1) % sets.length);
+            }
+            setPhase("in");
+          });
+        }, SLIDE_DURATION_MS + GAP_BETWEEN_MS);
+      }, SHOW_DURATION_MS);
+    }
 
     return () => {
       clearTimeout(timeoutId);
       clearTimeout(gapTimeoutId);
     };
-  }, [setIndex]);
+  }, [loadReviews, setIndex, sets.length]);
+
+  if (!reviews.length) {
+    return null;
+  }
 
   return (
     <div className="review-list" aria-live="polite">
@@ -99,12 +134,17 @@ export default function Reviews() {
           style={{ animationDelay: `${index * 80}ms` }}
         >
           <div className="review-card soft-card">
-            <div className="review-avatar-placeholder" aria-hidden="true" />
+            <img
+              src={item.avatar}
+              alt={`${item.name} avatar`}
+              className="review-avatar-placeholder object-cover"
+              loading="lazy"
+            />
             <div className="review-content">
               <div className="review-header">
                 <span className="review-name">{item.name}</span>
                 <span className="review-stars">
-                  {Array.from({ length: 5 }).map((_, starIndex) => (
+                  {Array.from({ length: item.rating }).map((_, starIndex) => (
                     <Star
                       key={`${item.name}-star-${starIndex}`}
                       className="h-4 w-4"
