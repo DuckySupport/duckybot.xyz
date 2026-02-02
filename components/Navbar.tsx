@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -27,7 +27,7 @@ export default function Navbar() {
       <div className="nav-inner">
         <a href="/" className="flex items-center gap-3" aria-label="Go home">
           <Image
-            src="/fullDucky.png"
+            src="/assets/fullDucky.png"
             alt="Ducky wordmark"
             width={140}
             height={40}
@@ -64,3 +64,4 @@ export default function Navbar() {
     </header>
   );
 }
+

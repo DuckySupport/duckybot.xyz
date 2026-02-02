@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -14,7 +14,7 @@ export default function LoginPage() {
           <div className="mb-6 flex flex-col items-center gap-3">
             <Link href="/" aria-label="Go home">
               <Image
-                src="/fullDucky.png"
+                src="/assets/fullDucky.png"
                 alt="Ducky wordmark"
                 width={150}
                 height={42}
@@ -77,3 +77,4 @@ export default function LoginPage() {
     </div>
   );
 }
+
