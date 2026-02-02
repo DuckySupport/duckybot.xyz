@@ -1,65 +1,313 @@
-import Image from "next/image";
+import {
+  ArrowRight,
+  ChevronRight,
+  Code2,
+  Cog,
+  Plus,
+  ShieldCheck,
+  X,
+} from "lucide-react";
+
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
+import Reviews from "@/components/Reviews";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="relative min-h-screen bg-[#0a0a0a] text-white">
+
+      <Navbar />
+
+      <div id="mobileMenu" className="mobile-menu">
+        <button
+          id="mobileMenuClose"
+          className="absolute right-6 top-6 text-white/70"
+          aria-label="Close mobile menu"
+          type="button"
+        >
+          <X className="h-6 w-6" />
+        </button>
+        <div className="flex flex-col items-center gap-6 sm:gap-8">
+          <a href="/team" className="nav-link text-xl text-white/70">
+            Team
+          </a>
+          <a href="/docs" className="nav-link text-xl text-white/70">
+            Docs
+          </a>
+          <a href="/plus" className="nav-link text-xl text-white/70">
+            Ducky Plus+
+          </a>
+          <a href="/status" className="nav-link text-xl text-white/70">
+            Status
+          </a>
+          <a href="/support" className="nav-link text-xl text-white/70">
+            Support
+          </a>
+          <a
+            href="/invite"
+            className="btn-primary text-xl px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm"
+          >
+            Add Ducky
+          </a>
+        </div>
+      </div>
+
+      <section className="relative px-4 pb-16 pt-28 sm:pb-20 sm:pt-32 md:pt-40">
+        <div className="mx-auto max-w-5xl text-center">
+          <a
+            id="duckyVersion"
+            href="https://docs.duckybot.xyz/overview/changelogs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center rounded-full border border-[var(--accent)]/20 bg-[var(--accent)]/10 px-4 py-1.5 text-xs font-medium text-white/90 transition hover:bg-[var(--accent)]/15 sm:px-6 sm:py-2 sm:text-sm"
+          >
+            Ducky v1.6.0 Stable is now live!
+            <ChevronRight className="ml-2 h-3 w-3 transition-transform group-hover:translate-x-1" />
+          </a>
+          <h1 className="animate-fade-in mb-6 mt-6 text-3xl font-bold sm:mb-8 sm:text-4xl md:text-6xl lg:text-7xl">
+            Power Your Server with{" "}
+            <span className="accent-text">Ducky</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="animate-slide-up mx-auto mb-8 max-w-2xl text-base text-white/60 sm:mb-12 sm:text-lg md:text-xl">
+            A multipurpose bot focused on seamlessly integrating{" "}
+            <span className="accent-text">Discord</span> and{" "}
+            <span className="accent-text">ERLC</span> server automation for{" "}
+            <span className="accent-text">effortless</span> management.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <div
+            className="animate-slide-up flex flex-wrap justify-center gap-3 sm:gap-4"
+            style={{ animationDelay: "0.2s" }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <a
+              href="/invite"
+              className="btn-primary inline-flex items-center justify-center rounded-full px-7 py-3 text-sm sm:px-8 sm:py-3 sm:text-base"
+            >
+              Add Ducky
+            </a>
+            <a
+              href="/support"
+              className="btn-glass group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3 text-sm sm:px-8 sm:py-3 sm:text-base"
+            >
+              Support
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </a>
+          </div>
         </div>
-      </main>
+      </section>
+
+      <section className="relative px-4 py-16 sm:py-20">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3">
+          <div className="card feature-card animate-fade-in">
+            <div className="feature-icon">
+              <ShieldCheck className="h-6 w-6" />
+            </div>
+            <h3 className="feature-title">Staff Management</h3>
+            <p className="feature-text">
+              Manage your staff team with ease using infractions, promotions,
+              LOAs, feedback, and more
+            </p>
+          </div>
+          <div className="card feature-card animate-fade-in">
+            <div className="feature-icon">
+              <Cog className="h-6 w-6" />
+            </div>
+            <h3 className="feature-title">Automation</h3>
+            <p className="feature-text">
+              Seamless ERLC automation with over 30+ triggers, actions, and
+              conditions for effortless management
+            </p>
+          </div>
+          <div className="card feature-card animate-fade-in">
+            <div className="feature-icon">
+              <Code2 className="h-6 w-6" />
+            </div>
+            <h3 className="feature-title">Multipurpose</h3>
+            <p className="feature-text">
+              Features for every server, such as Discord Moderation, Roblox
+              Verification, Reaction Boards, and more
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative mx-auto max-w-5xl overflow-visible px-4 py-20 text-center animate-slide-up">
+        <img
+          src="/affiliates/fannedlogos.png"
+          alt=""
+          aria-hidden="true"
+          className="logo-fan-image"
+        />
+        <div className="trusted-text">
+          <h2 className="mx-auto max-w-3xl text-4xl leading-tight text-white sm:text-5xl">
+            <br /> Trusted by{" "}
+            <span className="accent-text font-bold" id="userCount">
+              785,946 users
+            </span>
+            <br /> across{" "}
+            <span className="accent-text font-bold" id="guildCount">
+              10,501 communities
+            </span>
+            .
+          </h2>
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-6xl px-4">
+        <h2 className="mb-4 text-center text-2xl font-bold sm:mb-6 sm:text-3xl">
+          Our Reviews
+        </h2>
+        <Reviews />
+      </div>
+
+      <section className="relative px-4 py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="mb-4 text-center text-2xl font-bold sm:mb-6 sm:text-3xl">
+            Our Affiliates
+          </h2>
+
+          <div className="affiliate-grid grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+            <div className="card affiliate-card lift-card vacant-card">
+              <div className="flex justify-center">
+                <div className="card-icon fixed-icon">
+                  <img
+                    src="/affiliates/CRP.png"
+                    alt="California"
+                    className="affiliate-logo"
+                  />
+                </div>
+              </div>
+              <div className="card-content">
+                <h3 className="mb-3 text-lg font-bold sm:mb-4 sm:text-xl">
+                  California State Roleplay
+                </h3>
+                <p className="text-center text-sm text-gray-300 sm:text-base">
+                  Welcome to California Roleplay (CRP), where we take your
+                  roleplay experience to the next level. Are you ready for the
+                  most realistic server?
+                </p>
+                <div className="affiliate-actions mt-6">
+                  <a
+                    href="https://discord.gg/YrtTGqKYEX"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--accent)]/30 sm:px-6 sm:py-2 sm:text-base"
+                  >
+                    <span>Join Discord</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="card affiliate-card lift-card">
+              <div className="flex justify-center">
+                <div className="card-icon fixed-icon">
+                  <img
+                    src="/affiliates/UnitedKingdom.png"
+                    alt="Brixton"
+                    className="affiliate-logo"
+                  />
+                </div>
+              </div>
+              <div className="card-content">
+                <h3 className="mb-3 text-lg font-bold sm:mb-4 sm:text-xl">
+                  United Kingdom: Brixton Roleplay
+                </h3>
+                <p className="text-center text-sm text-gray-300 sm:text-base">
+                  Looking for a realistic and professional Emergency Response:
+                  Liberty County roleplay server? ukbrx brings you an authentic
+                  UK-based roleplay community with dedicated staff, strict
+                  realism, and an engaging player base.
+                </p>
+                <div className="affiliate-actions mt-6">
+                  <a
+                    href="https://discord.gg/FamWC7D4kC"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--accent)]/30 sm:px-6 sm:py-2 sm:text-base"
+                  >
+                    <span>Join Discord</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="card affiliate-card lift-card">
+              <div className="flex justify-center">
+                <div className="card-icon fixed-icon border border-[var(--accent)]">
+                  <Plus className="h-6 w-6 text-gray-600" />
+                </div>
+              </div>
+              <div className="card-content">
+                <h3 className="mb-3 text-lg font-bold sm:mb-4 sm:text-xl">
+                  Vacant Spot
+                </h3>
+                <p className="text-center text-sm text-gray-300 sm:text-base">
+                  Apply for an affiliation and advertise your server here.
+                </p>
+                <div className="affiliate-actions mt-6">
+                  <a
+                    href="/support"
+                    className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--accent)]/30 sm:px-6 sm:py-2 sm:text-base"
+                  >
+                    <span>Apply Now</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className="flex justify-center pt-6 animate-slide-up"
+            style={{ animationDelay: "0.2s" }}
+          >
+            <a
+              href="/affiliates"
+              className="btn-transparent group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm sm:px-6 sm:py-2 sm:text-base"
+            >
+              <span>All Affiliates</span>
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative -mt-8 px-4 pb-16 pt-8 sm:-mt-10 sm:pb-20 sm:pt-10">
+        <div className="mx-auto max-w-6xl">
+          <div className="card relative overflow-hidden bg-cover bg-center p-8 text-center hover:transform-none sm:p-12">
+            <div className="plus-animated-bg" aria-hidden="true" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.0),rgba(0,0,0,0.25)_55%,rgba(0,0,0,0.55)_75%)]" />
+            <div className="relative z-10">
+              <h2 className="mb-4 text-2xl font-bold text-white sm:mb-6 sm:text-4xl">
+                <img
+                  src="/icons/Plus.svg"
+                  alt=""
+                  aria-hidden="true"
+                  className="mr-2 inline h-[1.2em] w-auto align-text-bottom"
+                />
+                Ducky Plus+
+              </h2>
+              <p className="mx-auto mb-6 max-w-3xl text-sm text-white/60 sm:mb-8 sm:text-lg">
+                Unlock endless possibilities with increased limits, giveaway
+                requirements, less ratelimits, and so much more for{" "}
+                <img
+                  src="/icons/robux.svg"
+                  alt="Robux"
+                  className="mx-1 inline h-[1.2em] w-auto align-text-bottom"
+                />{" "}
+                <b>1,000</b> per server.
+              </p>
+              <a
+                href="/plus"
+                className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/30 sm:px-6 sm:py-2 sm:text-base"
+              >
+                Upgrade to Ducky Plus+
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
     </div>
   );
 }
