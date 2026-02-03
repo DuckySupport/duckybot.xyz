@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { Icon } from "@iconify/react/offline";
 import chevronRight from "@iconify/icons-material-symbols/chevron-right";
-import check from "@iconify/icons-material-symbols/check";
 import closeRounded from "@iconify/icons-material-symbols/close-rounded";
+import Success from "@/public/icons/Success.svg";
+import Fail from "@/public/icons/Fail.svg";
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
@@ -95,18 +96,18 @@ export default function PlusPage() {
                 <div className="px-5 py-4 text-center">
                   {typeof row.free === "boolean" ? (
                     row.free ? (
-                      <Icon icon={check} className="mx-auto h-4 w-4 text-emerald-400" />
+                      <Success className="mx-auto h-4 w-4" />
                     ) : (
-                      <Icon icon={closeRounded} className="mx-auto h-4 w-4 text-red-400" />
+                      <Fail className="mx-auto h-4 w-4" />
                     )
                   ) : row.free}
                 </div>
                 <div className="px-5 py-4 text-center text-white">
                   {typeof row.plus === "boolean" ? (
                     row.plus ? (
-                      <Icon icon={check} className="mx-auto h-4 w-4 text-emerald-400" />
+                      <Success className="mx-auto h-4 w-4" />
                     ) : (
-                      <Icon icon={closeRounded} className="mx-auto h-4 w-4 text-red-400" />
+                      <Fail className="mx-auto h-4 w-4" />
                     )
                   ) : (
                     row.plus
