@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { Icon } from "@iconify/react/offline";
 import chevronRight from "@iconify/icons-material-symbols/chevron-right";
-import closeRounded from "@iconify/icons-material-symbols/close-rounded";
 import Success from "@/public/icons/Success.svg";
 import Fail from "@/public/icons/Fail.svg";
+import Robux from "@/public/icons/Robux.svg";
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
@@ -53,7 +53,7 @@ export default function PlusPage() {
             Ducky <span className="accent-text">Plus+</span>
           </div>
           <p className="max-w-2xl text-sm text-white/60 sm:text-base">
-            Unlock endless possibilities with a customized profile, increased limits, giveaway requirements, and so much more for <img src="/icons/robux.svg" alt="Robux" className="mx-1 inline h-[1.2em] w-auto align-text-bottom"/><span className="text-white font-bold">1,000</span> per server.
+            Unlock endless possibilities with a customized profile, increased limits, giveaway requirements, and so much more for <Robux className="mx-1 inline h-[1.2em] w-auto align-text-bottom" /><span className="text-white font-bold">1,000</span> per server.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <button

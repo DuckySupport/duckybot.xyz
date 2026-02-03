@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react/offline";
 import chevronRight from "@iconify/icons-material-symbols/chevron-right";
 import wrench from "@iconify/icons-fa-solid/wrench";
+import Right from "@/public/icons/Right.svg";
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
@@ -56,12 +57,7 @@ export default function OpportunitiesPage() {
                     <ul className="requirements-list space-y-2">
                       {role.requirements.map((item) => (
                         <li key={item} className="flex items-start gap-2">
-                          <img
-                            src="/icons/right.svg"
-                            alt=""
-                            className="requirements-bullet"
-                            aria-hidden="true"
-                          />
+                          <Right className="requirements-bullet"/>
                           <span>{item}</span>
                         </li>
                       ))}

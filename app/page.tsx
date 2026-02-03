@@ -3,8 +3,10 @@ import chevronRight from "@iconify/icons-material-symbols/chevron-right";
 import addRounded from "@iconify/icons-material-symbols/add-rounded";
 import shieldRounded from "@iconify/icons-material-symbols/shield-rounded";
 import closeRounded from "@iconify/icons-material-symbols/close-rounded";
-import locationAutomation from "@iconify/icons-material-symbols/location-automation";
 import code from "@iconify/icons-tabler/code";
+import Automation from "@/public/icons/Automation.svg";
+import Plus from "@/public/icons/Plus.svg";
+import Robux from "@/public/icons/Robux.svg";
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
@@ -135,7 +137,7 @@ export default async function Home() {
           </div>
           <div className="card feature-card animate-fade-in">
             <div className="feature-icon">
-              <Icon icon={locationAutomation} className="h-6 w-6" />
+              <Automation className="h-6 w-6" />
             </div>
             <h3 className="feature-title">Automation</h3>
             <p className="feature-text">
@@ -304,17 +306,12 @@ export default async function Home() {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.0),rgba(0,0,0,0.25)_55%,rgba(0,0,0,0.55)_75%)]" />
             <div className="relative z-10">
               <h2 className="mb-4 text-2xl font-bold text-white sm:mb-6 sm:text-4xl">
-                <img
-                  src="/icons/Plus.svg"
-                  alt=""
-                  aria-hidden="true"
-                  className="mr-2 inline h-[1.2em] w-auto align-text-bottom"
-                />
+                <Plus className="mr-2 inline h-[1.2em] w-auto align-text-bottom" />
                 Ducky Plus+
               </h2>
               <p className="mx-auto mb-6 max-w-3xl text-sm text-white/60 sm:mb-8 sm:text-lg">
                 Unlock endless possibilities with a customized profile, increased limits, giveaway requirements, and so much more
-                for <img src="/icons/robux.svg" alt="Robux" className="mx-1 inline h-[1.2em] w-auto align-text-bottom"/><span className="text-white font-bold">1,000</span> per server.
+                for <Robux className="mx-1 inline h-[1.2em] w-auto align-text-bottom" /><span className="text-white font-bold">1,000</span> per server.
               </p>
               <a
                 href="/plus"
