@@ -6,6 +6,9 @@ import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { signIn, useSession } from "next-auth/react"
 
+import { Icon } from "@iconify/react/offline";
+import Discord from "@iconify/icons-fa-brands/discord";
+
 export default function LoginPage() {
   const { data: session } = useSession()
   const [agreed, setAgreed] = useState(false)
@@ -83,8 +86,9 @@ export default function LoginPage() {
                 })
               }
               disabled={!agreed}
-              className="w-full rounded-2xl border border-[#5865F2] bg-[#5865F2] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#4c57d9] disabled:cursor-not-allowed disabled:opacity-50"
+              className="group flex items-center justify-center w-full rounded-2xl border border-[#5865F2] bg-[#5865F2] px-5 py-3 text-sm font-semibold text-white transition enabled:hover:bg-[#4c57d9] enabled:hover:-translate-y-[3px] disabled:cursor-not-allowed disabled:opacity-50"
             >
+              <Icon icon={Discord} className="mr-2 h-6 w-6" />
               Continue with Discord
             </button>
           </div>
