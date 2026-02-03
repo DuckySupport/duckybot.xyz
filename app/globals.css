@@ -749,18 +749,19 @@ body.menu-open {
 
 .aurora-text {
   background: linear-gradient(
-    120deg,
-    #f5ff82 0%,
-    #7bff2e 25%,
-    #2ad6ff 50%,
-    #7c4dff 75%,
-    #ff3ba7 100%
+    to right,
+    #ff5858 0%,
+    #ffeb7c 20%,
+    #84ff86 40%,
+    #5ec4ff 60%,
+    #f494ff 80%,
+    #ff5858 100%
   );
-  background-size: 240% 240%;
+  background-size: 300% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: auroraShift 6s ease-in-out infinite;
+  animation: auroraFlow 4s linear infinite;
 }
 
 @keyframes fadeIn {
@@ -809,14 +810,11 @@ body.menu-open {
   }
 }
 
-@keyframes auroraShift {
+@keyframes auroraFlow {
   0% {
     background-position: 0% 50%;
   }
-  50% {
-    background-position: 100% 50%;
-  }
   100% {
-    background-position: 0% 50%;
+    background-position: 150% 50%;
   }
 }

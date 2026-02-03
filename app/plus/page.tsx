@@ -6,6 +6,7 @@ import chevronRight from "@iconify/icons-material-symbols/chevron-right";
 import Success from "@/public/icons/Success.svg";
 import Fail from "@/public/icons/Fail.svg";
 import Robux from "@/public/icons/Robux.svg";
+import Plus from "@/public/icons/Plus.svg";
 
 import Footer from "@/components/Footer";
 import PurchaseModal from "@/components/PurchaseModal";
@@ -47,15 +48,10 @@ export default function PlusPage() {
       <PurchaseModal open={purchaseOpen} onClose={() => setPurchaseOpen(false)} />
       <section className="relative overflow-hidden px-6 pb-14 pt-24 sm:pt-28">
         <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center text-center">
-          <div className="mb-4 flex items-center gap-2 text-4xl font-semibold sm:text-5xl">
-            <img
-              src="/icons/Plus.svg"
-              alt=""
-              aria-hidden="true"
-              className="inline h-[1.1em] w-auto"
-            />
-            Ducky
-            <span className="aurora-text">Plus+</span>
+          <div className="mb-3 flex items-center gap-2 text-4xl font-semibold sm:text-5xl">
+            <Plus className="inline h-[1.1em] w-auto pb-1" />
+            <span className="pb-1">Ducky</span>
+            <span className="aurora-text pb-1">Plus+</span>
           </div>
           <p className="max-w-2xl text-sm text-white/60 sm:text-base">
             Unlock endless possibilities with a customized profile, increased limits, giveaway requirements, and so much more for <Robux className="mx-1 inline h-[1.2em] w-auto align-text-bottom" /><span className="text-white font-bold">1,000</span> per server.

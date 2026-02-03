@@ -22,7 +22,7 @@ type StatsResponse = {
 const formatNumber = (value?: number) =>
   typeof value === "number"
     ? new Intl.NumberFormat("en-US").format(value)
-    : "â€”";
+    : "?";
 
 async function getStats() {
   try {
