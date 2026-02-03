@@ -186,7 +186,7 @@ export default function Navbar() {
               </>
             ) : (
               <a
-                className="glass-pill rounded-full px-5 py-2 text-sm font-semibold text-white/90 transition hover:border-white/30 hover:text-white"
+                className="btn-glass rounded-full px-5 py-2 text-sm font-semibold text-white/90 transition hover:border-white/30 hover:text-white"
                 href="/login"
               >
                 Login

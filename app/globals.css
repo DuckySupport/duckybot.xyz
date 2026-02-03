@@ -539,7 +539,7 @@ body.menu-open {
 
 .site-nav.island {
   top: 24px;
-  background: rgba(12, 12, 12, 0.9);
+  background: rgba(12, 12, 12, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
   margin: 28px auto 0;
