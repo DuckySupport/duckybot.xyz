@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 
+import { Icon } from "@iconify/react/offline";
+import chevronRight from "@iconify/icons-material-symbols/chevron-right";
+
 const CHANGELOGS_URL = "https://docs.duckybot.xyz/overview/changelogs";
 
 export default function ChangelogsRedirectPage() {
@@ -27,10 +30,11 @@ export default function ChangelogsRedirectPage() {
         <div className="mt-8 h-[48px]">
           {showButton && (
             <a
-              className="btn-transparent animate-fade-in inline-flex items-center justify-center rounded-full px-6 py-3 text-sm sm:text-base"
+              className="btn-transparent animate-fade-in group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm sm:px-6 sm:py-2 sm:text-base"
               href={CHANGELOGS_URL}
             >
-              Didn't get redirected? Click here.
+              <span>Didn't get redirected? Click here.</span>
+              <Icon icon={chevronRight} className="h-6 w-6 transition-transform group-hover:translate-x-1" />
             </a>
           )}
         </div>
