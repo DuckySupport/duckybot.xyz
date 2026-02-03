@@ -259,11 +259,10 @@ a {
   background: conic-gradient(
     from 0deg at 50% 50%,
     #ff0000 0deg,
-    #ffd000 70deg,
-    #7bff2e 140deg,
-    #2ad6ff 210deg,
-    #ff4ddb 260deg,
-    #ff4d77 330deg,
+    #ffd000 60deg,
+    #4aff2e 130deg,
+    #2ad6ff 200deg,
+    #ff4ddb 270deg,
     #ff0000 360deg
   );
   filter: blur(22px) saturate(1.1);
