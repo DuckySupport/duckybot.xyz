@@ -683,7 +683,7 @@ a {
 
 .review-stars {
   display: inline-flex;
-  gap: 6px;
+  gap: 3px;
   color: #fff;
   transform: translateY(-1px);
 }

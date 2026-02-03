@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Icon } from "@iconify/react/offline";
 import starRounded from "@iconify/icons-material-symbols/star-rounded";
+import starOutlineRounded from "@iconify/icons-material-symbols/star-outline-rounded";
 
 const SHOW_DURATION_MS = 8000;
 const SLIDE_DURATION_MS = 1300;
@@ -145,8 +146,9 @@ export default function Reviews() {
               <div className="review-header">
                 <span className="review-name">{item.name}</span>
                 <span className="review-stars">
-                  {Array.from({ length: item.rating }).map((_, starIndex) => (
-                    <Icon icon={starRounded}
+                  {Array.from({ length: 5 }).map((_, starIndex) => (
+                    <Icon
+                      icon={starIndex < item.rating ? starRounded : starOutlineRounded}
                       key={`${item.name}-star-${starIndex}`}
                       className="h-8 w-8"
                       fill="currentColor"
