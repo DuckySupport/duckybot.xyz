@@ -42,7 +42,7 @@ export default async function Home() {
 
   return (
     <div className="relative min-h-screen bg-[#0a0a0a] text-white">
-      <section className="relative px-4 pb-16 pt-28 sm:pb-20 sm:pt-32 md:pt-40">
+      <section className="relative px-4 pb-16 pt-12 sm:pb-20 sm:pt-32 md:pt-20">
         <div className="mx-auto max-w-5xl text-center">
           <a
             id="duckyVersion"
