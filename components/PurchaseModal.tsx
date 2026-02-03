@@ -55,7 +55,7 @@ export default function PurchaseModal({ open, onClose }: PurchaseModalProps) {
           <h3>How to Purchase Ducky Plus+</h3>
           <button
             type="button"
-            className="purchase-modal-close"
+            className="purchase-modal-close hover:cursor-pointer"
             onClick={onClose}
             aria-label="Close"
           >
@@ -102,7 +102,7 @@ export default function PurchaseModal({ open, onClose }: PurchaseModalProps) {
                         {copied ? (
                           <>
                             <Success className="h-3 w-3" />
-                            Copied
+                            Copied!
                           </>
                         ) : (
                           <>
