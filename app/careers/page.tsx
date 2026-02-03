@@ -4,7 +4,6 @@ import wrench from "@iconify/icons-fa-solid/wrench";
 import Right from "@/public/icons/Right.svg";
 
 import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 
 const roles = [
   {
@@ -25,8 +24,6 @@ const roles = [
 export default function OpportunitiesPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <Navbar />
-
       <section className="px-6 pb-12 pt-28 sm:pt-32">
         <div className="mx-auto flex w-full max-w-5xl flex-col items-center text-center">
           <h1 className="text-4xl font-semibold sm:text-6xl">
@@ -69,7 +66,10 @@ export default function OpportunitiesPage() {
                   href="/support"
                 >
                   Apply Now
-                  <Icon icon={chevronRight} className="h-6 w-6 -mr-2 transition-transform group-hover:translate-x-1" />
+                  <Icon
+                    icon={chevronRight}
+                    className="h-6 w-6 -mr-2 transition-transform group-hover:translate-x-1"
+                  />
                 </a>
               </div>
             </div>

@@ -3,13 +3,10 @@ import chevronRight from "@iconify/icons-material-symbols/chevron-right";
 import addRounded from "@iconify/icons-material-symbols/add-rounded";
 
 import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 
 export default function PartnersPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <Navbar />
-
       <section className="px-6 pb-10 pt-28 sm:pt-32">
         <div className="mx-auto w-full max-w-5xl text-center">
           <h1 className="text-4xl font-semibold sm:text-6xl">
@@ -73,7 +70,7 @@ export default function PartnersPage() {
                   href="https://discord.gg/CqKJdXqmPm"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--accent)]/30 sm:px-6 sm:py-2 sm:text-base"
+                  className="btn-accent inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm sm:px-6 sm:py-2 sm:text-base"
                 >
                   <span>Join Discord</span>
                 </a>
@@ -112,7 +109,7 @@ export default function PartnersPage() {
                   href="https://discord.gg/Su7FcVG3wb"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--accent)]/30 sm:px-6 sm:py-2 sm:text-base"
+                  className="btn-accent inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm sm:px-6 sm:py-2 sm:text-base"
                 >
                   <span>Join Discord</span>
                 </a>
@@ -136,7 +133,7 @@ export default function PartnersPage() {
               <div className="affiliate-actions mt-6">
                 <a
                   href="/support"
-                  className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--accent)]/30 sm:px-6 sm:py-2 sm:text-base"
+                  className="btn-accent inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm sm:px-6 sm:py-2 sm:text-base"
                 >
                   <span>Apply Now</span>
                 </a>

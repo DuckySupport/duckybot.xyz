@@ -2,14 +2,12 @@
 import chevronRight from "@iconify/icons-material-symbols/chevron-right";
 import addRounded from "@iconify/icons-material-symbols/add-rounded";
 import shieldRounded from "@iconify/icons-material-symbols/shield-rounded";
-import closeRounded from "@iconify/icons-material-symbols/close-rounded";
 import code from "@iconify/icons-tabler/code";
 import Automation from "@/public/icons/Automation.svg";
 import Plus from "@/public/icons/Plus.svg";
 import Robux from "@/public/icons/Robux.svg";
 
 import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 import Reviews from "@/components/Reviews";
 
 const STATS_API = "https://api.duckybot.xyz/statistics";
@@ -44,42 +42,6 @@ export default async function Home() {
 
   return (
     <div className="relative min-h-screen bg-[#0a0a0a] text-white">
-      <Navbar />
-
-      <div id="mobileMenu" className="mobile-menu">
-        <button
-          id="mobileMenuClose"
-          className="absolute right-6 top-6 text-white/70"
-          aria-label="Close mobile menu"
-          type="button"
-        >
-          <Icon icon={closeRounded} className="h-6 w-6" />
-        </button>
-        <div className="flex flex-col items-center gap-6 sm:gap-8">
-          <a href="/team" className="nav-link text-xl text-white/70">
-            Team
-          </a>
-          <a href="/docs" className="nav-link text-xl text-white/70">
-            Docs
-          </a>
-          <a href="/plus" className="nav-link text-xl text-white/70">
-            Ducky Plus+
-          </a>
-          <a href="/status" className="nav-link text-xl text-white/70">
-            Status
-          </a>
-          <a href="/support" className="nav-link text-xl text-white/70">
-            Support
-          </a>
-          <a
-            href="/invite"
-            className="btn-primary text-xl px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm"
-          >
-            Add Ducky
-          </a>
-        </div>
-      </div>
-
       <section className="relative px-4 pb-16 pt-28 sm:pb-20 sm:pt-32 md:pt-40">
         <div className="mx-auto max-w-5xl text-center">
           <a
@@ -117,7 +79,10 @@ export default async function Home() {
               className="btn-glass group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3 text-sm sm:px-8 sm:py-3 sm:text-base"
             >
               Support
-              <Icon icon={chevronRight} className="h-6 w-6 -mr-3 transition-transform group-hover:translate-x-1" />
+              <Icon
+                icon={chevronRight}
+                className="h-6 w-6 -mr-3 transition-transform group-hover:translate-x-1"
+              />
             </a>
           </div>
         </div>
@@ -218,7 +183,7 @@ export default async function Home() {
                     href="https://discord.gg/YrtTGqKYEX"
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--accent)]/30 sm:px-6 sm:py-2 sm:text-base"
+                    className="btn-accent inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm sm:px-6 sm:py-2 sm:text-base"
                   >
                     <span>Join Discord</span>
                   </a>
@@ -251,7 +216,7 @@ export default async function Home() {
                     href="https://discord.gg/FamWC7D4kC"
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--accent)]/30 sm:px-6 sm:py-2 sm:text-base"
+                    className="btn-accent inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm sm:px-6 sm:py-2 sm:text-base"
                   >
                     <span>Join Discord</span>
                   </a>
@@ -275,7 +240,7 @@ export default async function Home() {
                 <div className="affiliate-actions mt-6">
                   <a
                     href="/support"
-                    className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--accent)]/30 sm:px-6 sm:py-2 sm:text-base"
+                    className="btn-accent inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm sm:px-6 sm:py-2 sm:text-base"
                   >
                     <span>Apply Now</span>
                   </a>

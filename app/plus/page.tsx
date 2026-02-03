@@ -8,7 +8,6 @@ import Fail from "@/public/icons/Fail.svg";
 import Robux from "@/public/icons/Robux.svg";
 
 import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 import PurchaseModal from "@/components/PurchaseModal";
 
 const rows = [
@@ -45,12 +44,18 @@ export default function PlusPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <Navbar />
       <PurchaseModal open={purchaseOpen} onClose={() => setPurchaseOpen(false)} />
       <section className="relative overflow-hidden px-6 pb-14 pt-24 sm:pt-28">
         <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center text-center">
-          <div className="mb-4 text-4xl font-semibold sm:text-5xl">
-            Ducky <span className="accent-text">Plus+</span>
+          <div className="mb-4 flex items-center gap-2 text-4xl font-semibold sm:text-5xl">
+            <img
+              src="/icons/Plus.svg"
+              alt=""
+              aria-hidden="true"
+              className="inline h-[1.1em] w-auto"
+            />
+            Ducky
+            <span className="aurora-text">Plus+</span>
           </div>
           <p className="max-w-2xl text-sm text-white/60 sm:text-base">
             Unlock endless possibilities with a customized profile, increased limits, giveaway requirements, and so much more for <Robux className="mx-1 inline h-[1.2em] w-auto align-text-bottom" /><span className="text-white font-bold">1,000</span> per server.
@@ -68,7 +73,10 @@ export default function PlusPage() {
               href="/support"
             >
               Support
-              <Icon icon={chevronRight} className="h-6 w-6 -mr-2 transition-transform group-hover:translate-x-1" />
+              <Icon
+                icon={chevronRight}
+                className="h-6 w-6 -mr-2 transition-transform group-hover:translate-x-1"
+              />
             </a>
           </div>
         </div>
