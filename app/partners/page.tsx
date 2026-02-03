@@ -1,4 +1,6 @@
-import { ArrowRight, Plus } from "lucide-react";
+import { Icon } from "@iconify/react/offline";
+import chevronRight from "@iconify/icons-material-symbols/chevron-right";
+import addRounded from "@iconify/icons-material-symbols/add-rounded";
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
@@ -30,7 +32,7 @@ export default function PartnersPage() {
               href="/affiliates"
             >
               Affiliates
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <Icon icon={chevronRight} className="h-6 w-6 -mr-2 transition-transform group-hover:translate-x-1" />
             </a>
           </div>
         </div>
@@ -121,7 +123,7 @@ export default function PartnersPage() {
           <div className="card affiliate-card lift-card vacant-card">
             <div className="flex justify-center">
               <div className="card-icon fixed-icon border border-[var(--accent)]">
-                <Plus className="h-6 w-6 text-gray-600" />
+                <Icon icon={addRounded} className="h-6 w-6 text-gray-600" />
               </div>
             </div>
             <div className="card-content">

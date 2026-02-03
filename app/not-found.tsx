@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { Icon } from "@iconify/react/offline";
+import chevronRight from "@iconify/icons-material-symbols/chevron-right";
 
 export default function NotFound() {
   return (
@@ -20,7 +21,7 @@ export default function NotFound() {
             className="btn-glass group inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm"
           >
             Support
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            <Icon icon={chevronRight} className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
       </div>

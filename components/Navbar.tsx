@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Menu } from "lucide-react";
+import { Icon } from "@iconify/react/offline";
+import menuRounded from "@iconify/icons-material-symbols/menu-rounded";
 
 const navItems = [
   { label: "Documentation", href: "/docs" },
@@ -51,7 +52,7 @@ export default function Navbar() {
             aria-label="Open mobile menu"
             type="button"
           >
-            <Menu className="h-5 w-5" />
+            <Icon icon={menuRounded} className="h-5 w-5" />
           </button>
           <a
             className="glass-pill rounded-full px-5 py-2 text-sm font-semibold text-white/90 transition hover:border-white/30 hover:text-white"

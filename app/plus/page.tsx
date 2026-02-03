@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Check, X } from "lucide-react";
+import { Icon } from "@iconify/react/offline";
+import chevronRight from "@iconify/icons-material-symbols/chevron-right";
+import check from "@iconify/icons-material-symbols/check";
+import closeRounded from "@iconify/icons-material-symbols/close-rounded";
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
@@ -64,7 +67,7 @@ export default function PlusPage() {
               href="/support"
             >
               Support
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <Icon icon={chevronRight} className="h-6 w-6 -mr-2 transition-transform group-hover:translate-x-1" />
             </a>
           </div>
         </div>
@@ -92,18 +95,18 @@ export default function PlusPage() {
                 <div className="px-5 py-4 text-center">
                   {typeof row.free === "boolean" ? (
                     row.free ? (
-                      <Check className="mx-auto h-4 w-4 text-emerald-400" />
+                      <Icon icon={check} className="mx-auto h-4 w-4 text-emerald-400" />
                     ) : (
-                      <X className="mx-auto h-4 w-4 text-red-400" />
+                      <Icon icon={closeRounded} className="mx-auto h-4 w-4 text-red-400" />
                     )
                   ) : row.free}
                 </div>
                 <div className="px-5 py-4 text-center text-white">
                   {typeof row.plus === "boolean" ? (
                     row.plus ? (
-                      <Check className="mx-auto h-4 w-4 text-emerald-400" />
+                      <Icon icon={check} className="mx-auto h-4 w-4 text-emerald-400" />
                     ) : (
-                      <X className="mx-auto h-4 w-4 text-red-400" />
+                      <Icon icon={closeRounded} className="mx-auto h-4 w-4 text-red-400" />
                     )
                   ) : (
                     row.plus

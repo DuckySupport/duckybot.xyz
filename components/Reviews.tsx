@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Star } from "lucide-react";
+import { Icon } from "@iconify/react/offline";
+import starRounded from "@iconify/icons-material-symbols/star-rounded";
 
 const SHOW_DURATION_MS = 8000;
 const SLIDE_DURATION_MS = 1300;
@@ -145,9 +146,9 @@ export default function Reviews() {
                 <span className="review-name">{item.name}</span>
                 <span className="review-stars">
                   {Array.from({ length: item.rating }).map((_, starIndex) => (
-                    <Star
+                    <Icon icon={starRounded}
                       key={`${item.name}-star-${starIndex}`}
-                      className="h-4 w-4"
+                      className="h-8 w-8"
                       fill="currentColor"
                     />
                   ))}

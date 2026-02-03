@@ -1,12 +1,10 @@
-﻿import {
-  ArrowRight,
-  ChevronRight,
-  Code2,
-  Cog,
-  Plus,
-  ShieldCheck,
-  X,
-} from "lucide-react";
+﻿import { Icon } from "@iconify/react/offline";
+import chevronRight from "@iconify/icons-material-symbols/chevron-right";
+import addRounded from "@iconify/icons-material-symbols/add-rounded";
+import shieldRounded from "@iconify/icons-material-symbols/shield-rounded";
+import closeRounded from "@iconify/icons-material-symbols/close-rounded";
+import locationAutomation from "@iconify/icons-material-symbols/location-automation";
+import code from "@iconify/icons-tabler/code";
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
@@ -53,7 +51,7 @@ export default async function Home() {
           aria-label="Close mobile menu"
           type="button"
         >
-          <X className="h-6 w-6" />
+          <Icon icon={closeRounded} className="h-6 w-6" />
         </button>
         <div className="flex flex-col items-center gap-6 sm:gap-8">
           <a href="/team" className="nav-link text-xl text-white/70">
@@ -90,7 +88,7 @@ export default async function Home() {
             className="group inline-flex items-center rounded-full border border-[var(--accent)]/20 bg-[var(--accent)]/10 px-4 py-1.5 text-xs font-medium text-white/90 transition hover:bg-[var(--accent)]/15 sm:px-6 sm:py-2 sm:text-sm"
           >
             Ducky v1.6.0 Stable is now live!
-            <ChevronRight className="ml-2 h-3 w-3 transition-transform group-hover:translate-x-1" />
+            <Icon icon={chevronRight} className="ml-2 -mr-2 h-6 w-6 transition-transform group-hover:translate-x-1" />
           </a>
           <h1 className="animate-fade-in mb-6 mt-6 text-3xl font-bold sm:mb-8 sm:text-4xl md:text-6xl lg:text-7xl">
             Power Your Server with{" "}
@@ -117,7 +115,7 @@ export default async function Home() {
               className="btn-glass group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3 text-sm sm:px-8 sm:py-3 sm:text-base"
             >
               Support
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <Icon icon={chevronRight} className="h-6 w-6 -mr-3 transition-transform group-hover:translate-x-1" />
             </a>
           </div>
         </div>
@@ -127,7 +125,7 @@ export default async function Home() {
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3">
           <div className="card feature-card animate-fade-in">
             <div className="feature-icon">
-              <ShieldCheck className="h-6 w-6" />
+              <Icon icon={shieldRounded} className="h-6 w-6" />
             </div>
             <h3 className="feature-title">Staff Management</h3>
             <p className="feature-text">
@@ -137,7 +135,7 @@ export default async function Home() {
           </div>
           <div className="card feature-card animate-fade-in">
             <div className="feature-icon">
-              <Cog className="h-6 w-6" />
+              <Icon icon={locationAutomation} className="h-6 w-6" />
             </div>
             <h3 className="feature-title">Automation</h3>
             <p className="feature-text">
@@ -147,7 +145,7 @@ export default async function Home() {
           </div>
           <div className="card feature-card animate-fade-in">
             <div className="feature-icon">
-              <Code2 className="h-6 w-6" />
+              <Icon icon={code} className="h-6 w-6" />
             </div>
             <h3 className="feature-title">Multipurpose</h3>
             <p className="feature-text">
@@ -262,7 +260,7 @@ export default async function Home() {
             <div className="card affiliate-card lift-card">
               <div className="flex justify-center">
                 <div className="card-icon fixed-icon border border-[var(--accent)]">
-                  <Plus className="h-6 w-6 text-gray-600" />
+                  <Icon icon={addRounded} className="h-8 w-8 text-gray-600" />
                 </div>
               </div>
               <div className="card-content">
@@ -293,7 +291,7 @@ export default async function Home() {
               className="btn-transparent group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm sm:px-6 sm:py-2 sm:text-base"
             >
               <span>All Affiliates</span>
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <Icon icon={chevronRight} className="h-6 w-6 transition-transform group-hover:translate-x-1" />
             </a>
           </div>
         </div>

@@ -1,5 +1,9 @@
 ﻿import Image from "next/image";
-import { ArrowUpRight, Github, Mail, MessageSquare } from "lucide-react";
+import { Icon } from "@iconify/react/offline";
+import arrowUpRight from "@iconify/icons-tabler/arrow-up-right";
+import mailFilled from "@iconify/icons-tabler/mail-filled";
+import discord from "@iconify/icons-fa-brands/discord";
+import github from "@iconify/icons-fa-brands/github";
 
 const footerLinks = [
   {
@@ -59,7 +63,7 @@ export default function Footer() {
                     <li key={item.label}>
                       <a className="footer-link" href={item.href}>
                         {item.label}
-                        <ArrowUpRight className="footer-link-icon" />
+                        <Icon icon={arrowUpRight} className="footer-link-icon" />
                       </a>
                     </li>
                   ))}
@@ -78,19 +82,19 @@ export default function Footer() {
               </span>
             <div className="flex items-center gap-3 text-white/60">
               <a className="transition hover:text-white" href="/support">
-                <MessageSquare className="h-4 w-4" />
+                <Icon icon={discord} className="h-4 w-4" />
               </a>
               <a
                 className="transition hover:text-white"
                 href="https://github.com/orgs/DuckySupport"
               >
-                <Github className="h-4 w-4" />
+                <Icon icon={github} className="h-4 w-4" />
               </a>
               <a
                 className="transition hover:text-white"
                 href="mailto:support@duckybot.xyz"
               >
-                <Mail className="h-4 w-4" />
+                <Icon icon={mailFilled} className="h-4 w-4" />
               </a>
             </div>
           </div>

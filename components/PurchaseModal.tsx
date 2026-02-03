@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { Icon } from "@iconify/react/offline";
+import closeRounded from "@iconify/icons-material-symbols/close-rounded";
 
 const steps = [
   {
@@ -56,7 +57,7 @@ export default function PurchaseModal({ open, onClose }: PurchaseModalProps) {
             onClick={onClose}
             aria-label="Close"
           >
-            <X className="h-4 w-4" />
+            <Icon icon={closeRounded} className="h-4 w-4" />
           </button>
         </div>
         <ol className="purchase-steps">
