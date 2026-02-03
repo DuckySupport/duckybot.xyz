@@ -1,7 +1,6 @@
 import { Icon } from "@iconify/react/offline";
 import chevronRight from "@iconify/icons-material-symbols/chevron-right";
 import wrench from "@iconify/icons-fa-solid/wrench";
-import Right from "@/public/icons/Right.svg";
 
 import Footer from "@/components/Footer";
 
@@ -10,13 +9,13 @@ const roles = [
     title: "Support Team",
     icon: <Icon icon={wrench} className="h-5 w-5" />,
     summary:
-      "Help community members resolve issues, guide them through features, and keep queues flowing.",
+      "Assist our users, answer their questions, and provide general help regarding Ducky's features and modules.",
     requirements: [
       "Active usage of Ducky",
       "Clear, friendly communication",
-      "Member of Ducky's Pond for 20+ days",
+      "Member of Ducky's Pond for at least 20 days",
       "Familiar with the support system",
-      "Little to no moderation history",
+      "Little to no moderation history"
     ],
   },
 ];
@@ -30,8 +29,8 @@ export default function OpportunitiesPage() {
             Opportunities at <span className="accent-text">Ducky</span>
           </h1>
           <p className="mt-4 max-w-2xl text-sm text-white/60 sm:text-base">
-            Join the team helping ERLC communities run smoother with automation,
-            support, and thoughtful product feedback.
+            Join us on our mission to <span className="accent-text">revolutionize</span> ERLC private
+            server management with seamless <span className="accent-text">automation</span> and <span className="accent-text">integration</span>.
           </p>
         </div>
       </section>
@@ -54,7 +53,7 @@ export default function OpportunitiesPage() {
                     <ul className="requirements-list space-y-2">
                       {role.requirements.map((item) => (
                         <li key={item} className="flex items-start gap-2">
-                          <Right className="requirements-bullet"/>
+                          <Icon icon={chevronRight} className="requirements-bullet"/>
                           <span>{item}</span>
                         </li>
                       ))}
@@ -66,10 +65,7 @@ export default function OpportunitiesPage() {
                   href="/support"
                 >
                   Apply Now
-                  <Icon
-                    icon={chevronRight}
-                    className="h-6 w-6 -mr-2 transition-transform group-hover:translate-x-1"
-                  />
+                  <Icon icon={chevronRight} className="h-6 w-6 -mr-2 transition-transform group-hover:translate-x-1" />
                 </a>
               </div>
             </div>
