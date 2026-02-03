@@ -76,10 +76,10 @@ export default function Footer() {
           <span>© 2026 Ducky Bot. All rights reserved.</span>
           <div className="flex flex-wrap items-center gap-4 text-white/60">
             <span>v1.6.0 Stable</span>
-            <span className="inline-flex items-center gap-2 rounded-full border border-success/40 bg-success/10 px-3 py-1 text-xs text-success">
+            <a href="/status" className="inline-flex items-center gap-2 rounded-full border border-success/40 bg-success/10 hover:bg-success/20 transition-colors px-3 py-1 text-xs !text-success">
               <span className="h-2 w-2 rounded-full bg-success" />
                 Status: Operational
-              </span>
+              </a>
             <div className="flex items-center gap-3 text-white/60">
               <a className="transition hover:text-white" href="/support">
                 <Icon icon={discord} className="h-4 w-4" />
