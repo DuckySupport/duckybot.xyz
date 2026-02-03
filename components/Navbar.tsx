@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
+
 import { Icon } from "@iconify/react/offline";
 import menuRounded from "@iconify/icons-material-symbols/menu-rounded";
 import closeRounded from "@iconify/icons-material-symbols/close-rounded";
-import { signOut, useSession } from "next-auth/react";
 
 const navItems = [
   { label: "Documentation", href: "/docs" },

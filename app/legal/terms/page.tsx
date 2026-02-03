@@ -13,17 +13,17 @@ export default function TermsOfServicePage() {
           </p>
           <div className="legal-meta mt-8">
             <div>
-              <span className="legal-label accent-text">Privacy Policy </span>
+              <span className="legal-label accent-text">Privacy Policy: </span>
               <a href="/legal/privacy" className="terms-link">
                 https://duckybot.xyz/legal/privacy
               </a>
             </div>
             <div>
-              <span className="legal-label accent-text">Effective Date </span>
+              <span className="legal-label accent-text">Effective Date: </span>
               <span className="legal-value">September 29, 2024</span>
             </div>
             <div>
-              <span className="legal-label accent-text">Last Updated </span>
+              <span className="legal-label accent-text">Last Updated: </span>
               <span className="legal-value">December 17, 2025</span>
             </div>
           </div>
