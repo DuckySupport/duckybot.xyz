@@ -23,12 +23,13 @@ const roles = [
 export default function OpportunitiesPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <section className="px-6 pb-12 pt-14 sm:pt-32">
-        <div className="mx-auto flex w-full max-w-5xl flex-col items-center text-center">
-          <h1 className="text-4xl font-semibold sm:text-6xl">
-            Opportunities at <span className="accent-text">Ducky</span>
-          </h1>
-          <p className="mt-4 max-w-2xl text-sm text-white/60 sm:text-base">
+      <section className="relative overflow-hidden px-6 pb-14 pt-24 sm:pt-14">
+        <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center text-center">
+          <div className="mb-3 flex items-center gap-2 text-4xl font-semibold sm:text-5xl">
+            Opportunities at
+            <span className="accent-text">Ducky</span>
+          </div>
+          <p className="max-w-2xl text-sm text-white/60 sm:text-base">
             Join us on our mission to <span className="accent-text">revolutionize</span> ERLC private
             server management with seamless <span className="accent-text">automation</span> and <span className="accent-text">integration</span>.
           </p>
