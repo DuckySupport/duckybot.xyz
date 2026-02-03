@@ -86,7 +86,7 @@ export default function LoginPage() {
                 })
               }
               disabled={!agreed}
-              className="group flex items-center justify-center w-full rounded-2xl border border-[#5865F2] bg-[#5865F2] px-5 py-3 text-sm font-semibold text-white transition enabled:hover:bg-[#4c57d9] enabled:hover:-translate-y-[3px] disabled:cursor-not-allowed disabled:opacity-50"
+              className="group flex items-center justify-center w-full rounded-2xl border border-[#5865F2] bg-[#5865F2] px-5 py-3 text-sm font-semibold text-white transition enabled:hover:bg-[#4c57d9] enabled:hover:-translate-y-[3px] enabled:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Icon icon={Discord} className="mr-2 h-6 w-6" />
               Continue with Discord
