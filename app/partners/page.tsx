@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 export default function PartnersPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <section className="px-6 pb-10 pt-28 sm:pt-32">
+      <section className="px-6 pb-10 pt-14 sm:pt-32">
         <div className="mx-auto w-full max-w-5xl text-center">
           <h1 className="text-4xl font-semibold sm:text-6xl">
             Meet Our <span className="accent-text">Partners</span>

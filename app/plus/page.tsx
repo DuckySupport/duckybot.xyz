@@ -46,7 +46,7 @@ export default function PlusPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       <PurchaseModal open={purchaseOpen} onClose={() => setPurchaseOpen(false)} />
-      <section className="relative overflow-hidden px-6 pb-14 pt-24 sm:pt-28">
+      <section className="relative overflow-hidden px-6 pb-14 pt-24 sm:pt-14">
         <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center text-center">
           <div className="mb-3 flex items-center gap-2 text-4xl font-semibold sm:text-5xl">
             <Plus className="inline h-[1.1em] w-auto pb-1" />

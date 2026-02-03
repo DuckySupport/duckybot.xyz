@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <section className="px-6 pb-20 pt-28 sm:pt-32 md:pt-36">
+      <section className="px-6 pb-20 pt-14 sm:pt-32 md:pt-36">
         <div className="mx-auto w-full max-w-5xl text-center">
           <h1 className="text-4xl font-semibold sm:text-6xl">
             <span className="accent-text">Privacy</span> Policy

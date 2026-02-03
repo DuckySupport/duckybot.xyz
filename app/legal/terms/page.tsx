@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 export default function TermsOfServicePage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <section className="px-6 pb-20 pt-28 sm:pt-32 md:pt-36">
+      <section className="px-6 pb-20 pt-14 sm:pt-32 md:pt-36">
         <div className="mx-auto w-full max-w-5xl text-center">
           <h1 className="text-4xl font-semibold sm:text-6xl">
             Terms of <span className="accent-text">Service</span>
@@ -13,17 +13,17 @@ export default function TermsOfServicePage() {
           </p>
           <div className="legal-meta mt-8">
             <div>
-              <span className="legal-label">Privacy Policy</span>
+              <span className="legal-label accent-text">Privacy Policy </span>
               <a href="/legal/privacy" className="terms-link">
                 https://duckybot.xyz/legal/privacy
               </a>
             </div>
             <div>
-              <span className="legal-label">Effective Date</span>
+              <span className="legal-label accent-text">Effective Date </span>
               <span className="legal-value">September 29, 2024</span>
             </div>
             <div>
-              <span className="legal-label">Last Updated</span>
+              <span className="legal-label accent-text">Last Updated </span>
               <span className="legal-value">December 17, 2025</span>
             </div>
           </div>
