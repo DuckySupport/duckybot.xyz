@@ -59,7 +59,7 @@ export default function PlusPage() {
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <button
               type="button"
-              className="btn-primary rounded-full px-6 py-3 text-sm"
+              className="btn-primary inline-flex items-center justify-center rounded-full px-7 py-3 text-sm hover:cursor-pointer sm:px-8 sm:py-3 sm:text-base"
               onClick={() => setPurchaseOpen(true)}
             >
               Purchase

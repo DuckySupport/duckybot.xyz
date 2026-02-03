@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react/offline";
 import closeRounded from "@iconify/icons-material-symbols/close-rounded";
+import contentCopyRounded from "@iconify/icons-material-symbols/content-copy-rounded";
+import Success from "@/public/icons/Success.svg";
 
 const steps = [
   {
@@ -97,7 +99,17 @@ export default function PurchaseModal({ open, onClose }: PurchaseModalProps) {
                     >
                       {step.detail}
                       <span className="step-code-hint">
-                        {copied ? "Copied" : "Copy"}
+                        {copied ? (
+                          <>
+                            <Success className="h-3 w-3" />
+                            Copied
+                          </>
+                        ) : (
+                          <>
+                            <Icon icon={contentCopyRounded} className="h-3 w-3" />
+                            Copy
+                          </>
+                        )}
                       </span>
                     </span>
                     <span className="step-text-muted">command.</span>
