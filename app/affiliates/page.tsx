@@ -139,7 +139,7 @@ export default function AffiliatesPage() {
           <div className="card affiliate-card lift-card vacant-card sm:col-span-2 lg:col-span-1">
             <div className="flex justify-center">
               <div className="card-icon fixed-icon border border-[var(--accent)]">
-                <Icon icon={addRounded} className="h-6 w-6 text-gray-600" />
+                <Icon icon={addRounded} className="h-8 w-8 text-gray-600" />
               </div>
             </div>
             <div className="card-content">
