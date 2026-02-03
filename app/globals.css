@@ -301,7 +301,8 @@ a {
 .purchase-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(5, 5, 5, 0.7);
+  background: rgba(5, 5, 5, 0.1);
+  backdrop-filter: blur(6px);
   display: grid;
   place-items: center;
   z-index: 70;

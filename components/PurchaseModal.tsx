@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Icon } from "@iconify/react/offline";
 import closeRounded from "@iconify/icons-material-symbols/close-rounded";
 import contentCopyRounded from "@iconify/icons-material-symbols/content-copy-rounded";
@@ -39,18 +40,25 @@ type PurchaseModalProps = {
 
 export default function PurchaseModal({ open, onClose }: PurchaseModalProps) {
   const [copied, setCopied] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     if (!copied) return;
     const timer = setTimeout(() => setCopied(false), 1200);
     return () => clearTimeout(timer);
   }, [copied]);
 
-  if (!open) return null;
+  if (!open || !mounted) return null;
 
-  return (
-    <div className="purchase-modal-backdrop" role="dialog" aria-modal="true">
-      <div className="purchase-modal">
+  const modalContent = (
+    <div 
+      className="purchase-modal-backdrop" 
+      role="dialog" 
+      aria-modal="true" 
+      onClick={onClose}
+    >
+      <div className="purchase-modal" onClick={(e) => e.stopPropagation()}>
         <div className="purchase-modal-header">
           <h3>How to Purchase Ducky Plus+</h3>
           <button
@@ -124,4 +132,6 @@ export default function PurchaseModal({ open, onClose }: PurchaseModalProps) {
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }

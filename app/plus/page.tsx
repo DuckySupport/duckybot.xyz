@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Icon } from "@iconify/react/offline";
 import chevronRight from "@iconify/icons-material-symbols/chevron-right";
 import Success from "@/public/icons/Success.svg";
@@ -42,6 +42,18 @@ const rows = [
 
 export default function PlusPage() {
   const [purchaseOpen, setPurchaseOpen] = useState(false);
+
+  useEffect(() => {
+    if (purchaseOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [purchaseOpen]);
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
