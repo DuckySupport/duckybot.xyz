@@ -51,7 +51,7 @@ export default async function Home() {
             rel="noopener noreferrer"
             className="group inline-flex items-center rounded-full border border-[var(--accent)]/20 bg-[var(--accent)]/10 px-4 py-1.5 text-xs font-medium text-white/90 transition hover:bg-[var(--accent)]/15 sm:px-6 sm:py-2 sm:text-sm"
           >
-            Ducky v1.6.0 Stable is now live!
+            v1.6.0 Stable is here!
             <Icon icon={chevronRight} className="ml-2 -mr-2 h-6 w-6 transition-transform group-hover:translate-x-1" />
           </a>
           <h1 className="animate-fade-in mb-6 mt-6 text-3xl font-bold sm:mb-8 sm:text-4xl md:text-6xl lg:text-7xl">
