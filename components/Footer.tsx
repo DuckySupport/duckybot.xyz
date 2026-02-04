@@ -168,20 +168,20 @@ export default function Footer() {
               Status: Operational
             </a>
             <div className="flex items-center gap-3 text-white/60">
-              <a className="transition hover:text-white" href="/support">
-                <Icon icon={discord} className="h-4 w-4" />
+              <a href="/support">
+                <Icon icon={discord} className="h-4 w-4 transition hover:text-white/100" />
               </a>
               <a
                 className="transition hover:text-white"
                 href="https://github.com/orgs/DuckySupport"
               >
-                <Icon icon={github} className="h-4 w-4" />
+                <Icon icon={github} className="h-4 w-4 transition hover:text-white/100" />
               </a>
               <a
                 className="transition hover:text-white"
                 href="mailto:support@duckybot.xyz"
               >
-                <Icon icon={mailFilled} className="h-4 w-4" />
+                <Icon icon={mailFilled} className="h-4 w-4 transition hover:text-white/100" />
               </a>
             </div>
           </div>
