@@ -197,8 +197,8 @@ export default function SettingsPage() {
                 </div>
               )}
               <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-white/40">
-                  Discord
+                <p className="text-sm font-medium text-white/60">
+                  Discord account
                 </p>
                 <h2 className="mt-1 text-xl font-semibold text-white">
                   {isLoading ? "Loading..." : userName}
@@ -217,12 +217,15 @@ export default function SettingsPage() {
               </div>
             </div>
             <div className="mx-auto mt-6 h-px w-72 rounded-full bg-white/10" />
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm font-semibold text-white/70">
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-6">
+              <div className="flex items-center gap-4 text-left">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm font-semibold text-white/70">
                   RB
                 </div>
                 <div>
+                  <p className="text-sm font-medium text-white/60">
+                    Roblox account
+                  </p>
                   <p className="text-sm font-semibold text-white/80">
                     Roblox Avatar
                   </p>
