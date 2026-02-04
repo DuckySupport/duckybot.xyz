@@ -131,9 +131,9 @@ export default function Footer() {
         <div className="flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-6 text-xs text-white/50 md:flex-row">
           <span>© 2026 Ducky Bot. All rights reserved.</span>
           <div className="flex flex-wrap items-center gap-4 text-white/60">
-            <div className="group relative inline-flex items-center">
+            <a href="https://docs.duckybot.xyz/overview/changelogs" className="group relative inline-flex items-center">
               <span
-                className="cursor-default rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70 transition group-hover:border-white/20 group-hover:text-white"
+                className="cursor-pointer rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70 transition group-hover:border-white/20 group-hover:text-white"
                 tabIndex={0}
                 aria-describedby="build-info"
               >
@@ -159,7 +159,7 @@ export default function Footer() {
                   </div>
                 </div>
               </div>
-            </div>
+            </a>
             <a
               href="/status"
               className="inline-flex items-center gap-2 rounded-full border border-success/40 bg-success/10 px-3 py-1 text-xs transition-colors hover:bg-success/20 !text-success"
