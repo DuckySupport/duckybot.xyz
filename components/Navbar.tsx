@@ -16,7 +16,7 @@ const navItems = [
 ];
 
 const HIDDEN_ROUTES = new Set(["/login", "/not-found"]);
-const HIDDEN_ROUTE_PREFIXES = ["/dashboard", "/settings"];
+const HIDDEN_ROUTE_PREFIXES = ["/dashboard"];
 
 export default function Navbar() {
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);

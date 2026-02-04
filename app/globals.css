@@ -491,6 +491,23 @@ a {
   transform: translateY(-1px);
 }
 
+.settings-accordion summary {
+  list-style: none;
+}
+
+.settings-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.settings-accordion .settings-chevron {
+  transition: transform 0.25s ease;
+}
+
+.settings-accordion[open] .settings-chevron {
+  transform: rotate(180deg);
+}
+
+
 .mobile-menu {
   position: fixed;
   inset: 0;
@@ -550,12 +567,13 @@ body.menu-open {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
   margin: 28px auto 0;
-  max-width: 980px;
+  max-width: 1120px;
   padding: 12px 26px;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(14px);
   transform: translateY(2px);
 }
+
 
 @media (max-width: 768px) {
   .site-nav {
@@ -563,7 +581,7 @@ body.menu-open {
   }
 
   .site-nav.island {
-    max-width: calc(100% - 20px);
+    max-width: calc(100% - 16px);
     padding: 8px 14px;
   }
 }
