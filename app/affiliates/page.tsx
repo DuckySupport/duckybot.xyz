@@ -63,7 +63,7 @@ export default function AffiliatesPage() {
                   rel="noreferrer"
                   className="btn-accent inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm sm:px-6 sm:py-2 sm:text-base"
                 >
-                  <span>Join Discord</span>
+                  <span>Join Server</span>
                 </a>
               </div>
             </div>
@@ -96,7 +96,7 @@ export default function AffiliatesPage() {
                   rel="noreferrer"
                   className="btn-accent inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm sm:px-6 sm:py-2 sm:text-base"
                 >
-                  <span>Join Discord</span>
+                  <span>Join Server</span>
                 </a>
               </div>
             </div>
@@ -127,7 +127,7 @@ export default function AffiliatesPage() {
                   rel="noreferrer"
                   className="btn-accent inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm sm:px-6 sm:py-2 sm:text-base"
                 >
-                  <span>Join Discord</span>
+                  <span>Join Server</span>
                 </a>
               </div>
             </div>
