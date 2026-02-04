@@ -44,14 +44,12 @@ export default function PlusPage() {
   const [purchaseOpen, setPurchaseOpen] = useState(false);
 
   useEffect(() => {
-    if (purchaseOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    
+    document.body.classList.toggle("purchase-open", purchaseOpen);
+    document.body.style.overflow = purchaseOpen ? "hidden" : "";
+
     return () => {
-      document.body.style.overflow = '';
+      document.body.classList.remove("purchase-open");
+      document.body.style.overflow = "";
     };
   }, [purchaseOpen]);
 

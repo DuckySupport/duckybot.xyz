@@ -48,14 +48,16 @@ body {
   will-change: filter;
 }
 
-body.modal-open #page-content {
+body.modal-open #page-content,
+body.purchase-open #page-content {
   filter: blur(16px) saturate(0.95) brightness(0.8);
   transform: scale(0.995);
   opacity: 0.85;
   pointer-events: none;
 }
 
-body.modal-open .site-nav {
+body.modal-open .site-nav,
+body.purchase-open .site-nav {
   pointer-events: none;
 }
 
@@ -63,7 +65,8 @@ body[data-hide-navbar="true"] .site-nav {
   display: none;
 }
 
-body.modal-open::before {
+body.modal-open::before,
+body.purchase-open::before {
   content: "";
   position: fixed;
   inset: 0;
@@ -301,8 +304,7 @@ a {
 .purchase-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(5, 5, 5, 0.1);
-  backdrop-filter: blur(6px);
+  background: transparent;
   display: grid;
   place-items: center;
   z-index: 70;
