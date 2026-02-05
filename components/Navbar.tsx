@@ -22,11 +22,22 @@ export default function Navbar() {
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
   const [signOutOpen, setSignOutOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const pathname = usePathname();
   const avatarUrl = session?.user?.image ?? "";
+  const userName = session?.user?.name ?? "Account";
   const avatarAlt = session?.user?.name ?? "Account avatar";
   const avatarMenuRef = useRef<HTMLDivElement | null>(null);
+  const isSessionLoading = status === "loading";
+  const isAuthenticated = status === "authenticated";
+  const avatarInitials = userName
+    .trim()
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase() || "DU";
 
   useEffect(() => {
     if (!avatarMenuOpen) return;
@@ -140,7 +151,12 @@ export default function Navbar() {
             >
               <Icon icon={menuRounded} className="h-5 w-5" />
             </button>
-            {avatarUrl ? (
+            {isSessionLoading ? (
+              <div
+                className="h-10 w-24 rounded-full border border-white/15 bg-white/5"
+                aria-hidden="true"
+              />
+            ) : isAuthenticated ? (
               <>
                 <button
                   className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/40 shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_10px_30px_rgba(0,0,0,0.45)] transition hover:border-white/40"
@@ -148,13 +164,19 @@ export default function Navbar() {
                   aria-label="Open account menu"
                   onClick={() => setAvatarMenuOpen((open) => !open)}
                 >
-                  <Image
-                    src={avatarUrl}
-                    alt={avatarAlt}
-                    width={32}
-                    height={32}
-                    className="rounded-full"
-                  />
+                  {avatarUrl ? (
+                    <Image
+                      src={avatarUrl}
+                      alt={avatarAlt}
+                      width={32}
+                      height={32}
+                      className="rounded-full"
+                    />
+                  ) : (
+                    <span className="text-xs font-semibold text-white/70">
+                      {avatarInitials}
+                    </span>
+                  )}
                 </button>
                 {avatarMenuOpen && (
                   <div className="absolute right-0 top-12 z-50 w-44 rounded-xl border border-white/10 bg-[#0f0f0f] p-2 text-sm shadow-[0_18px_40px_rgba(0,0,0,0.55)]">

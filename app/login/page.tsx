@@ -10,18 +10,31 @@ import { Icon } from "@iconify/react/offline";
 import Discord from "@iconify/icons-fa-brands/discord";
 
 export default function LoginPage() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const [agreed, setAgreed] = useState(false)
   const router = useRouter()
+  const isLoading = status === "loading"
 
   useEffect(() => {
-    if (session?.user) {
+    if (status === "authenticated") {
       router.replace("/dashboard")
     }
-  }, [router, session?.user])
+  }, [router, status])
 
-  if (session?.user) {
+  if (status === "authenticated") {
     return null
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] text-white">
+        <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center justify-center px-6 py-16 text-center">
+          <div className="w-full max-w-md rounded-[28px] border border-white/10 bg-[#0f0f0f] p-8 shadow-[0_24px_60px_rgba(0,0,0,0.55)]">
+            <p className="text-sm text-white/70">Checking your session...</p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
