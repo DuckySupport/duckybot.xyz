@@ -62,7 +62,7 @@ export default function CareersPage() {
                   </div>
                 </div>
                 <a
-                  className="btn-glass group mt-4 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm md:mt-0"
+                  className="btn-primary group mt-4 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm md:mt-0"
                   href="/apply"
                 >
                   Apply Now
