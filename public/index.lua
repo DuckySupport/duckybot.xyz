@@ -533,10 +533,10 @@ end)()
 http.request(function(success, response)
 	if success and response and response.data and response.data.version then
 		if location == "/" then
-			elements.version.innerHTML = string.format('Ducky %s is now live! <i class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i>', response.data.version)
+			elements.version.innerHTML = string.format('Ducky %s is now live! <i class="fas fa-chevron-right ml-2 text-xs transition-transform group-hover:translate-x-1"></i>', response.data.version.name)
 		end
 
-		elements.footer.version.textContent = response.data.version
+		elements.footer.version.textContent = response.data.version.name
 		elements.footer.status.innerHTML = '<span class="w-2 h-2 bg-[#66FF66] rounded-full"></span> Status: Operational'
 		elements.footer.status.className = "flex items-center gap-1 px-2 py-0.5 bg-[#66FF66]/10 rounded-full text-[#66FF66] text-xs"
 	else
