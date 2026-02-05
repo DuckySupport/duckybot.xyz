@@ -3,9 +3,10 @@
 import { useState, useEffect } from "react";
 import { Icon } from "@iconify/react/offline";
 import chevronRight from "@iconify/icons-material-symbols/chevron-right";
-import { SuccessIcon as Success } from "@/components/icons/SuccessIcon";
-import { FailIcon as Fail } from "@/components/icons/FailIcon";
-import { RobuxIcon as Robux } from "@/components/icons/RobuxIcon";
+import Success from "@/public/icons/Success.svg";
+import Fail from "@/public/icons/Fail.svg";
+import Robux from "@/public/icons/Robux.svg";
+import Plus from "@/public/icons/Plus.svg";
 
 import Footer from "@/components/Footer";
 import PurchaseModal from "@/components/PurchaseModal";

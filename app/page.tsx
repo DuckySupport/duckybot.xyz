@@ -3,8 +3,9 @@ import chevronRight from "@iconify/icons-material-symbols/chevron-right";
 import addRounded from "@iconify/icons-material-symbols/add-rounded";
 import shieldRounded from "@iconify/icons-material-symbols/shield-rounded";
 import code from "@iconify/icons-tabler/code";
-import { AutomationIcon as Automation } from "@/components/icons/AutomationIcon";
-import { RobuxIcon as Robux } from "@/components/icons/RobuxIcon";
+import Automation from "@/public/icons/Automation.svg";
+import Plus from "@/public/icons/Plus.svg";
+import Robux from "@/public/icons/Robux.svg";
 
 import Footer from "@/components/Footer";
 import Reviews from "@/components/Reviews";
