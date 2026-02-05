@@ -111,7 +111,7 @@ export default function Footer() {
     };
   }, []);
 
-  const commitShort = commit === "Unknown" ? commit : `${commit.slice(0, 7)}…`;
+  const commitShort = commit === "Unknown" ? commit : `${commit.slice(0, 7)}`;
   const buildDate = build;
 
   return (
