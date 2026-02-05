@@ -790,7 +790,7 @@ body.menu-open {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: auroraFlow 4s linear infinite;
+  animation: auroraFlow 2s linear infinite;
 }
 
 @keyframes fadeIn {
