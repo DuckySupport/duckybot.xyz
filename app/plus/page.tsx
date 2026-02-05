@@ -6,7 +6,6 @@ import chevronRight from "@iconify/icons-material-symbols/chevron-right";
 import { SuccessIcon as Success } from "@/components/icons/SuccessIcon";
 import { FailIcon as Fail } from "@/components/icons/FailIcon";
 import { RobuxIcon as Robux } from "@/components/icons/RobuxIcon";
-import { PlusIcon as Plus } from "@/components/icons/PlusIcon";
 
 import Footer from "@/components/Footer";
 import PurchaseModal from "@/components/PurchaseModal";
@@ -59,7 +58,12 @@ export default function PlusPage() {
       <section className="relative overflow-hidden px-6 pb-14 pt-24 sm:pt-14">
         <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center text-center">
           <div className="mb-3 flex items-center gap-2 text-4xl font-semibold sm:text-5xl">
-            <Plus className="inline h-[1.1em] w-auto pb-1" />
+            <img
+              src="/icons/Plus.svg"
+              alt=""
+              aria-hidden="true"
+              className="inline h-[1.1em] w-auto pb-1"
+            />
             <span className="pb-1">Ducky</span>
             <span className="aurora-text pb-1">Plus+</span>
           </div>
