@@ -208,11 +208,6 @@ export default async function TeamPage() {
                             )}
                           </div>
                         </div>
-                        {/* <div className="mt-auto flex flex-wrap gap-2">
-                          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
-                            {group.label}
-                          </span>
-                        </div> */}
                       </div>
                     );
                   })}
