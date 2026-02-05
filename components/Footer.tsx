@@ -17,7 +17,7 @@ const footerLinks = [
       { label: "Add Ducky", href: "/invite" },
       { label: "Changelogs", href: "/changelogs" },
       { label: "Status", href: "/status" },
-      { label: "Opportunities", href: "/opportunities" },
+      { label: "Careers", href: "/careers" },
     ],
   },
   {
@@ -25,6 +25,7 @@ const footerLinks = [
     items: [
       { label: "Affiliates", href: "/affiliates" },
       { label: "Partners", href: "/partners" },
+      { label: "Team", href: "/team" },
     ],
   },
   {

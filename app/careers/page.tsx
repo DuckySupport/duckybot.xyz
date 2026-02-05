@@ -20,13 +20,13 @@ const roles = [
   },
 ];
 
-export default function OpportunitiesPage() {
+export default function CareersPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       <section className="relative overflow-hidden px-6 pb-14 pt-24 sm:pt-14">
         <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center text-center">
           <div className="mb-3 flex items-center gap-2 text-4xl font-semibold sm:text-5xl">
-            Opportunities at
+            Careers at
             <span className="accent-text">Ducky</span>
           </div>
           <p className="max-w-2xl text-sm text-white/60 sm:text-base">
