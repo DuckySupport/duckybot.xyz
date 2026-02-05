@@ -30,8 +30,8 @@ export default function CareersPage() {
             <span className="accent-text">Ducky</span>
           </div>
           <p className="max-w-2xl text-sm text-white/60 sm:text-base">
-            Join us on our mission to <span className="accent-text">revolutionize</span> ERLC private
-            server management with seamless <span className="accent-text">automation</span> and <span className="accent-text">integration</span>.
+            Join us on our mission to revolutionize ERLC private
+            server management with seamless automation and integration.
           </p>
         </div>
       </section>

@@ -128,15 +128,11 @@ export default async function TeamPage() {
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       <section className="relative overflow-hidden px-6 pb-12 pt-20 sm:pt-24">
         <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center text-center">
-          <span className="pill inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs text-white/70 sm:text-sm">
-            The people behind Ducky
-          </span>
           <h1 className="mt-5 text-4xl font-semibold sm:text-6xl">
-            Meet the <span className="accent-text">Ducky Team</span>
+            Meet the Team Behind <span className="accent-text">Ducky</span>
           </h1>
           <p className="mt-4 max-w-2xl text-sm text-white/60 sm:text-base">
-            A small, focused crew building the most reliable ERLC automation stack.
-            We obsess over performance, community trust, and delightful experiences.
+            Dedicated innovators developing and maintaining the best bot for ERLC automation and server management.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <a
@@ -212,11 +208,11 @@ export default async function TeamPage() {
                             )}
                           </div>
                         </div>
-                        <div className="mt-auto flex flex-wrap gap-2">
+                        {/* <div className="mt-auto flex flex-wrap gap-2">
                           <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
                             {group.label}
                           </span>
-                        </div>
+                        </div> */}
                       </div>
                     );
                   })}
