@@ -38,22 +38,32 @@ const footerLinks = [
   },
 ];
 
-const STATS_API = "https://api.duckybot.xyz/statistics";
+const BASE_API = "https://api.duckybot.xyz/";
 const FALLBACK_VERSION = "v1.6.0 Stable";
+const FALLBACK_BRANCH = "Unknown";
+const FALLBACK_COMMIT = "Unknown";
+const FALLBACK_BUILD = "Unknown";
 
-type StatsResponse = {
+type BaseResponse = {
   data?: {
-    version?: string;
+    version?: {
+      name?: string;
+      branch?: string;
+      commit?: {
+        sha?: string;
+        timestamp?: number;
+      };
+    };
   };
 };
 
-function formatBuildDate(value?: string) {
+function formatBuildDate(value?: string | number) {
   if (!value) return "Unknown";
   const numeric = Number(value);
   const date = Number.isNaN(numeric)
     ? new Date(value)
     : new Date(numeric < 10_000_000_000 ? numeric * 1000 : numeric);
-  if (Number.isNaN(date.getTime())) return value;
+  if (Number.isNaN(date.getTime())) return String(value);
   return date.toLocaleString("en-US", {
     year: "numeric",
     month: "short",
@@ -65,17 +75,31 @@ function formatBuildDate(value?: string) {
 
 export default function Footer() {
   const [version, setVersion] = useState(FALLBACK_VERSION);
+  const [branch, setBranch] = useState(FALLBACK_BRANCH);
+  const [commit, setCommit] = useState(FALLBACK_COMMIT);
+  const [build, setBuild] = useState(FALLBACK_BUILD);
 
   useEffect(() => {
     let ignore = false;
     const loadStats = async () => {
       try {
-        const response = await fetch(STATS_API);
+        const response = await fetch(BASE_API);
         if (!response.ok) return;
-        const json = (await response.json()) as StatsResponse;
-        const nextVersion = json?.data?.version;
-        if (!ignore && typeof nextVersion === "string") {
-          setVersion(nextVersion);
+        const json = (await response.json()) as BaseResponse;
+        const versionInfo = json?.data?.version;
+        if (!ignore && versionInfo) {
+          if (typeof versionInfo.name === "string") {
+            setVersion(versionInfo.name);
+          }
+          if (typeof versionInfo.branch === "string") {
+            setBranch(versionInfo.branch);
+          }
+          if (typeof versionInfo.commit?.sha === "string") {
+            setCommit(versionInfo.commit.sha);
+          }
+          if (typeof versionInfo.commit?.timestamp === "number") {
+            setBuild(formatBuildDate(versionInfo.commit.timestamp));
+          }
         }
       } catch {
         // Keep fallback version on failure.
@@ -87,10 +111,8 @@ export default function Footer() {
     };
   }, []);
 
-  const branch = process.env.NEXT_PUBLIC_GIT_BRANCH || "Unknown";
-  const commit = process.env.NEXT_PUBLIC_GIT_COMMIT_SHA || "Unknown";
   const commitShort = commit === "Unknown" ? commit : `${commit.slice(0, 7)}…`;
-  const buildDate = formatBuildDate(process.env.NEXT_PUBLIC_BUILD_DATE);
+  const buildDate = build;
 
   return (
     <footer className="mt-24 border-t border-white/10 px-6 py-16 md:px-12">

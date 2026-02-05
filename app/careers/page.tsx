@@ -63,7 +63,7 @@ export default function CareersPage() {
                 </div>
                 <a
                   className="btn-glass group mt-4 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm md:mt-0"
-                  href="/support"
+                  href="/apply"
                 >
                   Apply Now
                   <Icon icon={chevronRight} className="h-6 w-6 -mr-2 transition-transform group-hover:translate-x-1" />

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -27,7 +27,8 @@ export default function DashboardComingSoonPage() {
             Coming Soon
           </h1>
           <p className="mt-4 max-w-2xl text-sm text-white/60 sm:text-base">
-            We're hard at work building a dashboard to moderate & automate your server with ease.
+            We're hard at work building a dashboard to moderate & automate your
+            server with ease.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link href="/" className="btn-primary rounded-full px-6 py-3 text-sm">
@@ -42,8 +43,8 @@ export default function DashboardComingSoonPage() {
                 icon={chevronRight}
                 className="h-4 w-4 transition-transform group-hover:translate-x-1"
               />
-          </Link>
-        </div>
+            </Link>
+          </div>
         </div>
       </div>
       <Footer />

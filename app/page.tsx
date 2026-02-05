@@ -237,11 +237,11 @@ export default async function Home() {
                   Apply for an affiliation and advertise your server here.
                 </p>
                 <div className="affiliate-actions mt-6">
-                  <a
-                    href="/support"
-                    className="btn-accent inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm sm:px-6 sm:py-2 sm:text-base"
-                  >
-                    <span>Apply Now</span>
+                <a
+                  href="/support"
+                  className="btn-accent inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm sm:px-6 sm:py-2 sm:text-base"
+                >
+                  <span>Apply Now</span>
                   </a>
                 </div>
               </div>

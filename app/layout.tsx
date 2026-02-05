@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: "Ducky",
   description:
     "Power your server with Ducky, a multipurpose bot focused on seamlessly integrating Discord and ERLC server automation for effortless management.",
+  icons: {
+    icon: "/assets/Ducky.svg",
+  },
 }
 
 export const viewport = {
