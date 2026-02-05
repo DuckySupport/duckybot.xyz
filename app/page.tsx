@@ -271,12 +271,7 @@ export default async function Home() {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.0),rgba(0,0,0,0.25)_55%,rgba(0,0,0,0.55)_75%)]" />
             <div className="relative z-10">
               <h2 className="mb-4 text-2xl font-bold text-white sm:mb-6 sm:text-4xl">
-                <img
-                  src="/icons/Plus.svg"
-                  alt=""
-                  aria-hidden="true"
-                  className="mr-2 inline h-[1.2em] w-auto align-text-bottom"
-                />
+                <Plus className="mr-2 inline h-[1.2em] w-auto align-text-bottom" />
                 Ducky Plus+
               </h2>
               <p className="mx-auto mb-6 max-w-3xl text-sm text-white/60 sm:mb-8 sm:text-lg">
