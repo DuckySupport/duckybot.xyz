@@ -213,7 +213,7 @@ export default async function Home() {
                 </p>
                 <div className="affiliate-actions mt-6">
                   <a
-                    href="https://discord.gg/FamWC7D4kC"
+                    href="https://discord.gg/jPWXUXjsKt"
                     target="_blank"
                     rel="noreferrer"
                     className="btn-accent inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm sm:px-6 sm:py-2 sm:text-base"
