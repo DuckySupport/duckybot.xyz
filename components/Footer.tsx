@@ -42,6 +42,9 @@ const BASE_API = "https://api.duckybot.xyz/";
 const FALLBACK_VERSION = "v1.6.0 Stable";
 const FALLBACK_BRANCH = "Unknown";
 const FALLBACK_COMMIT = "Unknown";
+const FALLBACK_COMMIT_MESSAGE = "Unknown";
+const FALLBACK_COMMIT_AUTHOR = "Unknown";
+const FALLBACK_COMMIT_AUTHOR_AVATAR = "https://cdn.discordapp.com/embed/avatars/0.png";
 const FALLBACK_BUILD = "Unknown";
 
 type BaseResponse = {
@@ -51,6 +54,8 @@ type BaseResponse = {
       branch?: string;
       commit?: {
         sha?: string;
+        message?: string;
+        author?: string;
         timestamp?: number;
       };
     };
@@ -77,7 +82,12 @@ export default function Footer() {
   const [version, setVersion] = useState(FALLBACK_VERSION);
   const [branch, setBranch] = useState(FALLBACK_BRANCH);
   const [commit, setCommit] = useState(FALLBACK_COMMIT);
+  const [commitMessage, setCommitMessage] = useState(FALLBACK_COMMIT_MESSAGE);
+  const [commitAuthor, setCommitAuthor] = useState(FALLBACK_COMMIT_AUTHOR);
+  const [commitAuthorAvatar, setCommitAuthorAvatar] = useState(FALLBACK_COMMIT_AUTHOR_AVATAR);
   const [build, setBuild] = useState(FALLBACK_BUILD);
+  const [hovering, setHovering] = useState(false);
+  const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
     let ignore = false;
@@ -97,6 +107,13 @@ export default function Footer() {
           if (typeof versionInfo.commit?.sha === "string") {
             setCommit(versionInfo.commit.sha);
           }
+          if (typeof versionInfo.commit?.message === "string") {
+            setCommitMessage(versionInfo.commit.message);
+          }
+          if (typeof versionInfo.commit?.author === "string") {
+            setCommitAuthor(versionInfo.commit.author);
+            setCommitAuthorAvatar(`https://avatars.githubusercontent.com/${versionInfo.commit.author}`);
+          }
           if (typeof versionInfo.commit?.timestamp === "number") {
             setBuild(formatBuildDate(versionInfo.commit.timestamp));
           }
@@ -108,6 +125,28 @@ export default function Footer() {
     loadStats();
     return () => {
       ignore = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "c" || e.key === "C") {
+        setShowMore(true);
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === "c" || e.key === "C") {
+        setShowMore(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
     };
   }, []);
 
@@ -154,7 +193,7 @@ export default function Footer() {
         <div className="flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-6 text-xs text-white/50 md:flex-row">
           <span>© 2026 Ducky Bot. All rights reserved.</span>
           <div className="flex flex-wrap items-center gap-4 text-white/60">
-            <a href="https://docs.duckybot.xyz/overview/changelogs" className="group relative inline-flex items-center">
+            <a href="https://docs.duckybot.xyz/overview/changelogs" className="group relative inline-flex items-center" onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)}>
               <span
                 className="cursor-pointer rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70 transition group-hover:border-white/20 group-hover:text-white"
                 tabIndex={0}
@@ -162,10 +201,43 @@ export default function Footer() {
               >
                 {version}
               </span>
+              
+              {hovering && showMore && (
+                <div
+                  role="tooltip"
+                  className="pointer-events-none animate-slide-right quick absolute bottom-full left-1/2 z-30 mb-3 ml-2 w-70 rounded-xl border border-white/10 bg-[#0f0f0f] p-3 text-[11px] text-white/70 opacity-0 shadow-[0_16px_40px_rgba(0,0,0,0.55)] transition group-hover:opacity-100 group-focus-within:opacity-100"
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 border-b border-white/10 pb-2">
+                      {commitAuthorAvatar && (
+                        <img 
+                          src={commitAuthorAvatar} 
+                          alt={commitAuthor || "Author"} 
+                          className="h-6 w-6 rounded-full"
+                        />
+                      )}
+                      <span className="text-xs font-semibold text-white">
+                        {commitAuthor || "Unknown Author"}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <div className="flex flex-col">
+                        <span className="text-white">{commitMessage}</span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="font-mono text-white/60 break-all">{commit}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div
                 id="build-info"
                 role="tooltip"
-                className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-3 w-52 -translate-x-1/2 rounded-xl border border-white/10 bg-[#0f0f0f] p-3 text-[11px] text-white/70 opacity-0 shadow-[0_16px_40px_rgba(0,0,0,0.55)] transition group-hover:opacity-100 group-focus-within:opacity-100"
+                className={`pointer-events-none absolute bottom-full left-1/2 z-20 mb-3 w-52 rounded-xl border border-white/10 bg-[#0f0f0f] p-3 text-[11px] text-white/70 opacity-0 shadow-[0_16px_40px_rgba(0,0,0,0.55)] transition group-hover:opacity-100 group-focus-within:opacity-100 ${
+                  hovering && showMore ? '-translate-x-[105%]' : '-translate-x-1/2'
+                }`}
               >
                 <div className="space-y-1">
                   <div className="flex items-center justify-between text-white/60">
