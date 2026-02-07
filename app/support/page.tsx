@@ -8,7 +8,7 @@ import Plus from "@/public/icons/Plus.svg"
 import Robux from "@/public/icons/Robux.svg"
 
 export default function RedirectPage() {
-  const [countdown, setCountdown] = useState(5)
+  const [countdown, setCountdown] = useState(3)
   const redirectUrl = "https://discord.com/invite/w2dNr7vuKP"
 
   useEffect(() => {
