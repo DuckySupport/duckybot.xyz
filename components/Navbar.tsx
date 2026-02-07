@@ -129,7 +129,7 @@ export default function Navbar() {
             {navItems.map((item) => (
               <a
                 key={item.label}
-                className="transition hover:text-white"
+                className="nav-link"
                 href={item.href}
               >
                 {item.label}
