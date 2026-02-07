@@ -53,6 +53,8 @@ export default function Reviews() {
   const [phase, setPhase] = useState<"in" | "out">("in");
   const [sets, setSets] = useState<ReviewItem[][]>([]);
   const setsLengthRef = useRef(0);
+  const prefetchedSetsRef = useRef<ReviewItem[][] | null>(null);
+  const prefetchTokenRef = useRef(0);
 
   const reviews = useMemo(() => sets[setIndex] ?? [], [setIndex, sets]);
 
@@ -104,25 +106,34 @@ export default function Reviews() {
     let gapTimeoutId: NodeJS.Timeout | undefined;
     let cancelled = false;
 
+    const prefetchReviews = () => {
+      const token = ++prefetchTokenRef.current;
+      loadReviews().then((nextSets) => {
+        if (cancelled || prefetchTokenRef.current !== token) return;
+        prefetchedSetsRef.current = nextSets;
+      });
+    };
+
     const scheduleCycle = () => {
       if (cancelled) return;
       timeoutId = setTimeout(() => {
         setPhase("out");
+        prefetchReviews();
         gapTimeoutId = setTimeout(() => {
-          loadReviews().then((nextSets) => {
-            if (cancelled) return;
-            if (nextSets?.length) {
-              setSets(nextSets);
-              setSetIndex((prev) => (prev + 1) % nextSets.length);
-            } else {
-              const fallbackLength = setsLengthRef.current;
-              if (fallbackLength > 0) {
-                setSetIndex((prev) => (prev + 1) % fallbackLength);
-              }
+          if (cancelled) return;
+          const nextSets = prefetchedSetsRef.current;
+          prefetchedSetsRef.current = null;
+          if (nextSets?.length) {
+            setSets(nextSets);
+            setSetIndex((prev) => (prev + 1) % nextSets.length);
+          } else {
+            const fallbackLength = setsLengthRef.current;
+            if (fallbackLength > 0) {
+              setSetIndex((prev) => (prev + 1) % fallbackLength);
             }
-            setPhase("in");
-            scheduleCycle();
-          });
+          }
+          setPhase("in");
+          scheduleCycle();
         }, SLIDE_DURATION_MS + GAP_BETWEEN_MS);
       }, SHOW_DURATION_MS);
     };
