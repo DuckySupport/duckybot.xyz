@@ -814,7 +814,32 @@
 		},
 		"punishmentTypes": [
             "warning"
-        ]
+        ],
+        "bolos": [
+			{
+				"moderator": {
+					"name": "bobbibones",
+					"username": "bobbibones",
+					"avatar": "https://cdn.discordapp.com/avatars/782235114858872854/fff448ad33f613c223ee3771fd659fab.png",
+					"id": "782235114858872854"
+				},
+				"user": {
+					"displayName": "test",
+					"avatar": "https://duckybot.xyz/images/icons/RobloxConfused.png",
+					"banned": true,
+					"name": "test",
+					"description": "",
+					"hyperlink": "[test](<https://roblox.com/users/17/profile>)",
+					"verified": false,
+					"id": 17,
+					"profile": "https://roblox.com/users/17/profile",
+					"created": 1141074400.003
+				},
+				"id": "1468643836820717668",
+				"reason": "test",
+				"created": 1770222377
+			}
+		]
 	},
 	"message": "Panel data for '🛁 Ducky's Tub' fetched successfully.",
 	"code": 200

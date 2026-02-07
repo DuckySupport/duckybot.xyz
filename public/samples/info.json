@@ -1,36 +1,56 @@
 {
-    "message": "Successfully loaded info for guild '1351287020932300891'.",
     "code": 200,
     "data": {
-        "members": 16,
         "role": "Manager",
-        "name": "🛁 Ducky's Tub",
-        "icon": "https://cdn.discordapp.com/icons/1351287020932300891/38aaed458937ee6a6c993ca9b69da392.png",
-        "plus": [],
-        "id": "1351287020932300891",
-        "ducky": true,
+        "icon": "https://cdn.discordapp.com/icons/1391154655987241093/002fa1c5283f97f0fe37d786a1622096.png",
+        "name": "🦌 | Alaska State Roleplay",
         "permissions": {
-            "DUCKY_PLUS_GUILD": false,
-            "ERLC_ADMIN": true,
-            "TESTER": true,
-            "FOUNDER": true,
+            "ADMIN": true,
+            "DUCKY_STAFF": true,
+            "FOUNDER": false,
+            "ERLC_LINKED": true,
+            "DUCKY_PLUS_MEMBER": true,
+            "ERLC_STAFF": true,
+            "DUCKY_PLUS_GUILD": true,
+            "QUALITY_ASSURANCE": true,
+            "EXECUTIVE": true,
+            "DOCWRITER": true,
             "ERLC_MANAGER": true,
             "MANAGE_SERVER": true,
-            "SESSION_STARTER": true,
-            "SETUP": true,
             "BOT_DEVELOPER": true,
-            "MOD": true,
             "WEB_DEVELOPER": true,
+            "MOD": true,
             "SUPPORT": true,
+            "SETUP": true,
+            "ERLC_ADMIN": true,
             "MANAGEMENT": true,
-            "ERLC_LINKED": false,
-            "DUCKY_STAFF": true,
-            "ERLC_STAFF": true,
-            "DUCKY_PLUS_MEMBER": false,
-            "ADMIN": true,
-            "EXECUTIVE": true,
-            "MUSIC": true
+            "SESSION_STARTER": true
         },
-        "owner": "782235114858872854"
-    }
+        "ducky": true,
+        "owner": "798525456281370625",
+        "id": "1391154655987241093",
+        "plus": {
+            "active": true,
+            "plus": {
+                "userid": "798525456281370625",
+                "slots": 1,
+                "transactions": [
+                    {
+                        "paid": 400,
+                        "token": "738aeabc-7a21-4fb3-96bc-1fd0bc8fff7f",
+                        "slots": 1,
+                        "timestamp": 1751404641.558,
+                        "roblox": 2643754715
+                    }
+                ],
+                "codes": [],
+                "guilds": [
+                    "1447342580227510413",
+                    "1391154655987241093"
+                ]
+            }
+        },
+        "members": 2676
+    },
+    "message": "Successfully loaded info for guild '1391154655987241093'."
 }

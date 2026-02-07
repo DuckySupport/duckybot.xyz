@@ -670,7 +670,7 @@ function utils.shifts(id, cookie)
     end
 end
 
-function utils.startShift(guildID, shiftType, cookie, callback)
+function utils.shiftStart(guildID, shiftType, cookie, callback)
     cookie = cookie or utils.cookie("token")
     if guildID and shiftType then
         http.request(callback, "POST", "https://api.duckybot.xyz/guilds/" .. guildID .. "/shifts/start", {
@@ -680,7 +680,7 @@ function utils.startShift(guildID, shiftType, cookie, callback)
     end
 end
 
-function utils.pauseShift(guildID, cookie, callback)
+function utils.shiftPause(guildID, cookie, callback)
     cookie = cookie or utils.cookie("token")
     if guildID then
         http.request(callback, "POST", "https://api.duckybot.xyz/guilds/" .. guildID .. "/shifts/pause", {
@@ -689,7 +689,7 @@ function utils.pauseShift(guildID, cookie, callback)
     end
 end
 
-function utils.endShift(guildID, cookie, callback)
+function utils.shiftEnd(guildID, cookie, callback)
     cookie = cookie or utils.cookie("token")
     if guildID then
         http.request(callback, "POST", "https://api.duckybot.xyz/guilds/" .. guildID .. "/shifts/end", {
@@ -698,7 +698,7 @@ function utils.endShift(guildID, cookie, callback)
     end
 end
 
-function utils.createPunishment(guildID, violator, pType, reason)
+function utils.punishmentCreate(guildID, violator, pType, reason)
     local cookie = utils.cookie("token")
 
     local success, response = http.requestSync("POST", "https://api.duckybot.xyz/guilds/" .. guildID .. "/punishments", {
@@ -707,6 +707,39 @@ function utils.createPunishment(guildID, violator, pType, reason)
         username = violator, -- can be username or ID, ID preffered
         type = pType,
         reason = reason
+    })
+
+    return success, response
+end
+
+function utils.boloCreate(guildID, violator, reason)
+    local cookie = utils.cookie("token")
+
+    local success, response = http.requestSync("POST", "https://api.duckybot.xyz/guilds/" .. guildID .. "/bolos", {
+        ["Token"] = cookie
+    }, {
+        username = violator, -- can be username or ID, ID preffered
+        reason = reason
+    })
+
+    return success, response
+end
+
+function utils.boloComplete(guildID, violator)
+    local cookie = utils.cookie("token")
+
+    local success, response = http.requestSync("POST", "https://api.duckybot.xyz/guilds/" .. guildID .. "/bolos/" .. violator, {
+        ["Token"] = cookie
+    })
+
+    return success, response
+end
+
+function utils.boloReject(guildID, violator)
+    local cookie = utils.cookie("token")
+
+    local success, response = http.requestSync("DELETE", "https://api.duckybot.xyz/guilds/" .. guildID .. "/bolos/" .. violator, {
+        ["Token"] = cookie
     })
 
     return success, response
