@@ -5,7 +5,7 @@ import { Icon } from "@iconify/react/offline";
 import starRounded from "@iconify/icons-material-symbols/star-rounded";
 import starOutlineRounded from "@iconify/icons-material-symbols/star-outline-rounded";
 
-const SHOW_DURATION_MS = 8000;
+const SHOW_DURATION_MS = 10000;
 const SLIDE_DURATION_MS = 1300;
 const GAP_BETWEEN_MS = 1000;
 const REVIEWS_API = "https://api.duckybot.xyz/feedback";
