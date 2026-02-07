@@ -39,9 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
   
   document.cookie = `lastTicket=${encodeURIComponent(`${guildId}-${ticketId}`)}; path=/; max-age=120`
   
-  const discordToken = document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1]
+  const cookie = document.cookie.split('; ').find(row => row.startsWith('discord='))?.split('=')[1]
   
-  if (!discordToken || discordToken == "" || discordToken == "null" || discordToken == "undefined") {
+  if (!cookie || cookie == "" || cookie == "null" || cookie == "undefined") {
     window.location.href = `/login?redirect=transcripts`
     return
   }
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fetch(apiUrl, {
     method: "GET",
-    headers: { "Discord-Code": discordToken }
+    headers: { "Token": cookie }
   })
     .then((response) => {
       if (!response.ok) {
