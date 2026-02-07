@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Icon } from "@iconify/react/offline";
 import starRounded from "@iconify/icons-material-symbols/star-rounded";
 import starOutlineRounded from "@iconify/icons-material-symbols/star-outline-rounded";
@@ -52,6 +52,7 @@ export default function Reviews() {
   const [setIndex, setSetIndex] = useState(0);
   const [phase, setPhase] = useState<"in" | "out">("in");
   const [sets, setSets] = useState<ReviewItem[][]>([]);
+  const setsLengthRef = useRef(0);
 
   const reviews = useMemo(() => sets[setIndex] ?? [], [setIndex, sets]);
 
@@ -95,31 +96,47 @@ export default function Reviews() {
   }, [loadReviews]);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    let gapTimeoutId: NodeJS.Timeout;
+    setsLengthRef.current = sets.length;
+  }, [sets.length]);
 
-    if (sets.length > 0) {
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout | undefined;
+    let gapTimeoutId: NodeJS.Timeout | undefined;
+    let cancelled = false;
+
+    const scheduleCycle = () => {
+      if (cancelled) return;
       timeoutId = setTimeout(() => {
         setPhase("out");
         gapTimeoutId = setTimeout(() => {
           loadReviews().then((nextSets) => {
+            if (cancelled) return;
             if (nextSets?.length) {
               setSets(nextSets);
               setSetIndex((prev) => (prev + 1) % nextSets.length);
             } else {
-              setSetIndex((prev) => (prev + 1) % sets.length);
+              const fallbackLength = setsLengthRef.current;
+              if (fallbackLength > 0) {
+                setSetIndex((prev) => (prev + 1) % fallbackLength);
+              }
             }
             setPhase("in");
+            scheduleCycle();
           });
         }, SLIDE_DURATION_MS + GAP_BETWEEN_MS);
       }, SHOW_DURATION_MS);
+    };
+
+    if (sets.length > 0) {
+      scheduleCycle();
     }
 
     return () => {
+      cancelled = true;
       clearTimeout(timeoutId);
       clearTimeout(gapTimeoutId);
     };
-  }, [loadReviews, setIndex, sets.length]);
+  }, [loadReviews, sets.length]);
 
   if (!reviews.length) {
     return null;
