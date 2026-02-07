@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { usePathname, useRouter } from "next/navigation";
 
 import { Icon } from "@iconify/react/offline";
 import menuRounded from "@iconify/icons-material-symbols/menu-rounded";
@@ -18,26 +17,68 @@ const navItems = [
 const HIDDEN_ROUTES = new Set(["/login", "/not-found"]);
 const HIDDEN_ROUTE_PREFIXES = ["/dashboard"];
 
+type SessionMeResponse =
+  | {
+      authenticated: true;
+      user: { id: string; name: string; username: string; avatar: string };
+      tokenId?: string;
+    }
+  | { authenticated: false };
+
 export default function Navbar() {
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
   const [signOutOpen, setSignOutOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { data: session, status } = useSession();
+
+  const [session, setSession] = useState<SessionMeResponse | null>(null);
+  const [isSessionLoading, setIsSessionLoading] = useState(true);
+
   const pathname = usePathname();
-  const avatarUrl = session?.user?.image ?? "";
-  const userName = session?.user?.name ?? "Account";
-  const avatarAlt = session?.user?.name ?? "Account avatar";
+  const router = useRouter();
   const avatarMenuRef = useRef<HTMLDivElement | null>(null);
-  const isSessionLoading = status === "loading";
-  const isAuthenticated = status === "authenticated";
-  const avatarInitials = userName
-    .trim()
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("")
-    .toUpperCase() || "DU";
+
+  const isAuthenticated =
+    session !== null && "authenticated" in session && session.authenticated;
+
+  const avatarUrl = isAuthenticated ? session.user.avatar : "";
+  const userName = isAuthenticated ? session.user.name : "Account";
+  const avatarAlt = isAuthenticated ? session.user.name : "Account avatar";
+
+  const avatarInitials = useMemo(() => {
+    const base = (userName || "Account").trim();
+    const initials =
+      base
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part[0])
+        .join("")
+        .toUpperCase() || "DU";
+    return initials;
+  }, [userName]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    (async () => {
+      try {
+        const r = await fetch("/api/session/me", { cache: "no-store" });
+        const data = (await r.json()) as SessionMeResponse;
+        if (!mounted) return;
+        setSession(data);
+      } catch {
+        if (!mounted) return;
+        setSession({ authenticated: false });
+      } finally {
+        if (!mounted) return;
+        setIsSessionLoading(false);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (!avatarMenuOpen) return;
@@ -112,6 +153,21 @@ export default function Navbar() {
     return null;
   }
 
+  const doLogout = async () => {
+    try {
+      await fetch("/api/session", { method: "DELETE" });
+    } catch {
+      // ignore
+    } finally {
+      setSignOutOpen(false);
+      setAvatarMenuOpen(false);
+      setMobileMenuOpen(false);
+      setSession({ authenticated: false });
+      router.replace("/");
+      router.refresh();
+    }
+  };
+
   return (
     <>
       <header className="site-nav island">
@@ -125,17 +181,15 @@ export default function Navbar() {
               priority
             />
           </a>
+
           <nav className="hidden items-center gap-8 text-sm text-white/70 lg:flex">
             {navItems.map((item) => (
-              <a
-                key={item.label}
-                className="nav-link"
-                href={item.href}
-              >
+              <a key={item.label} className="nav-link" href={item.href}>
                 {item.label}
               </a>
             ))}
           </nav>
+
           <div className="relative flex items-center gap-3" ref={avatarMenuRef}>
             <button
               className="grid h-10 w-10 place-items-center rounded-full border border-white/15 text-sm text-white/70 lg:hidden"
@@ -151,6 +205,7 @@ export default function Navbar() {
             >
               <Icon icon={menuRounded} className="h-5 w-5" />
             </button>
+
             {isSessionLoading ? (
               <div
                 className="h-10 w-24 rounded-full border border-white/15 bg-white/5"
@@ -178,6 +233,7 @@ export default function Navbar() {
                     </span>
                   )}
                 </button>
+
                 {avatarMenuOpen && (
                   <div className="absolute right-0 top-12 z-50 w-44 rounded-xl border border-white/10 bg-[#0f0f0f] p-2 text-sm shadow-[0_18px_40px_rgba(0,0,0,0.55)]">
                     <a
@@ -218,6 +274,7 @@ export default function Navbar() {
           </div>
         </div>
       </header>
+
       {signOutOpen && (
         <>
           <div
@@ -244,7 +301,7 @@ export default function Navbar() {
                 <button
                   type="button"
                   className="rounded-full border border-red-400/40 bg-red-500/20 px-5 py-2.5 text-sm font-semibold text-red-100 transition hover:bg-red-500/30"
-                  onClick={() => signOut({ callbackUrl: "/" })}
+                  onClick={doLogout}
                 >
                   Log out
                 </button>
@@ -253,13 +310,9 @@ export default function Navbar() {
           </div>
         </>
       )}
+
       {mobileMenuOpen && (
-        <div
-          id="mobile-menu"
-          className="mobile-menu"
-          role="dialog"
-          aria-modal="true"
-        >
+        <div id="mobile-menu" className="mobile-menu" role="dialog" aria-modal="true">
           <button
             className="absolute right-6 top-6 text-white/70 transition hover:text-white"
             aria-label="Close mobile menu"
@@ -268,6 +321,7 @@ export default function Navbar() {
           >
             <Icon icon={closeRounded} className="h-6 w-6" />
           </button>
+
           <nav className="flex flex-col items-center gap-6 sm:gap-8">
             {navItems.map((item) => (
               <a
@@ -279,7 +333,8 @@ export default function Navbar() {
                 {item.label}
               </a>
             ))}
-            {avatarUrl ? (
+
+            {isAuthenticated ? (
               <>
                 <a
                   href="/dashboard"

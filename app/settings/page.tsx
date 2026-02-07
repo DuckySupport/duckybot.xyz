@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 
 import Footer from "@/components/Footer";
 
@@ -121,8 +120,18 @@ function MiniSelect({ value, options, ariaLabel, onChange }: MiniSelectProps) {
   );
 }
 
+type SessionMeResponse =
+  | {
+      authenticated: true;
+      user: { id: string; name: string; username: string; avatar: string };
+      tokenId?: string;
+    }
+  | { authenticated: false };
+
 export default function SettingsPage() {
-  const { data: session, status } = useSession();
+  const [session, setSession] = useState<SessionMeResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
   const [robloxLinked, setRobloxLinked] = useState(false);
   const [userSettings, setUserSettings] = useState({
     autoShifts: false,
@@ -134,19 +143,52 @@ export default function SettingsPage() {
     trackPlaytime: true,
     useBloxlinkApi: true,
   });
-  const avatarUrl = session?.user?.image ?? "";
-  const userName = session?.user?.name ?? "Discord user";
-  const userEmail = session?.user?.email ?? "";
-  const isLoading = status === "loading";
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const r = await fetch("/api/session/me", { cache: "no-store" });
+        const data = (await r.json()) as SessionMeResponse;
+        if (!mounted) return;
+        setSession(data);
+      } catch {
+        if (!mounted) return;
+        setSession({ authenticated: false });
+      } finally {
+        if (!mounted) return;
+        setIsLoading(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const avatarUrl =
+    session && "authenticated" in session && session.authenticated
+      ? session.user.avatar
+      : "";
+  const userName =
+    session && "authenticated" in session && session.authenticated
+      ? session.user.name
+      : "Discord user";
+  const userUsername =
+    session && "authenticated" in session && session.authenticated
+      ? session.user.username
+      : "";
 
   const initials = useMemo(() => {
-    const name = session?.user?.name?.trim();
+    const name =
+      session && "authenticated" in session && session.authenticated
+        ? session.user.name?.trim()
+        : "";
     if (!name) return "DU";
     const parts = name.split(" ").filter(Boolean);
     return parts.length === 1
       ? parts[0].slice(0, 2).toUpperCase()
       : `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
-  }, [session?.user?.name]);
+  }, [session]);
 
   const timezoneLabel = useMemo(() => {
     if (typeof Intl === "undefined") return "Local time";
@@ -162,6 +204,9 @@ export default function SettingsPage() {
       [key]: value === "Enabled",
     }));
   };
+
+  const isAuthed =
+    session !== null && "authenticated" in session && session.authenticated;
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
@@ -179,75 +224,75 @@ export default function SettingsPage() {
           <div className="mt-10 rounded-[28px] border border-white/10 bg-[#0f0f0f] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.55)] sm:p-8">
             <div className="group">
               <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:text-left">
-              {avatarUrl ? (
-                <Image
-                  src={avatarUrl}
-                  alt={userName}
-                  width={72}
-                  height={72}
-                  className="h-16 w-16 rounded-full border border-white/10 object-cover"
-                />
-              ) : (
-                <div
-                  className={`flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-white/5 text-lg font-semibold text-white/70 ${
-                    isLoading ? "animate-pulse" : ""
-                  }`}
-                >
-                  {initials}
-                </div>
-              )}
-              <div>
-                <p className="text-sm font-medium text-white/60">
-                  Discord account
-                </p>
-                <h2 className="mt-1 text-xl font-semibold text-white">
-                  {isLoading ? "Loading..." : userName}
-                </h2>
-                {userEmail ? (
-                  <p className="text-sm text-white/60">{userEmail}</p>
-                ) : null}
-                {!session?.user && !isLoading ? (
-                  <Link
-                    href="/login"
-                    className="btn-primary mt-3 inline-flex items-center justify-center rounded-full px-4 py-2 text-xs"
+                {avatarUrl ? (
+                  <Image
+                    src={avatarUrl}
+                    alt={userName}
+                    width={72}
+                    height={72}
+                    className="h-16 w-16 rounded-full border border-white/10 object-cover"
+                  />
+                ) : (
+                  <div
+                    className={`flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-white/5 text-lg font-semibold text-white/70 ${
+                      isLoading ? "animate-pulse" : ""
+                    }`}
                   >
-                    Connect Discord
-                  </Link>
-                ) : null}
-              </div>
-            </div>
-            <div className="mx-auto mt-6 h-px w-72 rounded-full bg-white/10" />
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-6">
-              <div className="flex items-center gap-4 text-left">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm font-semibold text-white/70">
-                  RB
-                </div>
+                    {initials}
+                  </div>
+                )}
                 <div>
                   <p className="text-sm font-medium text-white/60">
-                    Roblox account
+                    Discord account
                   </p>
-                  <p className="text-sm font-semibold text-white/80">
-                    Roblox Avatar
-                  </p>
-                  <p className="text-xs text-white/50">
-                    {robloxLinked
-                      ? "Linked to your Roblox account."
-                      : "Not linked yet."}
-                  </p>
+                  <h2 className="mt-1 text-xl font-semibold text-white">
+                    {isLoading ? "Loading..." : userName}
+                  </h2>
+                  {userUsername ? (
+                    <p className="text-sm text-white/60">{userUsername}</p>
+                  ) : null}
+                  {!isAuthed && !isLoading ? (
+                    <Link
+                      href="/login"
+                      className="btn-primary mt-3 inline-flex items-center justify-center rounded-full px-4 py-2 text-xs"
+                    >
+                      Connect Discord
+                    </Link>
+                  ) : null}
                 </div>
               </div>
-              <button
-                type="button"
-                className={`inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-semibold transition ${
-                  robloxLinked
-                    ? "btn-glass"
-                    : "btn-primary"
-                }`}
-                onClick={() => setRobloxLinked((current) => !current)}
-              >
-                {robloxLinked ? "Unlink Roblox" : "Link Roblox"}
-              </button>
-            </div>
+
+              <div className="mx-auto mt-6 h-px w-72 rounded-full bg-white/10" />
+
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-6">
+                <div className="flex items-center gap-4 text-left">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm font-semibold text-white/70">
+                    RB
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white/60">
+                      Roblox account
+                    </p>
+                    <p className="text-sm font-semibold text-white/80">
+                      Roblox Avatar
+                    </p>
+                    <p className="text-xs text-white/50">
+                      {robloxLinked
+                        ? "Linked to your Roblox account."
+                        : "Not linked yet."}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className={`inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-semibold transition ${
+                    robloxLinked ? "btn-glass" : "btn-primary"
+                  }`}
+                  onClick={() => setRobloxLinked((current) => !current)}
+                >
+                  {robloxLinked ? "Unlink Roblox" : "Link Roblox"}
+                </button>
+              </div>
             </div>
 
             <div className="mt-8 grid gap-4">
@@ -271,11 +316,13 @@ export default function SettingsPage() {
                     </svg>
                   </span>
                 </summary>
+
                 <div className="mt-2 grid gap-4 px-3 pb-3 text-sm text-white/60">
                   <div className="rounded-xl border border-white/10 bg-[#0b0b0b] p-4">
                     <p className="text-sm font-medium text-white/60">
                       User settings
                     </p>
+
                     <div className="mt-4 grid gap-3">
                       {[
                         {
@@ -326,6 +373,7 @@ export default function SettingsPage() {
                               {item.description}
                             </p>
                           </div>
+
                           <MiniSelect
                             value={
                               userSettings[item.key as keyof typeof userSettings]
@@ -346,6 +394,7 @@ export default function SettingsPage() {
                           />
                         </div>
                       ))}
+
                       <div className="flex flex-wrap items-center justify-between gap-4 rounded-lg bg-white/5 px-3 py-3">
                         <div>
                           <p className="text-sm font-semibold text-white/80">
@@ -359,6 +408,7 @@ export default function SettingsPage() {
                           {timezoneLabel}
                         </span>
                       </div>
+
                       <div className="flex flex-wrap items-center justify-between gap-4 rounded-lg bg-white/5 px-3 py-3">
                         <div>
                           <p className="text-sm font-semibold text-white/80">
@@ -381,8 +431,7 @@ export default function SettingsPage() {
                             },
                             {
                               value: "Both",
-                              description:
-                                "Use both Discord DMs and in-game PMs.",
+                              description: "Use both Discord DMs and in-game PMs.",
                             },
                             {
                               value: "None",
