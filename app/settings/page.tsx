@@ -133,6 +133,15 @@ export default function SettingsPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [robloxLinked, setRobloxLinked] = useState(false);
+  const [robloxProfile, setRobloxProfile] = useState<null | {
+    name: string;
+    displayName: string;
+    id: number;
+    avatar: string;
+    profile: string;
+  }>(null);
+  const [rbStatus, setRbStatus] = useState("");
+  const [rbBusy, setRbBusy] = useState(false);
   const [userSettings, setUserSettings] = useState({
     autoShifts: false,
     defaultAfk: false,
@@ -208,6 +217,103 @@ export default function SettingsPage() {
   const isAuthed =
     session !== null && "authenticated" in session && session.authenticated;
 
+  const buildRobloxAuthorizeUrl = (state: string) => {
+    const url = new URL("https://authorize.roblox.com/");
+    url.searchParams.set("client_id", process.env.NEXT_PUBLIC_ROBLOX_CLIENT_ID || "");
+    url.searchParams.set("response_type", "code");
+    url.searchParams.set("scope", "openid");
+    url.searchParams.set("redirect_uri", process.env.NEXT_PUBLIC_ROBLOX_REDIRECT_URI || "");
+    url.searchParams.set("state", state);
+    return url.toString();
+  };
+
+  const newState = () => {
+    const arr = new Uint8Array(32);
+    crypto.getRandomValues(arr);
+    let bin = "";
+    for (const b of arr) bin += String.fromCharCode(b);
+    const s = btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+    sessionStorage.setItem("rb_oauth_state", s);
+    return s;
+  };
+
+  const refreshRobloxLink = async () => {
+    const r = await fetch("/api/links", { cache: "no-store" });
+
+    if (r.status === 404) {
+      setRobloxLinked(false);
+      setRobloxProfile(null);
+      return;
+    }
+
+    const data = (await r.json().catch(() => null)) as any;
+
+    if (r.ok && data?.data?.roblox?.id) {
+      setRobloxLinked(true);
+      setRobloxProfile({
+        name: data.data.roblox.name,
+        displayName: data.data.roblox.displayName,
+        id: data.data.roblox.id,
+        avatar: data.data.roblox.avatar,
+        profile: data.data.roblox.profile,
+      });
+      return;
+    }
+
+    setRobloxLinked(false);
+    setRobloxProfile(null);
+  };
+
+  useEffect(() => {
+    if (!isAuthed) return;
+
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get("code");
+    const state = url.searchParams.get("state");
+
+    (async () => {
+      await refreshRobloxLink();
+
+      if (!code) return;
+
+      const expected = sessionStorage.getItem("rb_oauth_state");
+      if (!expected || !state || expected !== state) {
+        setRbStatus("Roblox login failed. Try again.");
+        return;
+      }
+
+      setRbBusy(true);
+      setRbStatus("Linking Roblox account...");
+
+      const linkRes = await fetch("/api/links", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ robloxCode: code }),
+      });
+
+      const linkData = (await linkRes.json().catch(() => null)) as any;
+
+      if (!linkRes.ok) {
+        setRbStatus(linkData?.message || "Failed to link Roblox account.");
+        setRbBusy(false);
+        return;
+      }
+
+      setRbStatus(linkData?.message || "Roblox linked!");
+      sessionStorage.removeItem("rb_oauth_state");
+
+      url.searchParams.delete("code");
+      url.searchParams.delete("state");
+      window.history.replaceState({}, "", url.toString());
+
+      await refreshRobloxLink();
+      setRbBusy(false);
+    })().catch(() => {
+      setRbStatus("Unexpected Roblox linking error.");
+      setRbBusy(false);
+    });
+  }, [isAuthed]);
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       <main className="px-6 pb-16 pt-12 sm:pt-16">
@@ -266,29 +372,73 @@ export default function SettingsPage() {
 
               <div className="mt-6 flex flex-wrap items-center justify-between gap-6">
                 <div className="flex items-center gap-4 text-left">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm font-semibold text-white/70">
-                    RB
-                  </div>
+                  {robloxProfile?.avatar ? (
+                    <Image
+                      src={robloxProfile.avatar}
+                      alt="Roblox avatar"
+                      width={56}
+                      height={56}
+                      className="h-14 w-14 rounded-full border border-white/10 object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm font-semibold text-white/70">
+                      RB
+                    </div>
+                  )}
                   <div>
                     <p className="text-sm font-medium text-white/60">
                       Roblox account
                     </p>
                     <p className="text-sm font-semibold text-white/80">
-                      Roblox Avatar
+                      {robloxProfile ? `${robloxProfile.displayName} (@${robloxProfile.name})` : "Not linked"}
                     </p>
                     <p className="text-xs text-white/50">
-                      {robloxLinked
-                        ? "Linked to your Roblox account."
-                        : "Not linked yet."}
+                      {rbStatus
+                        ? rbStatus
+                        : robloxLinked
+                          ? "Linked to your Roblox account."
+                          : "Not linked yet."}
                     </p>
                   </div>
                 </div>
-                <button
+                                <button
                   type="button"
                   className={`inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-semibold transition ${
                     robloxLinked ? "btn-glass" : "btn-primary"
                   }`}
-                  onClick={() => setRobloxLinked((current) => !current)}
+                  disabled={!isAuthed || rbBusy}
+                  onClick={async () => {
+                    if (!isAuthed || rbBusy) return;
+
+                    setRbStatus("");
+                    setRbBusy(true);
+
+                    try {
+                      if (robloxLinked) {
+                        setRbStatus("Unlinking Roblox...");
+                        const r = await fetch("/api/links", { method: "DELETE" });
+                        const data = (await r.json().catch(() => null)) as any;
+
+                        if (!r.ok) {
+                          setRbStatus(data?.message || "Failed to unlink.");
+                          setRbBusy(false);
+                          return;
+                        }
+
+                        setRbStatus(data?.message || "Roblox unlinked.");
+                        setRobloxLinked(false);
+                        setRobloxProfile(null);
+                        setRbBusy(false);
+                        return;
+                      }
+
+                      const state = newState();
+                      window.location.assign(buildRobloxAuthorizeUrl(state));
+                    } catch {
+                      setRbStatus("Something went wrong.");
+                      setRbBusy(false);
+                    }
+                  }}
                 >
                   {robloxLinked ? "Unlink Roblox" : "Link Roblox"}
                 </button>
