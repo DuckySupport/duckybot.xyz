@@ -328,7 +328,7 @@ export default function SettingsPage() {
           </div>
 
           <div className="mt-10 rounded-[28px] border border-white/10 bg-[#0f0f0f] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.55)] sm:p-8">
-            <div className="group">
+            <div className="group grid gap-8 md:grid-cols-2 md:items-center">
               <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:text-left">
                 {avatarUrl ? (
                   <Image
@@ -347,16 +347,13 @@ export default function SettingsPage() {
                     {initials}
                   </div>
                 )}
+            
                 <div>
-                  <p className="text-sm font-medium text-white/60">
-                    Discord account
-                  </p>
+                  <p className="text-sm font-medium text-white/60">Discord account</p>
                   <h2 className="mt-1 text-xl font-semibold text-white">
                     {isLoading ? "Loading..." : userName}
                   </h2>
-                  {userUsername ? (
-                    <p className="text-sm text-white/60">{userUsername}</p>
-                  ) : null}
+                  {userUsername ? <p className="text-sm text-white/60">{userUsername}</p> : null}
                   {!isAuthed && !isLoading ? (
                     <Link
                       href="/login"
@@ -367,11 +364,9 @@ export default function SettingsPage() {
                   ) : null}
                 </div>
               </div>
-
-              <div className="mx-auto mt-6 h-px w-72 rounded-full bg-white/10" />
-
-              <div className="mt-6 flex flex-wrap items-center justify-between gap-6">
-                <div className="flex items-center gap-4 text-left">
+            
+              <div className="flex flex-col gap-6 md:items-end md:text-right">
+                <div className="flex items-center gap-4 text-left md:flex-row-reverse md:text-right">
                   {robloxProfile?.avatar ? (
                     <Image
                       src={robloxProfile.avatar}
@@ -385,12 +380,13 @@ export default function SettingsPage() {
                       RB
                     </div>
                   )}
+            
                   <div>
-                    <p className="text-sm font-medium text-white/60">
-                      Roblox account
-                    </p>
+                    <p className="text-sm font-medium text-white/60">Roblox account</p>
                     <p className="text-sm font-semibold text-white/80">
-                      {robloxProfile ? `${robloxProfile.displayName} (@${robloxProfile.name})` : "Not linked"}
+                      {robloxProfile
+                        ? `${robloxProfile.displayName} (@${robloxProfile.name})`
+                        : "Not linked"}
                     </p>
                     <p className="text-xs text-white/50">
                       {rbStatus
@@ -401,7 +397,8 @@ export default function SettingsPage() {
                     </p>
                   </div>
                 </div>
-                                <button
+            
+                <button
                   type="button"
                   className={`inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-semibold transition ${
                     robloxLinked ? "btn-glass" : "btn-primary"
@@ -409,29 +406,29 @@ export default function SettingsPage() {
                   disabled={!isAuthed || rbBusy}
                   onClick={async () => {
                     if (!isAuthed || rbBusy) return;
-
+            
                     setRbStatus("");
                     setRbBusy(true);
-
+            
                     try {
                       if (robloxLinked) {
                         setRbStatus("Unlinking Roblox...");
                         const r = await fetch("/api/links", { method: "DELETE" });
                         const data = (await r.json().catch(() => null)) as any;
-
+            
                         if (!r.ok) {
                           setRbStatus(data?.message || "Failed to unlink.");
                           setRbBusy(false);
                           return;
                         }
-
+            
                         setRbStatus(data?.message || "Roblox unlinked.");
                         setRobloxLinked(false);
                         setRobloxProfile(null);
                         setRbBusy(false);
                         return;
                       }
-
+            
                       const state = newState();
                       window.location.assign(buildRobloxAuthorizeUrl(state));
                     } catch {
