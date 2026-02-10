@@ -1,13 +1,13 @@
-import Link from "next/link";
-import { Icon } from "@iconify/react/offline";
-import chevronRight from "@iconify/icons-material-symbols/chevron-right";
-import HideNavbar from "@/components/HideNavbar";
+import Link from "next/link"
+import { Icon } from "@iconify/react/offline"
+import chevronRight from "@iconify/icons-material-symbols/chevron-right"
+import HideNavbar from "@/components/HideNavbar"
+import Footer from "@/components/Footer"
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <HideNavbar />
-      <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center justify-center px-6 py-16 text-center">
+    <div className="flex min-h-screen flex-col bg-[#0a0a0a] text-white">
+      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-6 text-center">
         <h1 className="text-5xl font-semibold sm:text-6xl">
           404 <span className="accent-text">Not Found</span>
         </h1>
@@ -30,6 +30,7 @@ export default function NotFound() {
           </Link>
         </div>
       </div>
+      <Footer />
     </div>
-  );
+  )
 }
